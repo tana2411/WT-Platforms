@@ -1,0 +1,2 @@
+# wastetrade-frontend
+
