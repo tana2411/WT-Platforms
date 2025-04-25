@@ -1,0 +1,13 @@
+@import '../variables';
+
+.border-radius-tiny {
+  border-radius: $border-radius-tiny;
+}
+
+.border-bottom {
+  border-bottom: 1px solid var(--outline-variant);
+}
+
+.border-radius {
+    border-radius: $border-radius;
+}

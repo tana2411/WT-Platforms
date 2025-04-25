@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-md-6">
+    <mat-label class="fw-bold mb-1">{{ valueLabel }}</mat-label>
+    <mat-form-field appearance="outline" class="w-100">
+      <input
+        matInput
+        [formControl]="valueControl"
+        [type]="showValue ? 'text' : 'password'"
+        [placeholder]="placeholder ? placeholder : ''"
+      />
+      @if (type == "password") {
+        <mat-icon matSuffix (click)="showValue = !showValue">
+          {{ showValue ? "visibility" : "visibility_off" }}
+        </mat-icon>
+      }
+    </mat-form-field>
+  </div>
+  <div class="col-md-6">
+    <mat-label class="fw-bold mb-1">{{ confirmLabel }}</mat-label>
+    <mat-form-field appearance="outline" class="w-100">
+      <input
+        matInput
+        [formControl]="confirmControl"
+        [type]="showConfirmValue ? 'text' : 'password'"
+        [placeholder]="placeholder ? placeholder : ''"
+      />
+      @if (type == "password") {
+        <mat-icon matSuffix (click)="showConfirmValue = !showConfirmValue">
+          {{ showConfirmValue ? "visibility" : "visibility_off" }}
+        </mat-icon>
+      }
+    </mat-form-field>
+    <ng-content></ng-content>
+  </div>
+  @if (valueControl.value !== confirmControl.value && confirmControl.touched) {
+    <mat-error>
+      {{ valueLabel }} and {{ confirmLabel }} does not match.
+    </mat-error>
+  }
+</div>
+
