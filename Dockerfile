@@ -15,6 +15,7 @@ ENV PATH /node_modules/.bin:$PATH
 COPY package.json /package.json
 COPY package-lock.json /package-lock.json
 RUN npm ci
+RUN npm install -g @angular/cli@19.2.0
 
 # add app
 COPY . /
