@@ -6,22 +6,23 @@
 FROM node:20.19.1-alpine as build
 
 # set working directory
-WORKDIR /
+WORKDIR /app
 
 # add `/app/node_modules/.bin` to $PATH
-ENV PATH /node_modules/.bin:$PATH
+ENV PATH /app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
-COPY package.json /package.json
-COPY package-lock.json /package-lock.json
+COPY package.json /app/package.json
+COPY package-lock.json /app/package-lock.json
 RUN npm ci
 RUN npm install -g @angular/cli@19.2.0
 
 # add app
-COPY . /
+COPY . /app
 
 # generate build
 RUN npm run build
+# RUN ng build
 
 ############
 ### prod ###
@@ -31,7 +32,7 @@ RUN npm run build
 FROM nginx:1.27.5-alpine
 
 # copy artifact build from the 'build environment'
-COPY --from=build /dist/watse-trade/browser /usr/share/nginx/html
+COPY --from=build /app/dist/watse-trade/browser /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # expose port 80
