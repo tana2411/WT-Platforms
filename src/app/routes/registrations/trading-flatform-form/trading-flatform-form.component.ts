@@ -19,6 +19,7 @@ import {
 } from '@angular/forms';
 import { InputWithConfirmControlComponent } from '../../../share/ui/input-with-confirm-control/input-with-confirm-control.component';
 import { PasswordStrength } from '../../../share/validators/password-strength';
+import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-control/telephone-form-control.component';
 @Component({
   selector: 'app-trading-flatform-form',
   templateUrl: './trading-flatform-form.component.html',
@@ -32,6 +33,7 @@ import { PasswordStrength } from '../../../share/validators/password-strength';
     MatButtonModule,
     ReactiveFormsModule,
     InputWithConfirmControlComponent,
+    TelephoneFormControlComponent,
   ],
 })
 export class TradingFlatformFormComponent implements OnInit {
@@ -59,8 +61,7 @@ export class TradingFlatformFormComponent implements OnInit {
     firstName: new FormControl<string | null>(null, [Validators.required]),
     lastName: new FormControl<string | null>(null, [Validators.required]),
     jobTitle: new FormControl<string | null>(null, [Validators.required]),
-    countryCode: new FormControl<string | null>(null, [Validators.required]),
-    telePhone: new FormControl<string | null>(null, [Validators.required]),
+    telephone: new FormControl<string | null>(null, [Validators.required]),
     email: new FormControl<string | null>(null, [Validators.required]),
     password: new FormControl<string | null>(null, [
       Validators.required,
@@ -70,9 +71,12 @@ export class TradingFlatformFormComponent implements OnInit {
     discoveryChannel: new FormControl<string | null>(null, [
       Validators.required,
     ]),
-    companyType: new FormControl<string | null>(null),
-    companyInterest: new FormControl<string | null>(null),
+    otherMaterial: new FormControl<string | null>(null),
+    companyInterest: new FormControl<string | null>(null, [
+      Validators.required,
+    ]),
     materials: new FormArray([], [Validators.required]),
+    acceptTerm: new FormControl<boolean | null>(null, [Validators.required]),
   });
 
   selectAllMaterial = signal(false);
@@ -81,14 +85,14 @@ export class TradingFlatformFormComponent implements OnInit {
   constructor() {
     effect(() => {
       if (this.selectAllMaterial()) {
-        this.materials.clear()
+        this.materials.clear();
         this.materialsAccept.forEach((item) => {
           this.materials.push(new FormControl(item));
         });
       } else {
         this.materials.clear();
       }
-      this.materials.updateValueAndValidity()
+      this.materials.updateValueAndValidity();
     });
   }
 
@@ -103,16 +107,12 @@ export class TradingFlatformFormComponent implements OnInit {
 
     if (event.checked) {
       if (!isOther) {
-        const otherIdx = this.materials.controls.findIndex(
-          (control) => control.value === 'Other',
-        );
-        if (otherIdx !== -1) {
-          this.materials.removeAt(otherIdx);
-          this.showOtherMaterial.set(false);
-        }
+        this.showOtherMaterial.set(false);
+        this.materials.push(new FormControl(item));
+      } else {
+        this.showOtherMaterial.set(true);
+        this.formGroup.get('otherMaterial')?.setValidators([Validators.required]);
       }
-
-      this.materials.push(new FormControl(item));
     } else {
       const idx = this.materials.controls.findIndex(
         (control) => control.value === item,
@@ -121,14 +121,11 @@ export class TradingFlatformFormComponent implements OnInit {
         this.materials.removeAt(idx);
       }
     }
-    this.showOtherMaterial.set(
-      this.materials.controls.some((control) => control.value === 'Other'),
-    );
-    this.materials.updateValueAndValidity()
+    this.materials.updateValueAndValidity();
   }
 
   send() {
-    this.formGroup.markAllAsTouched()
+    this.formGroup.markAllAsTouched();
     console.log(this.formGroup.value);
   }
 }
