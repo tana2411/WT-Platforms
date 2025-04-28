@@ -95,7 +95,7 @@ export class HaulageFormComponent implements OnInit {
       Validators.required,
     ]),
 
-    acceptTerm: new FormControl<boolean | null>(null, [Validators.required])
+    acceptTerm: new FormControl<boolean | null>(null, [Validators.requiredTrue])
   });
 
   showEUcountry = signal(false);
