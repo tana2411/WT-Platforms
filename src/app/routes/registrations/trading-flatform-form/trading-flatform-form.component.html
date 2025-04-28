@@ -1,3 +1,226 @@
-<p>
-  trading-flatform-form works!
-</p>
+<div class="col-md-6 mx-auto">
+  <div
+    class="border rounded p-3 background-primary border-radius text-white text-center mt-5 mb-3"
+  >
+    Do you have a WasteTrade account?
+    <a href="" class="text-white fw-bold text-decoration-underline">Login</a>
+  </div>
+  <div class="border border-radius p-4 bg-white">
+    <h3 class="mb-4 fw-bold">Register</h3>
+    <form [formGroup]="formGroup">
+      <div class="row g-3 mb-3">
+        <div class="col-md-2">
+          <mat-label class="fw-bold mb-1">PREFIX*</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select placeholder="Mr." formControlName="prefix">
+              <mat-option value="dr">Dr.</mat-option>
+              <mat-option value="miss">Miss.</mat-option>
+              <mat-option value="mr">Mr.</mat-option>
+              <mat-option value="mrs">Mrs.</mat-option>
+              <mat-option value="ms">Ms.</mat-option>
+              <mat-option value="mx">Mx.</mat-option>
+              <mat-option value="prof">Prof.</mat-option>
+              <mat-option value="rev">Rev.</mat-option>
+            </mat-select>
+            @if (formGroup.get("prefix")?.hasError("required")) {
+              <mat-error>This field is required </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-md-5">
+          <mat-label class="fw-bold mb-1">FIRST NAME*</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input
+              matInput
+              placeholder="e.g. Mark"
+              type="text"
+              formControlName="firstName"
+            />
+            @if (formGroup.get("firstName")?.hasError("required")) {
+              <mat-error>This field is required </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-md-5">
+          <label class="fw-bold">LAST NAME*</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input
+              matInput
+              placeholder="e.g. Smith"
+              type="text"
+              formControlName="lastName"
+            />
+            @if (formGroup.get("lastName")?.hasError("required")) {
+              <mat-error>This field is required </mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-12 mb-4">
+        <mat-label class="fw-bold mb-1">JOB TITLE*</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            matInput
+            placeholder="Type here"
+            type="text"
+            formControlName="jobTitle"
+          />
+          @if (formGroup.get("jobTitle")?.hasError("required")) {
+            <mat-error>This field is required </mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <app-telephone-form-control formControlName="telephone" [isRequired]="true"></app-telephone-form-control>
+      <div class="row mb-4">
+        <app-input-with-confirm-control
+          valueLabel="EMAIL*"
+          confirmLabel="CONFIRM EMAIL*"
+          placeholder="sample@gmail.com"
+          formControlName="email"
+          [type]="'text'"
+          [required]="true"
+        >
+        </app-input-with-confirm-control>
+      </div>
+      <div class="row mb-4">
+        <app-input-with-confirm-control
+          valueLabel="PASSWORD*"
+          confirmLabel="CONFIRM PASSWORD*"
+          placeholder="Type here"
+          [type]="'password'"
+          formControlName="password"
+          [required]="true"
+        >
+        </app-input-with-confirm-control>
+        @if (formGroup.get("password")?.hasError("weak")) {
+          <mat-error class="alert alert-danger fw-bold"
+            >Password weak</mat-error
+          >
+        }
+        @if (formGroup.get("password")?.hasError("medium")) {
+          <mat-error class="alert alert-warning fw-bold"
+            >Password medium</mat-error
+          >
+        }
+        @if (formGroup.get("password")?.hasError("strong")) {
+          <mat-error class="alert alert-success fw-bold"
+            >Password strong</mat-error
+          >
+        }
+      </div>
+      <div class="col-12 mb-4">
+        <mat-label class="fw-bold mb-1">WHERE DID YOU HEAR ABOUT US*</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-select
+            placeholder="Please select"
+            formControlName="discoveryChannel"
+          >
+            <mat-option value="google">Google Search</mat-option>
+            <mat-option value="facebook">PRSE Trade Show</mat-option>
+            <mat-option value="linkedin">Plastics Live Trade Show</mat-option>
+            <mat-option value="instagram">Sustainability show</mat-option>
+            <mat-option value="email"> K-Show</mat-option>
+            <mat-option value="referral">Interplas</mat-option>
+            <mat-option value="event">Plast 2023</mat-option>
+            <mat-option value="print">Word of mouth</mat-option>
+          </mat-select>
+          @if (formGroup.get("discoveryChannel")?.hasError("required")) {
+            <mat-error>This field is required </mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <div class="col-12 mb-4">
+        <mat-label class="mb-0 fw-bold"> COMPANY INTEREST* </mat-label>
+        <mat-radio-group
+          formControlName="companyInterest"
+          class="d-flex justify-content-between col-8"
+        >
+          @for (item of companyInterests; track item) {
+            <mat-radio-button class="round-checkbox" [value]="item">
+              {{ item }}
+            </mat-radio-button>
+          }
+        </mat-radio-group>
+        @if (
+          formGroup.get("companyInterest")?.hasError("required") &&
+          formGroup.get("companyInterest")?.touched
+        ) {
+          <mat-error class="mt-0 mat-error">This field is required</mat-error>
+        }
+      </div>
+      <div class="col-12 mb-5">
+        <mat-label class="mb-0 fw-bold"
+          >MATERIALS ACCEPTED
+          <span class="fw-normal">(MULTIPLE SELECTION)*</span></mat-label
+        >
+        <div class="col-12">
+          <mat-checkbox 
+          class="tri-state-checkbox"
+            color="primary"
+            (click)="selectAllMaterial.set(!selectAllMaterial())"
+            >{{
+              selectAllMaterial() ? "Deselect All" : "Select All"
+            }}</mat-checkbox
+          >
+        </div>
+        <div class="row px-3 mb-4">
+          @for (item of materialsAccept; track $index; let i = $index) {
+            <div class="col-4">
+              <mat-checkbox
+                color="primary"
+                (change)="onSelectedMaterial($event, item)"
+                [checked]="materials.value.includes(item)"
+                >{{ item }}</mat-checkbox
+              >
+            </div>
+          }
+          @if (materials.invalid && (materials.touched || formGroup.touched)) {
+            <mat-error class="mat-error">This field is required</mat-error>
+          }
+        </div>
+        @if (showOtherMaterial()) {
+          <div class="col-12">
+            <mat-label class="fw-bold">OTHER MATERIAL</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+              <input
+                matInput
+                placeholder="Type here"
+                type="text"
+                formControlName="otherMaterial"
+              />
+              @if (formGroup.get("otherMaterial")?.hasError("required")) {
+                <mat-error>This field is required </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        }
+      </div>
+      <hr />
+      <div class="col-12 mt-3">
+        <mat-radio-group formControlName="acceptTerm">
+          <mat-radio-button color="primary"
+            >I accept the <span class="fw-bold">Terms & Condition</span> and
+            <span class="fw-bold">Privacy Policy </span> by join
+            WasteTrade</mat-radio-button
+          >
+          @if (
+            formGroup.get("acceptTerm")?.hasError("required") &&
+            formGroup.get("acceptTerm")?.touched
+          ) {
+            <mat-error class="mt-0 mat-error">
+              This field is required
+            </mat-error>
+          }
+        </mat-radio-group>
+        <button
+          type="submit"
+          color="primary"
+          class="text-white w-100 text-center mt-3 background-primary rounded border p-3"
+          (click)="send()"
+        >
+          CREATE ACCOUNT
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

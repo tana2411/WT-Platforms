@@ -20,13 +20,18 @@ $enable-dark-mode: false;
 @import 'bootstrap/scss/utilities';
 @import 'bootstrap/scss/utilities/api';
 
+
+@import 'styles/elements';
+@import 'styles/materials';
 @import 'styles/variables';
+@import 'styles/themes/border';
 
 @include mat.core();
 
 html,
 body {
   height: 100%;
+  width: 100%;
 }
 
 html {
@@ -44,4 +49,13 @@ body {
   margin: 0;
   font-family: Barlow, 'Helvetica Neue', sans-serif;
   color: --var(on-surface);
+}
+
+.auto-hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
