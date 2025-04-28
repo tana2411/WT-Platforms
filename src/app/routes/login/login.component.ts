@@ -7,18 +7,18 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { InputWithConfirmControlComponent } from '../../share/ui/input-with-confirm-control/input-with-confirm-control.component';
 import { AuthService } from '../../services/auth.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   imports: [
+    RouterLink,
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    InputWithConfirmControlComponent,
   ],
 })
 export class LoginComponent {
@@ -31,10 +31,6 @@ export class LoginComponent {
   });
 
   serverError = signal('');
-
-  get emailControl() {
-    return this.formGroup.get('email') as FormControl;
-  }
 
   constructor(private authService: AuthService) {
     this.setupForm();
@@ -50,13 +46,11 @@ export class LoginComponent {
   }
 
   send() {
-    console.log(this.formGroup.get('email')?.touched);
     this.formGroup.markAllAsTouched();
-    console.log(this.emailControl.touched);
 
     const { email, password } = this.formGroup.value;
 
-    if (!this.formGroup.valid || !email || !password) {
+    if (!this.formGroup.valid || !email?.trim() || !password) {
       return;
     }
 

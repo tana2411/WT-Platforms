@@ -1,18 +1,18 @@
 import { Routes } from '@angular/router';
 import { UnAuthLayoutComponent } from './layout/un-auth-layout/un-auth-layout.component';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
-import { LoginComponent } from './routes/login/login.component';
 import { TradingFlatformFormComponent } from './routes/registrations/trading-flatform-form/trading-flatform-form.component';
 import { HaulageFormComponent } from './routes/registrations/haulage-form/haulage-form.component';
+import { LoginPageComponent } from './routes/login-page/login-page.component';
 
 export const routes: Routes = [
     {
-        path: 'public',
+        path: '',
         component: UnAuthLayoutComponent,
         children: [
             {
                 path: 'login',
-                component: LoginComponent,
+                component: LoginPageComponent,
             },
             {
                 path: 'trading-platform-form',

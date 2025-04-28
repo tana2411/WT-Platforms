@@ -1,0 +1,8 @@
+.footer-wrapper {
+  padding-top: 20px;
+
+  @media screen and (min-width: 768px) {
+    padding-top: 65px;
+    padding-bottom: 40px;
+  }
+}
