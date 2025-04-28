@@ -4,6 +4,7 @@ import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component'
 import { LoginComponent } from './routes/logins/login/login.component';
 import { TradingFlatformFormComponent } from './routes/registrations/trading-flatform-form/trading-flatform-form.component';
 import { HaulageFormComponent } from './routes/registrations/haulage-form/haulage-form.component';
+import { AccountOnboardingStatusComponent } from './share/ui/account-onboarding-status/account-onboarding-status.component';
 
 export const routes: Routes = [
     {
@@ -21,6 +22,10 @@ export const routes: Routes = [
             {
                 path: 'haulage-form',
                 component: HaulageFormComponent,
+            },
+            {
+                path: 'account-onboarding',
+                component: AccountOnboardingStatusComponent,
             },
         ],
     },
