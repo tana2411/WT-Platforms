@@ -10,6 +10,18 @@
           "style": "scss"
         }
       },
+      "i18n": {
+        "locales": {
+          "en": {
+            "translation": "src/app/locale/messages.en.xlf",
+            "baseHref": "en/"
+          },
+          "fr": {
+            "translation": "src/app/locale/messages.fr.xlf",
+            "baseHref": "fr/"
+          }
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -73,7 +85,10 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n"
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "watse-trade:build"
+          }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",

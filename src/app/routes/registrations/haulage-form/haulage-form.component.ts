@@ -37,7 +37,7 @@ import { TelephoneFormControlComponent } from "../../../share/ui/telephone-form-
     MatInputModule,
     FileUploadComponent,
     TelephoneFormControlComponent
-],
+  ],
 })
 export class HaulageFormComponent implements OnInit {
   countryList = countries;
@@ -61,12 +61,12 @@ export class HaulageFormComponent implements OnInit {
   formGroup = new FormGroup({
     prefix: new FormControl<string | null>('Mr.', [Validators.required]),
     firstName: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
-    lastName: new FormControl<string | null>(null, [Validators.required , Validators.maxLength(50)]),
+    lastName: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
     jobTitle: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
     telephone: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(15)]),
     email: new FormControl<string | null>(null, [Validators.email, Validators.required]),
     password: new FormControl<string | null>(null, [
-       Validators.minLength(8),
+      Validators.minLength(8),
       Validators.required,
       Validators.min(8),
       PasswordStrength,
@@ -74,7 +74,7 @@ export class HaulageFormComponent implements OnInit {
 
     companyName: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(100)]),
     vatLocated: new FormControl<string | null>(null, [Validators.required]),
-    vatNumber: new FormControl<string | null>(null, [Validators.required,  Validators.maxLength(20)]),
+    vatNumber: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
     streetAddress: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(100)]),
     postCode: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
     city: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
@@ -82,7 +82,7 @@ export class HaulageFormComponent implements OnInit {
     countryRegion: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
     companyTelephone: new FormControl<string | null>(null, [
       Validators.required,
-       Validators.maxLength(15)
+      Validators.maxLength(15)
     ]),
     companyMobile: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(15)]),
 
@@ -126,7 +126,7 @@ export class HaulageFormComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   onAreaChange(event: MatRadioChange) {
     if (event.value === 'EU') {
@@ -147,7 +147,7 @@ export class HaulageFormComponent implements OnInit {
     return this.formGroup.get('containerTypes') as FormArray;
   }
 
-  
+
 
   onSelectedItem(event: MatCheckboxChange, item: string, formArray: FormArray) {
     if (event.checked) {
@@ -166,6 +166,6 @@ export class HaulageFormComponent implements OnInit {
   send() {
     this.formGroup.markAllAsTouched();
     console.log(this.formGroup);
-    
+
   }
 }
