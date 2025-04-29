@@ -26,7 +26,11 @@
         </span>
       </div>
 
-      <div class="border border-1 background-primary position-absolute" style="height: 5px; top: 12px; left: 50%; right: 50px;"></div>
+      <div class="border border-1 position-absolute"
+        [class.background-primary]="type == 'complete'"
+        [class.background-dark]="type == 'pending'"
+        style="height: 5px; top: 12px; left: 50%; right: 50px;">
+      </div>
 
       <div class="d-flex flex-column align-items-center" style="z-index: 1;">
         <div class="rounded-circle badge d-flex justify-content-center align-items-center" 
