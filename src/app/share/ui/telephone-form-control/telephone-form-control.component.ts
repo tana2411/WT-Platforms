@@ -10,6 +10,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-telephone-form-control',
@@ -19,7 +20,7 @@ import { MatInputModule } from '@angular/material/input';
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useClass: forwardRef(() => TelephoneFormControlComponent),
+      useExisting: forwardRef(() => TelephoneFormControlComponent),
       multi: true,
     },
   ],
@@ -33,24 +34,23 @@ export class TelephoneFormControlComponent
   countryCodeControl = new FormControl<any | null>(null);
   telephoneControl = new FormControl<string | null>(null);
 
-  onChange: (value: any) => void = () => {};
-  onTouched: () => void = () => {};
+  onChange: ((value: any) => void) | undefined;
+  onTouched: (() => void) | undefined;
 
   constructor() {
-    this.telephoneControl.valueChanges.subscribe((value) => {
-      const countryCode = this.countryCodeControl.value?.code;
-      if (countryCode) {
-        const country = this.countryList.find(
-          (c) => c.normalizedCode === countryCode,
-        );
-        if (country && country.inputMasking && value) {
-          this.telephoneControl.setValue(
-            this.applyMask(value, country.inputMasking),
-            { emitEvent: false },
-          );
-        }
+    this.telephoneControl.valueChanges.pipe(
+      takeUntilDestroyed()
+    ).subscribe(() => {
+      if (this.onChange) {
+        this.onChange(this.getValue());
       }
-      this.onChange(this.getValue());
+    });
+    this.countryCodeControl.valueChanges.pipe(
+      takeUntilDestroyed()
+    ).subscribe(() => {
+      if (this.onChange) {
+        this.onChange(this.getValue());
+      }
     });
   }
 
@@ -77,39 +77,11 @@ export class TelephoneFormControlComponent
   }
 
   getValue() {
-    const countryCode = this.countryCodeControl.value;
+    const country = this.countryCodeControl.value;
     const telephone = this.telephoneControl.value;
-    if (!countryCode || !telephone) {
+    if (!country || !telephone) {
       return null;
     }
-    const country = this.countryList.find(
-      (c) => c.normalizedCode === countryCode,
-    );
-    if (country && country.inputMasking) {
-      const formattedTelephone = this.applyMask(
-        telephone,
-        country.inputMasking,
-      );
-      return `${country.code} ${formattedTelephone}`;
-    }
-    return `${countryCode} ${telephone}`;
-  }
-
-  applyMask(telephone: string, mask: string): string {
-    let formattedTelephone = '';
-    let telephoneIndex = 0;
-    for (let i = 0; i < mask.length; i++) {
-      if (mask[i] === '9') {
-        if (telephoneIndex < telephone.length) {
-          formattedTelephone += telephone[telephoneIndex++];
-        } else {
-          break;
-        }
-      } else {
-        formattedTelephone += mask[i];
-      }
-    }
-
-    return formattedTelephone;
+    return `${country.code} ${telephone}`;
   }
 }

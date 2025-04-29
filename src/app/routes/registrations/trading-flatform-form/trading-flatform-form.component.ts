@@ -1,4 +1,4 @@
-import { Component, effect, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
 import {
   MatCheckboxChange,
   MatCheckboxModule,
@@ -20,6 +20,7 @@ import {
 import { InputWithConfirmControlComponent } from '../../../share/ui/input-with-confirm-control/input-with-confirm-control.component';
 import { PasswordStrength } from '../../../share/validators/password-strength';
 import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-control/telephone-form-control.component';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-trading-flatform-form',
   templateUrl: './trading-flatform-form.component.html',
@@ -81,6 +82,7 @@ export class TradingFlatformFormComponent implements OnInit {
 
   selectAllMaterial = signal(false);
   showOtherMaterial = signal(false);
+  router = inject(Router);
 
   constructor() {
     effect(() => {
@@ -96,7 +98,12 @@ export class TradingFlatformFormComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.formGroup.get('telephone')?.valueChanges.subscribe((value) => {
+      console.log(value)
+    }
+    );
+  }
 
   get materials(): FormArray {
     return this.formGroup.get('materials') as FormArray;
@@ -122,10 +129,12 @@ export class TradingFlatformFormComponent implements OnInit {
       }
     }
     this.materials.updateValueAndValidity();
+    this.formGroup.updateValueAndValidity();
   }
 
   send() {
     this.formGroup.markAllAsTouched();
-    console.log(this.formGroup.value);
+    console.log(this.formGroup);
+    this.router.navigate(['/public/account-pending-result']);
   }
 }

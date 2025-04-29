@@ -166,6 +166,7 @@ export class HaulageFormComponent implements OnInit {
 
   send() {
     this.formGroup.markAllAsTouched();
-      this.router.navigate(['/account-onboarding'])
+    console.log(this.formGroup);
+    this.router.navigate(['/public/account-pending-result']);
   }
 }

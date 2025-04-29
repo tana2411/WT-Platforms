@@ -43,6 +43,9 @@ html {
     typography: Barlow,
     density: 0,
   ));
+
+  --mdc-outlined-button-label-text-color: #1D1D1B;
+  --mdc-outlined-button-outline-width: 2px;
 }
 
 body {
