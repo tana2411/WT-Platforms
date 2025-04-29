@@ -24,10 +24,6 @@ export class CompanyInformationSectionComponent implements OnInit {
     countryRegion: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
   })
   constructor() {
-    this.formGroup.valueChanges.subscribe(() => {
-      console.log(this.formGroup);
-      
-    })
    }
 
   ngOnInit() {
@@ -35,6 +31,7 @@ export class CompanyInformationSectionComponent implements OnInit {
 
   submit() {
     this.formGroup.markAllAsTouched()
+    console.log(this.formGroup)
   }
 
 }
