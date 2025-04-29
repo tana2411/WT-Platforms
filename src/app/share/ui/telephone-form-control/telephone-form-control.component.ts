@@ -30,7 +30,7 @@ export class TelephoneFormControlComponent
   @Input() isRequired: boolean = false;
   countryList = countries;
 
-  countryCodeControl = new FormControl<string | null>(null);
+  countryCodeControl = new FormControl<any | null>(null);
   telephoneControl = new FormControl<string | null>(null);
 
   onChange: (value: any) => void = () => {};
@@ -38,7 +38,7 @@ export class TelephoneFormControlComponent
 
   constructor() {
     this.telephoneControl.valueChanges.subscribe((value) => {
-      const countryCode = this.countryCodeControl.value;
+      const countryCode = this.countryCodeControl.value?.code;
       if (countryCode) {
         const country = this.countryList.find(
           (c) => c.normalizedCode === countryCode,

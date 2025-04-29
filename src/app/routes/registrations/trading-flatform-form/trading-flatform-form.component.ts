@@ -76,7 +76,7 @@ export class TradingFlatformFormComponent implements OnInit {
       Validators.required,
     ]),
     materials: new FormArray([], [Validators.required]),
-    acceptTerm: new FormControl<boolean | null>(null, [Validators.required]),
+    acceptTerm: new FormControl<boolean | null>(null, [Validators.requiredTrue]),
   });
 
   selectAllMaterial = signal(false);

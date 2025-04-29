@@ -3,9 +3,14 @@
     <mat-label class="fw-bold mb-1">TELEPHONE</mat-label>
     <mat-form-field appearance="outline" class="w-100">
       <mat-select [formControl]="countryCodeControl">
+        <mat-select-trigger>
+          @if (countryCodeControl.value; as selectedItem) {
+            <div><i class="fi {{ selectedItem.flagClass }}"></i> {{ selectedItem.code }}</div>
+          }
+        </mat-select-trigger>
         @for (item of countryList; track $index) {
-          <mat-option [value]="item.isoCode"
-            >{{ item.isoCode }} - {{ item.name }}</mat-option
+          <mat-option [value]="item"
+            ><i class="fi {{ item.flagClass }}"></i> {{ item.code }}</mat-option
           >
         }
       </mat-select>

@@ -24,7 +24,7 @@ $enable-dark-mode: false;
 @import 'styles/elements';
 @import 'styles/materials';
 @import 'styles/variables';
-@import 'styles/themes/border';
+@import 'styles/themes';
 
 @include mat.core();
 
