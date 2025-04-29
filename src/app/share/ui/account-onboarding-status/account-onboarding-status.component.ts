@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   imports: [MatIconModule],
 })
 export class AccountOnboardingStatusComponent implements OnInit {
-  @Input() type: 'pending' | 'complete' = 'complete';
+  @Input() type: 'pending' | 'completed' | 'completing' = 'pending';
   @Input() showStatusOnly = false;
 
   router = inject(Router)

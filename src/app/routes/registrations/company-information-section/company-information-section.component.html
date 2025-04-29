@@ -1,0 +1,192 @@
+<app-account-onboarding-status
+  [showStatusOnly]="true"
+  [type]="'completing'"
+></app-account-onboarding-status>
+<div class="col-md-9 mx-auto d-flex justify-content-between g-3 my-5">
+  <div class="col-4">
+    <div>
+      <div class="d-flex justify-content-between">
+        <div class="w-75 mx-auto fw-bold" i18n>COMPANY INFORMATION</div>
+        <mat-icon>add</mat-icon>
+      </div>
+      <hr />
+      <div class="d-flex justify-content-between">
+        <div class="w-75 mx-auto" i18n>COMPANY DOCUMENT</div>
+        <mat-icon>remove</mat-icon>
+      </div>
+      <hr />
+      <div class="d-flex justify-content-between">
+        <div class="w-75 mx-auto" i18n>SITE LOCATION</div>
+        <mat-icon>remove</mat-icon>
+      </div>
+      <hr />
+      <div class="d-flex justify-content-between">
+        <div class="w-75 mx-auto" i18n>REVIEW</div>
+        <mat-icon>remove</mat-icon>
+      </div>
+    </div>
+  </div>
+  <div class="col-7">
+    <form [formGroup]="formGroup">
+      <div class="border border-dark boder-2 p-5 border-radius">
+        <h3 class="text-center my-2" i18n>Company Information</h3>
+        <div
+          class="px-2 py-3 background-on-primary d-flex align-items-center mb-4"
+        >
+          <div class="w-25 text-center">
+            <mat-icon class="material-icons-outlined primary">error_outline</mat-icon>
+          </div>
+          <div i18n class="fw-500 fs-16">
+            Ensure all details are correct, error may delay verification
+            (*Required field).
+          </div>
+        </div>
+        <div class="col-12 mb-4">
+          <mat-label class="fw-bold mb-1" i18n>COMPANY TYPE*</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input
+              matInput
+              placeholder="Type here"
+              type="text"
+              formControlName="companyType"
+            />
+            @if (formGroup.get("companyType")?.hasError("required")) {
+              <mat-error i18n>This field is required </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-12 mb-4">
+          <mat-label class="mb-0 fw-bold" i18n>
+            COULD YOU PLEASE CONFIRM THE COUNTRY WHERE YOUR VAT REGISTRATION IS
+            LOCATED*
+          </mat-label>
+          <mat-radio-group
+            formControlName="vatLocated"
+            class="d-flex justify-content-between radio-mat-error"
+            name="vatLocated"
+          >
+            <mat-radio-button class="round-checkbox" value="EU" i18n
+              >EU (European Union)
+            </mat-radio-button>
+            <mat-radio-button class="round-checkbox" value="UK" i18n>
+              United Kingdom
+            </mat-radio-button>
+            <mat-radio-button class="round-checkbox" value="EU" i18n>
+              Other
+            </mat-radio-button>
+          </mat-radio-group>
+          @if (
+            formGroup.get("vatLocated")?.hasError("required") &&
+            (formGroup.get("vatLocated")?.touched ||
+              formGroup.get("vatLocated")?.dirty)
+          ) {
+            <mat-error class="mt-0 mat-error" i18n>
+              This field is required
+            </mat-error>
+          }
+        </div>
+        <div class="col-md-12 mb-4">
+          <label class="fw-bold" i18n>STREET ADDRESS*</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input
+              matInput
+              placeholder="Type here"
+              type="text"
+              formControlName="streetAddress"
+            />
+            @if (formGroup.get("streetAddress")?.hasError("required")) {
+              <mat-error i18n>This field is required </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <mat-label class="fw-bold mb-1" i18n>POST CODE*</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+              <input
+                matInput
+                placeholder="Type here"
+                type="text"
+                formControlName="postCode"
+              />
+              @if (formGroup.get("postCode")?.hasError("required")) {
+                <mat-error i18n>This field is required </mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-label class="fw-bold mb-1" i18n>CITY*</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+              <input
+                matInput
+                placeholder="Type here"
+                type="text"
+                formControlName="city"
+              />
+              @if (formGroup.get("city")?.hasError("required")) {
+                <mat-error i18n>This field is required </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <mat-label class="fw-bold mb-1" i18n>COUNTRY*</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+              <input
+                matInput
+                placeholder="Type here"
+                type="text"
+                formControlName="country"
+              />
+              @if (formGroup.get("country")?.hasError("required")) {
+                <mat-error i18n>This field is required </mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-label class="fw-bold mb-1" i18n
+              >COUNTRY / STATE / REGION</mat-label
+            >
+            <mat-form-field appearance="outline" class="w-100">
+              <input
+                matInput
+                placeholder="Type here"
+                type="text"
+                formControlName="countryRegion"
+              />
+              @if (formGroup.get("countryRegion")?.hasError("required")) {
+                <mat-error i18n>This field is required </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-between">
+        <div class="col-5">
+          <button
+            mat-stocked-button
+            class="w-100 text-center bg-white rounded border p-2 primary fw-bold"
+            i18n
+          >
+            BACK
+          </button>
+        </div>
+        <div class="col-5">
+          <button
+            [disabled]="formGroup.invalid"
+            type="submit"
+            [class.background-primary]="formGroup.valid"
+            [class.text-white]="formGroup.valid"
+            mat-flat-button
+            class="w-100 p-2 fw-bold rounded"
+            i18n
+          >
+            SAVE AND CONTINUE
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

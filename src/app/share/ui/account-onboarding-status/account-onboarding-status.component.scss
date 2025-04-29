@@ -17,6 +17,12 @@
     color: $white;
 }
 
+.success-outline-badge {
+    background-color: $white;
+    border: 1px solid $primary;
+    color: $primary;
+}
+
 .error-badge {
     background-color: $error;
     color: $white;

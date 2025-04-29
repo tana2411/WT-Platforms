@@ -4,8 +4,16 @@
   background-color: $primary;
 }
 
+.background-on-primary {
+  background-color: $on-primary;
+}
+
 .background-error {
   background-color: $error;
+}
+
+.background-info {
+  background-color: $info;
 }
 
 .background-dark {

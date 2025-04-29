@@ -21,6 +21,8 @@ import { InputWithConfirmControlComponent } from '../../../share/ui/input-with-c
 import { PasswordStrength } from '../../../share/validators/password-strength';
 import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-control/telephone-form-control.component';
 import { Router } from '@angular/router';
+import { RegistrationsService } from 'app/services/registrations.service';
+import { catchError, finalize, of } from 'rxjs';
 @Component({
   selector: 'app-trading-flatform-form',
   templateUrl: './trading-flatform-form.component.html',
@@ -62,27 +64,29 @@ export class TradingFlatformFormComponent implements OnInit {
     firstName: new FormControl<string | null>(null, [Validators.required]),
     lastName: new FormControl<string | null>(null, [Validators.required]),
     jobTitle: new FormControl<string | null>(null, [Validators.required]),
-    telephone: new FormControl<string | null>(null, [Validators.required]),
+    phoneNumber: new FormControl<string | null>(null, [Validators.required]),
     email: new FormControl<string | null>(null, [Validators.required]),
     password: new FormControl<string | null>(null, [
       Validators.required,
       Validators.min(8),
       PasswordStrength,
     ]),
-    discoveryChannel: new FormControl<string | null>(null, [
+    whereDidYouHearAboutUs: new FormControl<string | null>(null, [
       Validators.required,
     ]),
     otherMaterial: new FormControl<string | null>(null),
     companyInterest: new FormControl<string | null>(null, [
       Validators.required,
     ]),
-    materials: new FormArray([], [Validators.required]),
+    favoriteMaterials: new FormArray([], [Validators.required]),
     acceptTerm: new FormControl<boolean | null>(null, [Validators.requiredTrue]),
   });
 
   selectAllMaterial = signal(false);
   showOtherMaterial = signal(false);
+  submitting = signal(false);
   router = inject(Router);
+  service = inject(RegistrationsService);
 
   constructor() {
     effect(() => {
@@ -99,14 +103,10 @@ export class TradingFlatformFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup.get('telephone')?.valueChanges.subscribe((value) => {
-      console.log(value)
-    }
-    );
   }
 
   get materials(): FormArray {
-    return this.formGroup.get('materials') as FormArray;
+    return this.formGroup.get('favoriteMaterials') as FormArray;
   }
 
   onSelectedMaterial(event: MatCheckboxChange, item: string) {
@@ -133,8 +133,53 @@ export class TradingFlatformFormComponent implements OnInit {
   }
 
   send() {
+    if (this.formGroup.invalid) {
+      return;
+    }
+
     this.formGroup.markAllAsTouched();
+    const {
+      favoriteMaterials,
+      companyInterest,
+      email,
+      password,
+      firstName,
+      lastName,
+      prefix,
+      jobTitle,
+      whereDidYouHearAboutUs,
+      phoneNumber,
+    } = this.formGroup.value;
     console.log(this.formGroup);
-    this.router.navigate(['/public/account-pending-result']);
+    const payload: any = {
+      email,
+      password,
+      firstName,
+      lastName,
+      prefix,
+      jobTitle,
+      phoneNumber,
+      whereDidYouHearAboutUs,
+      companyName: '',
+      companyInterest: companyInterest === 'Both' ? ['Buyer', 'Seller'] : [companyInterest],
+      favoriteMaterials
+    };
+
+    console.log(payload);
+    this.submitting.set(true);
+
+    this.service.registerTrading(payload).pipe(
+      finalize(() => {
+        this.submitting.set(false)
+      }),
+      catchError((err) => {
+        console.error(err);
+        return of(null);
+      }),
+    ).subscribe(result => {
+      if (result) {
+        this.router.navigate(['/public/account-pending-result']);
+      }
+    });
   }
 }
