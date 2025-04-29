@@ -1,9 +1,13 @@
 @import '../variables';
 
 .background-primary {
-    background-color: $primary;
-  }
+  background-color: $primary;
+}
 
-  .background-error {
-    background-color: $on-error;
-  }
+.background-error {
+  background-color: $error;
+}
+
+.background-on-error {
+  background-color: $on-error;
+}

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 
@@ -8,10 +8,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./account-onboarding-status.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule],
-  standalone: true
 })
 export class AccountOnboardingStatusComponent implements OnInit {
-  type: 'pending' | 'complete' = 'complete'
+  @Input() type: 'pending' | 'complete' = 'complete';
+  @Input() showStatusOnly = false;
 
   router = inject(Router)
   constructor() { }
