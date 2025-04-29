@@ -1,0 +1,24 @@
+@import "variables";
+
+.badge {
+    width: 30px; 
+    height: 30px;
+    font-weight: bold;
+}
+
+.pending-badge {
+    background-color: $white;
+    border: 1px solid $black;
+    color: $black;
+}
+
+.success-badge {
+    background-color: $primary;
+    color: $white;
+}
+
+.error-badge {
+    background-color: $error;
+    color: $white;
+}
+

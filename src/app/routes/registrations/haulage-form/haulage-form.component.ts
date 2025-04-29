@@ -1,5 +1,5 @@
 import { countries } from './../../../statics/country-data';
-import { Component, effect, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -23,6 +23,7 @@ import { InputWithConfirmControlComponent } from '../../../share/ui/input-with-c
 import { MatInputModule } from '@angular/material/input';
 import { FileUploadComponent } from '../../../share/ui/file-upload/file-upload.component';
 import { TelephoneFormControlComponent } from "../../../share/ui/telephone-form-control/telephone-form-control.component";
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-haulage-form',
   templateUrl: './haulage-form.component.html',
@@ -102,6 +103,8 @@ export class HaulageFormComponent implements OnInit {
   selectAllCountry = signal(false);
   selectAllContainerTypes = signal(false);
 
+  router = inject(Router)
+
   constructor() {
     effect(() => {
       if (this.selectAllContainerTypes()) {
@@ -147,8 +150,6 @@ export class HaulageFormComponent implements OnInit {
     return this.formGroup.get('containerTypes') as FormArray;
   }
 
-
-
   onSelectedItem(event: MatCheckboxChange, item: string, formArray: FormArray) {
     if (event.checked) {
       formArray.push(new FormControl(item));
@@ -166,6 +167,6 @@ export class HaulageFormComponent implements OnInit {
   send() {
     this.formGroup.markAllAsTouched();
     console.log(this.formGroup);
-
+    this.router.navigate(['/public/account-pending-result']);
   }
 }

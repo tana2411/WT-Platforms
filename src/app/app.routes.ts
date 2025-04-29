@@ -4,6 +4,8 @@ import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component'
 import { LoginComponent } from './routes/logins/login/login.component';
 import { TradingFlatformFormComponent } from './routes/registrations/trading-flatform-form/trading-flatform-form.component';
 import { HaulageFormComponent } from './routes/registrations/haulage-form/haulage-form.component';
+import { RegistrationPendingResultComponent } from './routes/registrations/registration-pending-result/registration-pending-result.component';
+import { RegistrationCompleteResultComponent } from './routes/registrations/registration-complete-result/registration-complete-result.component';
 
 export const routes: Routes = [
     {
@@ -21,6 +23,14 @@ export const routes: Routes = [
             {
                 path: 'haulage-form',
                 component: HaulageFormComponent,
+            },
+            {
+                path: 'account-pending-result',
+                component: RegistrationPendingResultComponent,
+            },
+            {
+                path: 'account-complete-result',
+                component: RegistrationCompleteResultComponent,
             },
         ],
     },

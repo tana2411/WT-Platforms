@@ -211,10 +211,14 @@
             This field is required
           </mat-error>
         }
+      </div>
+      <div class="col-12 mt-3">
         <button
           type="submit"
           color="primary"
-          class="text-white w-100 text-center mt-3 background-primary rounded border p-3"
+          mat-flat-button
+          class="w-100 big-btn"
+          [disabled]="formGroup.invalid"
           (click)="send()"
           i18n
         >
