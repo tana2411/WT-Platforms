@@ -12,13 +12,14 @@
       
       <div class="d-flex flex-column align-items-center" style="z-index: 1;">
         <div class="rounded-circle badge d-flex justify-content-center align-items-center" 
-          [class.success-badge]="type == 'complete'" 
+          [class.success-badge]="type == 'completed'" 
+          [class.success-outline-badge]="type == 'completing'" 
           [class.error-badge]="type == 'pending'" 
         >
           2
         </div>
         <span class="mt-2 text-center fw-bold" 
-          [class.primary]="type == 'complete'" 
+          [class.primary]="type == 'completed' || type === 'completing'" 
           [class.error]="type == 'pending'" 
           i18n
         >
@@ -27,19 +28,19 @@
       </div>
 
       <div class="border border-1 position-absolute"
-        [class.background-primary]="type == 'complete'"
-        [class.background-dark]="type == 'pending'"
+        [class.background-primary]="type == 'completed'"
+        [class.background-dark]="type == 'pending' || type === 'completing'"
         style="height: 5px; top: 12px; left: 50%; right: 50px;">
       </div>
 
       <div class="d-flex flex-column align-items-center" style="z-index: 1;">
         <div class="rounded-circle badge d-flex justify-content-center align-items-center" 
-          [class.success-badge]="type == 'complete'" 
-          [class.pending-badge]="type == 'pending'" 
+          [class.success-badge]="type == 'completed'" 
+          [class.pending-badge]="type == 'pending' || type === 'completing'" 
         >
           3
         </div>
-        <span class="mt-2 text-center fw-bold" [class.primary]="type == 'complete'" i18n>PENDING REVIEW</span>
+        <span class="mt-2 text-center fw-bold" [class.primary]="type == 'completed'" i18n>PENDING REVIEW</span>
       </div>
     </div>
   </div>
