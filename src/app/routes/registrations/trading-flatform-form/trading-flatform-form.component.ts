@@ -23,6 +23,7 @@ import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-
 import { Router } from '@angular/router';
 import { RegistrationsService } from 'app/services/registrations.service';
 import { catchError, finalize, of } from 'rxjs';
+import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 @Component({
   selector: 'app-trading-flatform-form',
   templateUrl: './trading-flatform-form.component.html',
@@ -37,6 +38,7 @@ import { catchError, finalize, of } from 'rxjs';
     ReactiveFormsModule,
     InputWithConfirmControlComponent,
     TelephoneFormControlComponent,
+    UnAuthLayoutComponent,
   ],
 })
 export class TradingFlatformFormComponent implements OnInit {

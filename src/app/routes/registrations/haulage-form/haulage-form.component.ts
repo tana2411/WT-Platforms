@@ -26,6 +26,7 @@ import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-
 import { Router } from '@angular/router';
 import { RegistrationsService } from 'app/services/registrations.service';
 import { catchError, finalize, of } from 'rxjs';
+import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 @Component({
   selector: 'app-haulage-form',
   templateUrl: './haulage-form.component.html',
@@ -40,6 +41,7 @@ import { catchError, finalize, of } from 'rxjs';
     MatInputModule,
     FileUploadComponent,
     TelephoneFormControlComponent,
+    UnAuthLayoutComponent
   ],
 })
 export class HaulageFormComponent implements OnInit {
@@ -144,7 +146,7 @@ export class HaulageFormComponent implements OnInit {
   showEUcountry = signal(false);
   selectAllCountry = signal(false);
   selectAllContainerTypes = signal(false);
-  fileError = signal<string | null>(null);
+  fileError = signal<string | null | any>(null);
   selectedFile = signal<File | null>(null);
   submitting = signal<boolean>(false)
 
@@ -210,7 +212,7 @@ export class HaulageFormComponent implements OnInit {
     formArray.updateValueAndValidity();
   }
 
-  handleFileReady(file: File | null) {
+  handleFileReady(file: File | null | any) {
     if (file) {
       this.fileError.set(null);
       this.selectedFile.set(file);

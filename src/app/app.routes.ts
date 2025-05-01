@@ -10,51 +10,28 @@ import { CompanyInformationSectionComponent } from './routes/registrations/compa
 
 export const routes: Routes = [
     {
-        path: 'public',
-        component: UnAuthLayoutComponent,
-        children: [
-            {
-                path: 'login',
-                component: LoginComponent,
-            },
-            {
-                path: 'trading-platform-form',
-                component: TradingFlatformFormComponent,
-            },
-            {
-                path: 'haulage-form',
-                component: HaulageFormComponent,
-            },
-            {
-                path: 'account-pending-result',
-                component: RegistrationPendingResultComponent,
-            },
-            {
-                path: 'account-complete-result',
-                component: RegistrationCompleteResultComponent,
-            },
-            {
-                path: 'company-information',
-                component: CompanyInformationSectionComponent,
-            },
-        ],
+        path: 'login',
+        component: LoginComponent,
     },
     {
-        path: '',
-        // canActivate: [AuthGuard],
-        component: AuthLayoutComponent,
-        children: [
-            // {
-            //     path: 'dashboard',
-            //     component: DashboardComponent,
-            // },
-            // {
-            //     path: 'codeshare-rbd-map',
-            //     loadChildren: () =>
-            //         import('./features/codeshare-rbd-map-bundle.module').then((m) => m.CodeshareRbdMapBundleModule),
-            // },
-            { path: '**', pathMatch: 'full', redirectTo: 'dashboard' },
-        ],
+        path: 'create-account',
+        component: TradingFlatformFormComponent,
     },
-    { path: '**', pathMatch: 'full', redirectTo: 'public/login' },
+    {
+        path: 'create-haulier-account',
+        component: HaulageFormComponent,
+    },
+    {
+        path: 'account-pending-result',
+        component: RegistrationPendingResultComponent,
+    },
+    {
+        path: 'account-complete-result',
+        component: RegistrationCompleteResultComponent,
+    },
+    {
+        path: 'company-information',
+        component: CompanyInformationSectionComponent,
+    },
+    { path: '**', pathMatch: 'full', redirectTo: 'login' },
 ];
