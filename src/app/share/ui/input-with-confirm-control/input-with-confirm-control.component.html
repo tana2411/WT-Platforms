@@ -21,6 +21,12 @@
       ) {
         <mat-error> This field is required </mat-error>
       }
+      @if (
+        valueControl.hasError("email") &&
+        (valueControl.dirty || valueControl.touched)
+      ) {
+        <mat-error> Invalid email format</mat-error>
+      }
     </mat-form-field>
   </div>
 

@@ -1,3 +1,5 @@
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { countries } from './../../../statics/country-data';
 import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import {
@@ -22,8 +24,14 @@ import { PasswordStrength } from '../../../share/validators/password-strength';
 import { InputWithConfirmControlComponent } from '../../../share/ui/input-with-confirm-control/input-with-confirm-control.component';
 import { MatInputModule } from '@angular/material/input';
 import { FileUploadComponent } from '../../../share/ui/file-upload/file-upload.component';
-import { TelephoneFormControlComponent } from "../../../share/ui/telephone-form-control/telephone-form-control.component";
+import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-control/telephone-form-control.component';
 import { Router } from '@angular/router';
+import { RegistrationsService } from 'app/services/registrations.service';
+import { catchError, debounceTime, finalize, of } from 'rxjs';
+import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-haulage-form',
   templateUrl: './haulage-form.component.html',
@@ -37,8 +45,12 @@ import { Router } from '@angular/router';
     InputWithConfirmControlComponent,
     MatInputModule,
     FileUploadComponent,
-    TelephoneFormControlComponent
+    TelephoneFormControlComponent,
+    UnAuthLayoutComponent,
+    MatDatepickerModule,
+    MatButtonModule,
   ],
+  providers: [provideNativeDateAdapter()],
 })
 export class HaulageFormComponent implements OnInit {
   countryList = countries;
@@ -61,11 +73,26 @@ export class HaulageFormComponent implements OnInit {
 
   formGroup = new FormGroup({
     prefix: new FormControl<string | null>('Mr.', [Validators.required]),
-    firstName: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
-    lastName: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
-    jobTitle: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
-    telephone: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(15)]),
-    email: new FormControl<string | null>(null, [Validators.email, Validators.required]),
+    firstName: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(50),
+    ]),
+    lastName: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(50),
+    ]),
+    jobTitle: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(50),
+    ]),
+    phoneNumberUser: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(15),
+    ]),
+    email: new FormControl<string | null>(null, [
+      Validators.email,
+      Validators.required,
+    ]),
     password: new FormControl<string | null>(null, [
       Validators.minLength(8),
       Validators.required,
@@ -73,37 +100,68 @@ export class HaulageFormComponent implements OnInit {
       PasswordStrength,
     ]),
 
-    companyName: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(100)]),
-    vatLocated: new FormControl<string | null>(null, [Validators.required]),
-    vatNumber: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
-    streetAddress: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(100)]),
-    postCode: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
-    city: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
-    countryCode: new FormControl<string | null>(null, [Validators.required]),
-    countryRegion: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
-    companyTelephone: new FormControl<string | null>(null, [
+    companyName: new FormControl<string | null>(null, [
       Validators.required,
-      Validators.maxLength(15)
+      Validators.maxLength(100),
     ]),
-    companyMobile: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(15)]),
+    vatRegistrationCountry: new FormControl<string | null>(null, [
+      Validators.required,
+    ]),
+    vatNumber: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(20),
+    ]),
+    addressLine1: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
+    postalCode: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(20),
+    ]),
+    city: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(50),
+    ]),
+    country: new FormControl<string | null>(null, [Validators.required]),
+    stateProvince: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(50),
+    ]),
+    phoneNumberCompany: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(15),
+    ]),
+    mobileNumberCompany: new FormControl<string | null>(null, [
+      Validators.maxLength(15),
+    ]),
 
-    fleetStyle: new FormControl<string | null>(null, [Validators.required]),
+    fleetType: new FormControl<string | null>(null, [Validators.required]),
     areasCovered: new FormControl<string | null>(null, [Validators.required]),
     selectedEuCountries: new FormArray([]),
     containerTypes: new FormArray([], [Validators.required]),
     wasteLicence: new FormControl<boolean | null>(null, [Validators.required]),
-    discoveryChannel: new FormControl<string | null>(null, [
+    expiryDate: new FormControl<Date | null>(null, [Validators.required]),
+    whereDidYouHearAboutUs: new FormControl<string | null>(null, [
       Validators.required,
     ]),
 
-    acceptTerm: new FormControl<boolean | null>(null, [Validators.requiredTrue])
+    acceptTerm: new FormControl<boolean | null>(null, [
+      Validators.requiredTrue,
+    ]),
   });
 
   showEUcountry = signal(false);
   selectAllCountry = signal(false);
   selectAllContainerTypes = signal(false);
+  fileError = signal<string | null | any>(null);
+  expiryDateError = signal<string | null>(null);
+  selectedFile = signal<File | null>(null);
+  submitting = signal<boolean>(false);
 
-  router = inject(Router)
+  router = inject(Router);
+  registrationService = inject(RegistrationsService);
+  snackBar = inject(MatSnackBar);
 
   constructor() {
     effect(() => {
@@ -127,9 +185,32 @@ export class HaulageFormComponent implements OnInit {
         this.selectedEuCountries.clear();
       }
     });
+
+    this.formGroup
+      ?.valueChanges.pipe(takeUntilDestroyed(), debounceTime(300))
+      .subscribe((value) => {
+        const {expiryDate} =value
+        const now = new Date();
+        if(!value) return
+   
+        if (expiryDate) {
+          if (expiryDate < now) {
+            this.expiryDateError.set('Licence expired');
+          } else {
+            const diffInTime = expiryDate.getTime() - now.getTime();
+            const diffInDays = Math.ceil(diffInTime / (1000 * 3600 * 24));
+
+            if (diffInDays < 7) {
+              this.expiryDateError.set('Licence is about to expire soon');
+            } else {
+              this.expiryDateError.set(null);
+            }
+          }
+        }
+      });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   onAreaChange(event: MatRadioChange) {
     if (event.value === 'EU') {
@@ -164,9 +245,56 @@ export class HaulageFormComponent implements OnInit {
     formArray.updateValueAndValidity();
   }
 
+  handleFileReady(file: File | null | any) {
+    if (file) {
+      this.fileError.set(null);
+      this.selectedFile.set(file);
+      console.log(file);
+      
+    }
+  }
+
   send() {
     this.formGroup.markAllAsTouched();
-    console.log(this.formGroup);
-    this.router.navigate(['/public/account-pending-result']);
+    const {
+      selectedEuCountries,
+      wasteLicence,
+      acceptTerm,
+      expiryDate,
+      ...value
+    } = this.formGroup.value;
+
+    if (this.selectedFile()) {
+      const payload: any = {
+        ...value,
+        fleetType: [value.fleetType],
+        areasCovered: [value.areasCovered],
+        documentType: wasteLicence ? 'waste_carrier' : null,
+        documentName: this.selectedFile()?.name,
+        documentUrl: 'https://example.com/document.pdf',
+      };
+      console.log(payload);
+      this.submitting.set(true);
+      this.registrationService
+        .registerHaulage(payload)
+        .pipe(
+          finalize(() => {
+            this.submitting.set(false);
+          }),
+          catchError((err) => {
+            this.snackBar.open(
+              'An error occur while execute request, please try again.',
+              'Ok',
+              { duration: 3000 },
+            );
+            return of(null);
+          }),
+        )
+        .subscribe((result) => {
+          if (result) {
+            this.router.navigate(['/public/account-pending-result']);
+          }
+        });
+    }
   }
 }

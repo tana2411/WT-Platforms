@@ -6,12 +6,22 @@ import { AccountOnboardingStatusComponent } from "../../../share/ui/account-onbo
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 
 @Component({
   selector: 'app-company-information-section',
   templateUrl: './company-information-section.component.html',
   styleUrls: ['./company-information-section.component.scss'],
-  imports: [MatFormFieldModule, MatInputModule, MatSelectModule, AccountOnboardingStatusComponent, MatIconModule, MatRadioModule, ReactiveFormsModule]
+  imports: [
+    MatFormFieldModule, 
+    MatInputModule,
+    MatSelectModule, 
+    AccountOnboardingStatusComponent, 
+    MatIconModule, 
+    MatRadioModule, 
+    ReactiveFormsModule,
+    UnAuthLayoutComponent,
+  ]
 })
 export class CompanyInformationSectionComponent implements OnInit {
   formGroup = new FormGroup({

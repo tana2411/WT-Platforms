@@ -16,7 +16,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   selector: 'app-telephone-form-control',
   templateUrl: './telephone-form-control.component.html',
   styleUrls: ['./telephone-form-control.component.scss'],
-  imports: [MatFormFieldModule, MatSelectModule, ReactiveFormsModule, MatInputModule],
+  imports: [
+    MatFormFieldModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatInputModule,
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -38,20 +43,20 @@ export class TelephoneFormControlComponent
   onTouched: (() => void) | undefined;
 
   constructor() {
-    this.telephoneControl.valueChanges.pipe(
-      takeUntilDestroyed()
-    ).subscribe(() => {
-      if (this.onChange) {
-        this.onChange(this.getValue());
-      }
-    });
-    this.countryCodeControl.valueChanges.pipe(
-      takeUntilDestroyed()
-    ).subscribe(() => {
-      if (this.onChange) {
-        this.onChange(this.getValue());
-      }
-    });
+    this.telephoneControl.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => {
+        if (this.onChange) {
+          this.onChange(this.getValue());
+        }
+      });
+    this.countryCodeControl.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => {
+        if (this.onChange) {
+          this.onChange(this.getValue());
+        }
+      });
   }
 
   ngOnInit() {
@@ -62,10 +67,33 @@ export class TelephoneFormControlComponent
   }
 
   writeValue(value: any): void {
-    if (value) {
-      this.countryCodeControl.setValue(value.countryCode);
-      this.telephoneControl.setValue(value.telephone);
+    let countryObject: any = null;
+    let telephone: string | null = null;
+
+    if (typeof value === 'string' && value) {
+      const spaceIndex = value.indexOf(' ');
+      let countryCodeStr: string | null = null;
+
+      if (spaceIndex > 0) {
+        countryCodeStr = value.substring(0, spaceIndex);
+        telephone = value.substring(spaceIndex + 1);
+        countryObject = this.countryList.find((c) => c.code === countryCodeStr);
+      } else {
+        telephone = value;
+        countryObject = null;
+      }
+    } else {
+      const defaultCountryCodeValue = '+44 ';
+      countryObject = this.countryList.find(
+        (i) => i.code == defaultCountryCodeValue,
+      );
+      if (!countryObject) {
+        countryObject = null;
+      }
+      telephone = null;
     }
+    this.countryCodeControl.setValue(countryObject, { emitEvent: false });
+    this.telephoneControl.setValue(telephone, { emitEvent: false });
   }
 
   registerOnChange(fn: (value: any) => void): void {
