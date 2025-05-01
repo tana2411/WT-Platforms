@@ -80,6 +80,7 @@
             formControlName="email"
             [type]="'text'"
             [required]="true"
+            [isEmail]="true"
           >
           </app-input-with-confirm-control>
         </div>
@@ -126,6 +127,20 @@
               <mat-option value="print" i18n>Word of mouth</mat-option>
             </mat-select>
             @if (formGroup.get("whereDidYouHearAboutUs")?.hasError("required")) {
+              <mat-error i18n>This field is required </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-12 mb-4">
+          <mat-label class="fw-bold mb-1" i18n>COMPANY NAME*</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input
+              matInput
+              placeholder="Type here"
+              type="text"
+              formControlName="companyName"
+            />
+            @if (formGroup.get("companyName")?.hasError("required")) {
               <mat-error i18n>This field is required </mat-error>
             }
           </mat-form-field>

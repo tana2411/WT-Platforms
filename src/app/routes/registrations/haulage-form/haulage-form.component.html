@@ -270,7 +270,7 @@
             </mat-form-field>
           </div>
           <div class="col-md-6">
-            <mat-label class="fw-bold mb-1" i18n>MOBILE*</mat-label>
+            <mat-label class="fw-bold mb-1" i18n>MOBILE</mat-label>
             <mat-form-field appearance="outline" class="w-100">
               <input
                 matInput
@@ -278,9 +278,6 @@
                 type="text"
                 formControlName="mobileNumberCompany"
               />
-              @if (formGroup.get("mobileNumberCompany")?.hasError("required")) {
-                <mat-error i18n>This field is required </mat-error>
-              }
             </mat-form-field>
           </div>
         </div>
@@ -438,6 +435,28 @@
           }
         </div>
         <div class="col-12 mb-4">
+          <mat-label class="fw-bold mb-1" i18n>Expiry Date</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput [matDatepicker]="picker" formControlName="expiryDate">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            
+            @if (
+            formGroup.get("expiryDate")?.hasError('required')
+          ) {
+            <mat-error class="mt-0" i18n>
+              This field is required
+            </mat-error>
+          }
+          </mat-form-field>
+          @if (expiryDateError()) {
+            <mat-error class="alert alert-warning fw-bold" i18n
+              >{{expiryDateError()}}</mat-error
+            >
+          }
+        </div>
+        
+        <div class="col-12 mb-4">
           <mat-label class="fw-bold mb-1" i18n
             >WHERE DID YOU HEAR ABOUT US*</mat-label
           >
@@ -485,7 +504,7 @@
             mat-flat-button
             class="w-100 big-btn"
             [class.overlay-spinner]="submitting()"
-            [disabled]="formGroup.invalid && !selectedFile()"
+            [disabled]="formGroup.invalid || !selectedFile()"
             (click)="send()"
             i18n
           >

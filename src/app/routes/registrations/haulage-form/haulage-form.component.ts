@@ -1,3 +1,5 @@
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { countries } from './../../../statics/country-data';
 import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import {
@@ -25,8 +27,11 @@ import { FileUploadComponent } from '../../../share/ui/file-upload/file-upload.c
 import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-control/telephone-form-control.component';
 import { Router } from '@angular/router';
 import { RegistrationsService } from 'app/services/registrations.service';
-import { catchError, finalize, of } from 'rxjs';
+import { catchError, debounceTime, finalize, of } from 'rxjs';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-haulage-form',
   templateUrl: './haulage-form.component.html',
@@ -41,8 +46,11 @@ import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.
     MatInputModule,
     FileUploadComponent,
     TelephoneFormControlComponent,
-    UnAuthLayoutComponent
+    UnAuthLayoutComponent,
+    MatDatepickerModule,
+    MatButtonModule,
   ],
+  providers: [provideNativeDateAdapter()],
 })
 export class HaulageFormComponent implements OnInit {
   countryList = countries;
@@ -125,7 +133,6 @@ export class HaulageFormComponent implements OnInit {
       Validators.maxLength(15),
     ]),
     mobileNumberCompany: new FormControl<string | null>(null, [
-      Validators.required,
       Validators.maxLength(15),
     ]),
 
@@ -134,6 +141,7 @@ export class HaulageFormComponent implements OnInit {
     selectedEuCountries: new FormArray([]),
     containerTypes: new FormArray([], [Validators.required]),
     wasteLicence: new FormControl<boolean | null>(null, [Validators.required]),
+    expiryDate: new FormControl<Date | null>(null, [Validators.required]),
     whereDidYouHearAboutUs: new FormControl<string | null>(null, [
       Validators.required,
     ]),
@@ -147,11 +155,13 @@ export class HaulageFormComponent implements OnInit {
   selectAllCountry = signal(false);
   selectAllContainerTypes = signal(false);
   fileError = signal<string | null | any>(null);
+  expiryDateError = signal<string | null>(null);
   selectedFile = signal<File | null>(null);
-  submitting = signal<boolean>(false)
+  submitting = signal<boolean>(false);
 
   router = inject(Router);
   registrationService = inject(RegistrationsService);
+  snackBar = inject(MatSnackBar);
 
   constructor() {
     effect(() => {
@@ -175,9 +185,32 @@ export class HaulageFormComponent implements OnInit {
         this.selectedEuCountries.clear();
       }
     });
+
+    this.formGroup
+      ?.valueChanges.pipe(takeUntilDestroyed(), debounceTime(300))
+      .subscribe((value) => {
+        const {expiryDate} =value
+        const now = new Date();
+        if(!value) return
+   
+        if (expiryDate) {
+          if (expiryDate < now) {
+            this.expiryDateError.set('Licence expired');
+          } else {
+            const diffInTime = expiryDate.getTime() - now.getTime();
+            const diffInDays = Math.ceil(diffInTime / (1000 * 3600 * 24));
+
+            if (diffInDays < 7) {
+              this.expiryDateError.set('Licence is about to expire soon');
+            } else {
+              this.expiryDateError.set(null);
+            }
+          }
+        }
+      });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   onAreaChange(event: MatRadioChange) {
     if (event.value === 'EU') {
@@ -216,41 +249,52 @@ export class HaulageFormComponent implements OnInit {
     if (file) {
       this.fileError.set(null);
       this.selectedFile.set(file);
+      console.log(file);
+      
     }
   }
 
   send() {
     this.formGroup.markAllAsTouched();
-    console.log(this.formGroup);
-    this.router.navigate(['/public/account-pending-result']);
-
-    const { selectedEuCountries, wasteLicence, acceptTerm, ...value } =
-      this.formGroup.value;
+    const {
+      selectedEuCountries,
+      wasteLicence,
+      acceptTerm,
+      expiryDate,
+      ...value
+    } = this.formGroup.value;
 
     if (this.selectedFile()) {
       const payload: any = {
         ...value,
         fleetType: [value.fleetType],
         areasCovered: [value.areasCovered],
-        documentType: wasteLicence ? "waste_carrier" : null,
+        documentType: wasteLicence ? 'waste_carrier' : null,
         documentName: this.selectedFile()?.name,
-        documentUrl: 'https://example.com/document.pdf'
-      }
+        documentUrl: 'https://example.com/document.pdf',
+      };
       console.log(payload);
       this.submitting.set(true);
-      this.registrationService.registerHaulage(payload).pipe(
-        finalize(() => {
-          this.submitting.set(false)
-        }),
-        catchError((err) => {
-          console.error(err);
-          return of(null);
-        }),
-      ).subscribe(result => {
-        if (result) {
-          this.router.navigate(['/public/account-pending-result']);
-        }
-      });
+      this.registrationService
+        .registerHaulage(payload)
+        .pipe(
+          finalize(() => {
+            this.submitting.set(false);
+          }),
+          catchError((err) => {
+            this.snackBar.open(
+              'An error occur while execute request, please try again.',
+              'Ok',
+              { duration: 3000 },
+            );
+            return of(null);
+          }),
+        )
+        .subscribe((result) => {
+          if (result) {
+            this.router.navigate(['/public/account-pending-result']);
+          }
+        });
     }
   }
 }

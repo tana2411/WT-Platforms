@@ -56,6 +56,7 @@ export class InputWithConfirmControlComponent
   @Input() type: 'text' | 'password' = 'text';
   @Input() placeholder: string | undefined = undefined;
   @Input() isRequired: boolean = false;
+  @Input() isEmail: boolean = false
 
   showValue = false;
   showConfirmValue = false;
@@ -86,6 +87,11 @@ export class InputWithConfirmControlComponent
     if (this.isRequired) {
       this.valueControl.addValidators(Validators.required);
       this.confirmControl.addValidators(Validators.required);
+    }
+
+    if(this.isEmail) {
+      this.valueControl.addValidators(Validators.email);
+      this.confirmControl.addValidators(Validators.email);
     }
   }
 

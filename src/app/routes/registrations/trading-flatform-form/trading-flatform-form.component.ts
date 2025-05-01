@@ -24,6 +24,7 @@ import { Router } from '@angular/router';
 import { RegistrationsService } from 'app/services/registrations.service';
 import { catchError, finalize, of } from 'rxjs';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
+import {MatSnackBar} from '@angular/material/snack-bar'
 @Component({
   selector: 'app-trading-flatform-form',
   templateUrl: './trading-flatform-form.component.html',
@@ -77,6 +78,7 @@ export class TradingFlatformFormComponent implements OnInit {
       Validators.required,
     ]),
     otherMaterial: new FormControl<string | null>(null),
+    companyName: new FormControl<string | null>(null, [Validators.required]),
     companyInterest: new FormControl<string | null>(null, [
       Validators.required,
     ]),
@@ -89,6 +91,7 @@ export class TradingFlatformFormComponent implements OnInit {
   submitting = signal(false);
   router = inject(Router);
   service = inject(RegistrationsService);
+  snackBar = inject(MatSnackBar)
 
   constructor() {
     effect(() => {
@@ -175,7 +178,9 @@ export class TradingFlatformFormComponent implements OnInit {
         this.submitting.set(false)
       }),
       catchError((err) => {
-        console.error(err);
+        if(err) {
+          this.snackBar.open('An error occur while execute request, please try again.', 'Ok', {duration: 3000})
+        }
         return of(null);
       }),
     ).subscribe(result => {
