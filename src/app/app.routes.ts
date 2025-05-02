@@ -5,6 +5,7 @@ import { TradingFlatformFormComponent } from './routes/registrations/trading-fla
 import { HaulageFormComponent } from './routes/registrations/haulage-form/haulage-form.component';
 import { LoginPageComponent } from './routes/login-page/login-page.component';
 import { TermComponent } from './routes/term/term.component';
+import { PrivacyComponent } from './routes/privacy/privacy.component';
 
 export const routes: Routes = [
     {
@@ -16,8 +17,12 @@ export const routes: Routes = [
                 component: LoginPageComponent,
             },
             {
-                path: 'terms',
+                path: 'termsandconditions',
                 component: TermComponent,
+            },
+            {
+                path: 'privacy-policy',
+                component: PrivacyComponent,
             },
             {
                 path: 'trading-platform-form',
