@@ -418,14 +418,15 @@
         <h6 class="mb-4 mt-5 primary" i18n>WASTE CARRIER LICENCE UPLOAD*</h6>
         <div class="col-12 mb-4">
           <app-file-upload
-            [maxFile]="1"
+            [maxFile]="6"
+            [multiple]="true"
             (fileReady)="handleFileReady($event)"
-            (error)="fileError.set($event)"
+            [notAcceptable]="['.docx']"
+            (error)="handleFileError($event)"
           ></app-file-upload>
+
           @if (fileError()) {
-            <mat-error class="mt-0 mat-error" i18n>
-              {{ fileError() }}
-            </mat-error>
+            <div class="mat-error mt-1 error">{{ fileError() }}</div>
           }
         </div>
         <div class="col-12 mb-4">
@@ -505,7 +506,7 @@
             mat-flat-button
             class="w-100 big-btn"
             [class.overlay-spinner]="submitting()"
-            [disabled]="formGroup.invalid || !selectedFile()"
+            [disabled]="formGroup.invalid || !selectedFile().length"
             (click)="send()"
             i18n
           >
