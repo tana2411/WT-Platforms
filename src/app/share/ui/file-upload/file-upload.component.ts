@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   OnInit,
   Output,
   signal,
@@ -9,7 +10,6 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-export const MAX_FILE = 1;
 @Component({
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
@@ -17,6 +17,9 @@ export const MAX_FILE = 1;
   imports: [MatButtonModule],
 })
 export class FileUploadComponent implements OnInit {
+  @Input() maxFile: number = 1;
+  @Input() multiple: boolean = false;
+  
   selectedFile = signal<File[]>([]);
   isDraggingOver = false;
 
@@ -79,8 +82,8 @@ export class FileUploadComponent implements OnInit {
       return;
     }
 
-    if (files.length > MAX_FILE) {
-      this.error.emit(`Only accept ${MAX_FILE} file upload`);
+    if (files.length > this.maxFile) {
+      this.error.emit(`Only accept ${this.maxFile} file upload`);
       this.selectedFile.set([]);
       this.fileReady.emit([]);
       return;

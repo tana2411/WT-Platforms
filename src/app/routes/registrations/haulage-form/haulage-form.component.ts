@@ -249,8 +249,6 @@ export class HaulageFormComponent implements OnInit {
     if (file) {
       this.fileError.set(null);
       this.selectedFile.set(file);
-      console.log(file);
-      
     }
   }
 

@@ -13,6 +13,7 @@
     accept=".jpg, .jpeg, .png, .pdf, .doc, .docx, .xls, .xlsx"
     #fileUploadInput
     (change)="onFileSelected($event)"
+    [multiple]="multiple"
   />
   <img
     src="assets/images/cloud_upload_24px.svg"

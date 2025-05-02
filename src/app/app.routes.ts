@@ -7,6 +7,7 @@ import { HaulageFormComponent } from './routes/registrations/haulage-form/haulag
 import { RegistrationPendingResultComponent } from './routes/registrations/registration-pending-result/registration-pending-result.component';
 import { RegistrationCompleteResultComponent } from './routes/registrations/registration-complete-result/registration-complete-result.component';
 import { CompanyInformationSectionComponent } from './routes/registrations/company-information-section/company-information-section.component';
+import { CompanyDocumentComponent } from './routes/registrations/company-document/company-document.component';
 
 export const routes: Routes = [
     {
@@ -32,6 +33,10 @@ export const routes: Routes = [
     {
         path: 'company-information',
         component: CompanyInformationSectionComponent,
+    },
+    {
+        path: 'company-document',
+        component: CompanyDocumentComponent,
     },
     { path: '**', pathMatch: 'full', redirectTo: 'login' },
 ];
