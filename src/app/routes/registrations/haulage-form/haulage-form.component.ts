@@ -1,7 +1,15 @@
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { countries } from './../../../statics/country-data';
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  effect,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -27,7 +35,7 @@ import { FileUploadComponent } from '../../../share/ui/file-upload/file-upload.c
 import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-control/telephone-form-control.component';
 import { Router } from '@angular/router';
 import { RegistrationsService } from 'app/services/registrations.service';
-import { catchError, debounceTime, finalize, of } from 'rxjs';
+import { catchError, concatMap, debounceTime, finalize, of, tap } from 'rxjs';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
@@ -51,6 +59,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatButtonModule,
   ],
   providers: [provideNativeDateAdapter()],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HaulageFormComponent implements OnInit {
   countryList = countries;
@@ -154,14 +163,15 @@ export class HaulageFormComponent implements OnInit {
   showEUcountry = signal(false);
   selectAllCountry = signal(false);
   selectAllContainerTypes = signal(false);
-  fileError = signal<string | null | any>(null);
+  fileError = signal<string | null>(null);
   expiryDateError = signal<string | null>(null);
-  selectedFile = signal<File | null>(null);
+  selectedFile = signal<File[]>([]);
   submitting = signal<boolean>(false);
 
   router = inject(Router);
   registrationService = inject(RegistrationsService);
   snackBar = inject(MatSnackBar);
+  cd = inject(ChangeDetectorRef);
 
   constructor() {
     effect(() => {
@@ -186,13 +196,13 @@ export class HaulageFormComponent implements OnInit {
       }
     });
 
-    this.formGroup
-      ?.valueChanges.pipe(takeUntilDestroyed(), debounceTime(300))
+    this.formGroup?.valueChanges
+      .pipe(takeUntilDestroyed(), debounceTime(300))
       .subscribe((value) => {
-        const {expiryDate} =value
+        const { expiryDate } = value;
         const now = new Date();
-        if(!value) return
-   
+        if (!value) return;
+
         if (expiryDate) {
           if (expiryDate < now) {
             this.expiryDateError.set('Licence expired');
@@ -245,13 +255,15 @@ export class HaulageFormComponent implements OnInit {
     formArray.updateValueAndValidity();
   }
 
-  handleFileReady(file: File | null | any) {
+  handleFileReady(file: File[]) {
     if (file) {
-      this.fileError.set(null);
       this.selectedFile.set(file);
-      console.log(file);
-      
     }
+  }
+
+  handleFileError(error: string) {
+    this.fileError.set(error);
+    this.cd.detectChanges();
   }
 
   send() {
@@ -265,25 +277,41 @@ export class HaulageFormComponent implements OnInit {
     } = this.formGroup.value;
 
     if (this.selectedFile()) {
-      const payload: any = {
-        ...value,
-        fleetType: [value.fleetType],
-        areasCovered: [value.areasCovered],
-        documentType: wasteLicence ? 'waste_carrier' : null,
-        documentName: this.selectedFile()?.name,
-        documentUrl: 'https://example.com/document.pdf',
-      };
-      console.log(payload);
-      this.submitting.set(true);
       this.registrationService
-        .registerHaulage(payload)
+        .uploadFileHaulier(this.selectedFile())
         .pipe(
-          finalize(() => {
-            this.submitting.set(false);
+          tap(() => {
+            this.submitting.set(true);
+          }),
+          concatMap((url) => {
+            if (!url) {
+              return of(null);
+            }
+
+            const payload: any = {
+              ...value,
+              fleetType: [value.fleetType],
+              areasCovered: [value.areasCovered],
+              documentType: wasteLicence ? 'waste_carrier' : null,
+              documentName: this.selectedFile()?.map((file) => file.name),
+              documentUrl: url,
+            };
+
+            return this.registrationService.registerHaulage(payload).pipe(
+              finalize(() => this.submitting.set(false)),
+              catchError((err) => {
+                this.snackBar.open(
+                  'An error occurred while processing your registration. Please try again.',
+                  'Ok',
+                  { duration: 3000 },
+                );
+                return of(null);
+              }),
+            );
           }),
           catchError((err) => {
             this.snackBar.open(
-              'An error occur while execute request, please try again.',
+              'An error occurred while uploading the file. Please try again.',
               'Ok',
               { duration: 3000 },
             );

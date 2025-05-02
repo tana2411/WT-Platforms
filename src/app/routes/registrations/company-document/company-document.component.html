@@ -1,0 +1,271 @@
+<app-un-auth-layout>
+  <app-account-onboarding-status
+    [showStatusOnly]="true"
+    [type]="'completing'"
+  ></app-account-onboarding-status>
+  <div class="col-md-9 mx-auto d-flex justify-content-between g-3 my-5">
+    <div class="col-4">
+      <div>
+        <div class="d-flex justify-content-between">
+          <mat-icon class="primary">check_circle</mat-icon>
+          <div class="w-75 mx-auto primary" i18n>COMPANY DOCUMENT</div>
+          <mat-icon>remove</mat-icon>
+        </div>
+        <hr />
+        <div class="d-flex justify-content-between">
+          <mat-icon></mat-icon>
+          <div class="w-75 fw-bold mx-auto" i18n>COMPANY DOCUMENT</div>
+          <mat-icon>add</mat-icon>
+        </div>
+        <hr />
+        <div class="d-flex justify-content-between">
+          <mat-icon></mat-icon>
+          <div class="w-75 mx-auto" i18n>SITE LOCATION</div>
+          <mat-icon>remove</mat-icon>
+        </div>
+        <hr />
+        <div class="d-flex justify-content-between">
+          <mat-icon></mat-icon>
+          <div class="w-75 mx-auto" i18n>REVIEW</div>
+          <mat-icon>remove</mat-icon>
+        </div>
+      </div>
+    </div>
+    <div class="col-7">
+      <form [formGroup]="formGroup">
+        <div class="border border-dark boder-2 p-4 border-radius">
+          <h3 class="text-center my-2" i18n>Company Information</h3>
+          <div
+            class="px-2 py-3 background-on-primary d-flex align-items-center mb-4"
+          >
+            <div class="w-25 text-center">
+              <mat-icon class="material-icons-outlined primary"
+                >error_outline</mat-icon
+              >
+            </div>
+            <div i18n class="fw-500 fs-16">
+              Ensure all details are correct, error may delay verification
+              (*Required field).
+            </div>
+          </div>
+          <div class="col-12 mb-4">
+            <mat-label class="fw-bold mb-1 d-block" i18n
+              >WHICH OF THE FOLLOWING DO YOU HAVE*</mat-label
+            >
+            <mat-radio-group
+              class="d-flex justify-content-between flex-wrap"
+              formControlName="documentType"
+            >
+              <mat-radio-button
+                value="environmentalPermit"
+                [disabled]="onSelectUploadLater()"
+                i18n
+                >Environmental Permit
+              </mat-radio-button>
+              <mat-radio-button
+                value="wasteExemptions"
+                [disabled]="onSelectUploadLater()"
+                i18n
+              >
+                Waste Exemptions
+              </mat-radio-button>
+              <mat-radio-button
+                value="other"
+                [disabled]="onSelectUploadLater()"
+                i18n
+              >
+                Other
+              </mat-radio-button>
+              <mat-radio-button
+                value="uploadLater"
+                [disabled]="documentType.value"
+                (change)="onSelectUploadLater.set(!onSelectUploadLater())"
+                i18n
+              >
+                Upload Later
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+          @if (onSelectUploadLater()) {
+            <div class="col-12 mb-4">
+              <div
+                class="d-flex align-items-center justify-content-arround col-10 border rounded background-on-error w-100 p-2"
+              >
+                <div class="w-25 d-flex justify-content-center">
+                  <mat-icon
+                    class="error"
+                    style="font-size: 30px; height: 30px; width: 30px"
+                    >error</mat-icon
+                  >
+                </div>
+                <div class="text-dark fw-500 fs-16" i18n>
+                  You can start buying and selling material now, but please note
+                  that all transaction will be pending until you upload your
+                  company document.
+                </div>
+              </div>
+            </div>
+          }
+          @if (documentType.value) {
+            <h6 class="mt-5 mb-4 primary" i18n>
+              @switch (documentType.value) {
+                @case ("environmentalPermit") {
+                  Environmental Permit Upload*
+                }
+                @case ("wasteExemptions") {
+                  Waste Exemptions Upload*
+                }
+                @default {
+                  Other Document Upload*
+                }
+              }
+            </h6>
+            <app-file-upload
+              [maxFile]="6"
+              [multiple]="true"
+              (fileReady)="handleFileReady($event, 'document')"
+              (error)="documentFileError.set($event)"
+            ></app-file-upload>
+            @if (documentFileError()) {
+              <mat-error class="mt-0 mat-error" i18n>
+                {{ documentFileError() }}
+              </mat-error>
+            }
+            <div class="col-12 mb-4 mt-3">
+              <mat-label class="fw-bold mb-1" i18n>Expiry Date</mat-label>
+              <mat-form-field appearance="outline" class="w-100">
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  formControlName="expiryDocument"
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+
+                @if (formGroup.get("expiryDate")?.hasError("required")) {
+                  <mat-error class="mt-0" i18n>
+                    This field is required
+                  </mat-error>
+                }
+              </mat-form-field>
+            </div>
+          }
+          <hr />
+          <div class="col-12 mb-4">
+            <mat-label class="mb-0 fw-bold" i18n>
+              WASTE CARRIER LICENCE*
+            </mat-label>
+            <mat-radio-group
+              formControlName="wasteLicence"
+              class="d-flex justify-content-between col-9"
+              name="wasteLicence"
+            >
+              <mat-radio-button [value]="true" i18n> Yes </mat-radio-button>
+              <mat-radio-button [value]="false" i18n> No </mat-radio-button>
+              <mat-radio-button [value]="false" i18n>
+                Not Applicable
+              </mat-radio-button>
+            </mat-radio-group>
+            @if (
+              formGroup.get("wasteLicence")?.hasError("required") &&
+              formGroup.get("wasteLicence")?.touched
+            ) {
+              <mat-error class="mt-0 mat-error" i18n>
+                This field is required
+              </mat-error>
+            }
+          </div>
+          @if (formGroup.get("wasteLicence")?.value) {
+            <h6 class="mb-4 mt-5 primary" i18n>
+              WASTE CARRIER LICENCE UPLOAD*
+            </h6>
+            <div class="col-12 mb-4">
+              <app-file-upload
+                (fileReady)="handleFileReady($event, 'licence')"
+                (error)="wasteLicenceError.set($event)"
+                [maxFile]="1"
+                [multiple]="true"
+              ></app-file-upload>
+              @if (wasteLicenceError()) {
+                <mat-error class="mt-0 mat-error" i18n>
+                  {{ wasteLicenceError() }}
+                </mat-error>
+              }
+            </div>
+            <div class="col-12 mb-4 mt-3">
+              <mat-label class="fw-bold mb-1" i18n>Expiry Date</mat-label>
+              <mat-form-field appearance="outline" class="w-100">
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  formControlName="expiryLicence"
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+
+                @if (formGroup.get("expiryDate")?.hasError("required")) {
+                  <mat-error class="mt-0" i18n>
+                    This field is required
+                  </mat-error>
+                }
+              </mat-form-field>
+            </div>
+          }
+          <hr />
+          <div class="col-12 mb-4">
+            <mat-label class="mb-0 fw-bold" i18n>
+              BOX CLEANING AGENT*
+            </mat-label>
+            <mat-radio-group
+              formControlName="boxClearingAgent"
+              class="d-flex justify-content-between col-6"
+              name="boxClearingAgent"
+            >
+              <mat-radio-button [value]="true" i18n> Yes </mat-radio-button>
+              <mat-radio-button [value]="false" i18n> No </mat-radio-button>
+            </mat-radio-group>
+            @if (
+              formGroup.get("boxClearingAgent")?.hasError("required") &&
+              formGroup.get("boxClearingAgent")?.touched
+            ) {
+              <mat-error class="mt-0 mat-error" i18n>
+                This field is required
+              </mat-error>
+            }
+          </div>
+        </div>
+        <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-between">
+          <div class="col-5">
+            <button
+              mat-stocked-button
+              class="w-100 text-center bg-white rounded border p-2 primary fw-bold"
+              i18n
+            >
+              BACK
+            </button>
+          </div>
+          <div class="col-5">
+            <button
+              [disabled]="isSubmitDisabled"
+              type="submit"
+              [class.background-primary]="!isSubmitDisabled"
+              [class.text-white]="!isSubmitDisabled"
+              mat-flat-button
+              class="w-100 p-2 fw-bold rounded"
+              (click)="send()"
+              i18n
+            >
+              SAVE AND CONTINUE
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</app-un-auth-layout>

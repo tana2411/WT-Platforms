@@ -2,21 +2,25 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   OnInit,
   Output,
   signal,
   ViewChild,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
-export const MAX_FILE = 1;
 @Component({
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss'],
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, MatIconModule],
 })
 export class FileUploadComponent implements OnInit {
+  @Input() maxFile: number = 1;
+  @Input() multiple: boolean = false;
+  @Input() notAcceptable: string[] = [];
   selectedFile = signal<File[]>([]);
   isDraggingOver = false;
 
@@ -24,13 +28,31 @@ export class FileUploadComponent implements OnInit {
   @Output() error = new EventEmitter<any>();
 
   @ViewChild('fileUploadInput') fileInputRef!: ElementRef<HTMLInputElement>;
+
+  baseAllowedTypes = [
+    { extension: '.jpg', mimeType: 'image/jpeg' },
+    { extension: '.jpeg', mimeType: 'image/jpeg' },
+    { extension: '.png', mimeType: 'image/png' },
+    { extension: '.pdf', mimeType: 'application/pdf' },
+    { extension: '.doc', mimeType: 'application/msword' },
+    {
+      extension: '.docx',
+      mimeType:
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    },
+    { extension: '.xls', mimeType: 'application/vnd.ms-excel' },
+    {
+      extension: '.xlsx',
+      mimeType:
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    },
+  ];
   constructor() {}
 
   ngOnInit() {}
 
   handleUploadFile(event: MouseEvent) {
     this.preventAndStopEvent(event);
-    this.selectedFile.set([]);
     if (this.fileInputRef) {
       this.fileInputRef.nativeElement.click();
     }
@@ -56,7 +78,6 @@ export class FileUploadComponent implements OnInit {
     this.preventAndStopEvent(event);
     this.isDraggingOver = false;
     const files = event.dataTransfer?.files;
-    this.selectedFile.set([]);
     if (files?.length) {
       this.processFiles(files);
     }
@@ -65,22 +86,16 @@ export class FileUploadComponent implements OnInit {
   private processFiles(files: FileList | null): void {
     const validFiles: File[] = [];
     const maxSizeInBytes = 25 * 1024 * 1024;
-    const allowedMimeType = [
-      'image/jpeg',
-      'image/png',
-      'application/pdf',
-      'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    ];
+    const allowedMimeType = this.baseAllowedTypes
+      .filter((type) => !this.notAcceptable.includes(type.extension))
+      .map((type) => type.mimeType);
 
     if (!files || files.length === 0) {
       return;
     }
 
-    if (files.length > MAX_FILE) {
-      this.error.emit(`Only accept ${MAX_FILE} file upload`);
+    if (files.length > this.maxFile) {
+      this.error.emit(`Only accept ${this.maxFile} file upload`);
       this.selectedFile.set([]);
       this.fileReady.emit([]);
       return;
@@ -88,18 +103,16 @@ export class FileUploadComponent implements OnInit {
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-
       if (!allowedMimeType.includes(file.type)) {
         this.error.emit(
-          'Invalid file format. Please upload a valid Waste Carrier Licence.',
+          'Invalid file type uploaded. Please upload the document in one of the supported formats',
         );
         continue;
       }
 
       if (file.size > maxSizeInBytes) {
-        const maxSizeInMB = (maxSizeInBytes / (1024 * 1024)).toFixed(1);
         this.error.emit(
-          'File size is too large. Please upload a Waste Carrier Licence smaller than 25MB.',
+          'File size is too large. Please upload a file smaller than 25MB.',
         );
         continue;
       }
@@ -107,7 +120,15 @@ export class FileUploadComponent implements OnInit {
       validFiles.push(file);
     }
 
-    this.selectedFile.set(validFiles);
+    this.selectedFile.update((current) => [...current, ...validFiles]);
+    this.fileReady.emit(this.selectedFile());
+  }
+
+  remove(fileToRemove: File) {
+    this.selectedFile.update((currentFiles) => {
+      const updatedList = currentFiles.filter((f) => f !== fileToRemove);
+      return updatedList;
+    });
     this.fileReady.emit(this.selectedFile());
   }
 

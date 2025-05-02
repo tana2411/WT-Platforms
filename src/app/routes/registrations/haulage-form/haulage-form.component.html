@@ -116,7 +116,7 @@
             }
           </div>
         </div>
-  
+
         <!-- Company information -->
         <h6 class="mb-4 mt-5 primary" i18n>COMPANY INFORMATION</h6>
         <div class="col-md-12 mb-4">
@@ -143,15 +143,13 @@
             class="d-flex justify-content-between col-9 radio-mat-error"
             name="vatRegistrationCountry"
           >
-            <mat-radio-button class="round-checkbox" value="EU" i18n
+            <mat-radio-button value="EU" i18n
               >EU (European Union)
             </mat-radio-button>
-            <mat-radio-button class="round-checkbox" value="UK" i18n>
+            <mat-radio-button value="UK" i18n>
               United Kingdom
             </mat-radio-button>
-            <mat-radio-button class="round-checkbox" value="EU" i18n>
-              Other
-            </mat-radio-button>
+            <mat-radio-button value="EU" i18n> Other </mat-radio-button>
           </mat-radio-group>
           @if (
             formGroup.get("vatRegistrationCountry")?.hasError("required") &&
@@ -220,7 +218,7 @@
             </mat-form-field>
           </div>
         </div>
-  
+
         <div class="row g-3 mb-4">
           <div class="col-md-6">
             <mat-label class="fw-bold mb-1" i18n>COUNTRY*</mat-label>
@@ -281,7 +279,7 @@
             </mat-form-field>
           </div>
         </div>
-  
+
         <!-- Additional information -->
         <h6 class="mt-5 mb-4 primary" i18n>ADDITIONAL INFORMATION</h6>
         <div class="col-12 mb-4">
@@ -290,10 +288,10 @@
             formControlName="fleetType"
             class="d-flex justify-content-between col-8 radio-mat-error"
           >
-            <mat-radio-button class="round-checkbox" value="freightForwarder" i18n
+            <mat-radio-button value="freightForwarder" i18n
               >Freight Forwarder
             </mat-radio-button>
-            <mat-radio-button class="round-checkbox" value="ownerFleet" i18n>
+            <mat-radio-button value="ownerFleet" i18n>
               Owner Fleet
             </mat-radio-button>
           </mat-radio-group>
@@ -315,13 +313,9 @@
             class="d-flex justify-content-between col-8"
             (change)="onAreaChange($event)"
           >
-            <mat-radio-button class="round-checkbox" value="UK" i18n>
-              UK only
-            </mat-radio-button>
-            <mat-radio-button class="round-checkbox" value="EU" i18n>
-              Within EU
-            </mat-radio-button>
-            <mat-radio-button class="round-checkbox" value="worldWide" i18n>
+            <mat-radio-button value="UK" i18n> UK only </mat-radio-button>
+            <mat-radio-button value="EU" i18n> Within EU </mat-radio-button>
+            <mat-radio-button value="worldWide" i18n>
               World Wide
             </mat-radio-button>
           </mat-radio-group>
@@ -387,7 +381,9 @@
                 >
               </div>
             }
-            @if (selectedContainerType.invalid && selectedContainerType.touched) {
+            @if (
+              selectedContainerType.invalid && selectedContainerType.touched
+            ) {
               <mat-error class="mt-0 mat-error" i18n>
                 This field is required
               </mat-error>
@@ -401,13 +397,10 @@
           <mat-radio-group
             formControlName="wasteLicence"
             class="d-flex justify-content-between col-8"
-            (change)="onAreaChange($event)"
             name="wasteLicence"
           >
-            <mat-radio-button class="round-checkbox" value="true" i18n>
-              Yes
-            </mat-radio-button>
-            <mat-radio-button class="round-checkbox" value="false" i18n>
+            <mat-radio-button value="true" i18n> Yes </mat-radio-button>
+            <mat-radio-button value="false" i18n>
               Not Applicable
             </mat-radio-button>
           </mat-radio-group>
@@ -420,42 +413,47 @@
             </mat-error>
           }
         </div>
-  
+
         <!-- Document upload -->
         <h6 class="mb-4 mt-5 primary" i18n>WASTE CARRIER LICENCE UPLOAD*</h6>
         <div class="col-12 mb-4">
           <app-file-upload
+            [maxFile]="6"
+            [multiple]="true"
             (fileReady)="handleFileReady($event)"
-            (error)="fileError.set($event)"
+            [notAcceptable]="['.docx']"
+            (error)="handleFileError($event)"
           ></app-file-upload>
+
           @if (fileError()) {
-            <mat-error class="mt-0 mat-error" i18n>
-              {{ fileError() }}
-            </mat-error>
+            <div class="mat-error mt-1 error">{{ fileError() }}</div>
           }
         </div>
         <div class="col-12 mb-4">
           <mat-label class="fw-bold mb-1" i18n>Expiry Date</mat-label>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput [matDatepicker]="picker" formControlName="expiryDate">
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              formControlName="expiryDate"
+            />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
-            
-            @if (
-            formGroup.get("expiryDate")?.hasError('required')
-          ) {
-            <mat-error class="mt-0" i18n>
-              This field is required
-            </mat-error>
-          }
+
+            @if (formGroup.get("expiryDate")?.hasError("required")) {
+              <mat-error class="mt-0" i18n> This field is required </mat-error>
+            }
           </mat-form-field>
           @if (expiryDateError()) {
-            <mat-error class="alert alert-warning fw-bold" i18n
-              >{{expiryDateError()}}</mat-error
-            >
+            <mat-error class="alert alert-warning fw-bold" i18n>{{
+              expiryDateError()
+            }}</mat-error>
           }
         </div>
-        
+
         <div class="col-12 mb-4">
           <mat-label class="fw-bold mb-1" i18n
             >WHERE DID YOU HEAR ABOUT US*</mat-label
@@ -470,13 +468,17 @@
               <mat-option value="linkedin" i18n
                 >Plastics Live Trade Show</mat-option
               >
-              <mat-option value="instagram" i18n>Sustainability show</mat-option>
+              <mat-option value="instagram" i18n
+                >Sustainability show</mat-option
+              >
               <mat-option value="email" i18n> K-Show</mat-option>
               <mat-option value="referral" i18n>Interplas</mat-option>
               <mat-option value="event" i18n>Plast 2023</mat-option>
               <mat-option value="print" i18n>Word of mouth</mat-option>
             </mat-select>
-            @if (formGroup.get("whereDidYouHearAboutUs")?.hasError("required")) {
+            @if (
+              formGroup.get("whereDidYouHearAboutUs")?.hasError("required")
+            ) {
               <mat-error i18n>This field is required </mat-error>
             }
           </mat-form-field>
@@ -504,7 +506,7 @@
             mat-flat-button
             class="w-100 big-btn"
             [class.overlay-spinner]="submitting()"
-            [disabled]="formGroup.invalid || !selectedFile()"
+            [disabled]="formGroup.invalid || !selectedFile().length"
             (click)="send()"
             i18n
           >
@@ -514,5 +516,4 @@
       </form>
     </div>
   </div>
-</app-un-auth-layout>  
-
+</app-un-auth-layout>
