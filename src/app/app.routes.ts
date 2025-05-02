@@ -4,6 +4,7 @@ import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component'
 import { TradingFlatformFormComponent } from './routes/registrations/trading-flatform-form/trading-flatform-form.component';
 import { HaulageFormComponent } from './routes/registrations/haulage-form/haulage-form.component';
 import { LoginPageComponent } from './routes/login-page/login-page.component';
+import { TermComponent } from './routes/term/term.component';
 
 export const routes: Routes = [
     {
@@ -13,6 +14,10 @@ export const routes: Routes = [
             {
                 path: 'login',
                 component: LoginPageComponent,
+            },
+            {
+                path: 'terms',
+                component: TermComponent,
             },
             {
                 path: 'trading-platform-form',

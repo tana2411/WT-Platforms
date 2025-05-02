@@ -1,0 +1,17 @@
+.title {
+  margin-bottom: 36px;
+
+  @media screen and (min-width: 768px) {
+    font-size: 40px !important;
+  }
+}
+
+.page-container {
+  max-width: 754px;
+  margin: 0 auto;
+  padding: 15px 30px;
+
+  @media screen and (min-width: 768px) {
+    padding: 36px 72px;
+  }
+}
