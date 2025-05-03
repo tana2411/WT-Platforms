@@ -11,6 +11,7 @@ import { BehaviorSubject, catchError, map, of, switchMap, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { ROUTES } from 'app/constants/route.const';
 import { ACCESS_TOKEN_KEY } from 'app/interceptors/auth.interceptor';
+import { getDefaultRouteByRole } from 'app/guards/auth/utils';
 
 export const NOT_INITIAL_USER = null;
 
@@ -48,8 +49,7 @@ export class AuthService {
             throw new Error('Invalid login data');
           }
 
-          // store user data in local storage for the auth interceptor
-          localStorage.setItem('accessToken', loginData.accessToken);
+          this.setToken(loginData.accessToken);
 
           // get the user data
           return this.getMe();
@@ -64,17 +64,34 @@ export class AuthService {
     return this.http.post('/forgot-password', params);
   }
 
+  setToken(token: string) {
+    // store user data in local storage for the auth interceptor
+    localStorage.setItem('accessToken', token);
+  }
+
   // todo: call API get me to set user
-  async checkToken() {
-    this.getMe()
+  checkToken() {
+    return this.getMe()
       .pipe(
         catchError(() => {
           return of(undefined);
         }),
-      )
-      .subscribe((me) => {
-        this._user$.next(me);
-      });
+        tap((me)=> {
+          if (me) {
+            this._user$.next(me);
+          }
+        })
+      );
+  }
+
+  getDefaultRouteByRole() {
+    const user = this._user$.value;
+    
+    if (!user) {
+      return ROUTES.login;
+    }
+
+    return getDefaultRouteByRole(user);
   }
 
   getMe() {

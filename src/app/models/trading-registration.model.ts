@@ -12,3 +12,14 @@ export interface TradingRegistration {
     companyInterest: string[];
     favoriteMaterials: string[];
 }
+
+export interface RegistrationResult {
+    data: {
+        accessToken: string;
+        company: any; // TODO: Define the type
+        companyUser: any; // TODO: Define the type
+        user: any; // TODO: Define the type
+    };
+    message: string;
+    status: string;
+}

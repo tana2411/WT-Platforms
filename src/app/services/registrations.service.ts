@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HaulageRegistration, TradingRegistration } from 'app/models';
+import { HaulageRegistration, RegistrationResult, TradingRegistration } from 'app/models';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,22 +10,20 @@ export class RegistrationsService {
   constructor(private httpClient: HttpClient) {}
 
   registerTrading(payload: Partial<TradingRegistration>) {
-    return this.httpClient.post('/register-trading', payload);
+    return this.httpClient.post<RegistrationResult>('/register-trading', payload);
   }
 
   registerHaulage(payload: Partial<HaulageRegistration>) {
-    return this.httpClient.post('/register-haulier', payload);
+    return this.httpClient.post<RegistrationResult>('/register-haulier', payload);
   }
 
-  uploadFileHaulier(payload: File[]): Observable<string> {
-    console.log(payload);
-
+  uploadFileHaulier(files: File[]): Observable<string> {
     const formData = new FormData();
-    payload.forEach((file) => {
-      formData.append('file', file, file.name);
-    });
+    if (files.length > 0) {
+      formData.append('file', files[0], files[0].name);
+    }
     return this.httpClient.post<string>('/upload-file-haulier', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+      responseType: 'text' as 'json',
     });
   }
 }

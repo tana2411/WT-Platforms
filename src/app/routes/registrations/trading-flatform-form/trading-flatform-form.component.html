@@ -94,20 +94,31 @@
             [required]="true"
           >
           </app-input-with-confirm-control>
-          @if (formGroup.get("password")?.hasError("weak")) {
-            <mat-error class="alert alert-danger fw-bold" i18n
-              >Password weak</mat-error
-            >
+          @if (formGroup.get("password")?.hasError("pwdStrengthInvalid")) {
+            <div class="col-12">
+              <mat-error i18n>
+                Invalid password strength. Password must contain at least 8 characters and at least 1 number.
+              </mat-error>
+            </div>
           }
-          @if (formGroup.get("password")?.hasError("medium")) {
-            <mat-error class="alert alert-warning fw-bold" i18n
-              >Password medium</mat-error
-            >
-          }
-          @if (formGroup.get("password")?.hasError("strong")) {
-            <mat-error class="alert alert-success fw-bold" i18n
-              >Password strong</mat-error
-            >
+          @if (pwdStrength(); as pwdStrength) {
+            <div class="col-12">
+              @if (pwdStrength === "weak") {
+                <div class="alert alert-danger font-bold mt-2" role="alert" i18n>
+                  Weak password
+                </div>
+              }
+              @if (pwdStrength === "medium") {
+                <div class="alert alert-warning font-bold mt-2" role="alert" i18n>
+                  Medium password
+                </div>
+              }
+              @if (pwdStrength === "strong") {
+                <div class="alert alert-success font-bold mt-2" role="alert" i18n>
+                  Strong password
+                </div>
+              }
+            </div>
           }
         </div>
         <div class="col-12 mb-4">
@@ -213,12 +224,12 @@
         </div>
         <hr />
         <div class="col-12 mt-3">
-          <mat-checkbox
-            color="primary"
-            formControlName="acceptTerm" i18n
-            >I accept the <span class="fw-bold">Terms & Condition</span> and
-            <span class="fw-bold">Privacy Policy </span> by join WasteTrade</mat-checkbox
-          >
+          <mat-checkbox color="primary" formControlName="acceptTerm" i18n
+            >I accept the 
+            <a class="fw-bold text-dark text-decoration-none" href="/termsandconditions" target="_blank">Terms & Condition</a> and
+            <a class="fw-bold text-dark text-decoration-none" href="/privacy-policy" target="_blank">Privacy Policy </a> 
+            by join WasteTrade
+          </mat-checkbox>
           @if (
             formGroup.get("acceptTerm")?.invalid &&
             formGroup.get("acceptTerm")?.touched
