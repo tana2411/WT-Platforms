@@ -3,6 +3,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 import { LoginComponent } from '../login/login.component';
+import { SetPasswordComponent } from '../set-password/set-password.component';
 
 type ComponentName = 'login' | 'forgot-password' | 'set-password';
 
@@ -10,7 +11,12 @@ type ComponentName = 'login' | 'forgot-password' | 'set-password';
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.scss'],
-  imports: [CommonModule, ForgotPasswordComponent, LoginComponent],
+  imports: [
+    CommonModule,
+    ForgotPasswordComponent,
+    LoginComponent,
+    SetPasswordComponent,
+  ],
 })
 export class LoginPageComponent implements OnInit {
   contentName = signal<ComponentName | undefined>(undefined);

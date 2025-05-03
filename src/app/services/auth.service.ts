@@ -19,7 +19,7 @@ export class AuthService {
   login({ email, password }: RequestLoginParams) {
     return this.http
       .post<ResponseLogin>(
-        'https://wastetrade-api-dev.b13devops.com/auth/login',
+        'https://wastetrade-api-dev.b13devops.com/login',
         {
           email,
           password,

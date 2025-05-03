@@ -67,7 +67,8 @@ input::placeholder {
   }
 }
 
-.mat-mdc-form-field-subscript-wrapper {
+.mat-mdc-form-field-subscript-wrapper,
+.mat-mdc-form-field-error {
   margin: 0 !important;
   padding: 0;
 }
