@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { UnAuthLayoutComponent } from './layout/un-auth-layout/un-auth-layout.component';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
-import { LoginComponent } from './routes/logins/login/login.component';
+import { LoginComponent } from './routes/login/login.component';
 import { TradingFlatformFormComponent } from './routes/registrations/trading-flatform-form/trading-flatform-form.component';
 import { HaulageFormComponent } from './routes/registrations/haulage-form/haulage-form.component';
 import { RegistrationPendingResultComponent } from './routes/registrations/registration-pending-result/registration-pending-result.component';

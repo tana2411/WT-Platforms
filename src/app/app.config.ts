@@ -7,12 +7,8 @@ import { apiBaseUrlInterceptor } from './interceptors/base-url.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }), 
+    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(
-      withInterceptors([
-        apiBaseUrlInterceptor
-      ])
-    )
-  ]
+    provideHttpClient(withInterceptors([apiBaseUrlInterceptor])),
+  ],
 };

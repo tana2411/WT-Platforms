@@ -54,6 +54,10 @@ body {
   color: --var(on-surface);
 }
 
+input::placeholder {
+  color: #1d1d1b80 !important;
+}
+
 .auto-hide-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;

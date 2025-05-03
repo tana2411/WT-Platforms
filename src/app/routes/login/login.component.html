@@ -1,0 +1,78 @@
+<div class="page-wrapper mx-auto">
+  <div
+    class="border border-radius fs-3 p-3 background-primary border-radius text-white text-center mt-5 mb-4"
+  >
+    Need a WasteTrade account?
+    <a
+      routerLink="/register"
+      class="text-white fw-bold text-decoration-underline"
+      >Create an account</a
+    >
+  </div>
+
+  <div class="border border-radius form-container py-4 px-5">
+    <h4 class="fw-bold fs-1 mb-3">Login</h4>
+    <h6 class="text-primary mb-4 fw-bold">Welcome Back!</h6>
+
+    <form [formGroup]="formGroup">
+      <div class="col-12 mb-4">
+        <mat-label class="fw-bold mb-1">USERNAME OR EMAIL ADDRESS</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            matInput
+            placeholder="ex. sample@gmail.com"
+            type="text"
+            formControlName="email"
+          />
+        </mat-form-field>
+        @if (
+          formGroup.get("email")?.hasError("required") &&
+          formGroup.get("email")?.touched
+        ) {
+          <mat-error i18n>This field is required</mat-error>
+        }
+        @if (formGroup.get("email")?.hasError("email")) {
+          <mat-error i18n>Invalid email address and/or password.</mat-error>
+        }
+      </div>
+
+      <div class="col-12 mb-3">
+        <mat-label class="fw-bold mb-1">PASSWORD</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            matInput
+            type="password"
+            placeholder="******"
+            formControlName="password"
+          />
+        </mat-form-field>
+        @if (
+          formGroup.get("password")?.hasError("required") &&
+          formGroup.get("password")?.touched
+        ) {
+          <mat-error i18n>This field is required</mat-error>
+        }
+        @if (serverError()) {
+          <mat-error i18n>Invalid email address and/or password.</mat-error>
+        }
+      </div>
+
+      <button
+        type="submit"
+        class="text-white w-100 text-center background-primary border-radius border p-3 mt-4 fw-bold fs-5"
+        (click)="send()"
+      >
+        LOGIN
+      </button>
+
+      <div class="text-center mt-4 pb-2 fw-bold">
+        <a
+          routerLink="/forgot-password"
+          class="text-decoration-underline text-success"
+        >
+          LOST YOUR PASSWORD?
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
