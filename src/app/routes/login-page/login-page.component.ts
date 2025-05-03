@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 import { LoginComponent } from '../login/login.component';
 import { SetPasswordComponent } from '../set-password/set-password.component';
+import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 
 type ComponentName = 'login' | 'forgot-password' | 'set-password';
 
@@ -16,6 +17,7 @@ type ComponentName = 'login' | 'forgot-password' | 'set-password';
     ForgotPasswordComponent,
     LoginComponent,
     SetPasswordComponent,
+    UnAuthLayoutComponent,
   ],
 })
 export class LoginPageComponent implements OnInit {

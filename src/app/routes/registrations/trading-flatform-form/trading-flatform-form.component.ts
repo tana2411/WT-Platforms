@@ -1,4 +1,4 @@
-import { Component, effect, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
 import {
   MatCheckboxChange,
   MatCheckboxModule,
@@ -19,6 +19,12 @@ import {
 } from '@angular/forms';
 import { InputWithConfirmControlComponent } from '../../../share/ui/input-with-confirm-control/input-with-confirm-control.component';
 import { PasswordStrength } from '../../../share/validators/password-strength';
+import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-control/telephone-form-control.component';
+import { Router } from '@angular/router';
+import { RegistrationsService } from 'app/services/registrations.service';
+import { catchError, finalize, of } from 'rxjs';
+import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
+import {MatSnackBar} from '@angular/material/snack-bar'
 @Component({
   selector: 'app-trading-flatform-form',
   templateUrl: './trading-flatform-form.component.html',
@@ -32,6 +38,8 @@ import { PasswordStrength } from '../../../share/validators/password-strength';
     MatButtonModule,
     ReactiveFormsModule,
     InputWithConfirmControlComponent,
+    TelephoneFormControlComponent,
+    UnAuthLayoutComponent,
   ],
 })
 export class TradingFlatformFormComponent implements OnInit {
@@ -59,43 +67,51 @@ export class TradingFlatformFormComponent implements OnInit {
     firstName: new FormControl<string | null>(null, [Validators.required]),
     lastName: new FormControl<string | null>(null, [Validators.required]),
     jobTitle: new FormControl<string | null>(null, [Validators.required]),
-    countryCode: new FormControl<string | null>(null, [Validators.required]),
-    telePhone: new FormControl<string | null>(null, [Validators.required]),
+    phoneNumber: new FormControl<string | null>(null, [Validators.required]),
     email: new FormControl<string | null>(null, [Validators.required]),
     password: new FormControl<string | null>(null, [
       Validators.required,
       Validators.min(8),
       PasswordStrength,
     ]),
-    discoveryChannel: new FormControl<string | null>(null, [
+    whereDidYouHearAboutUs: new FormControl<string | null>(null, [
       Validators.required,
     ]),
-    companyType: new FormControl<string | null>(null),
-    companyInterest: new FormControl<string | null>(null),
-    materials: new FormArray([], [Validators.required]),
+    otherMaterial: new FormControl<string | null>(null),
+    companyName: new FormControl<string | null>(null, [Validators.required]),
+    companyInterest: new FormControl<string | null>(null, [
+      Validators.required,
+    ]),
+    favoriteMaterials: new FormArray([], [Validators.required]),
+    acceptTerm: new FormControl<boolean | null>(null, [Validators.requiredTrue]),
   });
 
   selectAllMaterial = signal(false);
   showOtherMaterial = signal(false);
+  submitting = signal(false);
+  router = inject(Router);
+  service = inject(RegistrationsService);
+  snackBar = inject(MatSnackBar)
 
   constructor() {
     effect(() => {
       if (this.selectAllMaterial()) {
-        this.materials.clear()
+        this.materials.clear();
         this.materialsAccept.forEach((item) => {
           this.materials.push(new FormControl(item));
         });
       } else {
         this.materials.clear();
       }
-      this.materials.updateValueAndValidity()
+      this.materials.updateValueAndValidity();
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   get materials(): FormArray {
-    return this.formGroup.get('materials') as FormArray;
+    return this.formGroup.get('favoriteMaterials') as FormArray;
   }
 
   onSelectedMaterial(event: MatCheckboxChange, item: string) {
@@ -103,16 +119,12 @@ export class TradingFlatformFormComponent implements OnInit {
 
     if (event.checked) {
       if (!isOther) {
-        const otherIdx = this.materials.controls.findIndex(
-          (control) => control.value === 'Other',
-        );
-        if (otherIdx !== -1) {
-          this.materials.removeAt(otherIdx);
-          this.showOtherMaterial.set(false);
-        }
+        this.showOtherMaterial.set(false);
+        this.materials.push(new FormControl(item));
+      } else {
+        this.showOtherMaterial.set(true);
+        this.formGroup.get('otherMaterial')?.setValidators([Validators.required]);
       }
-
-      this.materials.push(new FormControl(item));
     } else {
       const idx = this.materials.controls.findIndex(
         (control) => control.value === item,
@@ -121,14 +133,60 @@ export class TradingFlatformFormComponent implements OnInit {
         this.materials.removeAt(idx);
       }
     }
-    this.showOtherMaterial.set(
-      this.materials.controls.some((control) => control.value === 'Other'),
-    );
-    this.materials.updateValueAndValidity()
+    this.materials.updateValueAndValidity();
+    this.formGroup.updateValueAndValidity();
   }
 
   send() {
-    this.formGroup.markAllAsTouched()
-    console.log(this.formGroup.value);
+    if (this.formGroup.invalid) {
+      return;
+    }
+
+    this.formGroup.markAllAsTouched();
+    const {
+      favoriteMaterials,
+      companyInterest,
+      email,
+      password,
+      firstName,
+      lastName,
+      prefix,
+      jobTitle,
+      whereDidYouHearAboutUs,
+      phoneNumber,
+    } = this.formGroup.value;
+    console.log(this.formGroup);
+    const payload: any = {
+      email,
+      password,
+      firstName,
+      lastName,
+      prefix,
+      jobTitle,
+      phoneNumber,
+      whereDidYouHearAboutUs,
+      companyName: '',
+      companyInterest: companyInterest === 'Both' ? ['Buyer', 'Seller'] : [companyInterest],
+      favoriteMaterials
+    };
+
+    console.log(payload);
+    this.submitting.set(true);
+
+    this.service.registerTrading(payload).pipe(
+      finalize(() => {
+        this.submitting.set(false)
+      }),
+      catchError((err) => {
+        if(err) {
+          this.snackBar.open('An error occur while execute request, please try again.', 'Ok', {duration: 3000})
+        }
+        return of(null);
+      }),
+    ).subscribe(result => {
+      if (result) {
+        this.router.navigate(['/public/account-pending-result']);
+      }
+    });
   }
 }

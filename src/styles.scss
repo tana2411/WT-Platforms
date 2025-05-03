@@ -20,10 +20,11 @@ $enable-dark-mode: false;
 @import "bootstrap/scss/utilities";
 @import "bootstrap/scss/utilities/api";
 
-@import "styles/elements";
-@import "styles/materials";
-@import "styles/variables";
-@import "styles/themes/border";
+
+@import 'styles/elements';
+@import 'styles/materials';
+@import 'styles/variables';
+@import 'styles/themes';
 
 @include mat.core();
 
@@ -34,16 +35,17 @@ body {
 }
 
 html {
-  @include mat.theme(
-    (
-      color: (
-        primary: my-theme.$primary-palette,
-        tertiary: my-theme.$tertiary-palette,
-      ),
-      typography: Barlow,
-      density: 0,
-    )
-  );
+  @include mat.theme((
+    color: (
+      primary: my-theme.$primary-palette,
+      tertiary: my-theme.$tertiary-palette,
+    ),
+    typography: Barlow,
+    density: 0,
+  ));
+
+  --mdc-outlined-button-label-text-color: #1D1D1B;
+  --mdc-outlined-button-outline-width: 2px;
 }
 
 body {
