@@ -1,0 +1,18 @@
+services:
+
+  frontend:
+    build:
+      context: .
+    restart: always
+    container_name: frontend
+    networks:
+      - frontend
+    ports:
+      - '8080:80'
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+
+networks:
+  frontend:
+    driver: bridge
