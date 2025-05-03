@@ -1,0 +1,112 @@
+<div class="col-md-9 mt-5 mx-auto">
+  <div class="border border-2 border-radius bg-white border-dark rounded py-3 px-5">
+    <div class="d-flex justify-content-between position-relative">
+      <div class="d-flex flex-column align-items-center" style="z-index: 1;">
+        <div class="rounded-circle badge success-badge d-flex justify-content-center align-items-center">
+          1
+        </div>
+        <span class="mt-2 text-center primary fw-bold" i18n>REGISTRATION</span>
+      </div>
+  
+      <div class="border border-1 background-primary position-absolute" style="height: 5px; top: 12px; left: 40px; right: 50%;"></div>
+      
+      <div class="d-flex flex-column align-items-center" style="z-index: 1;">
+        <div class="rounded-circle badge d-flex justify-content-center align-items-center" 
+          [class.success-badge]="type == 'completed'" 
+          [class.success-outline-badge]="type == 'completing'" 
+          [class.error-badge]="type == 'pending'" 
+        >
+          2
+        </div>
+        <span class="mt-2 text-center fw-bold" 
+          [class.primary]="type == 'completed' || type === 'completing'" 
+          [class.error]="type == 'pending'" 
+          i18n
+        >
+          COMPLETE ACCOUNT
+        </span>
+      </div>
+
+      <div class="border border-1 position-absolute"
+        [class.background-primary]="type == 'completed'"
+        [class.background-dark]="type == 'pending' || type === 'completing'"
+        style="height: 5px; top: 12px; left: 50%; right: 50px;">
+      </div>
+
+      <div class="d-flex flex-column align-items-center" style="z-index: 1;">
+        <div class="rounded-circle badge d-flex justify-content-center align-items-center" 
+          [class.success-badge]="type == 'completed'" 
+          [class.pending-badge]="type == 'pending' || type === 'completing'" 
+        >
+          3
+        </div>
+        <span class="mt-2 text-center fw-bold" [class.primary]="type == 'completed'" i18n>PENDING REVIEW</span>
+      </div>
+    </div>
+  </div>
+
+  @if (!showStatusOnly) {
+    <div class="border rounded background-primary h-100 text-white p-4 mt-3">
+      <mat-icon class="w-100 text-center" style="font-size: 90px; height: 90px">error</mat-icon>
+  
+      <div class="text-center mt-3">
+        <h2>
+          {{ type == 'pending' ? ('Thank you for registering!' ) : ('Thank you for completing account setup' ) }}
+        </h2>
+      </div>
+  
+      @if (type == 'pending') {
+        <div class="d-flex justify-content-center mt-4">
+          <div class="d-flex align-items-center justify-content-center col-10 border py-3 px-4 rounded background-on-error">
+            <div class="w-25 d-flex justify-content-center me-3">
+              <mat-icon class="error" style="font-size: 40px; height: 40px; width: 40px">error</mat-icon>
+            </div>
+            <div class="text-dark fw-500 fs-16" i18n>
+              You can start buying and selling material now, but please note that
+              all transaction will be pending until you upload your company
+              document.
+            </div>
+          </div>
+        </div>
+  
+        <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-center">
+          <div class="col-4">
+            <button class="w-100 text-center bg-white rounded border p-2 primary fw-bold" i18n>
+              COMPLETE ACCOUNT
+            </button>
+          </div>
+          <div class="col-4">
+            <button class="w-100 text-center bg-dark rounded border p-2 text-white fw-bold" i18n>
+              GO TO THE PLATFORM
+            </button>
+          </div>
+        </div>
+  
+      } @else { 
+        <div class="text-white col-8 mx-auto text-center" i18n>
+          You can now begin buying and selling. Meanwhile, our admin team is in the process of verifying your account detail. You will receive an email notification once the verification complete.
+        </div>
+  
+        <div class="d-flex flex-column align-items-center mt-5">
+          <div class="col-4 mb-3">
+            <button class="w-100 text-center bg-white rounded border p-2 primary fw-bold" i18n>
+              BUY MATERIAL
+            </button>
+          </div>
+          <div class="col-4 mb-3">
+            <button class="w-100 text-center background-primary rounded border p-2 text-white fw-bold" i18n>
+              SELL MATERIAL
+            </button>
+          </div>
+          <div class="col-4">
+            <button class="w-100 text-center bg-dark rounded border p-2 text-white fw-bold" i18n>
+              LIST WANTED MATERIAL
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  
+</div>
