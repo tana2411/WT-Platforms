@@ -1,7 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { User } from '../types/auth';
-import { RequestLoginParams, ResponseLogin } from '../types/requests/auth';
+import {
+  RequestForgotPasswordParams,
+  RequestLoginParams,
+  ResponseLogin,
+} from '../types/requests/auth';
 import { tap } from 'rxjs';
 
 @Injectable({
@@ -42,6 +46,13 @@ export class AuthService {
           localStorage.setItem('accessToken', MOCK_RES.data.user.accessToken);
         }),
       );
+  }
+
+  forgotPassword(params: RequestForgotPasswordParams) {
+    return this.http.post(
+      'https://wastetrade-api-dev.b13devops.com/auth/forgot-password',
+      params,
+    );
   }
 
   getUser() {

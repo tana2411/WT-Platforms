@@ -13,3 +13,7 @@ export type ResponseLogin = {
     };
   };
 };
+
+export type RequestForgotPasswordParams = {
+  email: string;
+};
