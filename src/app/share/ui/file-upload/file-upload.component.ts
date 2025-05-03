@@ -120,7 +120,9 @@ export class FileUploadComponent implements OnInit {
       validFiles.push(file);
     }
 
-    this.selectedFile.update((current) => [...current, ...validFiles]);
+    this.multiple
+      ? this.selectedFile.update((current) => [...current, ...validFiles])
+      : this.selectedFile.set(validFiles);
     this.fileReady.emit(this.selectedFile());
   }
 

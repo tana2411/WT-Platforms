@@ -27,14 +27,25 @@ import {
   MatRadioModule,
 } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { checkPasswordStrength, pwdStrengthValidator } from '../../../share/validators/password-strength';
+import {
+  checkPasswordStrength,
+  pwdStrengthValidator,
+} from '../../../share/validators/password-strength';
 import { InputWithConfirmControlComponent } from '../../../share/ui/input-with-confirm-control/input-with-confirm-control.component';
 import { MatInputModule } from '@angular/material/input';
 import { FileUploadComponent } from '../../../share/ui/file-upload/file-upload.component';
 import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-control/telephone-form-control.component';
 import { Router } from '@angular/router';
 import { RegistrationsService } from 'app/services/registrations.service';
-import { catchError, concatMap, debounceTime, finalize, of, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  concatMap,
+  debounceTime,
+  finalize,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
@@ -220,16 +231,17 @@ export class HaulageFormComponent implements OnInit {
         }
       });
 
-    this.formGroup.get('password')?.valueChanges.pipe(
-      takeUntilDestroyed()
-    ).subscribe((value) => {
-      if (value) {
-        this.pwdStrength.set(checkPasswordStrength(value));
-      }
-    });
+    this.formGroup
+      .get('password')
+      ?.valueChanges.pipe(takeUntilDestroyed())
+      .subscribe((value) => {
+        if (value) {
+          this.pwdStrength.set(checkPasswordStrength(value));
+        }
+      });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   onAreaChange(event: MatRadioChange) {
     if (event.value === 'EU') {
@@ -330,7 +342,7 @@ export class HaulageFormComponent implements OnInit {
             }
             this.authService.setToken(res.data.accessToken);
             return this.authService.checkToken();
-          })
+          }),
         )
         .subscribe((result) => {
           if (result) {
