@@ -1,7 +1,8 @@
 <app-un-auth-layout>
   <div class="col-md-6 mx-auto">
     <div
-      class="border rounded p-3 background-primary border-radius text-white text-center mt-5 mb-3" i18n
+      class="border rounded p-3 background-primary border-radius text-white text-center mt-5 mb-3"
+      i18n
     >
       Do you have a WasteTrade account?
       <a href="" class="text-white fw-bold text-decoration-underline">Login</a>
@@ -71,7 +72,10 @@
             }
           </mat-form-field>
         </div>
-        <app-telephone-form-control formControlName="phoneNumber" [isRequired]="true"></app-telephone-form-control>
+        <app-telephone-form-control
+          formControlName="phoneNumber"
+          [isRequired]="true"
+        ></app-telephone-form-control>
         <div class="row mb-4">
           <app-input-with-confirm-control
             valueLabel="EMAIL*"
@@ -97,24 +101,44 @@
           @if (formGroup.get("password")?.hasError("pwdStrengthInvalid")) {
             <div class="col-12">
               <mat-error i18n>
-                Invalid password strength. Password must contain at least 8 characters and at least 1 number.
+                Invalid password strength. Password must contain at least 8
+                characters and at least 1 number.
+              </mat-error>
+            </div>
+          }
+          @if (formGroup.get("password")?.hasError("minlength")) {
+            <div class="col-12 pl-2">
+              <mat-error class="mat-error" i18n>
+                Password requires a minimum of 8 characters.
               </mat-error>
             </div>
           }
           @if (pwdStrength(); as pwdStrength) {
             <div class="col-12">
               @if (pwdStrength === "weak") {
-                <div class="alert alert-danger font-bold mt-2" role="alert" i18n>
+                <div
+                  class="alert alert-danger font-bold mt-2"
+                  role="alert"
+                  i18n
+                >
                   Weak password
                 </div>
               }
               @if (pwdStrength === "medium") {
-                <div class="alert alert-warning font-bold mt-2" role="alert" i18n>
+                <div
+                  class="alert alert-warning font-bold mt-2"
+                  role="alert"
+                  i18n
+                >
                   Medium password
                 </div>
               }
               @if (pwdStrength === "strong") {
-                <div class="alert alert-success font-bold mt-2" role="alert" i18n>
+                <div
+                  class="alert alert-success font-bold mt-2"
+                  role="alert"
+                  i18n
+                >
                   Strong password
                 </div>
               }
@@ -122,7 +146,9 @@
           }
         </div>
         <div class="col-12 mb-4">
-          <mat-label class="fw-bold mb-1" i18n>WHERE DID YOU HEAR ABOUT US*</mat-label>
+          <mat-label class="fw-bold mb-1" i18n
+            >WHERE DID YOU HEAR ABOUT US*</mat-label
+          >
           <mat-form-field appearance="outline" class="w-100">
             <mat-select
               placeholder="Please select"
@@ -130,14 +156,20 @@
             >
               <mat-option value="google" i18n>Google Search</mat-option>
               <mat-option value="facebook" i18n>PRSE Trade Show</mat-option>
-              <mat-option value="linkedin" i18n>Plastics Live Trade Show</mat-option>
-              <mat-option value="instagram" i18n>Sustainability show</mat-option>
+              <mat-option value="linkedin" i18n
+                >Plastics Live Trade Show</mat-option
+              >
+              <mat-option value="instagram" i18n
+                >Sustainability show</mat-option
+              >
               <mat-option value="email" i18n> K-Show</mat-option>
               <mat-option value="referral" i18n>Interplas</mat-option>
               <mat-option value="event" i18n>Plast 2023</mat-option>
               <mat-option value="print" i18n>Word of mouth</mat-option>
             </mat-select>
-            @if (formGroup.get("whereDidYouHearAboutUs")?.hasError("required")) {
+            @if (
+              formGroup.get("whereDidYouHearAboutUs")?.hasError("required")
+            ) {
               <mat-error i18n>This field is required </mat-error>
             }
           </mat-form-field>
@@ -163,7 +195,7 @@
             class="d-flex justify-content-between col-8"
           >
             @for (item of companyInterests; track item) {
-              <mat-radio-button  [value]="item">
+              <mat-radio-button [value]="item">
                 {{ item }}
               </mat-radio-button>
             }
@@ -172,7 +204,9 @@
             formGroup.get("companyInterest")?.hasError("required") &&
             formGroup.get("companyInterest")?.touched
           ) {
-            <mat-error class="mt-0 mat-error" i18n>This field is required</mat-error>
+            <mat-error class="mt-0 mat-error" i18n
+              >This field is required</mat-error
+            >
           }
         </div>
         <div class="col-12 mb-5">
@@ -181,8 +215,8 @@
             <span class="fw-normal">(MULTIPLE SELECTION)*</span></mat-label
           >
           <div class="col-12">
-            <mat-checkbox 
-            class="tri-state-checkbox"
+            <mat-checkbox
+              class="tri-state-checkbox"
               color="primary"
               (click)="selectAllMaterial.set(!selectAllMaterial())"
               >{{
@@ -201,8 +235,13 @@
                 >
               </div>
             }
-            @if (materials.invalid && (materials.touched || formGroup.touched)) {
-              <mat-error class="mat-error" i18n>This field is required</mat-error>
+            @if (
+              formGroup.get("materials")?.invalid &&
+              formGroup.get("materials")?.touched
+            ) {
+              <mat-error class="mat-error" i18n
+                >This field is required</mat-error
+              >
             }
           </div>
           @if (showOtherMaterial()) {
@@ -225,9 +264,20 @@
         <hr />
         <div class="col-12 mt-3">
           <mat-checkbox color="primary" formControlName="acceptTerm" i18n
-            >I accept the 
-            <a class="fw-bold text-dark text-decoration-none" href="/termsandconditions" target="_blank">Terms & Condition</a> and
-            <a class="fw-bold text-dark text-decoration-none" href="/privacy-policy" target="_blank">Privacy Policy </a> 
+            >I accept the
+            <a
+              class="fw-bold text-dark text-decoration-none"
+              href="/termsandconditions"
+              target="_blank"
+              >Terms & Condition</a
+            >
+            and
+            <a
+              class="fw-bold text-dark text-decoration-none"
+              href="/privacy-policy"
+              target="_blank"
+              >Privacy Policy
+            </a>
             by join WasteTrade
           </mat-checkbox>
           @if (
@@ -257,4 +307,3 @@
     </div>
   </div>
 </app-un-auth-layout>
-

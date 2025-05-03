@@ -27,14 +27,25 @@ import {
   MatRadioModule,
 } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { checkPasswordStrength, pwdStrengthValidator } from '../../../share/validators/password-strength';
+import {
+  checkPasswordStrength,
+  pwdStrengthValidator,
+} from '../../../share/validators/password-strength';
 import { InputWithConfirmControlComponent } from '../../../share/ui/input-with-confirm-control/input-with-confirm-control.component';
 import { MatInputModule } from '@angular/material/input';
 import { FileUploadComponent } from '../../../share/ui/file-upload/file-upload.component';
 import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-control/telephone-form-control.component';
 import { Router } from '@angular/router';
 import { RegistrationsService } from 'app/services/registrations.service';
-import { catchError, concatMap, debounceTime, finalize, of, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  concatMap,
+  debounceTime,
+  finalize,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
@@ -104,8 +115,6 @@ export class HaulageFormComponent implements OnInit {
     password: new FormControl<string | null>(null, [
       Validators.minLength(8),
       Validators.required,
-      Validators.min(8),
-      pwdStrengthValidator,
     ]),
 
     companyName: new FormControl<string | null>(null, [
@@ -200,7 +209,7 @@ export class HaulageFormComponent implements OnInit {
     this.formGroup?.valueChanges
       .pipe(takeUntilDestroyed(), debounceTime(300))
       .subscribe((value) => {
-        const { expiryDate } = value;
+        const { expiryDate, password } = value;
         const now = new Date();
         if (!value) return;
 
@@ -218,18 +227,13 @@ export class HaulageFormComponent implements OnInit {
             }
           }
         }
+        if (password) {
+          this.pwdStrength.set(checkPasswordStrength(password));
+        }
       });
-
-    this.formGroup.get('password')?.valueChanges.pipe(
-      takeUntilDestroyed()
-    ).subscribe((value) => {
-      if (value) {
-        this.pwdStrength.set(checkPasswordStrength(value));
-      }
-    });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   onAreaChange(event: MatRadioChange) {
     if (event.value === 'EU') {
@@ -330,7 +334,7 @@ export class HaulageFormComponent implements OnInit {
             }
             this.authService.setToken(res.data.accessToken);
             return this.authService.checkToken();
-          })
+          }),
         )
         .subscribe((result) => {
           if (result) {
