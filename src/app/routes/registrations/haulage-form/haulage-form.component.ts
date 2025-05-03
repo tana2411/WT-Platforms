@@ -2,7 +2,6 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { countries } from './../../../statics/country-data';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   effect,
@@ -60,7 +59,6 @@ import { AuthService } from 'app/services/auth.service';
     MatButtonModule,
   ],
   providers: [provideNativeDateAdapter()],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HaulageFormComponent implements OnInit {
   countryList = countries;
@@ -287,13 +285,11 @@ export class HaulageFormComponent implements OnInit {
       ...value
     } = this.formGroup.value;
 
-    if (this.selectedFile()) {
+    if (this.selectedFile().length > 0) {
+      this.submitting.set(true);
       this.registrationService
         .uploadFileHaulier(this.selectedFile())
         .pipe(
-          tap(() => {
-            this.submitting.set(true);
-          }),
           finalize(() => this.submitting.set(false)),
           concatMap((url) => {
             if (!url) {
@@ -305,7 +301,7 @@ export class HaulageFormComponent implements OnInit {
               fleetType: [value.fleetType],
               areasCovered: [value.areasCovered],
               documentType: wasteLicence ? 'waste_carrier' : null,
-              documentName: this.selectedFile()?.map((file) => file.name),
+              documentName: this.selectedFile()[0].name,
               documentUrl: url,
             };
 
