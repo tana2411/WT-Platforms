@@ -1,8 +1,11 @@
 import { Routes } from '@angular/router';
-import { UnAuthLayoutComponent } from './layout/un-auth-layout/un-auth-layout.component';
-import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 import { TradingFlatformFormComponent } from './routes/registrations/trading-flatform-form/trading-flatform-form.component';
 import { HaulageFormComponent } from './routes/registrations/haulage-form/haulage-form.component';
+import { RegistrationPendingResultComponent } from './routes/registrations/registration-pending-result/registration-pending-result.component';
+import { RegistrationCompleteResultComponent } from './routes/registrations/registration-complete-result/registration-complete-result.component';
+import { CompanyInformationSectionComponent } from './routes/registrations/company-information-section/company-information-section.component';
+import { CompanyDocumentComponent } from './routes/registrations/company-document/company-document.component';
+import { LoginPageComponent } from './routes/login-page/login-page.component';
 import { TermComponent } from './routes/term/term.component';
 import { PrivacyComponent } from './routes/privacy/privacy.component';
 import {
@@ -14,34 +17,44 @@ import {} from './guards/auth/utils';
 import { GuardRequireRole } from './types/auth';
 
 export const routes: Routes = [
-  {
-    path: '',
-    canActivateChild: [CanActivateUnAuthPage],
-    component: UnAuthLayoutComponent,
-    children: [
-      {
-        path: ROUTES.login,
-        loadComponent: () =>
-          import('./routes/login-page/login-page.component').then(
-            (m) => m.LoginPageComponent,
-          ),
-      },
-      {
-        path: 'trading-platform-form',
+    {
+        path: 'login',
+        canActivate: [CanActivateUnAuthPage],
+        component: LoginPageComponent,
+    },
+    {
+        path: 'termsandconditions',
+        component: TermComponent,
+    },
+    {
+        path: 'privacy-policy',
+        component: PrivacyComponent,
+    },
+    {
+        path: 'create-account',
         component: TradingFlatformFormComponent,
-      },
-      {
-        path: 'haulage-form',
+    },
+    {
+        path: 'create-haulier-account',
         component: HaulageFormComponent,
-      },
-    ],
-  },
-  {
-    path: '',
-    // canActivate: [CanActivateAuthPage],
-    component: AuthLayoutComponent,
-    children: [
-      {
+    },
+    {
+        path: 'account-pending-result',
+        component: RegistrationPendingResultComponent,
+    },
+    {
+        path: 'account-complete-result',
+        component: RegistrationCompleteResultComponent,
+    },
+    {
+        path: 'company-information',
+        component: CompanyInformationSectionComponent,
+    },
+    {
+        path: 'company-document',
+        component: CompanyDocumentComponent,
+    },
+    {
         path: ROUTES.buy,
         canActivate: [CanActivateAuthPage],
         data: {
@@ -55,7 +68,6 @@ export const routes: Routes = [
             (m) => m.MarketPlaceComponent,
           ),
       },
-
       {
         path: ROUTES.haulier,
         canActivate: [CanActivateAuthPage],
@@ -70,7 +82,6 @@ export const routes: Routes = [
             './routes/haulier/haulier-dashboard/haulier-dashboard.component'
           ).then((m) => m.HaulierDashboardComponent),
       },
-
       {
         path: ROUTES.admin,
         canActivate: [CanActivateAuthPage],
@@ -82,27 +93,5 @@ export const routes: Routes = [
             './routes/admin/admin-dashboard/admin-dashboard.component'
           ).then((m) => m.AdminDashboardComponent),
       },
-      // {
-      //     path: 'codeshare-rbd-map',
-      //     loadChildren: () =>
-      //         import('./features/codeshare-rbd-map-bundle.module').then((m) => m.CodeshareRbdMapBundleModule),
-      // },
-      { path: '**', pathMatch: 'full', redirectTo: 'buy' },
-    ],
-  },
-  {
-    path: '',
-    component: UnAuthLayoutComponent,
-    children: [
-      {
-        path: 'termsandconditions',
-        component: TermComponent,
-      },
-      {
-        path: 'privacy-policy',
-        component: PrivacyComponent,
-      },
-    ],
-  },
-  { path: '**', pathMatch: 'full', redirectTo: 'login' },
+    { path: '**', pathMatch: 'full', redirectTo: 'login' },
 ];

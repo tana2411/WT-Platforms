@@ -62,10 +62,10 @@ export class CanActivateUnAuthPage implements CanActivate, CanActivateChild {
     filter((i) => i !== NOT_INITIAL_USER),
     first(),
     tap((user) => {
+      debugger
       if (user) {
         const targetRoute = getDefaultRouteByRole(user as User);
         this.router.navigateByUrl(targetRoute);
-        this.snackbar.open('You do not have access to this platform.');
       }
     }),
     map((user) => !user),

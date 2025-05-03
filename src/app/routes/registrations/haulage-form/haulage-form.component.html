@@ -1,3 +1,519 @@
-<p>
-  haulage-form works!
-</p>
+<app-un-auth-layout>
+  <div class="col-md-6 mx-auto">
+    <div
+      class="border rounded p-3 background-primary border-radius text-white text-center mt-5 mb-4"
+      i18n
+    >
+      Do you have a WasteTrade account?
+      <a href="" class="text-white fw-bold text-decoration-underline">Login</a>
+    </div>
+    <div class="border border-radius p-4 bg-white">
+      <h3 class="my-4 fw-bold" i18n>Haulier Register</h3>
+      <h6 class="mb-3 primary" i18n>PERSONAL INFORMATION</h6>
+      <form [formGroup]="formGroup">
+        <div class="row g-3 mb-4">
+          <div class="col-md-2">
+            <mat-label class="fw-bold mb-1" i18n>PREFIX*</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-select placeholder="Mr." formControlName="prefix">
+                <mat-option value="dr" i18n>Dr.</mat-option>
+                <mat-option value="miss" i18n>Miss.</mat-option>
+                <mat-option value="mr" i18n>Mr.</mat-option>
+                <mat-option value="mrs" i18n>Mrs.</mat-option>
+                <mat-option value="ms" i18n>Ms.</mat-option>
+                <mat-option value="mx" i18n>Mx.</mat-option>
+                <mat-option value="prof" i18n>Prof.</mat-option>
+                <mat-option value="rev" i18n>Rev.</mat-option>
+              </mat-select>
+              @if (formGroup.get("prefix")?.hasError("required")) {
+                <mat-error i18n>This field is required </mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="col-md-5">
+            <mat-label class="fw-bold mb-1" i18n>FIRST NAME*</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+              <input
+                matInput
+                placeholder="e.g. Mark"
+                type="text"
+                formControlName="firstName"
+              />
+              @if (formGroup.get("firstName")?.hasError("required")) {
+                <mat-error i18n>This field is required </mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="col-md-5">
+            <label class="fw-bold" i18n>LAST NAME*</label>
+            <mat-form-field appearance="outline" class="w-100">
+              <input
+                matInput
+                placeholder="e.g. Smith"
+                type="text"
+                formControlName="lastName"
+              />
+              @if (formGroup.get("lastName")?.hasError("required")) {
+                <mat-error i18n>This field is required </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-12 mb-4">
+          <mat-label class="fw-bold mb-1" i18n>JOB TITLE*</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input
+              matInput
+              placeholder="Type here"
+              type="text"
+              formControlName="jobTitle"
+            />
+            @if (formGroup.get("jobTitle")?.hasError("required")) {
+              <mat-error i18n>This field is required </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <app-telephone-form-control
+          [isRequired]="true"
+          formControlName="phoneNumberUser"
+        ></app-telephone-form-control>
+        <div class="row mb-4">
+          <app-input-with-confirm-control
+            valueLabel="EMAIL*"
+            confirmLabel="CONFIRM EMAIL*"
+            placeholder="sample@gmail.com"
+            formControlName="email"
+            [type]="'text'"
+            [isRequired]="true"
+          >
+          </app-input-with-confirm-control>
+        </div>
+        <div class="row mb-4">
+          <app-input-with-confirm-control
+            valueLabel="PASSWORD*"
+            confirmLabel="CONFIRM PASSWORD*"
+            placeholder="Type here"
+            [type]="'password'"
+            formControlName="password"
+            [isRequired]="true"
+          >
+          </app-input-with-confirm-control>
+          <div class="col-12">
+            @if (formGroup.get("password")?.hasError("weak")) {
+              <mat-error class="alert alert-danger fw-bold" i18n
+                >Password weak</mat-error
+              >
+            }
+            @if (formGroup.get("password")?.hasError("medium")) {
+              <mat-error class="alert alert-warning fw-bold" i18n
+                >Password medium</mat-error
+              >
+            }
+            @if (formGroup.get("password")?.hasError("strong")) {
+              <mat-error class="alert alert-success fw-bold" i18n
+                >Password strong</mat-error
+              >
+            }
+          </div>
+        </div>
+
+        <!-- Company information -->
+        <h6 class="mb-4 mt-5 primary" i18n>COMPANY INFORMATION</h6>
+        <div class="col-md-12 mb-4">
+          <label class="fw-bold" i18n>COMPANY NAME*</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input
+              matInput
+              placeholder="es. Waste Trade"
+              type="text"
+              formControlName="companyName"
+            />
+            @if (formGroup.get("companyName")?.hasError("required")) {
+              <mat-error i18n>This field is required </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-12 mb-4">
+          <mat-label class="mb-0 fw-bold" i18n>
+            COULD YOU PLEASE CONFIRM THE COUNTRY WHERE YOUR VAT REGISTRATION IS
+            LOCATED*
+          </mat-label>
+          <mat-radio-group
+            formControlName="vatRegistrationCountry"
+            class="d-flex justify-content-between col-9 radio-mat-error"
+            name="vatRegistrationCountry"
+          >
+            <mat-radio-button value="EU" i18n
+              >EU (European Union)
+            </mat-radio-button>
+            <mat-radio-button value="UK" i18n>
+              United Kingdom
+            </mat-radio-button>
+            <mat-radio-button value="EU" i18n> Other </mat-radio-button>
+          </mat-radio-group>
+          @if (
+            formGroup.get("vatRegistrationCountry")?.hasError("required") &&
+            formGroup.get("vatRegistrationCountry")?.touched
+          ) {
+            <mat-error class="mt-0 mat-error" i18n>
+              This field is required
+            </mat-error>
+          }
+        </div>
+        <div class="col-md-12 mb-4">
+          <label class="fw-bold" i18n>VAT NUMBER*</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input
+              matInput
+              placeholder="Type here"
+              type="text"
+              formControlName="vatNumber"
+            />
+            @if (formGroup.get("vatNumber")?.hasError("required")) {
+              <mat-error i18n>This field is required </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-md-12 mb-4">
+          <label class="fw-bold" i18n>STREET ADDRESS*</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input
+              matInput
+              placeholder="Type here"
+              type="text"
+              formControlName="addressLine1"
+            />
+            @if (formGroup.get("addressLine1")?.hasError("required")) {
+              <mat-error i18n>This field is required </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <mat-label class="fw-bold mb-1" i18n>POST CODE*</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+              <input
+                matInput
+                placeholder="Type here"
+                type="text"
+                formControlName="postalCode"
+              />
+              @if (formGroup.get("postalCode")?.hasError("required")) {
+                <mat-error i18n>This field is required </mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-label class="fw-bold mb-1" i18n>CITY*</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+              <input
+                matInput
+                placeholder="Type here"
+                type="text"
+                formControlName="city"
+              />
+              @if (formGroup.get("city")?.hasError("required")) {
+                <mat-error i18n>This field is required </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <mat-label class="fw-bold mb-1" i18n>COUNTRY*</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-select formControlName="country">
+                @for (item of countryList; track $index; let i = $index) {
+                  <mat-option color="primary" [value]="item.isoCode"
+                    >{{ item.isoCode }} - {{ item.name }}</mat-option
+                  >
+                }
+              </mat-select>
+              @if (formGroup.get("country")?.hasError("required")) {
+                <mat-error i18n>This field is required </mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-label class="fw-bold mb-1" i18n
+              >COUNTRY / STATE / REGION</mat-label
+            >
+            <mat-form-field appearance="outline" class="w-100">
+              <input
+                matInput
+                placeholder="Type here"
+                type="text"
+                formControlName="stateProvince"
+              />
+              @if (formGroup.get("stateProvince")?.hasError("required")) {
+                <mat-error i18n>This field is required </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <mat-label class="fw-bold mb-1" i18n>TELEPHONE*</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+              <input
+                matInput
+                placeholder="Type here"
+                type="text"
+                formControlName="phoneNumberCompany"
+              />
+              @if (formGroup.get("phoneNumberCompany")?.hasError("required")) {
+                <mat-error i18n>This field is required </mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-label class="fw-bold mb-1" i18n>MOBILE</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+              <input
+                matInput
+                placeholder="Type here"
+                type="text"
+                formControlName="mobileNumberCompany"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Additional information -->
+        <h6 class="mt-5 mb-4 primary" i18n>ADDITIONAL INFORMATION</h6>
+        <div class="col-12 mb-4">
+          <mat-label class="mb-0 fw-bold" i18n> FLEET TYPE* </mat-label>
+          <mat-radio-group
+            formControlName="fleetType"
+            class="d-flex justify-content-between col-8 radio-mat-error"
+          >
+            <mat-radio-button value="freightForwarder" i18n
+              >Freight Forwarder
+            </mat-radio-button>
+            <mat-radio-button value="ownerFleet" i18n>
+              Owner Fleet
+            </mat-radio-button>
+          </mat-radio-group>
+          @if (
+            formGroup.get("fleetType")?.hasError("required") &&
+            formGroup.get("fleetType")?.touched
+          ) {
+            <mat-error class="mt-0 mat-error" i18n>
+              This field is required
+            </mat-error>
+          }
+        </div>
+        <div class="col-12 mb-4">
+          <mat-label class="mb-0 fw-bold" i18n>
+            AREAS YOUR COMPANY CAN COVER*
+          </mat-label>
+          <mat-radio-group
+            formControlName="areasCovered"
+            class="d-flex justify-content-between col-8"
+            (change)="onAreaChange($event)"
+          >
+            <mat-radio-button value="UK" i18n> UK only </mat-radio-button>
+            <mat-radio-button value="EU" i18n> Within EU </mat-radio-button>
+            <mat-radio-button value="worldWide" i18n>
+              World Wide
+            </mat-radio-button>
+          </mat-radio-group>
+          @if (
+            formGroup.get("areasCovered")?.hasError("required") &&
+            formGroup.get("areasCovered")?.touched
+          ) {
+            <mat-error class="mt-0 mat-error" i18n>
+              This field is required
+            </mat-error>
+          }
+        </div>
+        @if (showEUcountry()) {
+          <div class="col-12 mb-4">
+            <mat-label class="mb-0 fw-bold" i18n
+              >SELECT THE EU COUNTRY*
+            </mat-label>
+            <mat-checkbox
+              class="d-block"
+              color="primary"
+              (click)="selectAllCountry.set(!selectAllCountry())"
+              >{{
+                selectAllCountry() ? "Deselect All" : "Select All"
+              }}</mat-checkbox
+            >
+            <div class="row px-3">
+              @for (item of euCountries; track $index; let i = $index) {
+                <div class="col-4">
+                  <mat-checkbox
+                    color="primary"
+                    (change)="onSelectedItem($event, item, selectedEuCountries)"
+                    [checked]="selectedEuCountries.value.includes(item)"
+                    >{{ item }}</mat-checkbox
+                  >
+                </div>
+              }
+              @if (selectedEuCountries.invalid && selectedEuCountries.touched) {
+                <mat-error class="mt-0 mat-error" i18n>
+                  This field is required
+                </mat-error>
+              }
+            </div>
+          </div>
+        }
+        <div class="col-12 mb-4">
+          <mat-label class="mb-0 fw-bold" i18n>CONTAINER TYPES* </mat-label>
+          <mat-checkbox
+            class="d-block"
+            color="primary"
+            (click)="selectAllContainerTypes.set(!selectAllContainerTypes())"
+            >{{
+              selectAllContainerTypes() ? "Deselect All" : "Select All"
+            }}</mat-checkbox
+          >
+          <div class="row px-3">
+            @for (item of containerTypes; track $index; let i = $index) {
+              <div class="col-5">
+                <mat-checkbox
+                  color="primary"
+                  (change)="onSelectedItem($event, item, selectedContainerType)"
+                  [checked]="selectedContainerType.value.includes(item)"
+                  >{{ item }}</mat-checkbox
+                >
+              </div>
+            }
+            @if (
+              selectedContainerType.invalid && selectedContainerType.touched
+            ) {
+              <mat-error class="mt-0 mat-error" i18n>
+                This field is required
+              </mat-error>
+            }
+          </div>
+        </div>
+        <div class="col-12 mb-4">
+          <mat-label class="mb-0 fw-bold" i18n>
+            WASTE CARRIER LICENCE*
+          </mat-label>
+          <mat-radio-group
+            formControlName="wasteLicence"
+            class="d-flex justify-content-between col-8"
+            name="wasteLicence"
+          >
+            <mat-radio-button value="true" i18n> Yes </mat-radio-button>
+            <mat-radio-button value="false" i18n>
+              Not Applicable
+            </mat-radio-button>
+          </mat-radio-group>
+          @if (
+            formGroup.get("wasteLicence")?.hasError("required") &&
+            formGroup.get("wasteLicence")?.touched
+          ) {
+            <mat-error class="mt-0 mat-error" i18n>
+              This field is required
+            </mat-error>
+          }
+        </div>
+
+        <!-- Document upload -->
+        <h6 class="mb-4 mt-5 primary" i18n>WASTE CARRIER LICENCE UPLOAD*</h6>
+        <div class="col-12 mb-4">
+          <app-file-upload
+            [maxFile]="6"
+            [multiple]="true"
+            (fileReady)="handleFileReady($event)"
+            [notAcceptable]="['.docx']"
+            (error)="handleFileError($event)"
+          ></app-file-upload>
+
+          @if (fileError()) {
+            <div class="mat-error mt-1 error">{{ fileError() }}</div>
+          }
+        </div>
+        <div class="col-12 mb-4">
+          <mat-label class="fw-bold mb-1" i18n>Expiry Date</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input
+              matInput
+              [matDatepicker]="picker"
+              formControlName="expiryDate"
+            />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+
+            @if (formGroup.get("expiryDate")?.hasError("required")) {
+              <mat-error class="mt-0" i18n> This field is required </mat-error>
+            }
+          </mat-form-field>
+          @if (expiryDateError()) {
+            <mat-error class="alert alert-warning fw-bold" i18n>{{
+              expiryDateError()
+            }}</mat-error>
+          }
+        </div>
+
+        <div class="col-12 mb-4">
+          <mat-label class="fw-bold mb-1" i18n
+            >WHERE DID YOU HEAR ABOUT US*</mat-label
+          >
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select
+              placeholder="Please select"
+              formControlName="whereDidYouHearAboutUs"
+            >
+              <mat-option value="google" i18n>Google Search</mat-option>
+              <mat-option value="facebook" i18n>PRSE Trade Show</mat-option>
+              <mat-option value="linkedin" i18n
+                >Plastics Live Trade Show</mat-option
+              >
+              <mat-option value="instagram" i18n
+                >Sustainability show</mat-option
+              >
+              <mat-option value="email" i18n> K-Show</mat-option>
+              <mat-option value="referral" i18n>Interplas</mat-option>
+              <mat-option value="event" i18n>Plast 2023</mat-option>
+              <mat-option value="print" i18n>Word of mouth</mat-option>
+            </mat-select>
+            @if (
+              formGroup.get("whereDidYouHearAboutUs")?.hasError("required")
+            ) {
+              <mat-error i18n>This field is required </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <hr />
+        <div class="col-12 mt-3">
+          <mat-checkbox color="primary" formControlName="acceptTerm" i18n
+            >I accept the <span class="fw-bold">Terms & Condition</span> and
+            <span class="fw-bold">Privacy Policy </span> by join
+            WasteTrade</mat-checkbox
+          >
+          @if (
+            formGroup.get("acceptTerm")?.invalid &&
+            formGroup.get("acceptTerm")?.touched
+          ) {
+            <mat-error class="mt-0 mat-error" i18n>
+              This field is required
+            </mat-error>
+          }
+        </div>
+        <div class="col-12 mt-3">
+          <button
+            type="submit"
+            color="primary"
+            mat-flat-button
+            class="w-100 big-btn"
+            [class.overlay-spinner]="submitting()"
+            [disabled]="formGroup.invalid || !selectedFile().length"
+            (click)="send()"
+            i18n
+          >
+            CREATE ACCOUNT
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</app-un-auth-layout>

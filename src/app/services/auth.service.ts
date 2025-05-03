@@ -53,26 +53,26 @@ export class AuthService {
 
   // todo: call API get me to set user
   async checkToken() {
-    const mockUser = await new Promise<User | undefined>((res, reject) => {
-      console.log({ res });
-      const MOCK_RES = {
-        data: {
-          user: {
-            id: 1,
-            email: 'thinguyen@b13technology.com',
-            accessToken:
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiY3JlYXRlZEF0IjoiMjAyNS0wNC0yOFQwMjozNzoxNy44NDdaIiwiaWF0IjoxNzQ1ODA3ODM3LCJleHAiOjM0OTE2MjU2NzR9.LcFPYrz9HS7W5mv-arwO39zv_0XUW1PWTjbBkuEfvgM',
-            globalRole: 'user',
-            isHaulier: false,
-          },
-        },
-      } as ResponseLogin;
+    // const mockUser = await new Promise<User | undefined>((res, reject) => {
+    //   console.log({ res });
+    //   const MOCK_RES = {
+    //     data: {
+    //       user: {
+    //         id: 1,
+    //         email: 'thinguyen@b13technology.com',
+    //         accessToken:
+    //           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiY3JlYXRlZEF0IjoiMjAyNS0wNC0yOFQwMjozNzoxNy44NDdaIiwiaWF0IjoxNzQ1ODA3ODM3LCJleHAiOjM0OTE2MjU2NzR9.LcFPYrz9HS7W5mv-arwO39zv_0XUW1PWTjbBkuEfvgM',
+    //         globalRole: 'user',
+    //         isHaulier: false,
+    //       },
+    //     },
+    //   } as ResponseLogin;
 
-      res(MOCK_RES.data.user as User);
+    //   res(MOCK_RES.data.user as User);
       // res(undefined);
-    });
+    // });
 
-    this._user$.next(mockUser);
-    localStorage.setItem('accessToken', mockUser?.accessToken ?? '');
+    // this._user$.next(mockUser);
+    // localStorage.setItem('accessToken', mockUser?.accessToken ?? '');
   }
 }
