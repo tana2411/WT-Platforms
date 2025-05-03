@@ -1,5 +1,25 @@
 @import '../variables';
 
 .background-primary {
-    background-color: $primary;
-  }
+  background-color: $primary;
+}
+
+.background-on-primary {
+  background-color: $on-primary;
+}
+
+.background-error {
+  background-color: $error;
+}
+
+.background-info {
+  background-color: $info;
+}
+
+.background-dark {
+  background-color: $black;
+}
+
+.background-on-error {
+  background-color: $on-error;
+}
