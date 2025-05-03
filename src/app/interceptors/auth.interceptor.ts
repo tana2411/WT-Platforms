@@ -4,25 +4,24 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
+  HttpHandlerFn,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-@Injectable()
-export class AuthInterceptor implements HttpInterceptor {
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler,
-  ): Observable<HttpEvent<any>> {
-    const accessToken = localStorage.getItem('accessToken');
+export const ACCESS_TOKEN_KEY = 'accessToken';
+export function AuthInterceptor(
+  request: HttpRequest<unknown>,
+  next: HttpHandlerFn,
+): Observable<HttpEvent<unknown>> {
+  const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
 
-    if (accessToken) {
-      request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-    }
-
-    return next.handle(request);
+  if (accessToken) {
+    request = request.clone({
+      setHeaders: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
   }
+
+  return next(request);
 }

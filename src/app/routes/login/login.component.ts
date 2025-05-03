@@ -8,8 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { RouterLink } from '@angular/router';
-import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
+import { Router, RouterLink } from '@angular/router';
+import { getDefaultRouteByRole } from 'app/guards/auth/utils';
 
 @Component({
   selector: 'app-login',
@@ -33,7 +33,10 @@ export class LoginComponent {
 
   serverError = signal('');
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {
     this.setupForm();
   }
 
@@ -56,6 +59,10 @@ export class LoginComponent {
     }
 
     this.authService.login({ email, password }).subscribe({
+      next: (user) => {
+        const targetRoute = getDefaultRouteByRole(user);
+        this.router.navigateByUrl(targetRoute);
+      },
       error: (err) => {
         this.serverError.set('Invalid email address and/or password.');
       },

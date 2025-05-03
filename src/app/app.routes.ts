@@ -15,12 +15,17 @@ import {
 import { ROUTES } from './constants/route.const';
 import {} from './guards/auth/utils';
 import { GuardRequireRole } from './types/auth';
+import { LogoutComponent } from './routes/logout/logout.component';
 
 export const routes: Routes = [
     {
         path: 'login',
         canActivate: [CanActivateUnAuthPage],
-        component: LoginPageComponent,
+        loadComponent: () => import('./routes/login-page/login-page.component').then(m => m.LoginPageComponent),
+    },
+    {
+        path: 'logout',
+        component: LogoutComponent,
     },
     {
         path: 'termsandconditions',

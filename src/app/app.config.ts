@@ -9,6 +9,7 @@ import {
 } from './guards/auth/auth.guard';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { apiBaseUrlInterceptor } from './interceptors/base-url.interceptor';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,8 +23,10 @@ export const appConfig: ApplicationConfig = {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { subscriptSizing: 'dynamic' },
     },
+    provideHttpClient(
+      withInterceptors([apiBaseUrlInterceptor, AuthInterceptor]),
+    ),
     CanActivateAuthPage,
     CanActivateUnAuthPage,
-    provideHttpClient(withInterceptors([apiBaseUrlInterceptor])),
   ],
 };
