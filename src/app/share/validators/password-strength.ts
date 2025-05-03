@@ -7,15 +7,15 @@ const numberRegex = /[0-9]/;
 
 export const checkPasswordStrength = (
   value: string,
-): 'week' | 'medium' | 'strong' | null => {
+): 'weak' | 'medium' | 'strong' | null => {
   if (!value) return null;
 
   if (
-    value.length === 8 &&
+    value.length >= 8 &&
     !uppercaseRegex.test(value) &&
     !specialCharsRegex.test(value)
   ) {
-    return 'week';
+    return 'weak';
   }
 
   const passwordPassedCheck = [
@@ -25,7 +25,7 @@ export const checkPasswordStrength = (
     numberRegex.test(value),
   ].filter(Boolean).length;
 
-  if (value.length >= 8 && value.length <= 11 && passwordPassedCheck === 2) {
+  if (value.length >= 8 && value.length <= 11 && passwordPassedCheck >= 2) {
     return 'medium';
   }
 
@@ -43,7 +43,7 @@ export const pwdStrengthValidator = (
   if (!value) return null;
 
   if (
-    value.length === 8 &&
+    value.length >= 8 &&
     !uppercaseRegex.test(value) &&
     !specialCharsRegex.test(value)
   ) {
@@ -57,7 +57,7 @@ export const pwdStrengthValidator = (
     numberRegex.test(value),
   ].filter(Boolean).length;
 
-  if (value.length >= 8 && value.length <= 11 && passwordPassedCheck === 2) {
+  if (value.length >= 8 && value.length <= 11 && passwordPassedCheck >= 2) {
     return null;
   }
 

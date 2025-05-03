@@ -115,8 +115,6 @@ export class HaulageFormComponent implements OnInit {
     password: new FormControl<string | null>(null, [
       Validators.minLength(8),
       Validators.required,
-      Validators.min(8),
-      pwdStrengthValidator,
     ]),
 
     companyName: new FormControl<string | null>(null, [
@@ -211,7 +209,7 @@ export class HaulageFormComponent implements OnInit {
     this.formGroup?.valueChanges
       .pipe(takeUntilDestroyed(), debounceTime(300))
       .subscribe((value) => {
-        const { expiryDate } = value;
+        const { expiryDate, password } = value;
         const now = new Date();
         if (!value) return;
 
@@ -229,14 +227,8 @@ export class HaulageFormComponent implements OnInit {
             }
           }
         }
-      });
-
-    this.formGroup
-      .get('password')
-      ?.valueChanges.pipe(takeUntilDestroyed())
-      .subscribe((value) => {
-        if (value) {
-          this.pwdStrength.set(checkPasswordStrength(value));
+        if (password) {
+          this.pwdStrength.set(checkPasswordStrength(password));
         }
       });
   }

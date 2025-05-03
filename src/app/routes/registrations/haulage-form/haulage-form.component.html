@@ -101,9 +101,16 @@
           </app-input-with-confirm-control>
           @if (formGroup.get("password")?.hasError("pwdStrengthInvalid")) {
             <div class="col-12">
-              <mat-error i18n>
+              <mat-error class="mat-error" i18n>
                 Invalid password strength. Password must contain at least 8
                 characters and at least 1 number.
+              </mat-error>
+            </div>
+          }
+          @if (formGroup.get("password")?.hasError("minlength")) {
+            <div class="col-12 pl-2">
+              <mat-error class="mat-error" i18n>
+                Password requires a minimum of 8 characters.
               </mat-error>
             </div>
           }
@@ -388,7 +395,7 @@
           <mat-checkbox
             class="d-block"
             color="primary"
-            (click)="selectAllContainerTypes.set(!selectAllContainerTypes())"
+            (change)="selectAllContainerTypes.set(!selectAllContainerTypes())"
             >{{
               selectAllContainerTypes() ? "Deselect All" : "Select All"
             }}</mat-checkbox
