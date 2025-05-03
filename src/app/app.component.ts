@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
+import { AuthService } from './services/auth.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
@@ -9,10 +11,19 @@ import { MatRadioModule } from '@angular/material/radio';
     RouterOutlet,
     MatCheckboxModule,
     MatRadioModule,
+    MatSnackBarModule,
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'watse-trade';
+
+  constructor(
+    private authService: AuthService
+  ) { }
+
+  ngOnInit() {
+    this.authService.checkToken()
+  }
 }

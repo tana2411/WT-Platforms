@@ -8,10 +8,18 @@ import { CompanyDocumentComponent } from './routes/registrations/company-documen
 import { LoginPageComponent } from './routes/login-page/login-page.component';
 import { TermComponent } from './routes/term/term.component';
 import { PrivacyComponent } from './routes/privacy/privacy.component';
+import {
+  CanActivateAuthPage,
+  CanActivateUnAuthPage,
+} from './guards/auth/auth.guard';
+import { ROUTES } from './constants/route.const';
+import {} from './guards/auth/utils';
+import { GuardRequireRole } from './types/auth';
 
 export const routes: Routes = [
     {
         path: 'login',
+        canActivate: [CanActivateUnAuthPage],
         component: LoginPageComponent,
     },
     {
@@ -46,5 +54,44 @@ export const routes: Routes = [
         path: 'company-document',
         component: CompanyDocumentComponent,
     },
+    {
+        path: ROUTES.buy,
+        canActivate: [CanActivateAuthPage],
+        data: {
+          requireAuthParams: [
+            GuardRequireRole.SuperAdmin,
+            GuardRequireRole.Trading,
+          ],
+        },
+        loadComponent: () =>
+          import('./routes/market-place/market-place.component').then(
+            (m) => m.MarketPlaceComponent,
+          ),
+      },
+      {
+        path: ROUTES.haulier,
+        canActivate: [CanActivateAuthPage],
+        data: {
+          requireAuthParams: [
+            GuardRequireRole.SuperAdmin,
+            GuardRequireRole.Haulier,
+          ],
+        },
+        loadComponent: () =>
+          import(
+            './routes/haulier/haulier-dashboard/haulier-dashboard.component'
+          ).then((m) => m.HaulierDashboardComponent),
+      },
+      {
+        path: ROUTES.admin,
+        canActivate: [CanActivateAuthPage],
+        data: {
+          requireAuthParams: [GuardRequireRole.SuperAdmin],
+        },
+        loadComponent: () =>
+          import(
+            './routes/admin/admin-dashboard/admin-dashboard.component'
+          ).then((m) => m.AdminDashboardComponent),
+      },
     { path: '**', pathMatch: 'full', redirectTo: 'login' },
 ];
