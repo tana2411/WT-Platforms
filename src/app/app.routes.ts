@@ -7,11 +7,20 @@ import { CompanyInformationSectionComponent } from './routes/registrations/compa
 import { CompanyDocumentComponent } from './routes/registrations/company-document/company-document.component';
 import { LoginPageComponent } from './routes/login-page/login-page.component';
 import { TermComponent } from './routes/term/term.component';
+import { PrivacyComponent } from './routes/privacy/privacy.component';
 
 export const routes: Routes = [
     {
         path: 'login',
         component: LoginPageComponent,
+    },
+    {
+        path: 'termsandconditions',
+        component: TermComponent,
+    },
+    {
+        path: 'privacy-policy',
+        component: PrivacyComponent,
     },
     {
         path: 'create-account',
