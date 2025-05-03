@@ -18,13 +18,15 @@ import {
   Validators,
 } from '@angular/forms';
 import { InputWithConfirmControlComponent } from '../../../share/ui/input-with-confirm-control/input-with-confirm-control.component';
-import { PasswordStrength } from '../../../share/validators/password-strength';
+import { checkPasswordStrength, pwdStrengthValidator } from '../../../share/validators/password-strength';
 import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-control/telephone-form-control.component';
 import { Router } from '@angular/router';
 import { RegistrationsService } from 'app/services/registrations.service';
-import { catchError, finalize, of } from 'rxjs';
+import { catchError, concatMap, finalize, of, switchMap } from 'rxjs';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
-import {MatSnackBar} from '@angular/material/snack-bar'
+import { MatSnackBar } from '@angular/material/snack-bar'
+import { AuthService } from 'app/services/auth.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-trading-flatform-form',
   templateUrl: './trading-flatform-form.component.html',
@@ -72,7 +74,7 @@ export class TradingFlatformFormComponent implements OnInit {
     password: new FormControl<string | null>(null, [
       Validators.required,
       Validators.min(8),
-      PasswordStrength,
+      pwdStrengthValidator,
     ]),
     whereDidYouHearAboutUs: new FormControl<string | null>(null, [
       Validators.required,
@@ -89,9 +91,11 @@ export class TradingFlatformFormComponent implements OnInit {
   selectAllMaterial = signal(false);
   showOtherMaterial = signal(false);
   submitting = signal(false);
+  pwdStrength = signal<string | null>(''); // weak, medium, strong
   router = inject(Router);
   service = inject(RegistrationsService);
-  snackBar = inject(MatSnackBar)
+  snackBar = inject(MatSnackBar);
+  authService = inject(AuthService);
 
   constructor() {
     effect(() => {
@@ -104,6 +108,14 @@ export class TradingFlatformFormComponent implements OnInit {
         this.materials.clear();
       }
       this.materials.updateValueAndValidity();
+    });
+
+    this.formGroup.get('password')?.valueChanges.pipe(
+      takeUntilDestroyed()
+    ).subscribe((value) => {
+      if (value) {
+        this.pwdStrength.set(checkPasswordStrength(value));
+      }
     });
   }
 
@@ -150,12 +162,12 @@ export class TradingFlatformFormComponent implements OnInit {
       password,
       firstName,
       lastName,
+      companyName,
       prefix,
       jobTitle,
       whereDidYouHearAboutUs,
       phoneNumber,
     } = this.formGroup.value;
-    console.log(this.formGroup);
     const payload: any = {
       email,
       password,
@@ -165,12 +177,11 @@ export class TradingFlatformFormComponent implements OnInit {
       jobTitle,
       phoneNumber,
       whereDidYouHearAboutUs,
-      companyName: '',
+      companyName,
       companyInterest: companyInterest === 'Both' ? ['Buyer', 'Seller'] : [companyInterest],
       favoriteMaterials
     };
 
-    console.log(payload);
     this.submitting.set(true);
 
     this.service.registerTrading(payload).pipe(
@@ -178,14 +189,21 @@ export class TradingFlatformFormComponent implements OnInit {
         this.submitting.set(false)
       }),
       catchError((err) => {
-        if(err) {
-          this.snackBar.open('An error occur while execute request, please try again.', 'Ok', {duration: 3000})
+        if (err) {
+          this.snackBar.open('An error occur while execute request, please try again.', 'Ok', { duration: 3000 })
         }
         return of(null);
       }),
+      concatMap((res) => {
+        if (!res) {
+          return of(null);
+        }
+        this.authService.setToken(res.data.accessToken);
+        return this.authService.checkToken();
+      })
     ).subscribe(result => {
       if (result) {
-        this.router.navigate(['/public/account-pending-result']);
+        this.router.navigate(['/account-pending-result']);
       }
     });
   }

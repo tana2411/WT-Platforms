@@ -59,8 +59,8 @@ export class LoginComponent {
     }
 
     this.authService.login({ email, password }).subscribe({
-      next: (user) => {
-        const targetRoute = getDefaultRouteByRole(user);
+      next: () => {
+        const targetRoute = this.authService.getDefaultRouteByRole();
         this.router.navigateByUrl(targetRoute);
       },
       error: (err) => {

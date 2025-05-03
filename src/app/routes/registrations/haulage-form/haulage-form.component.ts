@@ -28,18 +28,19 @@ import {
   MatRadioModule,
 } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { PasswordStrength } from '../../../share/validators/password-strength';
+import { checkPasswordStrength, pwdStrengthValidator } from '../../../share/validators/password-strength';
 import { InputWithConfirmControlComponent } from '../../../share/ui/input-with-confirm-control/input-with-confirm-control.component';
 import { MatInputModule } from '@angular/material/input';
 import { FileUploadComponent } from '../../../share/ui/file-upload/file-upload.component';
 import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-control/telephone-form-control.component';
 import { Router } from '@angular/router';
 import { RegistrationsService } from 'app/services/registrations.service';
-import { catchError, concatMap, debounceTime, finalize, of, tap } from 'rxjs';
+import { catchError, concatMap, debounceTime, finalize, of, switchMap, tap } from 'rxjs';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AuthService } from 'app/services/auth.service';
 @Component({
   selector: 'app-haulage-form',
   templateUrl: './haulage-form.component.html',
@@ -106,7 +107,7 @@ export class HaulageFormComponent implements OnInit {
       Validators.minLength(8),
       Validators.required,
       Validators.min(8),
-      PasswordStrength,
+      pwdStrengthValidator,
     ]),
 
     companyName: new FormControl<string | null>(null, [
@@ -167,11 +168,13 @@ export class HaulageFormComponent implements OnInit {
   expiryDateError = signal<string | null>(null);
   selectedFile = signal<File[]>([]);
   submitting = signal<boolean>(false);
+  pwdStrength = signal<string | null>(''); // weak, medium, strong
 
   router = inject(Router);
   registrationService = inject(RegistrationsService);
   snackBar = inject(MatSnackBar);
   cd = inject(ChangeDetectorRef);
+  authService = inject(AuthService);
 
   constructor() {
     effect(() => {
@@ -218,9 +221,17 @@ export class HaulageFormComponent implements OnInit {
           }
         }
       });
+
+    this.formGroup.get('password')?.valueChanges.pipe(
+      takeUntilDestroyed()
+    ).subscribe((value) => {
+      if (value) {
+        this.pwdStrength.set(checkPasswordStrength(value));
+      }
+    });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   onAreaChange(event: MatRadioChange) {
     if (event.value === 'EU') {
@@ -283,6 +294,7 @@ export class HaulageFormComponent implements OnInit {
           tap(() => {
             this.submitting.set(true);
           }),
+          finalize(() => this.submitting.set(false)),
           concatMap((url) => {
             if (!url) {
               return of(null);
@@ -298,7 +310,6 @@ export class HaulageFormComponent implements OnInit {
             };
 
             return this.registrationService.registerHaulage(payload).pipe(
-              finalize(() => this.submitting.set(false)),
               catchError((err) => {
                 this.snackBar.open(
                   'An error occurred while processing your registration. Please try again.',
@@ -317,10 +328,17 @@ export class HaulageFormComponent implements OnInit {
             );
             return of(null);
           }),
+          concatMap((res) => {
+            if (!res) {
+              return of(null);
+            }
+            this.authService.setToken(res.data.accessToken);
+            return this.authService.checkToken();
+          })
         )
         .subscribe((result) => {
           if (result) {
-            this.router.navigate(['/public/account-pending-result']);
+            this.router.navigate(['/account-pending-result']);
           }
         });
     }
