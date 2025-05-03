@@ -7,6 +7,10 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import {
+  CanActivateAuthPage,
+  CanActivateUnAuthPage,
+} from './guards/auth/auth.guard';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,5 +24,7 @@ export const appConfig: ApplicationConfig = {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { subscriptSizing: 'dynamic' },
     },
+    CanActivateAuthPage,
+    CanActivateUnAuthPage,
   ],
 };

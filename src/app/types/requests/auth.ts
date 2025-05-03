@@ -10,6 +10,7 @@ export type ResponseLogin = {
       email: string;
       accessToken: string;
       globalRole: string;
+      isHaulier: boolean;
     };
   };
 };
