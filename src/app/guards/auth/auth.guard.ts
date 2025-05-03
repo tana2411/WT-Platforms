@@ -11,8 +11,9 @@ import {
 import { AuthService, NOT_INITIAL_USER } from '../../services/auth.service';
 import { filter, first, map, pipe, tap } from 'rxjs';
 import { checkAllowAccessAuthPage, getDefaultRouteByRole } from './utils';
-import { User } from '../../types/auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { User } from 'app/types/requests/auth';
+import { ROUTES } from 'app/constants/route.const';
 
 @Injectable()
 export class CanActivateAuthPage implements CanActivate {
@@ -33,7 +34,7 @@ export class CanActivateAuthPage implements CanActivate {
       first(),
       tap((user) => {
         if (!user) {
-          this.router.navigateByUrl('/login');
+          this.router.navigateByUrl(ROUTES.login);
         }
 
         if (user && requireAuthParams) {
@@ -62,7 +63,6 @@ export class CanActivateUnAuthPage implements CanActivate, CanActivateChild {
     filter((i) => i !== NOT_INITIAL_USER),
     first(),
     tap((user) => {
-      debugger
       if (user) {
         const targetRoute = getDefaultRouteByRole(user as User);
         this.router.navigateByUrl(targetRoute);

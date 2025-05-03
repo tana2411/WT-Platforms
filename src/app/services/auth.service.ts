@@ -1,12 +1,16 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
-import { User } from '../types/auth';
+import { Injectable } from '@angular/core';
 import {
   RequestForgotPasswordParams,
   RequestLoginParams,
   ResponseLogin,
+  ResponseMe,
+  User,
 } from '../types/requests/auth';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, of, switchMap, tap } from 'rxjs';
+import { Router } from '@angular/router';
+import { ROUTES } from 'app/constants/route.const';
+import { ACCESS_TOKEN_KEY } from 'app/interceptors/auth.interceptor';
 
 export const NOT_INITIAL_USER = null;
 
@@ -26,53 +30,64 @@ export class AuthService {
     return this._user$.asObservable();
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {}
 
   login({ email, password }: RequestLoginParams) {
     return this.http
-      .post<ResponseLogin>('https://wastetrade-api-dev.b13devops.com/login', {
+      .post<ResponseLogin>('/login', {
         email,
         password,
       })
       .pipe(
-        tap((res) => {
-          this._user$.next(res.data.user as User);
+        map((res) => res.data.user),
+        switchMap((loginData) => {
+          if (!loginData) {
+            throw new Error('Invalid login data');
+          }
 
           // store user data in local storage for the auth interceptor
-          localStorage.setItem('accessToken', res.data.user.accessToken);
+          localStorage.setItem('accessToken', loginData.accessToken);
+
+          // get the user data
+          return this.getMe();
+        }),
+        tap(async (user) => {
+          this._user$.next(user);
         }),
       );
   }
 
   forgotPassword(params: RequestForgotPasswordParams) {
-    return this.http.post(
-      'https://wastetrade-api-dev.b13devops.com/auth/forgot-password',
-      params,
-    );
+    return this.http.post('/forgot-password', params);
   }
 
   // todo: call API get me to set user
   async checkToken() {
-    // const mockUser = await new Promise<User | undefined>((res, reject) => {
-    //   console.log({ res });
-    //   const MOCK_RES = {
-    //     data: {
-    //       user: {
-    //         id: 1,
-    //         email: 'thinguyen@b13technology.com',
-    //         accessToken:
-    //           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiY3JlYXRlZEF0IjoiMjAyNS0wNC0yOFQwMjozNzoxNy44NDdaIiwiaWF0IjoxNzQ1ODA3ODM3LCJleHAiOjM0OTE2MjU2NzR9.LcFPYrz9HS7W5mv-arwO39zv_0XUW1PWTjbBkuEfvgM',
-    //         globalRole: 'user',
-    //         isHaulier: false,
-    //       },
-    //     },
-    //   } as ResponseLogin;
+    this.getMe()
+      .pipe(
+        catchError(() => {
+          return of(undefined);
+        }),
+      )
+      .subscribe((me) => {
+        this._user$.next(me);
+      });
+  }
 
-    //   res(MOCK_RES.data.user as User);
-      // res(undefined);
-    // });
+  getMe() {
+    return this.http.get<ResponseMe>('/users/me').pipe(
+      map((res) => {
+        return res.data?.companyUser;
+      }),
+    );
+  }
 
-    // this._user$.next(mockUser);
-    // localStorage.setItem('accessToken', mockUser?.accessToken ?? '');
+  logout() {
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
+    this._user$.next(undefined);
+    this.router.navigateByUrl(ROUTES.login);
   }
 }

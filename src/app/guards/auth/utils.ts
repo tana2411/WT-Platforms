@@ -1,25 +1,26 @@
+import { User } from 'app/types/requests/auth';
 import { ROUTES } from '../../constants/route.const';
-import { GuardRequireRole, Role, User } from '../../types/auth';
+import { GuardRequireRole, Role } from '../../types/auth';
 
 export const getDefaultRouteByRole = (user: User) => {
-  switch (user.globalRole) {
+  switch (user.user.globalRole) {
     case Role.ADMIN:
     case Role.SUPER_ADMIN:
       return ROUTES.admin;
 
     case Role.USER:
-      return user.isHaulier ? ROUTES.haulier : ROUTES.buy;
+      return user.company.isHaulier ? ROUTES.haulier : ROUTES.buy;
   }
 };
 
 const getUserGuardRoles = (user: User): GuardRequireRole[] => {
   const userGuardRoles = [];
 
-  if (user.globalRole === Role.ADMIN) {
+  if (user.user.globalRole === Role.ADMIN) {
     userGuardRoles.push(GuardRequireRole.SuperAdmin);
   }
 
-  if (user.isHaulier) {
+  if (user.company.isHaulier) {
     userGuardRoles.push(GuardRequireRole.Haulier);
   } else {
     userGuardRoles.push(GuardRequireRole.Trading);
