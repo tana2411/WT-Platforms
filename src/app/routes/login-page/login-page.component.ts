@@ -25,7 +25,6 @@ export class LoginPageComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
-      debugger;
       if (params['lost_pass'] === '1') {
         this.contentName.set('forgot-password');
       } else if (params['reset_pass'] === '1') {

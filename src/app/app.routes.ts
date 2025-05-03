@@ -6,6 +6,7 @@ import { RegistrationCompleteResultComponent } from './routes/registrations/regi
 import { CompanyInformationSectionComponent } from './routes/registrations/company-information-section/company-information-section.component';
 import { CompanyDocumentComponent } from './routes/registrations/company-document/company-document.component';
 import { LoginPageComponent } from './routes/login-page/login-page.component';
+import { TermComponent } from './routes/term/term.component';
 
 export const routes: Routes = [
     {
