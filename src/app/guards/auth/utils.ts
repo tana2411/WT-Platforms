@@ -16,14 +16,16 @@ export const getDefaultRouteByRole = (user: User) => {
 const getUserGuardRoles = (user: User): GuardRequireRole[] => {
   const userGuardRoles = [];
 
-  if (user.user.globalRole === Role.ADMIN) {
+  if (user.user.globalRole === Role.SUPER_ADMIN) {
     userGuardRoles.push(GuardRequireRole.SuperAdmin);
   }
 
-  if (user.company.isHaulier) {
-    userGuardRoles.push(GuardRequireRole.Haulier);
-  } else {
-    userGuardRoles.push(GuardRequireRole.Trading);
+  if (user?.company) {
+    if (user.company.isHaulier) {
+      userGuardRoles.push(GuardRequireRole.Haulier);
+    } else {
+      userGuardRoles.push(GuardRequireRole.Trading);
+    }
   }
 
   return userGuardRoles;

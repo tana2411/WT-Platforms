@@ -11,6 +11,9 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
+import { RequestSetPasswordParams } from 'app/types/requests/auth';
+import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
 
@@ -23,6 +26,7 @@ const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    MatSnackBarModule,
   ],
 })
 export class SetPasswordComponent implements OnInit {
@@ -45,6 +49,7 @@ export class SetPasswordComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
+    private snackbar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
@@ -111,6 +116,10 @@ export class SetPasswordComponent implements OnInit {
 
   send() {
     console.log(this.formGroup);
+    if (this.loading()) {
+      return;
+    }
+
     if (this.formGroup.invalid || !this.token) {
       this.formGroup.markAllAsTouched();
       return;
@@ -119,15 +128,28 @@ export class SetPasswordComponent implements OnInit {
     const { password } = this.formGroup.value;
 
     this.loading.set(true);
-    // this.authService.setPassword(this.token, password).subscribe({
-    //   next: () => {
-    //     this.loading.set(false);
-    //     this.router.navigate(['/home']);
-    //   },
-    //   error: (error) => {
-    //     this.loading.set(false);
-    //     this.serverError.set(error.message || 'An error occurred while setting the password.');
-    //   },
-    // });
+    const params: RequestSetPasswordParams = {
+      newPassword: password!,
+      confirmNewPassword: password!,
+      resetPasswordToken: this.token,
+    };
+
+    this.authService.setPassword(params).subscribe({
+      next: () => {
+        this.loading.set(false);
+        this.snackbar.open('Password set successfully.');
+        this.router.navigateByUrl(ROUTES_WITH_SLASH.login);
+      },
+      error: (error) => {
+        if (
+          error?.error?.error?.message === 'Error verifying token : jwt expired'
+        ) {
+          this.snackbar.open('Token expired.');
+        } else {
+          this.snackbar.open('Something went wrong.');
+        }
+        this.loading.set(false);
+      },
+    });
   }
 }

@@ -21,6 +21,12 @@ export type RequestForgotPasswordParams = {
   email: string;
 };
 
+export type RequestSetPasswordParams = {
+  newPassword: string;
+  confirmNewPassword: string;
+  resetPasswordToken: string;
+};
+
 export type ResponseMe = {
   data: {
     companyUser: User;

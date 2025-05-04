@@ -10,6 +10,7 @@ import {
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { getDefaultRouteByRole } from 'app/guards/auth/utils';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,7 @@ import { getDefaultRouteByRole } from 'app/guards/auth/utils';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    MatSnackBarModule,
   ],
 })
 export class LoginComponent {
@@ -36,6 +38,7 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
+    private snackBar: MatSnackBar,
   ) {
     this.setupForm();
   }
@@ -64,7 +67,11 @@ export class LoginComponent {
         this.router.navigateByUrl(targetRoute);
       },
       error: (err) => {
-        this.serverError.set('Invalid email address and/or password.');
+        if (err?.status === 401 || err?.status === 422) {
+          this.serverError.set('Invalid email address and/or password.');
+        } else {
+          this.snackBar.open('Something went wrong.');
+        }
       },
     });
   }
