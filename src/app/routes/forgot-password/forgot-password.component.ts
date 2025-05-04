@@ -66,16 +66,18 @@ export class ForgotPasswordComponent implements OnInit {
     this.authService.forgotPassword({ email }).subscribe({
       next: (res) => {
         this.snackbar.open(
-          'Please check your email with instructions on how to reset your password.',
-          'Close',
-          {
-            duration: 3000,
-          },
+          'Forgot password link has been sent, please check your email.',
         );
       },
       error: (err) => {
-        // todo: handle error messsage with response
-        this.serverError.set('Invalid email address.');
+        debugger;
+        if (err.status === 422) {
+          this.snackbar.open(
+            'Please check your email with instructions on how to reset your password.',
+          );
+        } else {
+          this.snackbar.open('Something went wrong.');
+        }
       },
     });
   }
