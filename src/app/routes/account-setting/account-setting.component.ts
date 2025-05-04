@@ -5,10 +5,10 @@ import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.co
 import { ItemOf } from 'app/types/utils';
 import { TabContainerComponent } from '../account-settings/tab-container/tab-container.component';
 import { MyProfileComponent } from '../account-settings/my-profile/my-profile.component';
-import { FilterComponent } from '../account-settings/filter/filter.component';
 import { NotificationComponent } from '../account-settings/notification/notification.component';
 import { DocumentComponent } from '../account-settings/document/document.component';
 import { InfoComponent } from '../account-settings/info/info.component';
+import { LocationComponent } from '../account-settings/location/location.component';
 
 const ListTab = [
   {
@@ -17,19 +17,23 @@ const ListTab = [
   },
   {
     icon: 'info',
-    title: 'company info',
+    title: 'Company information',
   },
   {
     icon: 'filter_list',
-    title: 'Search Filters',
+    title: 'Material preferences',
   },
   {
     icon: 'notifications_active',
-    title: 'notifications',
+    title: 'Notifications',
   },
   {
     icon: 'assignment',
-    title: 'company documents',
+    title: 'Company documents',
+  },
+  {
+    icon: 'location_on',
+    title: 'My locations',
   },
 ] as const;
 
@@ -44,7 +48,7 @@ type TabKey = ItemOf<typeof ListTab>['title'];
     TabContainerComponent,
     MyProfileComponent,
     InfoComponent,
-    FilterComponent,
+    LocationComponent,
     NotificationComponent,
     DocumentComponent,
   ],
