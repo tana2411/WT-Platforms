@@ -98,5 +98,14 @@ export const routes: Routes = [
             './routes/admin/admin-dashboard/admin-dashboard.component'
           ).then((m) => m.AdminDashboardComponent),
       },
+
+      {
+        path: ROUTES.settings,
+        canActivate: [CanActivateAuthPage],
+        loadComponent: () =>
+          import(
+            './routes/account-setting/account-setting.component'
+          ).then((m) => m.AccountSettingComponent),
+      },
     { path: '**', pathMatch: 'full', redirectTo: 'login' },
 ];

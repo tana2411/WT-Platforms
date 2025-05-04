@@ -1,0 +1,21 @@
+.content-container {
+  max-width: 1375px;
+  margin: 0 auto;
+  padding: 0 13px;
+
+  @media screen and (min-width: md) {
+    padding: 0 20px;
+  }
+}
+
+.title {
+  font-size: 32px;
+
+  @media screen and (min-width: 1440px) {
+    font-size: 40px;
+  }
+}
+
+.right-box {
+  gap: 40px;
+}
