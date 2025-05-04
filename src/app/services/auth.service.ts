@@ -32,6 +32,10 @@ export class AuthService {
     return this._user$.asObservable();
   }
 
+  get user() {
+    return this._user$.value;
+  }
+
   constructor(
     private http: HttpClient,
     private router: Router,

@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="col-7">
-      <form [formGroup]="formGroup">
+      <form [formGroup]="formGroup" (submit)="submit()">
         <div class="border border-dark boder-2 p-5 border-radius">
           <h3 class="text-center my-2" i18n>Company Information</h3>
           <div
@@ -57,14 +57,28 @@
             </mat-form-field>
           </div>
           <div class="col-12 mb-4">
+            <mat-label class="fw-bold mb-1" i18n>COMPANY REGISTRATION NUMBER*</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+              <input
+                matInput
+                placeholder="Type here"
+                type="text"
+                formControlName="registrationNumber"
+              />
+              @if (formGroup.get("registrationNumber")?.hasError("required")) {
+                <mat-error i18n>This field is required </mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="col-md-12 mb-4">
             <mat-label class="mb-0 fw-bold" i18n>
               COULD YOU PLEASE CONFIRM THE COUNTRY WHERE YOUR VAT REGISTRATION IS
               LOCATED*
             </mat-label>
             <mat-radio-group
-              formControlName="vatLocated"
+              formControlName="vatRegistrationCountry"
               class="d-flex justify-content-between radio-mat-error"
-              name="vatLocated"
+              name="vatRegistrationCountry"
             >
               <mat-radio-button  value="EU" i18n
                 >EU (European Union)
@@ -72,20 +86,36 @@
               <mat-radio-button  value="UK" i18n>
                 United Kingdom
               </mat-radio-button>
-              <mat-radio-button  value="EU" i18n>
+              <mat-radio-button  value="Other" i18n>
                 Other
               </mat-radio-button>
             </mat-radio-group>
             @if (
-              formGroup.get("vatLocated")?.hasError("required") &&
-              (formGroup.get("vatLocated")?.touched ||
-                formGroup.get("vatLocated")?.dirty)
+              formGroup.get("vatRegistrationCountry")?.hasError("required") &&
+              (formGroup.get("vatRegistrationCountry")?.touched ||
+                formGroup.get("vatRegistrationCountry")?.dirty)
             ) {
               <mat-error class="mt-0 mat-error" i18n>
                 This field is required
               </mat-error>
             }
           </div>
+          @if (formGroup.get("vatRegistrationCountry")?.value) {
+            <div class="col-md-12 mb-4">
+              <label class="fw-bold" i18n>VAT NUMBER*</label>
+              <mat-form-field appearance="outline" class="w-100">
+                <input
+                  matInput
+                  placeholder="Type here"
+                  type="text"
+                  formControlName="vatNumber"
+                />
+                @if (formGroup.get("vatNumber")?.hasError("required")) {
+                  <mat-error i18n>This field is required </mat-error>
+                }
+              </mat-form-field>
+            </div>
+          }
           <div class="col-md-12 mb-4">
             <label class="fw-bold" i18n>STREET ADDRESS*</label>
             <mat-form-field appearance="outline" class="w-100">
@@ -93,9 +123,9 @@
                 matInput
                 placeholder="Type here"
                 type="text"
-                formControlName="streetAddress"
+                formControlName="addressLine1"
               />
-              @if (formGroup.get("streetAddress")?.hasError("required")) {
+              @if (formGroup.get("addressLine1")?.hasError("required")) {
                 <mat-error i18n>This field is required </mat-error>
               }
             </mat-form-field>
@@ -108,9 +138,9 @@
                   matInput
                   placeholder="Type here"
                   type="text"
-                  formControlName="postCode"
+                  formControlName="postalCode"
                 />
-                @if (formGroup.get("postCode")?.hasError("required")) {
+                @if (formGroup.get("postalCode")?.hasError("required")) {
                   <mat-error i18n>This field is required </mat-error>
                 }
               </mat-form-field>
@@ -155,9 +185,9 @@
                   matInput
                   placeholder="Type here"
                   type="text"
-                  formControlName="countryRegion"
+                  formControlName="stateProvince"
                 />
-                @if (formGroup.get("countryRegion")?.hasError("required")) {
+                @if (formGroup.get("stateProvince")?.hasError("required")) {
                   <mat-error i18n>This field is required </mat-error>
                 }
               </mat-form-field>
@@ -167,8 +197,10 @@
         <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-between">
           <div class="col-5">
             <button
-              mat-stocked-button
-              class="w-100 text-center bg-white rounded border p-2 primary fw-bold"
+              mat-stroked-button
+              class="w-100"
+              type="button"
+              [routerLink]="['/account-pending-result']"
               i18n
             >
               BACK
@@ -178,10 +210,10 @@
             <button
               [disabled]="formGroup.invalid"
               type="submit"
-              [class.background-primary]="formGroup.valid"
-              [class.text-white]="formGroup.valid"
+              color="primary"
+              [class.overlay-spinner]="submitting()"
               mat-flat-button
-              class="w-100 p-2 fw-bold rounded"
+              class="w-100"
               i18n
             >
               SAVE AND CONTINUE
