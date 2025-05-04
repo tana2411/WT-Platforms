@@ -1,0 +1,51 @@
+<div class="sidebar-wrapper {{ headerService.isOpenMenu ? 'open' : '' }}">
+  <div class="close-button d-lg-none" (click)="headerService.closeMenu()">
+    <mat-icon>close</mat-icon>
+  </div>
+
+  <div class="sidebar">
+    <div class="p-3 bg-white mb-4 d-lg-none">
+      <p class="fw-bold mb-2">Hi {{ user()?.user?.firstName }}</p>
+      <p class="mb-0">{{ user()?.user?.email }}</p>
+    </div>
+
+    <div class="d-none d-lg-block logo-wrapper">
+      <img src="assets/images/compact-logo.svg" alt="Logo" />
+    </div>
+
+    <a
+      class="menu-item dashboard d-flex gap-3 align-items-center"
+      routerLink="/dashboard"
+      routerLinkActive="active-link"
+    >
+      <app-icon iconName="view_quilt"></app-icon>
+      <p class="fw-bold mb-0">Dashboard</p>
+    </a>
+
+    <p class="mb-0 px-3 px-lg-5 text-uppercase mt-2 mt-lg-3 mb-lg-3">
+      PLATFORM
+    </p>
+
+    <div class="d-flex flex-column">
+      @for (item of listMenuPlatform; track item.title) {
+        <a
+          routerLink="{{ item.link }}"
+          routerLinkActive="active-link"
+          class="menu-item d-flex gap-3 align-items-center"
+        >
+          <app-icon
+            iconName="{{ item.icon }}"
+            className="{{ item.iconClass }}"
+          ></app-icon>
+          <p class="fw-bold mb-0">{{ item.title }}</p>
+        </a>
+      }
+    </div>
+
+    <div class="menu-item more d-flex gap-3 align-items-center">
+      <app-icon iconName="more_vert"></app-icon>
+      <p class="fw-bold mb-0">More</p>
+      <mat-icon class="more-icon">arrow_drop_down</mat-icon>
+    </div>
+  </div>
+</div>

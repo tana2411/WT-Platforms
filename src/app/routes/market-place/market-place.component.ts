@@ -1,9 +1,11 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
+import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
+import { HeaderComponent } from 'app/layout/header/header.component';
 
 @Component({
   selector: 'app-market-place',
   templateUrl: './market-place.component.html',
   styleUrls: ['./market-place.component.scss'],
-  imports: [],
+  imports: [HeaderComponent, CommonLayoutComponent],
 })
 export class MarketPlaceComponent {}

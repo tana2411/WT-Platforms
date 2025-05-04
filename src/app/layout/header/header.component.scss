@@ -1,0 +1,9 @@
+.header {
+  height: 58px;
+  padding: 0 14px;
+  box-shadow: 2px 2px 5px 2px #0000000D;
+
+  & > img {
+    max-width: 162px;
+  }
+}

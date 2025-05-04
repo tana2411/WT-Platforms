@@ -1,0 +1,51 @@
+<app-common-layout title="Account Settings">
+  <div
+    class="{{ activeTab() !== undefined ? 'd-none' : 'd-flex flex-column' }} d-lg-none"
+  >
+    @for (item of listTab; track item.title) {
+      <div class="d-flex gap-2 p-3 list-item" (click)="selectTab(item.title)">
+        <mat-icon fontSet="material-icons-outlined">{{ item.icon }}</mat-icon>
+        <p class="mb-0 flex-fill fw-bold text-uppercase">{{ item.title }}</p>
+        <mat-icon>chevron_right</mat-icon>
+      </div>
+    }
+  </div>
+
+  <div
+    class="tab-wrapper {{
+      activeTab() !== undefined ? 'd-block' : 'd-none d-lg-block'
+    }}"
+  >
+    <mat-tab-group [selectedIndex]="activeTab()" animationDuration="0ms">
+      <mat-tab label="my profile">
+        <app-tab-container (back)="closeTab()">
+          <app-my-profile></app-my-profile>
+        </app-tab-container>
+      </mat-tab>
+
+      <mat-tab label="company info">
+        <app-tab-container (back)="closeTab()">
+          <app-info></app-info>
+        </app-tab-container>
+      </mat-tab>
+
+      <mat-tab label="Search Filters">
+        <app-tab-container (back)="closeTab()">
+          <app-filter></app-filter>
+        </app-tab-container>
+      </mat-tab>
+
+      <mat-tab label="notifications">
+        <app-tab-container (back)="closeTab()">
+          <app-notification></app-notification>
+        </app-tab-container>
+      </mat-tab>
+
+      <mat-tab label="company documents">
+        <app-tab-container (back)="closeTab()">
+          <app-document></app-document>
+        </app-tab-container>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</app-common-layout>
