@@ -23,3 +23,16 @@ export interface RegistrationResult {
     message: string;
     status: string;
 }
+
+export interface CompanyInfo {
+    countryCode: string;
+    name: string;
+    vatNumber: string;
+    vatRegistrationCountry: string;
+    addressLine1: string;
+    city: string;
+    country: string;
+    stateProvince: string;
+    postalCode: string;
+    companyType: string;
+}
