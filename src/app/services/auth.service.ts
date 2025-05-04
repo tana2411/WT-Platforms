@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import {
   RequestForgotPasswordParams,
   RequestLoginParams,
+  RequestSetPasswordParams,
   ResponseLogin,
   ResponseMe,
   User,
@@ -64,29 +65,38 @@ export class AuthService {
     return this.http.post('/forgot-password', params);
   }
 
+  setPassword(params: RequestSetPasswordParams) {
+    return this.http.post('/reset-password', params);
+  }
+
   setToken(token: string) {
     // store user data in local storage for the auth interceptor
-    localStorage.setItem('accessToken', token);
+    localStorage.setItem(ACCESS_TOKEN_KEY, token);
   }
 
   // todo: call API get me to set user
   checkToken() {
-    return this.getMe()
-      .pipe(
-        catchError(() => {
-          return of(undefined);
-        }),
-        tap((me)=> {
-          if (me) {
-            this._user$.next(me);
-          }
-        })
-      );
+    const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
+
+    if (!accessToken) {
+      return of(undefined);
+    }
+
+    return this.getMe().pipe(
+      catchError(() => {
+        return of(undefined);
+      }),
+      tap((me) => {
+        if (me) {
+          this._user$.next(me);
+        }
+      }),
+    );
   }
 
   getDefaultRouteByRole() {
     const user = this._user$.value;
-    
+
     if (!user) {
       return ROUTES.login;
     }
