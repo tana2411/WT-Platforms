@@ -1,6 +1,8 @@
 <app-common-layout title="Account Settings">
   <div
-    class="{{ activeTab() !== undefined ? 'd-none' : 'd-flex flex-column' }} d-lg-none"
+    class="{{
+      activeTab() !== undefined ? 'd-none' : 'd-flex flex-column'
+    }} d-lg-none"
   >
     @for (item of listTab; track item.title) {
       <div class="d-flex gap-2 p-3 list-item" (click)="selectTab(item.title)">
@@ -29,9 +31,9 @@
         </app-tab-container>
       </mat-tab>
 
-      <mat-tab label="Search Filters">
+      <mat-tab label="Material preferences">
         <app-tab-container (back)="closeTab()">
-          <app-filter></app-filter>
+          <app-location></app-location>
         </app-tab-container>
       </mat-tab>
 
@@ -44,6 +46,12 @@
       <mat-tab label="company documents">
         <app-tab-container (back)="closeTab()">
           <app-document></app-document>
+        </app-tab-container>
+      </mat-tab>
+
+      <mat-tab label="My Locaion">
+        <app-tab-container (back)="closeTab()">
+          <app-location></app-location>
         </app-tab-container>
       </mat-tab>
     </mat-tab-group>
