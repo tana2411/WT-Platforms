@@ -16,7 +16,7 @@ export const getDefaultRouteByRole = (user: User) => {
 const getUserGuardRoles = (user: User): GuardRequireRole[] => {
   const userGuardRoles = [];
 
-  if (user.user.globalRole === Role.SUPER_ADMIN) {
+  if ([Role.SUPER_ADMIN, Role.ADMIN].includes(user.user.globalRole)) {
     userGuardRoles.push(GuardRequireRole.SuperAdmin);
   }
 
