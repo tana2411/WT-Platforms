@@ -47,7 +47,11 @@
 
   @if (!showStatusOnly) {
     <div class="border rounded background-primary h-100 text-white p-4 mt-3">
-      <mat-icon class="w-100 text-center" style="font-size: 90px; height: 90px">error</mat-icon>
+      @if (type == 'completed') {
+        <mat-icon class="w-100 text-center" style="font-size: 90px; height: 90px">check_circle</mat-icon>
+      } @else {
+        <mat-icon class="w-100 text-center" style="font-size: 90px; height: 90px">error</mat-icon>
+      }
   
       <div class="text-center mt-3">
         <h2>
@@ -61,28 +65,46 @@
             <div class="w-25 d-flex justify-content-center me-3">
               <mat-icon class="error" style="font-size: 40px; height: 40px; width: 40px">error</mat-icon>
             </div>
-            <div class="text-dark fw-500 fs-16" i18n>
-              You can start buying and selling material now, but please note that
-              all transaction will be pending until you upload your company
-              document.
-            </div>
+            @if (isHaulier) {
+              <div class="text-dark fw-500 fs-16" i18n>
+                You can browse the portal, but bids will not be approved until your documents have been verified
+              </div>
+            } @else {
+              <div class="text-dark fw-500 fs-16" i18n>
+                You can start buying and selling material now, but please note that
+                all transaction will be pending until you upload your company
+                document.
+              </div>
+            }
           </div>
         </div>
   
-        <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-center">
-          <div class="col-4">
-            <button class="w-100 text-center bg-white rounded border p-2 primary fw-bold" 
-              [routerLink]="['/company-information']" i18n>
-              COMPLETE ACCOUNT
-            </button>
+        @if (isHaulier) {
+          <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-center">
+            <div class="col-6">
+              <button class="w-100 dark-btn fw-bold" mat-flat-button
+                [routerLink]="['/haulier-dashboard']" i18n>
+                HAULIER DASHBOARD
+              </button>
+            </div>
           </div>
-          <div class="col-4">
-            <button class="w-100 text-center bg-dark rounded border p-2 text-white fw-bold" 
-              (click)="goToPlatform()" i18n>
-              GO TO THE PLATFORM
-            </button>
+        } @else {
+          <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-center">
+            <div class="col-4">
+              <button class="w-100 primary white-btn fw-bold" mat-flat-button
+                [routerLink]="['/company-information']" i18n>
+                COMPLETE ACCOUNT
+              </button>
+            </div>
+            <div class="col-4">
+              <button class="w-100 dark-btn fw-bold" mat-flat-button
+                (click)="goToPlatform()" i18n>
+                GO TO THE PLATFORM
+              </button>
+            </div>
           </div>
-        </div>
+        }
+        
   
       } @else { 
         <div class="text-white col-8 mx-auto text-center" i18n>
@@ -91,17 +113,17 @@
   
         <div class="d-flex flex-column align-items-center mt-5">
           <div class="col-4 mb-3">
-            <button class="w-100 text-center bg-white rounded border p-2 primary fw-bold" i18n>
+            <button class="w-100 primary white-btn fw-bold" mat-flat-button i18n>
               BUY MATERIAL
             </button>
           </div>
           <div class="col-4 mb-3">
-            <button class="w-100 text-center background-primary rounded border p-2 text-white fw-bold" i18n>
+            <button class="w-100 stroked-white-btn fw-bold" mat-stroked-button i18n>
               SELL MATERIAL
             </button>
           </div>
           <div class="col-4">
-            <button class="w-100 text-center bg-dark rounded border p-2 text-white fw-bold" i18n>
+            <button class="w-100 dark-btn fw-bold" mat-flat-button i18n>
               LIST WANTED MATERIAL
             </button>
           </div>
