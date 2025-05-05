@@ -47,12 +47,13 @@
           <div class="col-12 mb-4">
             <mat-label class="fw-bold mb-1" i18n>COMPANY TYPE*</mat-label>
             <mat-form-field appearance="outline" class="w-100">
-              <input
-                matInput
-                placeholder="Type here"
-                type="text"
-                formControlName="companyType"
-              />
+              <mat-select formControlName="companyType">
+                <mat-option value="manufacturer" i18n> Manufacturer </mat-option>
+                <mat-option value="processor" i18n>Processor</mat-option>
+                <mat-option value="recycler" i18n>Recycler</mat-option>
+                <mat-option value="broker" i18n>Broker</mat-option>
+                <mat-option value="waste_producer" i18n>Waste Producer</mat-option>
+              </mat-select>
               @if (formGroup.get("companyType")?.hasError("required")) {
                 <mat-error i18n>This field is required </mat-error>
               }
