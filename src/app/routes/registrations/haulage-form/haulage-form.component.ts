@@ -93,7 +93,7 @@ export class HaulageFormComponent implements OnInit {
   ];
 
   formGroup = new FormGroup({
-    prefix: new FormControl<string | null>('Mr.', [Validators.required]),
+    prefix: new FormControl<string | null>('mr', [Validators.required]),
     firstName: new FormControl<string | null>(null, [
       Validators.required,
       Validators.maxLength(50),

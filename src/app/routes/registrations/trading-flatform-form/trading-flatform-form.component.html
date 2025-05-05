@@ -15,7 +15,7 @@
           <div class="col-md-2">
             <mat-label class="fw-bold mb-1" i18n>PREFIX*</mat-label>
             <mat-form-field appearance="outline" class="w-100">
-              <mat-select placeholder="Mr." formControlName="prefix">
+              <mat-select formControlName="prefix">
                 <mat-option value="dr" i18n> Dr.</mat-option>
                 <mat-option value="miss" i18n>Miss.</mat-option>
                 <mat-option value="mr" i18n>Mr.</mat-option>
@@ -144,6 +144,35 @@
 
         <h6 class="mb-4 mt-5 primary" i18n>COMPANY INFORMATION</h6>
         <div class="col-12 mb-4">
+          <mat-label class="fw-bold mb-1" i18n
+            >WHERE DID YOU HEAR ABOUT US*</mat-label
+          >
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select
+              placeholder="Please select"
+              formControlName="whereDidYouHearAboutUs"
+            >
+              <mat-option value="google_search" i18n>Google Search</mat-option>
+              <mat-option value="prse_trade_show" i18n>PRSE Trade Show</mat-option>
+              <mat-option value="plastics_live_trade_show" i18n
+                >Plastics Live Trade Show</mat-option
+              >
+              <mat-option value="sustainability_show" i18n
+                >Sustainability show</mat-option
+              >
+              <mat-option value="k_show" i18n> K-Show</mat-option>
+              <mat-option value="interpack" i18n>Interpack</mat-option>
+              <mat-option value="plast_2023" i18n>Plast 2023</mat-option>
+              <mat-option value="word_of_mouth" i18n>Word of mouth</mat-option>
+            </mat-select>
+            @if (
+              formGroup.get("whereDidYouHearAboutUs")?.hasError("required")
+            ) {
+              <mat-error i18n>This field is required </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-12 mb-4">
           <mat-label class="fw-bold mb-1" i18n>COMPANY NAME*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <input
@@ -201,9 +230,9 @@
               <div class="col-4">
                 <mat-checkbox
                   color="primary"
-                  (change)="onSelectedMaterial($event, item)"
-                  [checked]="materials.value.includes(item)"
-                  >{{ item }}</mat-checkbox
+                  (change)="onSelectedMaterial($event, item.value)"
+                  [checked]="materials.value.includes(item.value)"
+                  >{{ item.name }}</mat-checkbox
                 >
               </div>
             }
@@ -237,36 +266,6 @@
               </mat-form-field>
             </div>
           }
-        </div>
-        <!-- <h6 class="mb-4 mt-5 primary" i18n>SOURCE OF AWARENESS</h6> -->
-        <div class="col-12 mb-4">
-          <mat-label class="fw-bold mb-1" i18n
-            >WHERE DID YOU HEAR ABOUT US*</mat-label
-          >
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-select
-              placeholder="Please select"
-              formControlName="whereDidYouHearAboutUs"
-            >
-              <mat-option value="google" i18n>Google Search</mat-option>
-              <mat-option value="facebook" i18n>PRSE Trade Show</mat-option>
-              <mat-option value="linkedin" i18n
-                >Plastics Live Trade Show</mat-option
-              >
-              <mat-option value="instagram" i18n
-                >Sustainability show</mat-option
-              >
-              <mat-option value="email" i18n> K-Show</mat-option>
-              <mat-option value="referral" i18n>Interplas</mat-option>
-              <mat-option value="event" i18n>Plast 2023</mat-option>
-              <mat-option value="print" i18n>Word of mouth</mat-option>
-            </mat-select>
-            @if (
-              formGroup.get("whereDidYouHearAboutUs")?.hasError("required")
-            ) {
-              <mat-error i18n>This field is required </mat-error>
-            }
-          </mat-form-field>
         </div>
         <hr />
         <!-- <h6 class="mb-4 mt-5 primary" i18n>DECLARATION</h6> -->

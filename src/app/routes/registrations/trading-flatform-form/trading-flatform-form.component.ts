@@ -59,24 +59,66 @@ import { TitleCasePipe } from '@angular/common';
 export class TradingFlatformFormComponent implements OnInit {
   countryList = countries;
   materialsAccept = [
-    'LDPE',
-    'PET',
-    'HDPE',
-    'ABS',
-    'Acrylic',
-    'PC',
-    'PVC',
-    'PP',
-    'PS',
-    'PA',
-    'Other (Mix)',
-    'Other',
-    'Other (Single Sources)',
-    'Granulates',
+    {
+      name: 'LDPE',
+      value: 'ldpe',
+    },
+    {
+      name: 'PP',
+      value: 'pp',
+    },
+    {
+      name: 'PC',
+      value: 'pc',
+    },
+    {
+      name: 'ABS',
+      value: 'abs',
+    },
+    {
+      name: 'Acrylic',
+      value: 'acrylic',
+    },
+    {
+      name: 'Granulates',
+      value: 'granulates',
+    },
+    {
+      name: 'HDPE',
+      value: 'hdpe',
+    },
+    {
+      name: 'PVC',
+      value: 'pvc',
+    },
+    {
+      name: 'PET',
+      value: 'pet',
+    },
+    {
+      name: 'PA',
+      value: 'pa',
+    },
+    {
+      name: 'PS',
+      value: 'ps',
+    },
+    {
+      name: 'Other (Mix)',
+      value: 'other (mix)',
+    },
+    {
+      name: 'Other (Single Sources)',
+      value: 'other (single sources)',
+    },
+    {
+      name: 'Other',
+      value: 'other',
+    },
   ];
 
   formGroup = new FormGroup({
-    prefix: new FormControl<string | null>('Mr.', [Validators.required]),
+    prefix: new FormControl<string | null>('mr', [Validators.required]),
     firstName: new FormControl<string | null>(null, [
       Validators.required,
       Validators.maxLength(50),
@@ -131,7 +173,7 @@ export class TradingFlatformFormComponent implements OnInit {
       if (this.selectAllMaterial()) {
         this.materials.clear();
         this.materialsAccept.forEach((item) => {
-          this.materials.push(new FormControl(item));
+          this.materials.push(new FormControl(item.value));
         });
         this.showOtherMaterial.set(true);
       } else {
@@ -158,7 +200,7 @@ export class TradingFlatformFormComponent implements OnInit {
   }
 
   onSelectedMaterial(event: MatCheckboxChange, item: string) {
-    const isOther = item === 'Other';
+    const isOther = item === 'other';
 
     if (event.checked) {
       if (!isOther) {
@@ -203,6 +245,7 @@ export class TradingFlatformFormComponent implements OnInit {
       jobTitle,
       whereDidYouHearAboutUs,
       phoneNumber,
+      otherMaterial,
     } = this.formGroup.value;
     const payload: any = {
       email,
@@ -214,9 +257,9 @@ export class TradingFlatformFormComponent implements OnInit {
       phoneNumber,
       whereDidYouHearAboutUs,
       companyName,
-      companyInterest:
-        companyInterest === 'Both' ? ['Buyer', 'Seller'] : [companyInterest],
+      companyInterest,
       favoriteMaterials,
+      otherMaterial,
     };
 
     this.submitting.set(true);

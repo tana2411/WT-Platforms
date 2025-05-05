@@ -15,8 +15,8 @@
           <div class="col-md-2">
             <mat-label class="fw-bold mb-1" i18n>PREFIX*</mat-label>
             <mat-form-field appearance="outline" class="w-100">
-              <mat-select placeholder="Mr." formControlName="prefix">
-                <mat-option value="dr" i18n>Dr.</mat-option>
+              <mat-select formControlName="prefix">
+                <mat-option value="dr" i18n> Dr.</mat-option>
                 <mat-option value="miss" i18n>Miss.</mat-option>
                 <mat-option value="mr" i18n>Mr.</mat-option>
                 <mat-option value="mrs" i18n>Mrs.</mat-option>
@@ -333,10 +333,10 @@
             formControlName="fleetType"
             class="d-flex justify-content-between col-8 radio-mat-error"
           >
-            <mat-radio-button value="freightForwarder" i18n
+            <mat-radio-button value="freight_forwarder" i18n
               >Freight Forwarder
             </mat-radio-button>
-            <mat-radio-button value="ownerFleet" i18n>
+            <mat-radio-button value="own_fleet" i18n>
               Owner Fleet
             </mat-radio-button>
           </mat-radio-group>
@@ -507,18 +507,18 @@
               placeholder="Please select"
               formControlName="whereDidYouHearAboutUs"
             >
-              <mat-option value="google" i18n>Google Search</mat-option>
-              <mat-option value="facebook" i18n>PRSE Trade Show</mat-option>
-              <mat-option value="linkedin" i18n
+              <mat-option value="google_search" i18n>Google Search</mat-option>
+              <mat-option value="prse_trade_show" i18n>PRSE Trade Show</mat-option>
+              <mat-option value="plastics_live_trade_show" i18n
                 >Plastics Live Trade Show</mat-option
               >
-              <mat-option value="instagram" i18n
+              <mat-option value="sustainability_show" i18n
                 >Sustainability show</mat-option
               >
-              <mat-option value="email" i18n> K-Show</mat-option>
-              <mat-option value="referral" i18n>Interplas</mat-option>
-              <mat-option value="event" i18n>Plast 2023</mat-option>
-              <mat-option value="print" i18n>Word of mouth</mat-option>
+              <mat-option value="k_show" i18n> K-Show</mat-option>
+              <mat-option value="interpack" i18n>Interpack</mat-option>
+              <mat-option value="plast_2023" i18n>Plast 2023</mat-option>
+              <mat-option value="word_of_mouth" i18n>Word of mouth</mat-option>
             </mat-select>
             @if (
               formGroup.get("whereDidYouHearAboutUs")?.hasError("required")
