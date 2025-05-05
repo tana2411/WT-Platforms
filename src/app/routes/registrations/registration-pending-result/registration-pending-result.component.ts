@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AccountOnboardingStatusComponent } from '@app/ui';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'app-registration-pending-result',
@@ -10,11 +11,6 @@ import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.
     UnAuthLayoutComponent
   ]
 })
-export class RegistrationPendingResultComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+export class RegistrationPendingResultComponent {
+  authService = inject(AuthService);
 }

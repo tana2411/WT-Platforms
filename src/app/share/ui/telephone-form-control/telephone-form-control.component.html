@@ -1,11 +1,14 @@
 <div class="row g-3 mb-3">
   <div class="col-md-3">
-    <mat-label class="fw-bold mb-1">TELEPHONE</mat-label>
+    <mat-label class="fw-bold mb-1">TELEPHONE*</mat-label>
     <mat-form-field appearance="outline" class="w-100">
       <mat-select [formControl]="countryCodeControl">
         <mat-select-trigger>
           @if (countryCodeControl.value; as selectedItem) {
-            <div><i class="fi {{ selectedItem.flagClass }}"></i> {{ selectedItem.code }}</div>
+            <div>
+              <i class="fi {{ selectedItem.flagClass }}"></i>
+              {{ selectedItem.code }}
+            </div>
           }
         </mat-select-trigger>
         @for (item of countryList; track $index) {
@@ -21,11 +24,17 @@
       <input
         matInput
         placeholder="es. 123456789"
-        type="number"
+        type="text"
         [formControl]="telephoneControl"
       />
       @if (telephoneControl.hasError("required")) {
         <mat-error>This field is required </mat-error>
+      }
+      @if (
+        telephoneControl.hasError("maxlength") ||
+        telephoneControl.hasError("pattern")
+      ) {
+        <mat-error i18n>Please enter a valid phone number </mat-error>
       }
     </mat-form-field>
   </div>

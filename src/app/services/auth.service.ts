@@ -36,6 +36,15 @@ export class AuthService {
     return this._user$.value;
   }
 
+  get isHaulierUser(): boolean {
+    return this.user?.company.isHaulier ?? false;
+  }
+
+  get isTradingUser(): boolean {
+    // TODO: check this logic again
+    return !this.isHaulierUser;
+  }
+
   constructor(
     private http: HttpClient,
     private router: Router,

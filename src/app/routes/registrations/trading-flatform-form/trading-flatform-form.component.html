@@ -10,6 +10,7 @@
     <div class="border border-radius p-4 bg-white">
       <h3 class="mb-4 fw-bold" i18n>Register</h3>
       <form [formGroup]="formGroup">
+        <h6 class="mb-4 mt-5 primary" i18n>BASIC INFORMATION</h6>
         <div class="row g-3 mb-3">
           <div class="col-md-2">
             <mat-label class="fw-bold mb-1" i18n>PREFIX*</mat-label>
@@ -39,7 +40,12 @@
                 formControlName="firstName"
               />
               @if (formGroup.get("firstName")?.hasError("required")) {
-                <mat-error i18n>This field is required </mat-error>
+                <mat-error i18n>First Name is required </mat-error>
+              }
+              @if (formGroup.get("firstName")?.hasError("maxlength")) {
+                <mat-error i18n
+                  >First Name cannot exceed 50 characters</mat-error
+                >
               }
             </mat-form-field>
           </div>
@@ -53,7 +59,12 @@
                 formControlName="lastName"
               />
               @if (formGroup.get("lastName")?.hasError("required")) {
-                <mat-error i18n>This field is required </mat-error>
+                <mat-error i18n>Last Name is required </mat-error>
+              }
+              @if (formGroup.get("lastName")?.hasError("maxlength")) {
+                <mat-error i18n
+                  >Last Name cannot exceed 50 characters</mat-error
+                >
               }
             </mat-form-field>
           </div>
@@ -70,12 +81,17 @@
             @if (formGroup.get("jobTitle")?.hasError("required")) {
               <mat-error i18n>This field is required </mat-error>
             }
+            @if (formGroup.get("jobTitle")?.hasError("maxlength")) {
+              <mat-error i18n>Job Title cannot exceed 50 characters </mat-error>
+            }
           </mat-form-field>
         </div>
-        <app-telephone-form-control
-          formControlName="phoneNumber"
-          [isRequired]="true"
-        ></app-telephone-form-control>
+        <div class="row mb-4">
+          <app-telephone-form-control
+            formControlName="phoneNumber"
+            [isRequired]="true"
+          ></app-telephone-form-control>
+        </div>
         <div class="row mb-4">
           <app-input-with-confirm-control
             valueLabel="EMAIL*"
@@ -114,92 +130,47 @@
             </div>
           }
           @if (pwdStrength(); as pwdStrength) {
-            <div class="col-12">
-              @if (pwdStrength === "weak") {
-                <div
-                  class="alert alert-danger font-bold mt-2"
-                  role="alert"
-                  i18n
-                >
-                  Weak password
-                </div>
-              }
-              @if (pwdStrength === "medium") {
-                <div
-                  class="alert alert-warning font-bold mt-2"
-                  role="alert"
-                  i18n
-                >
-                  Medium password
-                </div>
-              }
-              @if (pwdStrength === "strong") {
-                <div
-                  class="alert alert-success font-bold mt-2"
-                  role="alert"
-                  i18n
-                >
-                  Strong password
-                </div>
-              }
+            <div class="fw-500 col-12" i18n>
+              Strength:
+              <span
+                [class.primary]="pwdStrength == 'strong'"
+                [class.error]="pwdStrength == 'weak'"
+                [class.secondary]="pwdStrength == 'medium'"
+                >{{ pwdStrength | titlecase }}</span
+              >
             </div>
           }
         </div>
-        <div class="col-12 mb-4">
-          <mat-label class="fw-bold mb-1" i18n
-            >WHERE DID YOU HEAR ABOUT US*</mat-label
-          >
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-select
-              placeholder="Please select"
-              formControlName="whereDidYouHearAboutUs"
-            >
-              <mat-option value="google" i18n>Google Search</mat-option>
-              <mat-option value="facebook" i18n>PRSE Trade Show</mat-option>
-              <mat-option value="linkedin" i18n
-                >Plastics Live Trade Show</mat-option
-              >
-              <mat-option value="instagram" i18n
-                >Sustainability show</mat-option
-              >
-              <mat-option value="email" i18n> K-Show</mat-option>
-              <mat-option value="referral" i18n>Interplas</mat-option>
-              <mat-option value="event" i18n>Plast 2023</mat-option>
-              <mat-option value="print" i18n>Word of mouth</mat-option>
-            </mat-select>
-            @if (
-              formGroup.get("whereDidYouHearAboutUs")?.hasError("required")
-            ) {
-              <mat-error i18n>This field is required </mat-error>
-            }
-          </mat-form-field>
-        </div>
+
+        <h6 class="mb-4 mt-5 primary" i18n>COMPANY INFORMATION</h6>
         <div class="col-12 mb-4">
           <mat-label class="fw-bold mb-1" i18n>COMPANY NAME*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <input
               matInput
-              placeholder="Type here"
+              placeholder="es. Waste Trade"
               type="text"
               formControlName="companyName"
             />
             @if (formGroup.get("companyName")?.hasError("required")) {
               <mat-error i18n>This field is required </mat-error>
             }
+            @if (formGroup.get("companyName")?.hasError("maxlength")) {
+              <mat-error i18n
+                >Company Name cannot exceed 100 characters</mat-error
+              >
+            }
           </mat-form-field>
         </div>
         <div class="col-12 mb-4">
           <mat-label class="mb-0 fw-bold" i18n> COMPANY INTEREST* </mat-label>
-          <mat-radio-group
-            formControlName="companyInterest"
-            class="d-flex justify-content-between col-8"
-          >
-            @for (item of companyInterests; track item) {
-              <mat-radio-button [value]="item">
-                {{ item }}
-              </mat-radio-button>
-            }
-          </mat-radio-group>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select placeholder="" formControlName="companyInterest">
+              <mat-option value="both" i18n> Both</mat-option>
+              <mat-option value="seller" i18n>Seller</mat-option>
+              <mat-option value="buyer" i18n>Buyer</mat-option>
+            </mat-select>
+          </mat-form-field>
           @if (
             formGroup.get("companyInterest")?.hasError("required") &&
             formGroup.get("companyInterest")?.touched
@@ -209,6 +180,7 @@
             >
           }
         </div>
+        <h6 class="mb-4 mt-5 primary" i18n>MATERIALS SELECTION</h6>
         <div class="col-12 mb-5">
           <mat-label class="mb-0 fw-bold" i18n
             >MATERIALS ACCEPTED
@@ -246,7 +218,7 @@
           </div>
           @if (showOtherMaterial()) {
             <div class="col-12">
-              <mat-label class="fw-bold" i18n>OTHER MATERIAL</mat-label>
+              <mat-label class="fw-bold" i18n>OTHER MATERIAL*</mat-label>
               <mat-form-field appearance="outline" class="w-100">
                 <input
                   matInput
@@ -257,11 +229,47 @@
                 @if (formGroup.get("otherMaterial")?.hasError("required")) {
                   <mat-error i18n>This field is required </mat-error>
                 }
+                @if (formGroup.get("otherMaterial")?.hasError("maxlength")) {
+                  <mat-error i18n
+                    >Other Material cannot exceed 100 characters
+                  </mat-error>
+                }
               </mat-form-field>
             </div>
           }
         </div>
+        <!-- <h6 class="mb-4 mt-5 primary" i18n>SOURCE OF AWARENESS</h6> -->
+        <div class="col-12 mb-4">
+          <mat-label class="fw-bold mb-1" i18n
+            >WHERE DID YOU HEAR ABOUT US*</mat-label
+          >
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select
+              placeholder="Please select"
+              formControlName="whereDidYouHearAboutUs"
+            >
+              <mat-option value="google" i18n>Google Search</mat-option>
+              <mat-option value="facebook" i18n>PRSE Trade Show</mat-option>
+              <mat-option value="linkedin" i18n
+                >Plastics Live Trade Show</mat-option
+              >
+              <mat-option value="instagram" i18n
+                >Sustainability show</mat-option
+              >
+              <mat-option value="email" i18n> K-Show</mat-option>
+              <mat-option value="referral" i18n>Interplas</mat-option>
+              <mat-option value="event" i18n>Plast 2023</mat-option>
+              <mat-option value="print" i18n>Word of mouth</mat-option>
+            </mat-select>
+            @if (
+              formGroup.get("whereDidYouHearAboutUs")?.hasError("required")
+            ) {
+              <mat-error i18n>This field is required </mat-error>
+            }
+          </mat-form-field>
+        </div>
         <hr />
+        <!-- <h6 class="mb-4 mt-5 primary" i18n>DECLARATION</h6> -->
         <div class="col-12 mt-3">
           <mat-checkbox color="primary" formControlName="acceptTerm" i18n
             >I accept the
@@ -285,7 +293,8 @@
             formGroup.get("acceptTerm")?.touched
           ) {
             <mat-error class="mt-0 mat-error" i18n>
-              This field is required
+              You must accept the Terms & Conditions and Privacy Policy to
+              proceed.
             </mat-error>
           }
         </div>

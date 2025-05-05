@@ -1,11 +1,15 @@
-@import '../variables';
+@import "../variables";
 
 .primary {
-  color: $primary;
+  color: $primary !important;
+}
+
+.secondary {
+  color: $secondary;
 }
 
 .error {
-  color: $error;
+  color: $error !important;
 }
 
 .text-dark {

@@ -37,7 +37,10 @@ export class TelephoneFormControlComponent
   countryList = countries;
 
   countryCodeControl = new FormControl<any | null>(null);
-  telephoneControl = new FormControl<string | null>(null);
+  telephoneControl = new FormControl<string | null>(null, [
+    Validators.maxLength(15),
+    Validators.pattern(/^\d*$/),
+  ]);
 
   onChange: ((value: any) => void) | undefined;
   onTouched: (() => void) | undefined;
@@ -62,8 +65,11 @@ export class TelephoneFormControlComponent
   ngOnInit() {
     if (this.isRequired) {
       this.countryCodeControl.setValidators(Validators.required);
-      this.telephoneControl.setValidators(Validators.required);
+      this.telephoneControl.addValidators([Validators.required]);
     }
+
+    this.countryCodeControl.updateValueAndValidity();
+    this.telephoneControl.updateValueAndValidity();
   }
 
   writeValue(value: any): void {

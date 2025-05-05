@@ -42,6 +42,11 @@
               @if (formGroup.get("firstName")?.hasError("required")) {
                 <mat-error i18n>This field is required </mat-error>
               }
+              @if (formGroup.get("firstName")?.hasError("maxlength")) {
+                <mat-error i18n
+                  >First Name cannot exceed 50 characters</mat-error
+                >
+              }
             </mat-form-field>
           </div>
           <div class="col-md-5">
@@ -55,6 +60,11 @@
               />
               @if (formGroup.get("lastName")?.hasError("required")) {
                 <mat-error i18n>This field is required </mat-error>
+              }
+              @if (formGroup.get("lastName")?.hasError("maxlength")) {
+                <mat-error i18n
+                  >Last Name cannot exceed 50 characters</mat-error
+                >
               }
             </mat-form-field>
           </div>
@@ -70,6 +80,9 @@
             />
             @if (formGroup.get("jobTitle")?.hasError("required")) {
               <mat-error i18n>This field is required </mat-error>
+            }
+            @if (formGroup.get("jobTitle")?.hasError("maxlength")) {
+              <mat-error i18n>Job Title cannot exceed 50 characters </mat-error>
             }
           </mat-form-field>
         </div>
@@ -115,34 +128,14 @@
             </div>
           }
           @if (pwdStrength(); as pwdStrength) {
-            <div class="col-12">
-              @if (pwdStrength === "weak") {
-                <div
-                  class="alert alert-danger font-bold mt-2"
-                  role="alert"
-                  i18n
-                >
-                  Weak password
-                </div>
-              }
-              @if (pwdStrength === "medium") {
-                <div
-                  class="alert alert-warning font-bold mt-2"
-                  role="alert"
-                  i18n
-                >
-                  Medium password
-                </div>
-              }
-              @if (pwdStrength === "strong") {
-                <div
-                  class="alert alert-success font-bold mt-2"
-                  role="alert"
-                  i18n
-                >
-                  Strong password
-                </div>
-              }
+            <div class="fw-500 col-12" i18n>
+              Strength:
+              <span
+                [class.primary]="pwdStrength == 'strong'"
+                [class.error]="pwdStrength == 'weak'"
+                [class.secondary]="pwdStrength == 'medium'"
+                >{{ pwdStrength | titlecase }}</span
+              >
             </div>
           }
         </div>
@@ -160,6 +153,11 @@
             />
             @if (formGroup.get("companyName")?.hasError("required")) {
               <mat-error i18n>This field is required </mat-error>
+            }
+            @if (formGroup.get("companyName")?.hasError("maxlength")) {
+              <mat-error i18n
+                >Company Name cannot exceed 100 characters</mat-error
+              >
             }
           </mat-form-field>
         </div>
@@ -202,6 +200,9 @@
             @if (formGroup.get("vatNumber")?.hasError("required")) {
               <mat-error i18n>This field is required </mat-error>
             }
+            @if (formGroup.get("vatNumber")?.hasError("maxlength")) {
+              <mat-error i18n>VAT Number cannot exceed 20 characters</mat-error>
+            }
           </mat-form-field>
         </div>
         <div class="col-md-12 mb-4">
@@ -215,6 +216,11 @@
             />
             @if (formGroup.get("addressLine1")?.hasError("required")) {
               <mat-error i18n>This field is required </mat-error>
+            }
+            @if (formGroup.get("addressLine1")?.hasError("maxlength")) {
+              <mat-error i18n
+                >Street Address cannot exceed 100 characters</mat-error
+              >
             }
           </mat-form-field>
         </div>
@@ -231,6 +237,11 @@
               @if (formGroup.get("postalCode")?.hasError("required")) {
                 <mat-error i18n>This field is required </mat-error>
               }
+              @if (formGroup.get("postalCode")?.hasError("maxlength")) {
+                <mat-error i18n
+                  >Post Code cannot exceed 20 characters</mat-error
+                >
+              }
             </mat-form-field>
           </div>
           <div class="col-md-6">
@@ -244,6 +255,9 @@
               />
               @if (formGroup.get("city")?.hasError("required")) {
                 <mat-error i18n>This field is required </mat-error>
+              }
+              @if (formGroup.get("city")?.hasError("maxlength")) {
+                <mat-error i18n>City cannot exceed 50 characters</mat-error>
               }
             </mat-form-field>
           </div>
@@ -279,35 +293,36 @@
               @if (formGroup.get("stateProvince")?.hasError("required")) {
                 <mat-error i18n>This field is required </mat-error>
               }
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="row g-3 mb-4">
-          <div class="col-md-6">
-            <mat-label class="fw-bold mb-1" i18n>TELEPHONE*</mat-label>
-            <mat-form-field appearance="outline" class="w-100">
-              <input
-                matInput
-                placeholder="Type here"
-                type="text"
-                formControlName="phoneNumberCompany"
-              />
-              @if (formGroup.get("phoneNumberCompany")?.hasError("required")) {
-                <mat-error i18n>This field is required </mat-error>
+              @if (formGroup.get("stateProvince")?.hasError("maxlength")) {
+                <mat-error i18n
+                  >Country / State / Region cannot exceed 50
+                  characters</mat-error
+                >
               }
             </mat-form-field>
           </div>
-          <div class="col-md-6">
-            <mat-label class="fw-bold mb-1" i18n>MOBILE</mat-label>
-            <mat-form-field appearance="outline" class="w-100">
-              <input
-                matInput
-                placeholder="Type here"
-                type="text"
-                formControlName="mobileNumberCompany"
-              />
-            </mat-form-field>
-          </div>
+        </div>
+        <app-telephone-form-control
+          [isRequired]="true"
+          formControlName="phoneNumberCompany"
+        ></app-telephone-form-control>
+
+        <div class="col-12 mb-4">
+          <mat-label class="fw-bold mb-1" i18n>MOBILE</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input
+              matInput
+              placeholder="Type here"
+              type="text"
+              formControlName="mobileNumberCompany"
+            />
+            @if (
+              formGroup.get("mobileNumberCompany")?.hasError("maxlength") ||
+              formGroup.get("mobileNumberCompany")?.hasError("pattern")
+            ) {
+              <mat-error i18n>Please enter a valid phone number </mat-error>
+            }
+          </mat-form-field>
         </div>
 
         <!-- Additional information -->
@@ -354,7 +369,7 @@
             formGroup.get("areasCovered")?.touched
           ) {
             <mat-error class="mt-0 mat-error" i18n>
-              This field is required
+              Please select at least one area that you cover.
             </mat-error>
           }
         </div>
@@ -451,7 +466,6 @@
             [maxFile]="1"
             [multiple]="false"
             (fileReady)="handleFileReady($event)"
-            [notAcceptable]="['.docx']"
             (error)="handleFileError($event)"
           ></app-file-upload>
 
@@ -478,9 +492,9 @@
             }
           </mat-form-field>
           @if (expiryDateError()) {
-            <mat-error class="alert alert-warning fw-bold" i18n>{{
-              expiryDateError()
-            }}</mat-error>
+            <div class="background-on-primary rounded fw-bold mt-2 p-2" i18n>
+              {{ expiryDateError() }}
+            </div>
           }
         </div>
 
@@ -537,7 +551,8 @@
             formGroup.get("acceptTerm")?.touched
           ) {
             <mat-error class="mt-0 mat-error" i18n>
-              This field is required
+              You must accept the Terms & Conditions and Privacy Policy to
+              proceed.
             </mat-error>
           }
         </div>
