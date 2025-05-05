@@ -2,10 +2,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { AccountOnboardingStatusComponent } from "../../../share/ui/account-onboarding-status/account-onboarding-status.component";
+import { AccountOnboardingStatusComponent } from '../../../share/ui/account-onboarding-status/account-onboarding-status.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { AuthService } from 'app/services/auth.service';
 import { catchError, concatMap, filter, finalize, map, of, take } from 'rxjs';
@@ -13,6 +18,7 @@ import { RegistrationsService } from 'app/services/registrations.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { countries } from './../../../statics/country-data';
 
 @Component({
   selector: 'app-company-information-section',
@@ -29,20 +35,37 @@ import { MatButtonModule } from '@angular/material/button';
     RouterModule,
     ReactiveFormsModule,
     UnAuthLayoutComponent,
-  ]
+  ],
 })
 export class CompanyInformationSectionComponent implements OnInit {
+  countryList = countries;
   formGroup = new FormGroup({
     companyType: new FormControl<string | null>(null, [Validators.required]),
-    registrationNumber: new FormControl<string | null>(null, [Validators.required]),
-    vatRegistrationCountry: new FormControl<string | null>(null, [Validators.required]),
+    registrationNumber: new FormControl<string | null>(null, [
+      Validators.required,
+    ]),
+    vatRegistrationCountry: new FormControl<string | null>(null, [
+      Validators.required,
+    ]),
     vatNumber: new FormControl<string | null>(null, [Validators.required]),
-    addressLine1: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(100)]),
-    postalCode: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
-    city: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
+    addressLine1: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
+    postalCode: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(20),
+    ]),
+    city: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(50),
+    ]),
     country: new FormControl<string | null>(null, [Validators.required]),
-    stateProvince: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
-  })
+    stateProvince: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(50),
+    ]),
+  });
   authService = inject(AuthService);
   submitting = signal(false);
   service = inject(RegistrationsService);
@@ -51,24 +74,38 @@ export class CompanyInformationSectionComponent implements OnInit {
   companyId: number | undefined;
 
   ngOnInit() {
-    this.authService.user$.pipe(
-      filter((user) => !!user),
-      take(1)
-    ).subscribe((user) => {
-      this.formGroup.patchValue({
-        companyType: user.company?.companyType ?? '',
-        registrationNumber: user.company?.registrationNumber ?? '',
-        vatRegistrationCountry: user.company?.vatRegistrationCountry ?? '',
-        vatNumber: user.company?.vatNumber ?? '',
-        addressLine1: user.company?.addressLine1 ?? '',
-        postalCode: user.company?.postalCode ?? '',
-        city: user.company?.city ?? '',
-        country: user.company?.country ?? '',
-        stateProvince: user.company?.stateProvince ?? '',
-      });
+    this.authService.user$
+      .pipe(
+        filter((user) => !!user),
+        take(1),
+        catchError((err) => {
+          if (err) {
+            this.snackBar.open(
+              'An error occurred while retrieving your information. Please refresh the page or contact support if the problem persists.',
+              'Ok',
+              { duration: 3000 },
+            );
+          }
+          return of(null);
+        }),
+      )
+      .subscribe((user) => {
+        if (user) {
+          this.formGroup.patchValue({
+            companyType: user.company?.companyType ?? '',
+            registrationNumber: user.company?.registrationNumber ?? '',
+            vatRegistrationCountry: user.company?.vatRegistrationCountry ?? '',
+            vatNumber: user.company?.vatNumber ?? '',
+            addressLine1: user.company?.addressLine1 ?? '',
+            postalCode: user.company?.postalCode ?? '',
+            city: user.company?.city ?? '',
+            country: user.company?.country ?? '',
+            stateProvince: user.company?.stateProvince ?? '',
+          });
 
-      this.companyId = user.company?.id;
-    });
+          this.companyId = user.company?.id;
+        }
+      });
   }
 
   submit() {
@@ -77,9 +114,7 @@ export class CompanyInformationSectionComponent implements OnInit {
     }
 
     this.formGroup.markAllAsTouched();
-    const {
-      ...payload
-    }: any = this.formGroup.value;
+    const { ...payload }: any = this.formGroup.value;
 
     this.submitting.set(true);
 
@@ -92,7 +127,7 @@ export class CompanyInformationSectionComponent implements OnInit {
         catchError((err) => {
           if (err) {
             this.snackBar.open(
-              'An error occur while execute request, please try again.',
+              'Failed to submit your information due to a network error. Please try again.',
               'Ok',
               { duration: 3000 },
             );
@@ -106,5 +141,4 @@ export class CompanyInformationSectionComponent implements OnInit {
         }
       });
   }
-
 }

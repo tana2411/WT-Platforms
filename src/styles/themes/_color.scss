@@ -1,7 +1,11 @@
-@import '../variables';
+@import "../variables";
 
 .primary {
   color: $primary !important;
+}
+
+.secondary {
+  color: $secondary;
 }
 
 .error {

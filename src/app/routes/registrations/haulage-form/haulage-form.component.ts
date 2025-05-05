@@ -51,6 +51,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from 'app/services/auth.service';
+import { TitleCasePipe } from '@angular/common';
 @Component({
   selector: 'app-haulage-form',
   templateUrl: './haulage-form.component.html',
@@ -68,6 +69,7 @@ import { AuthService } from 'app/services/auth.service';
     UnAuthLayoutComponent,
     MatDatepickerModule,
     MatButtonModule,
+    TitleCasePipe,
   ],
   providers: [provideNativeDateAdapter()],
 })
@@ -106,7 +108,6 @@ export class HaulageFormComponent implements OnInit {
     ]),
     phoneNumberUser: new FormControl<string | null>(null, [
       Validators.required,
-      Validators.maxLength(15),
     ]),
     email: new FormControl<string | null>(null, [
       Validators.email,
@@ -148,9 +149,11 @@ export class HaulageFormComponent implements OnInit {
     phoneNumberCompany: new FormControl<string | null>(null, [
       Validators.required,
       Validators.maxLength(15),
+      Validators.pattern(/^\d*$/),
     ]),
     mobileNumberCompany: new FormControl<string | null>(null, [
       Validators.maxLength(15),
+      Validators.pattern(/^\d*$/),
     ]),
 
     fleetType: new FormControl<string | null>(null, [Validators.required]),

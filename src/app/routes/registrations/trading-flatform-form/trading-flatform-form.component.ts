@@ -37,6 +37,7 @@ import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'app/services/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TitleCasePipe } from '@angular/common';
 @Component({
   selector: 'app-trading-flatform-form',
   templateUrl: './trading-flatform-form.component.html',
@@ -52,6 +53,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     InputWithConfirmControlComponent,
     TelephoneFormControlComponent,
     UnAuthLayoutComponent,
+    TitleCasePipe,
   ],
 })
 export class TradingFlatformFormComponent implements OnInit {
@@ -70,17 +72,28 @@ export class TradingFlatformFormComponent implements OnInit {
     'Other (Mix)',
     'Other',
     'Other (Single Sources)',
+    'Granulates',
   ];
-
-  companyInterests = ['Buyer', 'Seller', 'Both'];
 
   formGroup = new FormGroup({
     prefix: new FormControl<string | null>('Mr.', [Validators.required]),
-    firstName: new FormControl<string | null>(null, [Validators.required]),
-    lastName: new FormControl<string | null>(null, [Validators.required]),
-    jobTitle: new FormControl<string | null>(null, [Validators.required]),
+    firstName: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(50),
+    ]),
+    lastName: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(50),
+    ]),
+    jobTitle: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(50),
+    ]),
     phoneNumber: new FormControl<string | null>(null, [Validators.required]),
-    email: new FormControl<string | null>(null, [Validators.required]),
+    email: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.email,
+    ]),
     password: new FormControl<string | null>(null, [
       Validators.required,
       Validators.minLength(8),
@@ -88,9 +101,14 @@ export class TradingFlatformFormComponent implements OnInit {
     whereDidYouHearAboutUs: new FormControl<string | null>(null, [
       Validators.required,
     ]),
-    otherMaterial: new FormControl<string | null>(null),
-    companyName: new FormControl<string | null>(null, [Validators.required]),
-    companyInterest: new FormControl<string | null>(null, [
+    otherMaterial: new FormControl<string | null>(null, [
+      Validators.maxLength(100),
+    ]),
+    companyName: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
+    companyInterest: new FormControl<string | null>('both', [
       Validators.required,
     ]),
     favoriteMaterials: new FormArray([], [Validators.required]),
@@ -115,7 +133,9 @@ export class TradingFlatformFormComponent implements OnInit {
         this.materialsAccept.forEach((item) => {
           this.materials.push(new FormControl(item));
         });
+        this.showOtherMaterial.set(true);
       } else {
+        this.showOtherMaterial.set(false);
         this.materials.clear();
       }
       this.materials.updateValueAndValidity();
@@ -142,7 +162,6 @@ export class TradingFlatformFormComponent implements OnInit {
 
     if (event.checked) {
       if (!isOther) {
-        this.showOtherMaterial.set(false);
         this.materials.push(new FormControl(item));
       } else {
         this.showOtherMaterial.set(true);
@@ -151,6 +170,10 @@ export class TradingFlatformFormComponent implements OnInit {
           ?.setValidators([Validators.required]);
       }
     } else {
+      if (isOther) {
+        this.showOtherMaterial.set(false);
+        this.formGroup.get('otherMaterial')?.clearValidators();
+      }
       const idx = this.materials.controls.findIndex(
         (control) => control.value === item,
       );
