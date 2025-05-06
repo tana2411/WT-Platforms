@@ -111,10 +111,6 @@ export class TradingFlatformFormComponent implements OnInit {
       name: 'Other (Single Sources)',
       value: 'other (single sources)',
     },
-    {
-      name: 'Other',
-      value: 'other',
-    },
   ];
 
   formGroup = new FormGroup({
@@ -183,6 +179,16 @@ export class TradingFlatformFormComponent implements OnInit {
       this.materials.updateValueAndValidity();
     });
 
+    effect(() => {
+      if (this.showOtherMaterial()) {
+        this.formGroup
+          .get('otherMaterial')
+          ?.setValidators([Validators.required]);
+      } else {
+        this.formGroup.get('otherMaterial')?.clearValidators();
+        this.formGroup.get('otherMaterial')?.markAsUntouched();
+      }
+    });
     this.formGroup
       .get('password')
       ?.valueChanges.pipe(takeUntilDestroyed())
@@ -200,22 +206,9 @@ export class TradingFlatformFormComponent implements OnInit {
   }
 
   onSelectedMaterial(event: MatCheckboxChange, item: string) {
-    const isOther = item === 'other';
-
     if (event.checked) {
-      if (!isOther) {
-        this.materials.push(new FormControl(item));
-      } else {
-        this.showOtherMaterial.set(true);
-        this.formGroup
-          .get('otherMaterial')
-          ?.setValidators([Validators.required]);
-      }
+      this.materials.push(new FormControl(item));
     } else {
-      if (isOther) {
-        this.showOtherMaterial.set(false);
-        this.formGroup.get('otherMaterial')?.clearValidators();
-      }
       const idx = this.materials.controls.findIndex(
         (control) => control.value === item,
       );
@@ -259,8 +252,11 @@ export class TradingFlatformFormComponent implements OnInit {
       companyName,
       companyInterest,
       favoriteMaterials,
-      otherMaterial,
     };
+
+    if (this.showOtherMaterial()) {
+      payload.otherMaterial = this.formGroup.value.otherMaterial;
+    }
 
     this.submitting.set(true);
 
@@ -272,11 +268,9 @@ export class TradingFlatformFormComponent implements OnInit {
         }),
         catchError((err) => {
           if (err) {
-            this.snackBar.open(
-              'An error occur while execute request, please try again.',
-              'Ok',
-              { duration: 3000 },
-            );
+            this.snackBar.open(`${err.error.error.message}`, 'Ok', {
+              duration: 3000,
+            });
           }
           return of(null);
         }),
