@@ -354,24 +354,20 @@
             AREAS YOUR COMPANY CAN COVER*
           </mat-label>
           <mat-radio-group
-            formControlName="areasCovered"
             class="d-flex justify-content-between col-8"
             (change)="onAreaChange($event)"
           >
-            <mat-radio-button value="UK" i18n> UK only </mat-radio-button>
+            <mat-radio-button value="uk_only" i18n> UK only </mat-radio-button>
             <mat-radio-button value="EU" i18n> Within EU </mat-radio-button>
-            <mat-radio-button value="worldWide" i18n>
+            <mat-radio-button value="worldwide" i18n>
               World Wide
             </mat-radio-button>
           </mat-radio-group>
-          @if (
-            formGroup.get("areasCovered")?.hasError("required") &&
-            formGroup.get("areasCovered")?.touched
-          ) {
+          <!-- @if (selectedAreasCovered.invalid && selectedAreasCovered.touched) {
             <mat-error class="mt-0 mat-error" i18n>
               Please select at least one area that you cover.
             </mat-error>
-          }
+          } -->
         </div>
         @if (showEUcountry()) {
           <div class="col-12 mb-4">
@@ -391,15 +387,20 @@
                 <div class="col-4">
                   <mat-checkbox
                     color="primary"
-                    (change)="onSelectedItem($event, item, selectedEuCountries)"
-                    [checked]="selectedEuCountries.value.includes(item)"
-                    >{{ item }}</mat-checkbox
+                    (change)="
+                      onSelectedItem($event, item.value, selectedAreasCovered)
+                    "
+                    [checked]="selectAllCountry()"
+                    >{{ item.name }}</mat-checkbox
                   >
                 </div>
               }
-              @if (selectedEuCountries.invalid && selectedEuCountries.touched) {
+              @if (
+                selectedAreasCovered.hasError("required") &&
+                selectedAreasCovered.touched
+              ) {
                 <mat-error class="mt-0 mat-error" i18n>
-                  This field is required
+                  Please select at least one EU country.
                 </mat-error>
               }
             </div>
@@ -420,9 +421,11 @@
               <div class="col-5">
                 <mat-checkbox
                   color="primary"
-                  (change)="onSelectedItem($event, item, selectedContainerType)"
-                  [checked]="selectedContainerType.value.includes(item)"
-                  >{{ item }}</mat-checkbox
+                  (change)="
+                    onSelectedItem($event, item.value, selectedContainerType)
+                  "
+                  [checked]="selectAllContainerTypes()"
+                  >{{ item.name }}</mat-checkbox
                 >
               </div>
             }
@@ -508,7 +511,9 @@
               formControlName="whereDidYouHearAboutUs"
             >
               <mat-option value="google_search" i18n>Google Search</mat-option>
-              <mat-option value="prse_trade_show" i18n>PRSE Trade Show</mat-option>
+              <mat-option value="prse_trade_show" i18n
+                >PRSE Trade Show</mat-option
+              >
               <mat-option value="plastics_live_trade_show" i18n
                 >Plastics Live Trade Show</mat-option
               >

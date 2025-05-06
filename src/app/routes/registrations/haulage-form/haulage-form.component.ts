@@ -76,20 +76,20 @@ import { TitleCasePipe } from '@angular/common';
 export class HaulageFormComponent implements OnInit {
   countryList = countries;
   euCountries = [
-    'Austria',
-    'Albania',
-    'Belgium',
-    'Bulgaria',
-    'Croatia',
-    'Czech Republic',
-    'Denmark',
-    'Estonia',
+    { value: 'austria', name: 'Austria' },
+    { value: 'albania', name: 'Albania' },
+    { value: 'belgium', name: 'Belgium' },
+    { value: 'bulgaria', name: 'Bulgaria' },
+    { value: 'croatia', name: 'Croatia' },
+    { value: 'czech_republic', name: 'Czech Republic' },
+    { value: 'denmark', name: 'Denmark' },
+    { value: 'estonia', name: 'Estonia' },
   ];
   containerTypes = [
-    'Shipping Container',
-    'Curtain Sider (Standard)',
-    'Curtain Sider (High Cube)',
-    'Walking Floor',
+    { value: 'shipping_container', name: 'Shipping Container' },
+    { value: 'curtain_slider_standard', name: 'Curtain Sider (Standard)' },
+    { value: 'curtain_slider_high_cube', name: 'Curtain Sider (High Cube)' },
+    { value: 'walking_floor', name: 'Walking Floor' },
   ];
 
   formGroup = new FormGroup({
@@ -149,7 +149,6 @@ export class HaulageFormComponent implements OnInit {
     phoneNumberCompany: new FormControl<string | null>(null, [
       Validators.required,
       Validators.maxLength(15),
-      Validators.pattern(/^\d*$/),
     ]),
     mobileNumberCompany: new FormControl<string | null>(null, [
       Validators.maxLength(15),
@@ -157,8 +156,7 @@ export class HaulageFormComponent implements OnInit {
     ]),
 
     fleetType: new FormControl<string | null>(null, [Validators.required]),
-    areasCovered: new FormControl<string | null>(null, [Validators.required]),
-    selectedEuCountries: new FormArray([]),
+    areasCovered: new FormArray([], []),
     containerTypes: new FormArray([], [Validators.required]),
     wasteLicence: new FormControl<boolean | null>(null, [Validators.required]),
     expiryDate: new FormControl<Date | null>(null, [Validators.required]),
@@ -190,9 +188,7 @@ export class HaulageFormComponent implements OnInit {
     effect(() => {
       if (this.selectAllContainerTypes()) {
         this.selectedContainerType.clear();
-        this.containerTypes.forEach((item) => {
-          this.selectedContainerType.push(new FormControl(item));
-        });
+        this.selectedContainerType.push(new FormControl('all'));
       } else {
         this.selectedContainerType.clear();
       }
@@ -200,18 +196,20 @@ export class HaulageFormComponent implements OnInit {
 
     effect(() => {
       if (this.selectAllCountry()) {
-        this.selectedEuCountries.clear();
+        this.selectedAreasCovered.clear();
         this.euCountries.forEach((item) => {
-          this.selectedEuCountries.push(new FormControl(item));
+          this.selectedAreasCovered.push(new FormControl(item.value));
         });
       } else {
-        this.selectedEuCountries.clear();
+        this.selectedAreasCovered.clear();
       }
     });
 
     this.formGroup?.valueChanges
       .pipe(takeUntilDestroyed(), debounceTime(300))
       .subscribe((value) => {
+        console.log(this.formGroup);
+
         const { expiryDate, password } = value;
         const now = new Date();
         if (!value) return;
@@ -239,18 +237,21 @@ export class HaulageFormComponent implements OnInit {
   ngOnInit() {}
 
   onAreaChange(event: MatRadioChange) {
+    this.selectedAreasCovered.clear();
     if (event.value === 'EU') {
       this.showEUcountry.set(true);
-      this.selectedEuCountries.setValidators(Validators.required);
+      this.selectedAreasCovered.setValidators(Validators.required);
     } else {
       this.showEUcountry.set(false);
-      this.selectedEuCountries.clearValidators();
+      this.selectedAreasCovered.clearValidators();
+      this.selectedAreasCovered.push(new FormControl(event.value));
     }
-    this.selectedEuCountries.updateValueAndValidity();
+
+    this.selectedAreasCovered.updateValueAndValidity();
   }
 
-  get selectedEuCountries() {
-    return this.formGroup.get('selectedEuCountries') as FormArray;
+  get selectedAreasCovered() {
+    return this.formGroup.get('areasCovered') as FormArray;
   }
 
   get selectedContainerType() {
@@ -268,6 +269,7 @@ export class HaulageFormComponent implements OnInit {
         formArray.removeAt(idx);
       }
     }
+    formArray.markAllAsTouched();
     formArray.updateValueAndValidity();
   }
 
@@ -284,13 +286,8 @@ export class HaulageFormComponent implements OnInit {
 
   send() {
     this.formGroup.markAllAsTouched();
-    const {
-      selectedEuCountries,
-      wasteLicence,
-      acceptTerm,
-      expiryDate,
-      ...value
-    } = this.formGroup.value;
+    const { wasteLicence, acceptTerm, expiryDate, ...value } =
+      this.formGroup.value;
 
     if (this.selectedFile().length > 0) {
       this.submitting.set(true);
@@ -305,8 +302,6 @@ export class HaulageFormComponent implements OnInit {
 
             const payload: any = {
               ...value,
-              fleetType: [value.fleetType],
-              areasCovered: [value.areasCovered],
               documentType: wasteLicence ? 'waste_carrier' : null,
               documentName: this.selectedFile()[0].name,
               documentUrl: url,
@@ -314,11 +309,9 @@ export class HaulageFormComponent implements OnInit {
 
             return this.registrationService.registerHaulage(payload).pipe(
               catchError((err) => {
-                this.snackBar.open(
-                  'An error occurred while processing your registration. Please try again.',
-                  'Ok',
-                  { duration: 3000 },
-                );
+                this.snackBar.open(`${err.error.error.message}`, 'Ok', {
+                  duration: 3000,
+                });
                 return of(null);
               }),
             );
