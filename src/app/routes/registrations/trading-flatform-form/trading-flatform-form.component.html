@@ -153,7 +153,9 @@
               formControlName="whereDidYouHearAboutUs"
             >
               <mat-option value="google_search" i18n>Google Search</mat-option>
-              <mat-option value="prse_trade_show" i18n>PRSE Trade Show</mat-option>
+              <mat-option value="prse_trade_show" i18n
+                >PRSE Trade Show</mat-option
+              >
               <mat-option value="plastics_live_trade_show" i18n
                 >Plastics Live Trade Show</mat-option
               >
@@ -236,6 +238,14 @@
                 >
               </div>
             }
+            <div class="col-4">
+              <mat-checkbox
+                color="primary"
+                (change)="showOtherMaterial.set(!showOtherMaterial())"
+                [checked]="selectAllMaterial()"
+                >Other</mat-checkbox
+              >
+            </div>
             @if (
               formGroup.get("materials")?.invalid &&
               formGroup.get("materials")?.touched
@@ -255,7 +265,10 @@
                   type="text"
                   formControlName="otherMaterial"
                 />
-                @if (formGroup.get("otherMaterial")?.hasError("required")) {
+                @if (
+                  formGroup.get("otherMaterial")?.hasError("required") &&
+                  formGroup.get("otherMaterial")?.touched
+                ) {
                   <mat-error i18n>This field is required </mat-error>
                 }
                 @if (formGroup.get("otherMaterial")?.hasError("maxlength")) {
