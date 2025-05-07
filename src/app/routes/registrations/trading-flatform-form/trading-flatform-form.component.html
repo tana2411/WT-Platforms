@@ -246,10 +246,7 @@
                 >Other</mat-checkbox
               >
             </div>
-            @if (
-              formGroup.get("materials")?.invalid &&
-              formGroup.get("materials")?.touched
-            ) {
+            @if (materials.hasError("required") && materials.touched) {
               <mat-error class="mat-error" i18n
                 >This field is required</mat-error
               >
