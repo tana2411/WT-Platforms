@@ -172,6 +172,7 @@ export class TradingFlatformFormComponent implements OnInit {
           this.materials.push(new FormControl(item.value));
         });
         this.showOtherMaterial.set(true);
+        this.materials.markAsTouched();
       } else {
         this.showOtherMaterial.set(false);
         this.materials.clear();
@@ -180,14 +181,19 @@ export class TradingFlatformFormComponent implements OnInit {
     });
 
     effect(() => {
+      const { favoriteMaterials, otherMaterial } = this.formGroup.controls;
       if (this.showOtherMaterial()) {
-        this.formGroup
-          .get('otherMaterial')
-          ?.setValidators([Validators.required]);
+        otherMaterial.setValidators([Validators.required]);
+        favoriteMaterials.clearValidators();
       } else {
-        this.formGroup.get('otherMaterial')?.clearValidators();
-        this.formGroup.get('otherMaterial')?.markAsUntouched();
+        otherMaterial.clearValidators();
+        otherMaterial.setValue(null);
+        otherMaterial.markAsUntouched();
+        favoriteMaterials.setValidators([Validators.required]);
       }
+
+      favoriteMaterials.updateValueAndValidity();
+      otherMaterial.updateValueAndValidity();
     });
     this.formGroup
       .get('password')
@@ -201,7 +207,7 @@ export class TradingFlatformFormComponent implements OnInit {
 
   ngOnInit() {}
 
-  get materials(): FormArray {
+  get materials() {
     return this.formGroup.get('favoriteMaterials') as FormArray;
   }
 
@@ -216,6 +222,7 @@ export class TradingFlatformFormComponent implements OnInit {
         this.materials.removeAt(idx);
       }
     }
+    this.materials.markAsTouched();
     this.materials.updateValueAndValidity();
     this.formGroup.updateValueAndValidity();
   }
@@ -255,11 +262,10 @@ export class TradingFlatformFormComponent implements OnInit {
     };
 
     if (this.showOtherMaterial()) {
-      payload.otherMaterial = this.formGroup.value.otherMaterial;
+      payload.otherMaterial = otherMaterial;
     }
 
     this.submitting.set(true);
-
     this.service
       .registerTrading(payload)
       .pipe(

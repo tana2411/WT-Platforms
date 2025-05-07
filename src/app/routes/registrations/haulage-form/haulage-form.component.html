@@ -161,6 +161,26 @@
             }
           </mat-form-field>
         </div>
+        <div class="col-md-12 mb-4">
+          <label class="fw-bold" i18n>COMPANY REGISTRATION NUMBER*</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input
+              matInput
+              placeholder="Type here"
+              type="text"
+              formControlName="registrationNumber"
+            />
+            @if (formGroup.get("registrationNumber")?.hasError("required")) {
+              <mat-error i18n>This field is required </mat-error>
+            }
+            @if (formGroup.get("registrationNumber")?.hasError("maxlength")) {
+              <mat-error i18n
+                >Company Registration Number cannot exceed 20
+                characters</mat-error
+              >
+            }
+          </mat-form-field>
+        </div>
         <div class="col-12 mb-4">
           <mat-label class="mb-0 fw-bold" i18n>
             COULD YOU PLEASE CONFIRM THE COUNTRY WHERE YOUR VAT REGISTRATION IS
@@ -350,9 +370,7 @@
           }
         </div>
         <div class="col-12 mb-4">
-          <mat-label class="mb-0 fw-bold" i18n>
-            AREAS YOUR COMPANY CAN COVER*
-          </mat-label>
+          <mat-label class="mb-0 fw-bold" i18n> AREAS COVERED* </mat-label>
           <mat-radio-group
             class="d-flex justify-content-between col-8"
             (change)="onAreaChange($event)"
@@ -438,30 +456,6 @@
             }
           </div>
         </div>
-        <div class="col-12 mb-4">
-          <mat-label class="mb-0 fw-bold" i18n>
-            WASTE CARRIER LICENCE*
-          </mat-label>
-          <mat-radio-group
-            formControlName="wasteLicence"
-            class="d-flex justify-content-between col-8"
-            name="wasteLicence"
-          >
-            <mat-radio-button value="true" i18n> Yes </mat-radio-button>
-            <mat-radio-button value="false" i18n>
-              Not Applicable
-            </mat-radio-button>
-          </mat-radio-group>
-          @if (
-            formGroup.get("wasteLicence")?.hasError("required") &&
-            formGroup.get("wasteLicence")?.touched
-          ) {
-            <mat-error class="mt-0 mat-error" i18n>
-              This field is required
-            </mat-error>
-          }
-        </div>
-
         <!-- Document upload -->
         <h6 class="mb-4 mt-5 primary" i18n>WASTE CARRIER LICENCE UPLOAD*</h6>
         <div class="col-12 mb-4">
