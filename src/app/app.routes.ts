@@ -16,96 +16,104 @@ import { ROUTES } from './constants/route.const';
 import {} from './guards/auth/utils';
 import { GuardRequireRole } from './types/auth';
 import { LogoutComponent } from './routes/logout/logout.component';
+import { SiteLocationSectionComponent } from './routes/registrations/site-location-section/site-location-section.component';
 
 export const routes: Routes = [
-    {
-        path: 'login',
-        // canActivate: [CanActivateUnAuthPage],
-        loadComponent: () => import('./routes/login-page/login-page.component').then(m => m.LoginPageComponent),
+  {
+    path: 'login',
+    // canActivate: [CanActivateUnAuthPage],
+    loadComponent: () =>
+      import('./routes/login-page/login-page.component').then(
+        (m) => m.LoginPageComponent,
+      ),
+  },
+  {
+    path: 'logout',
+    component: LogoutComponent,
+  },
+  {
+    path: 'termsandconditions',
+    component: TermComponent,
+  },
+  {
+    path: 'privacy-policy',
+    component: PrivacyComponent,
+  },
+  {
+    path: 'create-account',
+    component: TradingFlatformFormComponent,
+  },
+  {
+    path: 'create-haulier-account',
+    component: HaulageFormComponent,
+  },
+  {
+    path: 'account-pending-result',
+    component: RegistrationPendingResultComponent,
+  },
+  {
+    path: 'account-complete-result',
+    component: RegistrationCompleteResultComponent,
+  },
+  {
+    path: 'company-information',
+    component: CompanyInformationSectionComponent,
+  },
+  {
+    path: 'company-document',
+    component: CompanyDocumentComponent,
+  },
+  {
+    path: 'site-location',
+    component: SiteLocationSectionComponent,
+  },
+  {
+    path: ROUTES.buy,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [
+        GuardRequireRole.SuperAdmin,
+        GuardRequireRole.Trading,
+      ],
     },
-    {
-        path: 'logout',
-        component: LogoutComponent,
+    loadComponent: () =>
+      import('./routes/market-place/market-place.component').then(
+        (m) => m.MarketPlaceComponent,
+      ),
+  },
+  {
+    path: ROUTES.haulier,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [
+        GuardRequireRole.SuperAdmin,
+        GuardRequireRole.Haulier,
+      ],
     },
-    {
-        path: 'termsandconditions',
-        component: TermComponent,
+    loadComponent: () =>
+      import(
+        './routes/haulier/haulier-dashboard/haulier-dashboard.component'
+      ).then((m) => m.HaulierDashboardComponent),
+  },
+  {
+    path: ROUTES.admin,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [GuardRequireRole.SuperAdmin],
     },
-    {
-        path: 'privacy-policy',
-        component: PrivacyComponent,
-    },
-    {
-        path: 'create-account',
-        component: TradingFlatformFormComponent,
-    },
-    {
-        path: 'create-haulier-account',
-        component: HaulageFormComponent,
-    },
-    {
-        path: 'account-pending-result',
-        component: RegistrationPendingResultComponent,
-    },
-    {
-        path: 'account-complete-result',
-        component: RegistrationCompleteResultComponent,
-    },
-    {
-        path: 'company-information',
-        component: CompanyInformationSectionComponent,
-    },
-    {
-        path: 'company-document',
-        component: CompanyDocumentComponent,
-    },
-    {
-        path: ROUTES.buy,
-        canActivate: [CanActivateAuthPage],
-        data: {
-          requireAuthParams: [
-            GuardRequireRole.SuperAdmin,
-            GuardRequireRole.Trading,
-          ],
-        },
-        loadComponent: () =>
-          import('./routes/market-place/market-place.component').then(
-            (m) => m.MarketPlaceComponent,
-          ),
-      },
-      {
-        path: ROUTES.haulier,
-        canActivate: [CanActivateAuthPage],
-        data: {
-          requireAuthParams: [
-            GuardRequireRole.SuperAdmin,
-            GuardRequireRole.Haulier,
-          ],
-        },
-        loadComponent: () =>
-          import(
-            './routes/haulier/haulier-dashboard/haulier-dashboard.component'
-          ).then((m) => m.HaulierDashboardComponent),
-      },
-      {
-        path: ROUTES.admin,
-        canActivate: [CanActivateAuthPage],
-        data: {
-          requireAuthParams: [GuardRequireRole.SuperAdmin],
-        },
-        loadComponent: () =>
-          import(
-            './routes/admin/admin-dashboard/admin-dashboard.component'
-          ).then((m) => m.AdminDashboardComponent),
-      },
+    loadComponent: () =>
+      import('./routes/admin/admin-dashboard/admin-dashboard.component').then(
+        (m) => m.AdminDashboardComponent,
+      ),
+  },
 
-      {
-        path: ROUTES.settings,
-        canActivate: [CanActivateAuthPage],
-        loadComponent: () =>
-          import(
-            './routes/account-setting/account-setting.component'
-          ).then((m) => m.AccountSettingComponent),
-      },
-    { path: '**', pathMatch: 'full', redirectTo: 'login' },
+  {
+    path: ROUTES.settings,
+    canActivate: [CanActivateAuthPage],
+    loadComponent: () =>
+      import('./routes/account-setting/account-setting.component').then(
+        (m) => m.AccountSettingComponent,
+      ),
+  },
+  { path: '**', pathMatch: 'full', redirectTo: 'login' },
 ];
