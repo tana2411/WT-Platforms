@@ -60,7 +60,7 @@
               }
             </mat-form-field>
           </div>
-          <h6 class="mt-5 mb-5 primary" i18n>SITE POINT OF CONTACT</h6>
+          <h6 class="mt-5 mb-3 primary" i18n>SITE POINT OF CONTACT</h6>
           <div class="row g-3 mb-5">
             <div class="col-md-6">
               <mat-label class="fw-bold mb-1" i18n>FIRST NAME*</mat-label>
@@ -125,9 +125,10 @@
             <mat-checkbox
               class="w-100"
               color="primary"
-              (change)="onUsePreviousAddressChange($event)"
+              (change)="selectPreviousAddress.set(!selectPreviousAddress())"
+              [checked]="selectPreviousAddress()"
             >
-              Use previously entered address.
+              <span class="fw-bold"> Use previously entered address. </span>
             </mat-checkbox>
           </div>
           <div class="col-md-12 mb-5">
@@ -137,9 +138,9 @@
                 matInput
                 placeholder="Type here"
                 type="text"
-                formControlName="addressLine"
+                formControlName="adressLine"
               />
-              @if (formGroup.get("addressLine")?.hasError("required")) {
+              @if (formGroup.get("adressLine")?.hasError("required")) {
                 <mat-error i18n>This field is required </mat-error>
               }
             </mat-form-field>
@@ -152,9 +153,9 @@
                   matInput
                   placeholder="Type here"
                   type="text"
-                  formControlName="postCode"
+                  formControlName="postcode"
                 />
-                @if (formGroup.get("postCode")?.hasError("required")) {
+                @if (formGroup.get("postcode")?.hasError("required")) {
                   <mat-error i18n>This field is required </mat-error>
                 }
               </mat-form-field>
@@ -254,41 +255,21 @@
               </mat-form-field>
             </div>
           </div>
+          <hr />
 
           <div class="col-12 mb-5">
             <mat-label class="mb-0 fw-bold" i18n
               >MATERIALS ACCEPTED
-              <span class="fw-normal">(MULTIPLE SELECTION)*</span></mat-label
-            >
-            <div class="col-12">
-              <mat-checkbox
-                class="tri-state-checkbox"
-                color="primary"
-                (click)="selectAllMaterial.set(!selectAllMaterial())"
-                >{{
-                  selectAllMaterial() ? "Deselect All" : "Select All"
-                }}</mat-checkbox
-              >
-            </div>
+              <!-- <span class="fw-normal">(MULTIPLE SELECTION)*</span> -->
+            </mat-label>
             <div class="row px-3 mb-4">
-              @for (item of materialsAccept; track $index; let i = $index) {
+              @for (item of materialAccept(); track $index; let i = $index) {
                 <div class="col-4">
-                  <mat-checkbox
-                    color="primary"
-                    (change)="onSelectedMaterial($event, item.value)"
-                    [checked]="materials.value.includes(item.value)"
-                    >{{ item.name }}</mat-checkbox
-                  >
+                  <mat-checkbox color="primary" [checked]="true">{{
+                    item.name
+                  }}</mat-checkbox>
                 </div>
               }
-              <div class="col-4">
-                <mat-checkbox
-                  color="primary"
-                  (change)="showOtherMaterial.set(!showOtherMaterial())"
-                  [checked]="selectAllMaterial()"
-                  >Other</mat-checkbox
-                >
-              </div>
               @if (
                 formGroup.get("materials")?.invalid &&
                 formGroup.get("materials")?.touched
@@ -417,17 +398,17 @@
               CAN LOAD/UNLOAD OWN MATERIAL*
             </mat-label>
             <mat-radio-group
-              formControlName="selfLoadUnloadCapability"
+              formControlName="selfLoadUnLoadCapability"
               class="col-6 d-flex justify-content-between radio-mat-error"
-              name="selfLoadUnloadCapability"
+              name="selfLoadUnLoadCapability"
             >
               <mat-radio-button [value]="true" i18n>Yes </mat-radio-button>
               <mat-radio-button [value]="false" i18n> No </mat-radio-button>
             </mat-radio-group>
             @if (
-              formGroup.get("selfLoadUnloadCapability")?.hasError("required") &&
-              (formGroup.get("selfLoadUnloadCapability")?.touched ||
-                formGroup.get("selfLoadUnloadCapability")?.dirty)
+              formGroup.get("selfLoadUnLoadCapability")?.hasError("required") &&
+              (formGroup.get("selfLoadUnLoadCapability")?.touched ||
+                formGroup.get("selfLoadUnLoadCapability")?.dirty)
             ) {
               <mat-error class="mt-0 mat-error" i18n>
                 This field is required
@@ -498,11 +479,12 @@
               type="submit"
               color="primary"
               [class.overlay-spinner]="submitting()"
+              (click)="send()"
               mat-flat-button
               class="w-100"
               i18n
             >
-              NEXT
+              SUBMIT
             </button>
           </div>
         </div>

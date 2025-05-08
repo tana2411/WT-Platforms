@@ -268,9 +268,13 @@ export class TradingFlatformFormComponent implements OnInit {
         }),
         catchError((err) => {
           if (err) {
-            this.snackBar.open(`${err.error.error.message}`, 'Ok', {
-              duration: 3000,
-            });
+            this.snackBar.open(
+              `${err?.error?.error?.message ?? 'Some thing went wrong. Please try again.'}`,
+              'Ok',
+              {
+                duration: 3000,
+              },
+            );
           }
           return of(null);
         }),

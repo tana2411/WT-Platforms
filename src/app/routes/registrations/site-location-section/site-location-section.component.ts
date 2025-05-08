@@ -1,4 +1,11 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -12,7 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TelephoneFormControlComponent } from '@app/ui';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { AccountOnboardingStatusComponent } from 'app/share/ui/account-onboarding-status/account-onboarding-status.component';
@@ -24,9 +31,11 @@ import {
   MatCheckboxModule,
 } from '@angular/material/checkbox';
 import { AuthService } from 'app/services/auth.service';
-import { catchError, filter, of, take } from 'rxjs';
+import { catchError, filter, finalize, of, take } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { User } from 'app/types/requests/auth';
+import { RegistrationsService } from 'app/services/registrations.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-site-location-section',
@@ -115,21 +124,21 @@ export class SiteLocationSectionComponent implements OnInit {
       Validators.required,
     ]),
     phoneNumber: new FormControl<string | null>(null, [Validators.required]),
-    addressLine: new FormControl<string | null>(null, [Validators.required]),
-    postCode: new FormControl<string | null>(null, [Validators.required]),
+    adressLine: new FormControl<string | null>(null, [Validators.required]),
+    postcode: new FormControl<string | null>(null, [Validators.required]),
     city: new FormControl<string | null>(null, [Validators.required]),
     country: new FormControl<string | null>(null, [Validators.required]),
     stateProvince: new FormControl<string | null>(null, [Validators.required]),
     officeOpenTime: new FormControl<Date | null>(null, [Validators.required]),
     officeCloseTime: new FormControl<Date | null>(null, [Validators.required]),
-    favoriteMaterials: new FormArray([], [Validators.required]),
-    otherMaterial: new FormControl<string | null>(null, [
-      Validators.maxLength(100),
-    ]),
+    // favoriteMaterials: new FormArray([], [Validators.required]),
+    // otherMaterial: new FormControl<string | null>(null, [
+    //   Validators.maxLength(100),
+    // ]),
     loadingRamp: new FormControl<boolean | null>(null, [Validators.required]),
     weighbridge: new FormControl<boolean | null>(null, [Validators.required]),
     containerType: new FormArray([], [Validators.required]),
-    selfLoadUnloadCapability: new FormControl<string | null>(null, [
+    selfLoadUnLoadCapability: new FormControl<string | null>(null, [
       Validators.required,
     ]),
     accessRestrictions: new FormControl<string | null>(null, []),
@@ -142,9 +151,17 @@ export class SiteLocationSectionComponent implements OnInit {
   user = signal<User | undefined>(undefined);
   selectAllMaterial = signal(false);
   showOtherMaterial = signal(false);
+  selectPreviousAddress = signal(false);
 
   authService = inject(AuthService);
   snackBar = inject(MatSnackBar);
+  registrationService = inject(RegistrationsService);
+  router = inject(Router);
+
+  materialAccept = computed(() => {
+    const userMaterial = this.user()?.company.favoriteMaterials;
+    return this.materialsAccept.filter((m) => userMaterial?.includes(m.value));
+  });
 
   constructor() {
     effect(() => {
@@ -158,6 +175,66 @@ export class SiteLocationSectionComponent implements OnInit {
       }
       this.formGroup.get('accessRestrictions')?.updateValueAndValidity();
     });
+
+    effect(() => {
+      if (this.selectAllContainerTypes()) {
+        this.containerType.clear();
+        this.containerType.push(new FormControl('all'));
+      } else {
+        this.containerType.clear();
+      }
+    });
+
+    effect(() => {
+      const controls = this.formGroup.controls;
+      const addressFields = [
+        controls.adressLine,
+        controls.postcode,
+        controls.city,
+        controls.country,
+        controls.stateProvince,
+      ];
+      if (this.selectPreviousAddress()) {
+        this.formGroup.patchValue(
+          {
+            adressLine: this.user()?.company.addressLine1,
+            postcode: this.user()?.company.postalCode,
+            city: this.user()?.company.city,
+            country: this.user()?.company.country,
+            stateProvince: this.user()?.company.stateProvince,
+          },
+          { onlySelf: true },
+        );
+      } else {
+        addressFields.forEach((control) => {
+          control.enable();
+          control.setValidators(Validators.required);
+          control.updateValueAndValidity();
+        });
+      }
+
+      this.formGroup.updateValueAndValidity();
+    });
+
+    this.formGroup.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe((value) => {
+        console.log(this.formGroup);
+
+        const { adressLine, postcode, city, country, stateProvince } = value;
+        const previousAddress = this.user()?.company;
+        if (previousAddress) {
+          if (
+            previousAddress.addressLine1 !== adressLine ||
+            previousAddress.postalCode != postcode ||
+            previousAddress.city != city ||
+            previousAddress.country != country ||
+            previousAddress.stateProvince != stateProvince
+          ) {
+            this.selectPreviousAddress.set(false);
+          }
+        }
+      });
   }
 
   ngOnInit() {
@@ -187,60 +264,58 @@ export class SiteLocationSectionComponent implements OnInit {
     return this.formGroup.get('containerType') as FormArray;
   }
 
-  onSelectedItem(event: MatCheckboxChange, item: string) {}
+  // get materials(): FormArray {
+  //   return this.formGroup.get('favoriteMaterials') as FormArray;
+  // }
 
-  onUsePreviousAddressChange(event: MatCheckboxChange) {
-    const controls = this.formGroup.controls;
-    const addressFields = [
-      controls.addressLine,
-      controls.postCode,
-      controls.city,
-      controls.country,
-      controls.stateProvince,
-    ];
+  onSelectedItem(event: MatCheckboxChange, item: string) {
     if (event.checked) {
-      this.formGroup.patchValue(
-        {
-          addressLine: this.user()?.company.addressLine1,
-          postCode: this.user()?.company.postalCode,
-          city: this.user()?.company.city,
-          country: this.user()?.company.country,
-          stateProvince: this.user()?.company.stateProvince,
-        },
-        { onlySelf: true },
-      );
-      // addressFields.forEach((control) => {
-      //   control.setValue('');
-      //   control.clearValidators();
-      //   control.markAsUntouched();
-      // });
+      this.containerType.push(new FormControl(item));
     } else {
-      addressFields.forEach((control) => {
-        control.enable();
-        control.setValidators(Validators.required);
-        control.updateValueAndValidity();
-      });
-    }
-
-    this.formGroup.updateValueAndValidity();
-  }
-
-  get materials(): FormArray {
-    return this.formGroup.get('favoriteMaterials') as FormArray;
-  }
-
-  onSelectedMaterial(event: MatCheckboxChange, item: string) {
-    if (event.checked) {
-      this.materials.push(new FormControl(item));
-    } else {
-      const idx = this.materials.controls.findIndex(
+      const idx = this.containerType.controls.findIndex(
         (control) => control.value === item,
       );
       if (idx !== -1) {
-        this.materials.removeAt(idx);
+        this.containerType.removeAt(idx);
       }
     }
-    this.materials.updateValueAndValidity();
+    this.containerType.updateValueAndValidity();
     this.formGroup.updateValueAndValidity();
+  }
+
+  send() {
+    if (this.formGroup.invalid) return;
+
+    const { ...value } = this.formGroup.value;
+    const payload: any = {
+      ...value,
+      companyId: this.user()?.companyId,
+      accessRestrictions: value.accessRestrictions ?? 'N/a',
+    };
+    this.submitting.set(true);
+    this.registrationService
+      .updateCompanyLocation(payload)
+      .pipe(
+        finalize(() => {
+          this.submitting.set(false);
+        }),
+        catchError((err) => {
+          if (err) {
+            this.snackBar.open(
+              `${err?.error?.error?.message ?? 'Some thing went wrong. Please try again.'}`,
+              'Ok',
+              {
+                duration: 3000,
+              },
+            );
+          }
+          return of(null);
+        }),
+      )
+      .subscribe((response) => {
+        if (response) {
+          this.router.navigate(['/account-complete-result']);
+        }
+      });
   }
 }

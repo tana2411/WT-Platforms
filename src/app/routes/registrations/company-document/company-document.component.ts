@@ -4,6 +4,7 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormArray,
   FormControl,
@@ -64,19 +65,21 @@ export class CompanyDocumentComponent implements OnInit {
   });
 
   constructor() {
-    this.formGroup.valueChanges.subscribe((value) => {
-      const { documentType, wasteLicence } = value;
-      if (documentType !== 'uploadFile') {
-        this.formGroup
-          .get('expiryDocument')
-          ?.setValidators(Validators.required);
-      }
-      wasteLicence
-        ? this.formGroup
-            .get('expiryLicence')
-            ?.setValidators(Validators.required)
-        : this.formGroup.get('expiryLicence')?.clearValidators();
-    });
+    this.formGroup.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe((value) => {
+        const { documentType, wasteLicence } = value;
+        if (documentType !== 'uploadFile') {
+          this.formGroup
+            .get('expiryDocument')
+            ?.setValidators(Validators.required);
+        }
+        wasteLicence
+          ? this.formGroup
+              .get('expiryLicence')
+              ?.setValidators(Validators.required)
+          : this.formGroup.get('expiryLicence')?.clearValidators();
+      });
   }
 
   ngOnInit() {}
