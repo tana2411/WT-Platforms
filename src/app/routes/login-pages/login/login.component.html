@@ -2,10 +2,11 @@
   <div
     class="border border-radius fs-3 p-3 background-primary border-radius text-white text-center mb-4"
   >
-    <span i18n>Need a WasteTrade account?</span>
+    <span i18n>Need a WasteTrade account? </span>
     <a
       routerLink="/register"
       class="text-white fw-bold text-decoration-underline"
+      (click)="openCreateAccountModal()"
       >Create an account</a
     >
   </div>
