@@ -21,37 +21,23 @@ import {
   MatCheckboxModule,
 } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {
-  MatRadioButton,
-  MatRadioChange,
-  MatRadioModule,
-} from '@angular/material/radio';
+import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import {
-  checkPasswordStrength,
-  pwdStrengthValidator,
-} from '../../../share/validators/password-strength';
+import { checkPasswordStrength } from '../../../share/validators/password-strength';
 import { InputWithConfirmControlComponent } from '../../../share/ui/input-with-confirm-control/input-with-confirm-control.component';
 import { MatInputModule } from '@angular/material/input';
 import { FileUploadComponent } from '../../../share/ui/file-upload/file-upload.component';
 import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-control/telephone-form-control.component';
 import { Router } from '@angular/router';
 import { RegistrationsService } from 'app/services/registrations.service';
-import {
-  catchError,
-  concatMap,
-  debounceTime,
-  finalize,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { catchError, concatMap, debounceTime, finalize, of } from 'rxjs';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from 'app/services/auth.service';
 import { TitleCasePipe } from '@angular/common';
+import { strictEmailValidator } from 'app/share/validators/';
 @Component({
   selector: 'app-haulage-form',
   templateUrl: './haulage-form.component.html',
@@ -76,24 +62,43 @@ import { TitleCasePipe } from '@angular/common';
 export class HaulageFormComponent implements OnInit {
   countryList = countries;
   euCountries = [
-    'Austria',
-    'Albania',
-    'Belgium',
-    'Bulgaria',
-    'Croatia',
-    'Czech Republic',
-    'Denmark',
-    'Estonia',
+    { value: 'austria', name: 'Austria' },
+    { value: 'belgium', name: 'Belgium' },
+    { value: 'bulgaria', name: 'Bulgaria' },
+    { value: 'croatia', name: 'Croatia' },
+    { value: 'czech_republic', name: 'Czech Republic' },
+    { value: 'denmark', name: 'Denmark' },
+    { value: 'estonia', name: 'Estonia' },
+    { value: 'cyprus', name: 'Cyprus' },
+    { value: 'finland', name: 'Finland' },
+    { value: 'france', name: 'France' },
+    { value: 'germany', name: 'Germany' },
+    { value: 'greece', name: 'Greece' },
+    { value: 'hungary', name: 'Hungary' },
+    { value: 'ireland', name: 'Ireland' },
+    { value: 'italy', name: 'Italy' },
+    { value: 'latvia', name: 'Latvia' },
+    { value: 'lithuania', name: 'Lithuania' },
+    { value: 'luxembourg', name: 'Luxembourg' },
+    { value: 'malta', name: 'Malta' },
+    { value: 'netherlands', name: 'Netherlands' },
+    { value: 'poland', name: 'Poland' },
+    { value: 'portugal', name: 'Portugal' },
+    { value: 'romania', name: 'Romania' },
+    { value: 'slovakia', name: 'Slovakia' },
+    { value: 'slovenia', name: 'Slovenia' },
+    { value: 'spain', name: 'Spain' },
+    { value: 'sweden', name: 'Sweden' },
   ];
   containerTypes = [
-    'Shipping Container',
-    'Curtain Sider (Standard)',
-    'Curtain Sider (High Cube)',
-    'Walking Floor',
+    { value: 'shipping_container', name: 'Shipping Container' },
+    { value: 'curtain_slider_standard', name: 'Curtain Sider (Standard)' },
+    { value: 'curtain_slider_high_cube', name: 'Curtain Sider (High Cube)' },
+    { value: 'walking_floor', name: 'Walking Floor' },
   ];
 
   formGroup = new FormGroup({
-    prefix: new FormControl<string | null>('Mr.', [Validators.required]),
+    prefix: new FormControl<string | null>('mr', [Validators.required]),
     firstName: new FormControl<string | null>(null, [
       Validators.required,
       Validators.maxLength(50),
@@ -110,7 +115,7 @@ export class HaulageFormComponent implements OnInit {
       Validators.required,
     ]),
     email: new FormControl<string | null>(null, [
-      Validators.email,
+      strictEmailValidator,
       Validators.required,
     ]),
     password: new FormControl<string | null>(null, [
@@ -121,6 +126,10 @@ export class HaulageFormComponent implements OnInit {
     companyName: new FormControl<string | null>(null, [
       Validators.required,
       Validators.maxLength(100),
+    ]),
+    registrationNumber: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(20),
     ]),
     vatRegistrationCountry: new FormControl<string | null>(null, [
       Validators.required,
@@ -149,7 +158,6 @@ export class HaulageFormComponent implements OnInit {
     phoneNumberCompany: new FormControl<string | null>(null, [
       Validators.required,
       Validators.maxLength(15),
-      Validators.pattern(/^\d*$/),
     ]),
     mobileNumberCompany: new FormControl<string | null>(null, [
       Validators.maxLength(15),
@@ -157,10 +165,8 @@ export class HaulageFormComponent implements OnInit {
     ]),
 
     fleetType: new FormControl<string | null>(null, [Validators.required]),
-    areasCovered: new FormControl<string | null>(null, [Validators.required]),
-    selectedEuCountries: new FormArray([]),
+    areasCovered: new FormArray([], []),
     containerTypes: new FormArray([], [Validators.required]),
-    wasteLicence: new FormControl<boolean | null>(null, [Validators.required]),
     expiryDate: new FormControl<Date | null>(null, [Validators.required]),
     whereDidYouHearAboutUs: new FormControl<string | null>(null, [
       Validators.required,
@@ -190,9 +196,8 @@ export class HaulageFormComponent implements OnInit {
     effect(() => {
       if (this.selectAllContainerTypes()) {
         this.selectedContainerType.clear();
-        this.containerTypes.forEach((item) => {
-          this.selectedContainerType.push(new FormControl(item));
-        });
+        this.selectedContainerType.push(new FormControl('all'));
+        this.selectedContainerType.markAsTouched();
       } else {
         this.selectedContainerType.clear();
       }
@@ -200,12 +205,13 @@ export class HaulageFormComponent implements OnInit {
 
     effect(() => {
       if (this.selectAllCountry()) {
-        this.selectedEuCountries.clear();
+        this.selectedAreasCovered.clear();
         this.euCountries.forEach((item) => {
-          this.selectedEuCountries.push(new FormControl(item));
+          this.selectedAreasCovered.push(new FormControl(item.value));
         });
+        this.selectedAreasCovered.markAsTouched();
       } else {
-        this.selectedEuCountries.clear();
+        this.selectedAreasCovered.clear();
       }
     });
 
@@ -239,18 +245,21 @@ export class HaulageFormComponent implements OnInit {
   ngOnInit() {}
 
   onAreaChange(event: MatRadioChange) {
+    this.selectedAreasCovered.clear();
     if (event.value === 'EU') {
       this.showEUcountry.set(true);
-      this.selectedEuCountries.setValidators(Validators.required);
+      this.selectedAreasCovered.setValidators(Validators.required);
     } else {
       this.showEUcountry.set(false);
-      this.selectedEuCountries.clearValidators();
+      this.selectedAreasCovered.clearValidators();
+      this.selectedAreasCovered.push(new FormControl(event.value));
     }
-    this.selectedEuCountries.updateValueAndValidity();
+
+    this.selectedAreasCovered.updateValueAndValidity();
   }
 
-  get selectedEuCountries() {
-    return this.formGroup.get('selectedEuCountries') as FormArray;
+  get selectedAreasCovered() {
+    return this.formGroup.get('areasCovered') as FormArray;
   }
 
   get selectedContainerType() {
@@ -268,6 +277,7 @@ export class HaulageFormComponent implements OnInit {
         formArray.removeAt(idx);
       }
     }
+    formArray.markAllAsTouched();
     formArray.updateValueAndValidity();
   }
 
@@ -284,13 +294,7 @@ export class HaulageFormComponent implements OnInit {
 
   send() {
     this.formGroup.markAllAsTouched();
-    const {
-      selectedEuCountries,
-      wasteLicence,
-      acceptTerm,
-      expiryDate,
-      ...value
-    } = this.formGroup.value;
+    const { acceptTerm, expiryDate, ...value } = this.formGroup.value;
 
     if (this.selectedFile().length > 0) {
       this.submitting.set(true);
@@ -305,20 +309,16 @@ export class HaulageFormComponent implements OnInit {
 
             const payload: any = {
               ...value,
-              fleetType: [value.fleetType],
-              areasCovered: [value.areasCovered],
-              documentType: wasteLicence ? 'waste_carrier' : null,
+              documentType: 'waste_carrier',
               documentName: this.selectedFile()[0].name,
               documentUrl: url,
             };
 
             return this.registrationService.registerHaulage(payload).pipe(
               catchError((err) => {
-                this.snackBar.open(
-                  'An error occurred while processing your registration. Please try again.',
-                  'Ok',
-                  { duration: 3000 },
-                );
+                this.snackBar.open(`${err.error.error.message}`, 'Ok', {
+                  duration: 3000,
+                });
                 return of(null);
               }),
             );

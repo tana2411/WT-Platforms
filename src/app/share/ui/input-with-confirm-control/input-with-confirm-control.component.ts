@@ -21,6 +21,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
+import { strictEmailValidator } from '@app/validators';
 
 const CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -50,13 +51,14 @@ const CONTROL_VALUE_VALIDATORS: any = {
   standalone: true,
 })
 export class InputWithConfirmControlComponent
-  implements ControlValueAccessor, Validator, OnInit {
+  implements ControlValueAccessor, Validator, OnInit
+{
   @Input() valueLabel: string | null = null;
   @Input() confirmLabel: string | null = null;
   @Input() type: 'text' | 'password' = 'text';
   @Input() placeholder: string | undefined = undefined;
   @Input() isRequired: boolean = false;
-  @Input() isEmail: boolean = false
+  @Input() isEmail: boolean = false;
 
   showValue = false;
   showConfirmValue = false;
@@ -68,31 +70,37 @@ export class InputWithConfirmControlComponent
   onValidationChange: (() => void) | undefined;
 
   constructor() {
-    this.valueControl.valueChanges.pipe(takeUntilDestroyed()).subscribe((value) => {
-      if(value) {
+    this.valueControl.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe((value) => {
+        if (value) {
+          this.updateChanges();
+        }
+      });
+    this.confirmControl.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => {
         this.updateChanges();
-        this.confirmControl.setValidators([Validators.required])
-      }
-    });
-    this.confirmControl.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
-      this.updateChanges();
-      this.onValidationChange?.();
-    });
+        this.onValidationChange?.();
+      });
   }
 
   ngOnInit(): void {
     this.showValue = this.type === 'text';
     this.showConfirmValue = this.type === 'text';
-    
+
     if (this.isRequired) {
       this.valueControl.addValidators(Validators.required);
       this.confirmControl.addValidators(Validators.required);
     }
 
-    if(this.isEmail) {
-      this.valueControl.addValidators(Validators.email);
-      this.confirmControl.addValidators(Validators.email);
+    if (this.isEmail) {
+      this.valueControl.addValidators(strictEmailValidator());
+      this.confirmControl.addValidators(strictEmailValidator());
     }
+
+    this.valueControl.updateValueAndValidity();
+    this.confirmControl.updateValueAndValidity();
   }
 
   updateChanges(): void {
@@ -120,7 +128,10 @@ export class InputWithConfirmControlComponent
   }
 
   validate(control: AbstractControl): ValidationErrors | null {
-    if (this.isRequired && (!this.valueControl.value || !this.confirmControl.value)) {
+    if (
+      this.isRequired &&
+      (!this.valueControl.value || !this.confirmControl.value)
+    ) {
       return { required: true };
     }
     if (this.valueControl.value !== this.confirmControl.value) {
@@ -131,7 +142,7 @@ export class InputWithConfirmControlComponent
         this.confirmControl.setErrors(null);
       }
     }
-    
+
     return null;
   }
 

@@ -3,10 +3,14 @@ services:
   frontend:
     build:
       context: .
+      args:
+        API_URL: ${API_URL}
     restart: always
     container_name: frontend
     networks:
       - frontend
+        #env_file:
+        #- .env
     ports:
       - '8080:80'
     dns:
