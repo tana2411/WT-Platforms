@@ -98,7 +98,7 @@ export class FilterComponent implements OnInit {
 
   constructor() {
     this.filterForm.valueChanges
-      .pipe(takeUntilDestroyed(), debounceTime(3000))
+      .pipe(takeUntilDestroyed(), debounceTime(300))
       .subscribe((value) => {
         this.filterChanged.emit(value);
       });
