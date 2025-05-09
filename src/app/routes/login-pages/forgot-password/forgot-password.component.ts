@@ -40,7 +40,7 @@ export class ForgotPasswordComponent implements OnInit {
     private snackbar: MatSnackBar,
   ) {
     this.formGroup = this.fb.group({
-      email: ['', [Validators.required, strictEmailValidator]],
+      email: ['', [Validators.required, strictEmailValidator()]],
     });
   }
 
