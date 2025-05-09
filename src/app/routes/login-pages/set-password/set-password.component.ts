@@ -9,7 +9,7 @@ import {
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { RequestSetPasswordParams } from 'app/types/requests/auth';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';

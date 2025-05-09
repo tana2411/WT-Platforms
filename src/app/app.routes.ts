@@ -5,7 +5,7 @@ import { RegistrationPendingResultComponent } from './routes/registrations/regis
 import { RegistrationCompleteResultComponent } from './routes/registrations/registration-complete-result/registration-complete-result.component';
 import { CompanyInformationSectionComponent } from './routes/registrations/company-information-section/company-information-section.component';
 import { CompanyDocumentComponent } from './routes/registrations/company-document/company-document.component';
-import { LoginPageComponent } from './routes/login-page/login-page.component';
+import { LoginPageComponent } from './routes/login-pages/login-page/login-page.component';
 import { TermComponent } from './routes/term/term.component';
 import { PrivacyComponent } from './routes/privacy/privacy.component';
 import {
@@ -23,7 +23,7 @@ export const routes: Routes = [
     path: ROUTES.login,
     canActivate: [CanActivateUnAuthPage],
     loadComponent: () =>
-      import('./routes/login-page/login-page.component').then(
+      import('./routes/login-pages/login-page/login-page.component').then(
         (m) => m.LoginPageComponent,
       ),
   },

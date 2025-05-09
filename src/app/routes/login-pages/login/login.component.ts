@@ -7,10 +7,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { strictEmailValidator } from '@app/validators';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { CreateAccountModalComponent } from '../create-account-modal/create-account-modal.component';
 
 export const EMAIL_PATTERN = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
@@ -24,6 +26,8 @@ export const EMAIL_PATTERN = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     MatInputModule,
     ReactiveFormsModule,
     MatSnackBarModule,
+    MatDialogModule,
+    CreateAccountModalComponent,
   ],
 })
 export class LoginComponent {
@@ -42,6 +46,7 @@ export class LoginComponent {
     private authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar,
+    private dialog: MatDialog,
   ) {
     this.setupForm();
   }
@@ -51,6 +56,22 @@ export class LoginComponent {
     this.formGroup.valueChanges.subscribe(() => {
       if (this.serverError()) {
         this.serverError.set('');
+      }
+    });
+  }
+
+  openCreateAccountModal(): void {
+    const dialogRef = this.dialog.open(CreateAccountModalComponent, {
+      maxWidth: '920px',
+      panelClass: 'px-2',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'buyer-seller') {
+        // Handle buyer/seller registration
+        this.router.navigateByUrl('/create-account')
+      } else if (result === 'haulier') {
+        this.router.navigateByUrl('/create-haulier-account')
       }
     });
   }
