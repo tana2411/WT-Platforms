@@ -50,6 +50,7 @@ type Company = {
   phoneNumber: string;
   mobileNumber: string;
   companyType: string | null;
+  favoriteMaterials: string[];
   materialInterest: string | null;
   isHaulier: boolean;
   fleetType: string | null;
