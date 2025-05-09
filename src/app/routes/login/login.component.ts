@@ -9,8 +9,11 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
-import { getDefaultRouteByRole } from 'app/guards/auth/utils';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+
+import { EmailValidators } from 'app/share/validators/email';
+
+export const EMAIL_PATTERN = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
 @Component({
   selector: 'app-login',
@@ -28,12 +31,13 @@ export class LoginComponent {
   formGroup = new FormGroup({
     email: new FormControl<string | null>(null, [
       Validators.required,
-      Validators.email,
+      EmailValidators.pattern(),
     ]),
     password: new FormControl<string | null>(null, [Validators.required]),
   });
 
   serverError = signal('');
+  submitting = signal(false);
 
   constructor(
     private authService: AuthService,
@@ -53,14 +57,18 @@ export class LoginComponent {
   }
 
   send() {
+    if (this.submitting()) {
+      return;
+    }
+
     this.formGroup.markAllAsTouched();
 
     const { email, password } = this.formGroup.value;
-
     if (!this.formGroup.valid || !email?.trim() || !password) {
       return;
     }
 
+    this.submitting.set(true);
     this.authService.login({ email, password }).subscribe({
       next: () => {
         const targetRoute = this.authService.getDefaultRouteByRole();
@@ -72,6 +80,7 @@ export class LoginComponent {
         } else {
           this.snackBar.open('Something went wrong.');
         }
+        this.submitting.set(false);
       },
     });
   }

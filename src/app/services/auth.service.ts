@@ -91,18 +91,19 @@ export class AuthService {
   checkToken() {
     const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
 
-    if (!accessToken) {
-      return of(undefined);
+    let source = of<User | undefined>(undefined);
+
+    if (accessToken) {
+      source = this.getMe().pipe(
+        catchError(() => {
+          return of(undefined);
+        }),
+      );
     }
 
-    return this.getMe().pipe(
-      catchError(() => {
-        return of(undefined);
-      }),
+    return source.pipe(
       tap((me) => {
-        if (me) {
-          this._user$.next(me);
-        }
+        this._user$.next(me);
       }),
     );
   }
