@@ -115,7 +115,7 @@ export class HaulageFormComponent implements OnInit {
       Validators.required,
     ]),
     email: new FormControl<string | null>(null, [
-      strictEmailValidator,
+      strictEmailValidator(),
       Validators.required,
     ]),
     password: new FormControl<string | null>(null, [

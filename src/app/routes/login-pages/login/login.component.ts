@@ -34,7 +34,7 @@ export class LoginComponent {
   formGroup = new FormGroup({
     email: new FormControl<string | null>(null, [
       Validators.required,
-      strictEmailValidator,
+      strictEmailValidator(),
     ]),
     password: new FormControl<string | null>(null, [Validators.required]),
   });
