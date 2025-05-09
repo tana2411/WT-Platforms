@@ -13,8 +13,9 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { strictEmailValidator } from '@app/validators';
 
 @Component({
   selector: 'app-forgot-password',
@@ -31,6 +32,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 export class ForgotPasswordComponent implements OnInit {
   formGroup: FormGroup;
   serverError = signal('');
+  submitting = signal(false);
 
   constructor(
     private fb: FormBuilder,
@@ -38,7 +40,7 @@ export class ForgotPasswordComponent implements OnInit {
     private snackbar: MatSnackBar,
   ) {
     this.formGroup = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, strictEmailValidator]],
     });
   }
 
@@ -56,18 +58,25 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   submit(): void {
+    if (this.submitting()) {
+      return;
+    }
+
     this.formGroup.markAllAsTouched();
     const { email } = this.formGroup.value;
 
     if (!this.formGroup.valid || !email) {
       return;
     }
+
+    this.submitting.set(true);
     this.serverError.set('');
     this.authService.forgotPassword({ email }).subscribe({
       next: (res) => {
         this.snackbar.open(
-          'Forgot password link has been sent, please check your email.',
+          'Please check your email with instructions on how to reset your password.',
         );
+        this.submitting.set(false);
       },
       error: (err) => {
         debugger;
@@ -75,9 +84,15 @@ export class ForgotPasswordComponent implements OnInit {
           this.snackbar.open(
             'Please check your email with instructions on how to reset your password.',
           );
+        } else if (err.error.error.statusCode === 429) {
+          this.snackbar.open(
+            'Please wait 24 hours before resending forgotten password link.',
+          );
         } else {
           this.snackbar.open('Something went wrong.');
         }
+
+        this.submitting.set(false);
       },
     });
   }

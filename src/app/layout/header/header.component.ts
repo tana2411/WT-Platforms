@@ -6,10 +6,18 @@ import { map, Observable, tap } from 'rxjs';
 import { AvatarComponent } from '../common/avatar/avatar.component';
 import { SidebarComponent } from '../common/sidebar/sidebar.component';
 import { HeaderService } from 'app/services/header.service';
+import { RouterModule } from '@angular/router';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-header',
-  imports: [MatIconModule, AvatarComponent, SidebarComponent],
+  imports: [
+    MatIconModule,
+    AvatarComponent,
+    SidebarComponent,
+    RouterModule,
+    MatButton,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
