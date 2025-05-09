@@ -1,7 +1,11 @@
-@import '../variables';
+@import "../variables";
 
 .background-primary {
   background-color: $primary;
+}
+
+.background-secondary {
+  background-color: $secondary;
 }
 
 .background-on-primary {
@@ -17,7 +21,7 @@
 }
 
 .background-dark {
-  background-color: $black;
+  background-color: $black !important;
 }
 
 .background-on-error {
