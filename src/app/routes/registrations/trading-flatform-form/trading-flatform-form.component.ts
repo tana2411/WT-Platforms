@@ -59,24 +59,62 @@ import { TitleCasePipe } from '@angular/common';
 export class TradingFlatformFormComponent implements OnInit {
   countryList = countries;
   materialsAccept = [
-    'LDPE',
-    'PET',
-    'HDPE',
-    'ABS',
-    'Acrylic',
-    'PC',
-    'PVC',
-    'PP',
-    'PS',
-    'PA',
-    'Other (Mix)',
-    'Other',
-    'Other (Single Sources)',
-    'Granulates',
+    {
+      name: 'LDPE',
+      value: 'ldpe',
+    },
+    {
+      name: 'PP',
+      value: 'pp',
+    },
+    {
+      name: 'PC',
+      value: 'pc',
+    },
+    {
+      name: 'ABS',
+      value: 'abs',
+    },
+    {
+      name: 'Acrylic',
+      value: 'acrylic',
+    },
+    {
+      name: 'Granulates',
+      value: 'granulates',
+    },
+    {
+      name: 'HDPE',
+      value: 'hdpe',
+    },
+    {
+      name: 'PVC',
+      value: 'pvc',
+    },
+    {
+      name: 'PET',
+      value: 'pet',
+    },
+    {
+      name: 'PA',
+      value: 'pa',
+    },
+    {
+      name: 'PS',
+      value: 'ps',
+    },
+    {
+      name: 'Other (Mix)',
+      value: 'other (mix)',
+    },
+    {
+      name: 'Other (Single Sources)',
+      value: 'other (single sources)',
+    },
   ];
 
   formGroup = new FormGroup({
-    prefix: new FormControl<string | null>('Mr.', [Validators.required]),
+    prefix: new FormControl<string | null>('mr', [Validators.required]),
     firstName: new FormControl<string | null>(null, [
       Validators.required,
       Validators.maxLength(50),
@@ -131,9 +169,10 @@ export class TradingFlatformFormComponent implements OnInit {
       if (this.selectAllMaterial()) {
         this.materials.clear();
         this.materialsAccept.forEach((item) => {
-          this.materials.push(new FormControl(item));
+          this.materials.push(new FormControl(item.value));
         });
         this.showOtherMaterial.set(true);
+        this.materials.markAsTouched();
       } else {
         this.showOtherMaterial.set(false);
         this.materials.clear();
@@ -141,6 +180,21 @@ export class TradingFlatformFormComponent implements OnInit {
       this.materials.updateValueAndValidity();
     });
 
+    effect(() => {
+      const { favoriteMaterials, otherMaterial } = this.formGroup.controls;
+      if (this.showOtherMaterial()) {
+        otherMaterial.setValidators([Validators.required]);
+        favoriteMaterials.clearValidators();
+      } else {
+        otherMaterial.clearValidators();
+        otherMaterial.setValue(null);
+        otherMaterial.markAsUntouched();
+        favoriteMaterials.setValidators([Validators.required]);
+      }
+
+      favoriteMaterials.updateValueAndValidity();
+      otherMaterial.updateValueAndValidity();
+    });
     this.formGroup
       .get('password')
       ?.valueChanges.pipe(takeUntilDestroyed())
@@ -153,27 +207,14 @@ export class TradingFlatformFormComponent implements OnInit {
 
   ngOnInit() {}
 
-  get materials(): FormArray {
+  get materials() {
     return this.formGroup.get('favoriteMaterials') as FormArray;
   }
 
   onSelectedMaterial(event: MatCheckboxChange, item: string) {
-    const isOther = item === 'Other';
-
     if (event.checked) {
-      if (!isOther) {
-        this.materials.push(new FormControl(item));
-      } else {
-        this.showOtherMaterial.set(true);
-        this.formGroup
-          .get('otherMaterial')
-          ?.setValidators([Validators.required]);
-      }
+      this.materials.push(new FormControl(item));
     } else {
-      if (isOther) {
-        this.showOtherMaterial.set(false);
-        this.formGroup.get('otherMaterial')?.clearValidators();
-      }
       const idx = this.materials.controls.findIndex(
         (control) => control.value === item,
       );
@@ -181,6 +222,7 @@ export class TradingFlatformFormComponent implements OnInit {
         this.materials.removeAt(idx);
       }
     }
+    this.materials.markAsTouched();
     this.materials.updateValueAndValidity();
     this.formGroup.updateValueAndValidity();
   }
@@ -203,6 +245,7 @@ export class TradingFlatformFormComponent implements OnInit {
       jobTitle,
       whereDidYouHearAboutUs,
       phoneNumber,
+      otherMaterial,
     } = this.formGroup.value;
     const payload: any = {
       email,
@@ -214,13 +257,15 @@ export class TradingFlatformFormComponent implements OnInit {
       phoneNumber,
       whereDidYouHearAboutUs,
       companyName,
-      companyInterest:
-        companyInterest === 'Both' ? ['Buyer', 'Seller'] : [companyInterest],
+      companyInterest,
       favoriteMaterials,
     };
 
-    this.submitting.set(true);
+    if (this.showOtherMaterial()) {
+      payload.otherMaterial = otherMaterial;
+    }
 
+    this.submitting.set(true);
     this.service
       .registerTrading(payload)
       .pipe(
@@ -230,9 +275,11 @@ export class TradingFlatformFormComponent implements OnInit {
         catchError((err) => {
           if (err) {
             this.snackBar.open(
-              'An error occur while execute request, please try again.',
+              `${err?.error?.error?.message ?? 'Some thing went wrong. Please try again.'}`,
               'Ok',
-              { duration: 3000 },
+              {
+                duration: 3000,
+              },
             );
           }
           return of(null);

@@ -15,7 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { EmailValidators } from 'app/share/validators/email';
+import { strictEmailValidator } from '@app/validators';
 
 @Component({
   selector: 'app-forgot-password',
@@ -40,7 +40,7 @@ export class ForgotPasswordComponent implements OnInit {
     private snackbar: MatSnackBar,
   ) {
     this.formGroup = this.fb.group({
-      email: ['', [Validators.required, EmailValidators.pattern()]],
+      email: ['', [Validators.required, strictEmailValidator]],
     });
   }
 
