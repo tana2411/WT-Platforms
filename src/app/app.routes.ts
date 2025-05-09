@@ -20,7 +20,7 @@ import { SiteLocationSectionComponent } from './routes/registrations/site-locati
 
 export const routes: Routes = [
   {
-    path: 'login',
+    path: ROUTES.login,
     canActivate: [CanActivateUnAuthPage],
     loadComponent: () =>
       import('./routes/login-page/login-page.component').then(

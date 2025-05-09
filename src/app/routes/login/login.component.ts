@@ -10,8 +10,7 @@ import {
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-
-import { EmailValidators } from 'app/share/validators/email';
+import { strictEmailValidator } from '@app/validators';
 
 export const EMAIL_PATTERN = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
@@ -31,7 +30,7 @@ export class LoginComponent {
   formGroup = new FormGroup({
     email: new FormControl<string | null>(null, [
       Validators.required,
-      EmailValidators.pattern(),
+      strictEmailValidator,
     ]),
     password: new FormControl<string | null>(null, [Validators.required]),
   });
