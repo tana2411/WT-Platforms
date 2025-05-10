@@ -42,14 +42,18 @@ export const pwdStrengthValidator = (
   const value = control.value;
   if (!value) return null;
 
+  // weak password, do not allow to submit
   if (
     value.length >= 8 &&
     !uppercaseRegex.test(value) &&
     !specialCharsRegex.test(value)
   ) {
-    return null;
+    return {
+      pwdStrengthInvalid: true,
+    };
   }
 
+  // only allow medium and strong password
   const passwordPassedCheck = [
     lowercaseRegex.test(value),
     uppercaseRegex.test(value),

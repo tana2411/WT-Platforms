@@ -11,6 +11,20 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { apiBaseUrlInterceptor } from './interceptors/base-url.interceptor';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+
+export const CUSTOM_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'DD/MM/YYYY',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -33,6 +47,11 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([apiBaseUrlInterceptor, AuthInterceptor]),
     ),
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+    },
+    { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
     CanActivateAuthPage,
     CanActivateUnAuthPage,
   ],
