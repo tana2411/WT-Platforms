@@ -109,7 +109,7 @@ export class CompanyDocumentComponent implements OnInit {
     this.formGroup.get('documentType')?.setValue(item);
   }
 
-  handleFileReady(file: File[] | null, type: 'document' | 'licence') {
+  handleFileReady(file: any[] | null, type: 'document' | 'licence') {
     if (file?.length) {
       if (type === 'document') {
         this.documentFileError.set(null);
