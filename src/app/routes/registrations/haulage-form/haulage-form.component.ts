@@ -1,4 +1,3 @@
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { countries } from './../../../statics/country-data';
 import {
@@ -38,6 +37,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from 'app/services/auth.service';
 import { TitleCasePipe } from '@angular/common';
 import { strictEmailValidator } from 'app/share/validators/';
+import { Moment } from 'moment';
 @Component({
   selector: 'app-haulage-form',
   templateUrl: './haulage-form.component.html',
@@ -57,7 +57,6 @@ import { strictEmailValidator } from 'app/share/validators/';
     MatButtonModule,
     TitleCasePipe,
   ],
-  providers: [provideNativeDateAdapter()],
 })
 export class HaulageFormComponent implements OnInit {
   countryList = countries;
@@ -165,7 +164,7 @@ export class HaulageFormComponent implements OnInit {
     fleetType: new FormControl<string | null>(null, [Validators.required]),
     areasCovered: new FormArray([], []),
     containerTypes: new FormArray([], [Validators.required]),
-    expiryDate: new FormControl<Date | null>(null, [Validators.required]),
+    expiryDate: new FormControl<Moment | null>(null, [Validators.required]),
     whereDidYouHearAboutUs: new FormControl<string | null>(null, [
       Validators.required,
     ]),
@@ -216,15 +215,17 @@ export class HaulageFormComponent implements OnInit {
     this.formGroup?.valueChanges
       .pipe(takeUntilDestroyed(), debounceTime(300))
       .subscribe((value) => {
-        const { expiryDate, password } = value;
+        const { expiryDate, password } = value; // expiryDate: moment type
         const now = new Date();
         if (!value) return;
 
-        if (expiryDate) {
-          if (expiryDate < now) {
+        const expiryDateDate = expiryDate?.toDate();
+
+        if (expiryDateDate) {
+          if (expiryDateDate < now) {
             this.expiryDateError.set('Licence expired');
           } else {
-            const diffInTime = expiryDate.getTime() - now.getTime();
+            const diffInTime = expiryDateDate.getTime() - now.getTime();
             const diffInDays = Math.ceil(diffInTime / (1000 * 3600 * 24));
 
             if (diffInDays < 7) {
@@ -310,6 +311,7 @@ export class HaulageFormComponent implements OnInit {
               documentType: 'waste_carrier',
               documentName: this.selectedFile()[0].name,
               documentUrl: url,
+              expiryDate: expiryDate?.format('DD/MM/YYYY'),
             };
 
             return this.registrationService.registerHaulage(payload).pipe(
