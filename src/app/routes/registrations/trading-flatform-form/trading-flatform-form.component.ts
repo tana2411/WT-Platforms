@@ -134,7 +134,7 @@ export class TradingFlatformFormComponent implements OnInit {
     ]),
     password: new FormControl<string | null>(null, [
       Validators.required,
-      Validators.minLength(8),
+      pwdStrengthValidator
     ]),
     whereDidYouHearAboutUs: new FormControl<string | null>(null, [
       Validators.required,

@@ -118,14 +118,7 @@
             <div class="col-12">
               <mat-error i18n>
                 Invalid password strength. Password must contain at least 8
-                characters and at least 1 number.
-              </mat-error>
-            </div>
-          }
-          @if (formGroup.get("password")?.hasError("minlength")) {
-            <div class="col-12 pl-2">
-              <mat-error class="mat-error" i18n>
-                Password requires a minimum of 8 characters.
+                characters includes numbers and letters, contain at least 1 special character.
               </mat-error>
             </div>
           }
@@ -179,7 +172,7 @@
           <mat-form-field appearance="outline" class="w-100">
             <input
               matInput
-              placeholder="es. Waste Trade"
+              placeholder="ex. WasteTrade"
               type="text"
               formControlName="companyName"
             />

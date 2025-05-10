@@ -23,7 +23,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { checkPasswordStrength } from '../../../share/validators/password-strength';
+import { checkPasswordStrength, pwdStrengthValidator } from '../../../share/validators/password-strength';
 import { InputWithConfirmControlComponent } from '../../../share/ui/input-with-confirm-control/input-with-confirm-control.component';
 import { MatInputModule } from '@angular/material/input';
 import { FileUploadComponent } from '../../../share/ui/file-upload/file-upload.component';
@@ -119,8 +119,8 @@ export class HaulageFormComponent implements OnInit {
       Validators.required,
     ]),
     password: new FormControl<string | null>(null, [
-      Validators.minLength(8),
       Validators.required,
+      pwdStrengthValidator,
     ]),
 
     companyName: new FormControl<string | null>(null, [
@@ -157,13 +157,11 @@ export class HaulageFormComponent implements OnInit {
     ]),
     phoneNumberCompany: new FormControl<string | null>(null, [
       Validators.required,
-      Validators.maxLength(15),
     ]),
     mobileNumberCompany: new FormControl<string | null>(null, [
       Validators.maxLength(15),
       Validators.pattern(/^\d*$/),
     ]),
-
     fleetType: new FormControl<string | null>(null, [Validators.required]),
     areasCovered: new FormArray([], []),
     containerTypes: new FormArray([], [Validators.required]),
