@@ -6,3 +6,47 @@
     padding-bottom: 40px;
   }
 }
+
+.certificate-wrapper {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+}
+
+.award {
+  background-color: white;
+}
+
+.bottom-content {
+  border-top: 1px solid #fff;
+  padding-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.list-link {
+  p,
+  a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+  }
+}
+
+.socials {
+  a {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
+}
