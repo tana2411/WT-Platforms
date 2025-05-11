@@ -82,6 +82,34 @@ export const routes: Routes = [
       ),
   },
   {
+    path: ROUTES.wanted,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [
+        GuardRequireRole.SuperAdmin,
+        GuardRequireRole.Trading,
+      ],
+    },
+    loadComponent: () =>
+      import('./routes/wanted-material/wanted-material.component').then(
+        (m) => m.WantedMaterialComponent,
+      ),
+  },
+  {
+    path: ROUTES.sell,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [
+        GuardRequireRole.SuperAdmin,
+        GuardRequireRole.Trading,
+      ],
+    },
+    loadComponent: () =>
+      import('./routes/create-listing/create-listing.component').then(
+        (m) => m.CreateListingComponent,
+      ),
+  },
+  {
     path: ROUTES.haulier,
     canActivate: [CanActivateAuthPage],
     data: {

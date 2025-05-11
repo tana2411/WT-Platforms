@@ -1,16 +1,8 @@
 <div class="container-lg p-4 d-flex flex-column w-100 min-vh-100">
   <div class="d-flex justify-content-center header-container">
-    <img
-      src="assets/images/header-logo.svg"
-      alt="Logo"
-      class="logo cursor-pointer"
-      mat-button
-      routerLink="/login"
-    />
+    <img src="assets/images/header-logo.svg" alt="Logo" class="logo cursor-pointer" mat-button routerLink="/login" />
   </div>
-  <div
-    class="flex-grow-1 overflow-x-hidden overflow-y-auto auto-hide-scrollbar"
-  >
+  <div class="flex-grow-1 overflow-x-hidden overflow-y-auto auto-hide-scrollbar mb-3">
     <ng-content></ng-content>
   </div>
   <app-footer></app-footer>
