@@ -25,7 +25,9 @@ export interface HaulageRegistration {
   areasCovered: string[];
   containerTypes: string[];
 
-  documentType: string;
-  documentName: string;
-  documentUrl: string;
+  documents: Array<{
+    documentType: string;
+    expiryDate: string;
+    documentUrl: string;
+  }>;
 }
