@@ -1,16 +1,10 @@
 <app-common-layout title="Marketplace">
   <app-filter
-    [displayFilter]="['location', 'material_type', 'packing', 'stored', 'sold_listings', 'sort_by']"
+    [displayFilter]="['location', 'material_type', 'stored', 'sort_by', 'fulfilled_listings']"
     (filterChanged)="onFilterChange($event)"
   ></app-filter>
-
-  <div class="mid-content-wrapper">
-    <app-product-grid [items]="[1, 2, 3, 4, 5, 6, 7, 8, 9]" [totalItems]="100"></app-product-grid>
-
-    <app-pagination [pageNumber]="4" [totalPage]="10" (pageChange)="onPageChange($event)"></app-pagination>
-
-    <hr class="mt-5 mb-0" />
-
-    <app-listing-footer></app-listing-footer>
-  </div>
+  <app-product-grid [items]="[1, 2, 3, 4, 5, 6, 7, 8, 9]" [totalItems]="100"></app-product-grid>
+  <app-pagination [pageNumber]="4" [totalPage]="10" (pageChange)="onPageChange($event)"></app-pagination>
+  <hr />
+  <app-listing-footer></app-listing-footer>
 </app-common-layout>
