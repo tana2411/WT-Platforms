@@ -79,7 +79,6 @@ export class ForgotPasswordComponent implements OnInit {
         this.submitting.set(false);
       },
       error: (err) => {
-        debugger;
         if (err.status === 422) {
           this.snackbar.open(
             'Please check your email with instructions on how to reset your password.',

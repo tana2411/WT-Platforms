@@ -10,4 +10,6 @@ import { MatIconModule } from '@angular/material/icon';
 export class IconComponent {
   @Input({ required: true }) iconName = 'question_mark';
   @Input({}) className = '';
+  @Input({}) iconClassName = '';
+  @Input({}) backgroundColor = '#1d1d1b';
 }

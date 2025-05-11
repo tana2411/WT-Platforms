@@ -14,6 +14,11 @@ import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { RequestSetPasswordParams } from 'app/types/requests/auth';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { TitleCasePipe } from '@angular/common';
+import { checkPasswordStrength, pwdStrengthValidator } from '@app/validators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { debounceTime } from 'rxjs';
+import { InputWithConfirmControlComponent } from '@app/ui';
 
 const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
 
@@ -27,30 +32,38 @@ const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
     MatInputModule,
     ReactiveFormsModule,
     MatSnackBarModule,
+    TitleCasePipe,
+    InputWithConfirmControlComponent,
   ],
 })
 export class SetPasswordComponent implements OnInit {
   token: string | null = null;
-  formGroup = new FormGroup(
-    {
-      password: new FormControl<string>('', [
-        Validators.required,
-        this.passwordPatternValidator,
-      ]),
-      confirmPassword: new FormControl<string>('', [Validators.required]),
-    },
-    { validators: this.passwordMatchValidator },
-  );
+  formGroup = new FormGroup({
+    password: new FormControl<string | null>(null, [
+      Validators.required,
+      pwdStrengthValidator,
+    ]),
+  });
 
   serverError = signal('');
   loading = signal(false);
+  pwdStrength = signal<string | null>(''); // weak, medium, strong
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
     private snackbar: MatSnackBar,
-  ) {}
+  ) {
+    this.formGroup?.valueChanges
+      .pipe(takeUntilDestroyed(), debounceTime(300))
+      .subscribe((value) => {
+        const { password } = value; // expiryDate: moment type
+        if (password) {
+          this.pwdStrength.set(checkPasswordStrength(password));
+        }
+      });
+  }
 
   ngOnInit(): void {
     // Get token from URL and validate it
@@ -63,34 +76,34 @@ export class SetPasswordComponent implements OnInit {
     });
   }
 
-  private passwordPatternValidator(
-    control: AbstractControl,
-  ): ValidationErrors | null {
-    if (!control.value) {
-      return null;
-    }
+  // private passwordPatternValidator(
+  //   control: AbstractControl,
+  // ): ValidationErrors | null {
+  //   if (!control.value) {
+  //     return null;
+  //   }
 
-    return PASSWORD_PATTERN.test(control.value)
-      ? null
-      : { passwordStrength: true };
-  }
+  //   return PASSWORD_PATTERN.test(control.value)
+  //     ? null
+  //     : { passwordStrength: true };
+  // }
 
-  private passwordMatchValidator(
-    control: AbstractControl,
-  ): ValidationErrors | null {
-    const password = control.get('password');
-    const confirmPassword = control.get('confirmPassword');
+  // private passwordMatchValidator(
+  //   control: AbstractControl,
+  // ): ValidationErrors | null {
+  //   const password = control.get('password');
+  //   const confirmPassword = control.get('confirmPassword');
 
-    if (!password || !confirmPassword) return null;
+  //   if (!password || !confirmPassword) return null;
 
-    if (password.value !== confirmPassword.value) {
-      confirmPassword.setErrors({ passwordMismatch: true });
-      return { passwordMismatch: true };
-    } else {
-      confirmPassword.setErrors(null);
-      return null;
-    }
-  }
+  //   if (password.value !== confirmPassword.value) {
+  //     confirmPassword.setErrors({ passwordMismatch: true });
+  //     return { passwordMismatch: true };
+  //   } else {
+  //     confirmPassword.setErrors(null);
+  //     return null;
+  //   }
+  // }
 
   getErrorMessage(controlName: string): string {
     const control = this.formGroup.get(controlName);

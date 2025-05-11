@@ -1,4 +1,4 @@
-<div
+<!-- <div
   class="d-flex justify-content-center justify-content-md-between gap-2 flex-wrap footer-wrapper"
 >
   <div i18n class="text-center">
@@ -7,5 +7,122 @@
   <div class="d-flex gap-4">
     <a i18n mat-button routerLink="/termsandconditions" target="_blank">Terms & Conditions</a>
     <a i18n mat-button routerLink="/privacy-policy" target="_blank">Privacy & Policy</a>
+  </div>
+</div> -->
+
+<div class="background-primary pt-5 pb-4">
+  <div class="container">
+    <div class="row gap-4 gap-md-0">
+      <div class="col-lg-6 py-md-3 py-lg-0">
+        <img
+          src="assets/images/footer-logo.png"
+          alt="Logo"
+          class="cursor-pointer mb-4"
+          routerLink="/"
+        />
+
+        <div class="socials d-flex gap-3 pb-3 pb-lg-5">
+          <a
+            itemprop="sameAs"
+            href="https://www.instagram.com/_wastetrade/"
+            target="_self"
+            title="Instagram"
+            aria-label="Instagram"
+            role="button"
+          >
+            <img src="assets/images/socials/insta.svg" alt="Instagram" />
+          </a>
+          <a
+            itemprop="sameAs"
+            href="https://twitter.com/wastetrade"
+            target="_self"
+            title="X (Twitter)"
+            aria-label="X (Twitter)"
+            role="button"
+          >
+            <img src="assets/images/socials/x.svg" alt="X (Twitter)" />
+          </a>
+
+          <a
+            itemprop="sameAs"
+            href="https://www.facebook.com/profile.php?id=100067425009620"
+            target="_self"
+            title="Facebook"
+            aria-label="Facebook"
+            role="button"
+          >
+            <img src="assets/images/socials/facebook.svg" alt="Facebook" />
+          </a>
+
+          <a
+            itemprop="sameAs"
+            href="https://www.linkedin.com/company/85879302/"
+            target="_self"
+            title="LinkedIn"
+            aria-label="LinkedIn"
+            role="button"
+          >
+            <img src="assets/images/socials/in.svg" alt="LinkedIn" />
+          </a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3">
+        <div class="list-link d-flex flex-column gap-1">
+          <p class="sub-title fw-bold mb-1">Menu</p>
+          <a i18n mat-button routerLink="/" target="_blank" i18n>Home</a>
+          <a i18n mat-button routerLink="/buy" target="_blank">Marketplace</a>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="list-link d-flex flex-column gap-1">
+          <p class="sub-title fw-bold mb-1">Company</p>
+          <!-- <a i18n mat-button routerLink="/" target="_blank" i18n>About</a>
+    <a i18n mat-button routerLink="/buy" target="_blank">Vacancies</a>
+    <a i18n mat-button routerLink="/buy" target="_blank">News</a> -->
+          <a i18n mat-button routerLink="/privacy-policy" target="_blank"
+            >Privacy Policy</a
+          >
+          <a i18n mat-button routerLink="/termsandconditions" target="_blank"
+            >Terms and Conditions</a
+          >
+        </div>
+      </div>
+
+      <!-- <div class="col-md-6 col-lg-4">
+    <p class="list-link sub-title fw-bold">Help</p>
+    <a i18n mat-button routerLink="/" target="_blank" i18n>Resources</a>
+    <a i18n mat-button routerLink="/buy" target="_blank">Contact Us</a>
+    <a i18n mat-button routerLink="/buy" target="_blank">Plastic Recycling</a>
+  </div> -->
+
+      <div class="col-md-6 py-md-3 py-lg-0">
+        <div class="d-flex gap-2">
+          <div class="certificate-wrapper iso background-dark">
+            <img
+              src="assets/images/sio.jpg"
+              alt="ISO"
+              class="cursor-pointer"
+              routerLink="/"
+            />
+          </div>
+
+          <div class="certificate-wrapper award">
+            <img
+              src="assets/images/Recycling_Awards_Icon.jpg"
+              alt="National Recycling Awards"
+              class="cursor-pointer"
+              routerLink="/"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-content mt-4">
+      <div i18n class="text-center text-white" style="font-size: 18px">
+        © {{ now.getFullYear() }} Waste Trade, All rights reserved. Disclaimer.
+      </div>
+    </div>
   </div>
 </div>
