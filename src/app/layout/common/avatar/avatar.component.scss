@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 .wrapper {
   cursor: pointer;
@@ -32,7 +32,7 @@
   overflow: hidden;
 
   &::before {
-    content: "";
+    content: '';
     display: block;
     background-color: $primary;
     position: absolute;
@@ -58,6 +58,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  cursor: pointer;
 
   &:not(:last-child) {
     margin-bottom: 18px;

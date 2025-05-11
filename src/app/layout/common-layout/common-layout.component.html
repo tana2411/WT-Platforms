@@ -1,14 +1,35 @@
 <div class="d-lg-flex">
   <app-header></app-header>
 
-  <div
-    class="d-flex w-100 flex-column justify-content-between min-vh-100 content-container"
-  >
+  <div class="d-flex w-100 flex-column justify-content-between min-vh-100 content-container">
     <div class="py-4">
       <div class="d-flex align-items-center justify-content-between">
         <p class="fw-bold title mb-0">{{ title }}</p>
 
         <div class="d-none d-lg-flex align-items-center right-box pointer">
+          <div class="d-flex align-items-center gap-4">
+            <a mat-button routerLink="/buy" class="icon-wrapper">
+              <div class="icon-item">
+                <mat-icon>shopping_cart</mat-icon>
+              </div>
+              <span i18n>Buy</span>
+            </a>
+
+            <a mat-button routerLink="/sell" class="icon-wrapper">
+              <div class="icon-item">
+                <mat-icon>work</mat-icon>
+              </div>
+              <span i18n>Sell</span>
+            </a>
+
+            <a mat-button routerLink="/wanted" class="icon-wrapper">
+              <div class="icon-item">
+                <mat-icon>notification_important</mat-icon>
+              </div>
+              <span i18n>Wanted</span>
+            </a>
+          </div>
+
           <div class="d-flex align-items-center gap-2">
             <app-icon iconName="question_mark"></app-icon>
             <p class="mb-0" i18n>Support Center</p>

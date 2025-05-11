@@ -1,9 +1,5 @@
-<app-common-layout title="Account Settings">
-  <div
-    class="{{
-      activeTab() !== undefined ? 'd-none' : 'd-flex flex-column'
-    }} d-lg-none"
-  >
+<app-common-layout [title]="'Account Settings'">
+  <div class="{{ activeTab() !== undefined ? 'd-none' : 'd-flex flex-column' }} d-lg-none">
     @for (item of listTab; track item.title) {
       <div class="d-flex gap-2 p-3 list-item" (click)="selectTab(item.title)">
         <mat-icon fontSet="material-icons-outlined">{{ item.icon }}</mat-icon>
@@ -13,11 +9,7 @@
     }
   </div>
 
-  <div
-    class="tab-wrapper {{
-      activeTab() !== undefined ? 'd-block' : 'd-none d-lg-block'
-    }}"
-  >
+  <div class="tab-wrapper {{ activeTab() !== undefined ? 'd-block' : 'd-none d-lg-block' }}">
     <mat-tab-group [selectedIndex]="activeTab()" animationDuration="0ms">
       <mat-tab label="my profile">
         <app-tab-container (back)="closeTab()">
