@@ -10,7 +10,7 @@
           (click)="onPreviousPage()"
         >
           <mat-icon>arrow_back</mat-icon>
-          <span>BACK</span>
+          <span i18n>BACK</span>
         </button>
         <div class="col-7 d-flex justify-content-around align-items-center">
           @for (page of pages; track $index) {
@@ -25,7 +25,7 @@
           }
         </div>
         <button mat-flat-button class="col-3" (click)="onNextPage()">
-          <span>NEXT</span>
+          <span i18n>NEXT</span>
           <mat-icon>arrow_forward</mat-icon>
         </button>
       </div>

@@ -12,7 +12,7 @@
       </mat-form-field>
     </div>
     <div class="col-2">
-      <button mat-flat-button class="background-primary w-100 h-100 fs-16">
+      <button mat-flat-button class="background-primary w-100 h-100 fs-16" i18n>
         <mat-icon>search</mat-icon>
         Search
       </button>
@@ -32,14 +32,14 @@
               class="small-mat-form-field d-flex flex-column align-items-start"
               style="flex-basis: 180px; flex-grow: 1; min-width: 150px"
             >
-              <mat-label class="fw-500 mb-2 text-wrap">{{
+              <mat-label class="fw-500 mb-2 text-wrap" i18n>{{
                 item.name
               }}</mat-label>
               <mat-form-field appearance="outline" class="w-100 bg-white">
                 <mat-select [formControlName]="item.value">
                   <mat-option [value]="null">All</mat-option>
                   @for (option of item.options; track $index) {
-                    <mat-option [value]="getOptionValue(item, option)">
+                    <mat-option [value]="getOptionValue(item, option)" i18n>
                       {{ option.name }}
                     </mat-option>
                   }
@@ -60,7 +60,7 @@
                   class="large-checkbox"
                   [formControlName]="item.options[0].value || item.value"
                 >
-                  <span class="fw-bold">{{ item.options[0].name }}</span>
+                  <span class="fw-bold" i18n>{{ item.options[0].name }}</span>
                 </mat-checkbox>
               } @else {
                 @for (option of item.options; track $index) {
@@ -68,7 +68,7 @@
                     class="large-checkbox"
                     [formControlName]="option.value"
                   >
-                    <span class="fw-bold">{{ option.name }}</span>
+                    <span class="fw-bold" i18n>{{ option.name }}</span>
                   </mat-checkbox>
                 }
               }

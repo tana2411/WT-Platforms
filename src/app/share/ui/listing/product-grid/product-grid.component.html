@@ -12,6 +12,7 @@
             <div class="border background-info rounded py-1 rounded-pill mb-3">
               <div
                 class="fw-bold w-100 d-flex justify-content-center align-items-center"
+                i18n
               >
                 <mat-icon class="primary">lens</mat-icon>Available Now
               </div>
@@ -33,7 +34,7 @@
                 >location_on</mat-icon
               >
               <div class="column">
-                <div class="small">Material Location</div>
+                <div class="small" i18n>Material Location</div>
                 <div class="fw-bold">Norway</div>
               </div>
             </div>
@@ -42,7 +43,7 @@
                 >lock</mat-icon
               >
               <div class="column">
-                <div class="small">Average Weight per Load</div>
+                <div class="small" i18n>Average Weight per Load</div>
                 <div class="fw-bold">350MT</div>
               </div>
             </div>
@@ -55,6 +56,7 @@
                 class="secondary"
                 style="cursor: pointer"
                 (click)="materialInterest.emit(item)"
+                i18n
               >
                 Material Interest
               </div>
