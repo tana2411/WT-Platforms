@@ -9,22 +9,8 @@ import { ListingFooterComponent } from '../../share/ui/listing/listing-footer/li
   selector: 'app-market-place',
   templateUrl: './market-place.component.html',
   styleUrls: ['./market-place.component.scss'],
-  imports: [
-    CommonLayoutComponent,
-    FilterComponent,
-    ProductGridComponent,
-    PaginationComponent,
-    ListingFooterComponent,
-  ],
+  imports: [CommonLayoutComponent],
 })
 export class MarketPlaceComponent {
   constructor() {}
-
-  onPageChange(page: number) {
-    console.log(page);
-  }
-
-  onFilterChange(filterParams: any) {
-    console.log(filterParams);
-  }
 }
