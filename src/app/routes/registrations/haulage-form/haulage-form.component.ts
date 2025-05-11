@@ -191,7 +191,6 @@ export class HaulageFormComponent {
   }
 
   handleFileReady(files: FileInfo[]) {
-    console.log(files);
     if (files) {
       this.selectedFiles.set(files);
     }
@@ -216,11 +215,14 @@ export class HaulageFormComponent {
 
             const payload: any = {
               ...value,
-              documentUrl: documentUrls,
-              expiryDate: expiryDates,
+              documents: documentUrls.map((url, index) => ({
+                documentType: 'carrier_license',
+                documentUrl: url,
+                expiryDate: expiryDates[index],
+              })),
             };
 
-            delete payload.registrationNumber;
+            // do not submit not required fields
             delete payload.acceptTerm;
 
             return this.registrationService.registerHaulage(payload).pipe(

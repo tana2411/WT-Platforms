@@ -49,13 +49,14 @@ export class FilterComponent implements OnInit {
       value: 'materials',
     },
     {
-      name: 'PACKING',
+      name: 'PACKING*',
       value: 'packing',
     },
     {
       name: 'SORT BY',
       value: 'sort_by',
       type: 'select',
+      placeholder: "",
       options: [],
     },
     {
@@ -65,6 +66,17 @@ export class FilterComponent implements OnInit {
       options: [
         {
           value: 'fulfilled_listings',
+        },
+      ],
+    },
+
+    {
+      name: 'Show SOLD listings',
+      value: 'sold_listings',
+      type: 'checkbox',
+      options: [
+        {
+          value: 'sold_listings',
         },
       ],
     },
@@ -106,8 +118,8 @@ export class FilterComponent implements OnInit {
 
   ngOnInit() {
     if (this.displayFilter) {
-      this.activeFilter = this.allFilters.filter((f) =>
-        this.displayFilter.includes(f.value),
+      this.activeFilter = this.displayFilter.map((f) =>
+        this.allFilters.find((i) => i.value === f),
       );
 
       this.buildForm();
