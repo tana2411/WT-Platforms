@@ -29,13 +29,15 @@ export class RegistrationsService {
     );
   }
 
-  uploadFileHaulier(files: File[]): Observable<string> {
+  uploadFileHaulier(files: File[]): Observable<string[]> {
     const formData = new FormData();
     if (files.length > 0) {
-      formData.append('file', files[0], files[0].name);
+      files.forEach((file) => {
+        formData.append('files', file, file.name);
+      });
     }
-    return this.httpClient.post<string>('/upload-file-haulier', formData, {
-      responseType: 'text' as 'json',
+    return this.httpClient.post<string[]>('/upload-file-haulier', formData, {
+      // responseType: 'text' as 'json',
     });
   }
 

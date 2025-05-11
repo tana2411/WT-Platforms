@@ -1,43 +1,27 @@
+import { TitleCasePipe } from '@angular/common';
+import { ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { countries } from './../../../statics/country-data';
-import {
-  ChangeDetectorRef,
-  Component,
-  effect,
-  inject,
-  OnInit,
-  signal,
-} from '@angular/core';
-import {
-  FormArray,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import {
-  MatCheckboxChange,
-  MatCheckboxModule,
-} from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { checkPasswordStrength, pwdStrengthValidator } from '../../../share/validators/password-strength';
-import { InputWithConfirmControlComponent } from '../../../share/ui/input-with-confirm-control/input-with-confirm-control.component';
-import { MatInputModule } from '@angular/material/input';
-import { FileUploadComponent } from '../../../share/ui/file-upload/file-upload.component';
-import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-control/telephone-form-control.component';
-import { Router } from '@angular/router';
-import { RegistrationsService } from 'app/services/registrations.service';
-import { catchError, concatMap, debounceTime, finalize, of } from 'rxjs';
-import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatButtonModule } from '@angular/material/button';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
+import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { AuthService } from 'app/services/auth.service';
-import { TitleCasePipe } from '@angular/common';
+import { RegistrationsService } from 'app/services/registrations.service';
 import { strictEmailValidator } from 'app/share/validators/';
-import { Moment } from 'moment';
+import { catchError, concatMap, debounceTime, finalize, of } from 'rxjs';
+import { FileInfo, FileUploadComponent } from '../../../share/ui/file-upload/file-upload.component';
+import { InputWithConfirmControlComponent } from '../../../share/ui/input-with-confirm-control/input-with-confirm-control.component';
+import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-control/telephone-form-control.component';
+import { checkPasswordStrength, pwdStrengthValidator } from '../../../share/validators/password-strength';
+import { countries } from './../../../statics/country-data';
+
 @Component({
   selector: 'app-haulage-form',
   templateUrl: './haulage-form.component.html',
@@ -58,7 +42,7 @@ import { Moment } from 'moment';
     TitleCasePipe,
   ],
 })
-export class HaulageFormComponent implements OnInit {
+export class HaulageFormComponent {
   countryList = countries;
   euCountries = [
     { value: 'austria', name: 'Austria' },
@@ -98,80 +82,29 @@ export class HaulageFormComponent implements OnInit {
 
   formGroup = new FormGroup({
     prefix: new FormControl<string | null>('mr', [Validators.required]),
-    firstName: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(50),
-    ]),
-    lastName: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(50),
-    ]),
-    jobTitle: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(50),
-    ]),
-    phoneNumberUser: new FormControl<string | null>(null, [
-      Validators.required,
-    ]),
-    email: new FormControl<string | null>(null, [
-      strictEmailValidator(),
-      Validators.required,
-    ]),
-    password: new FormControl<string | null>(null, [
-      Validators.required,
-      pwdStrengthValidator,
-    ]),
+    firstName: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
+    lastName: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
+    jobTitle: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
+    phoneNumberUser: new FormControl<string | null>(null, [Validators.required]),
+    email: new FormControl<string | null>(null, [strictEmailValidator(), Validators.required]),
+    password: new FormControl<string | null>(null, [Validators.required, pwdStrengthValidator]),
 
-    companyName: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(100),
-    ]),
-    registrationNumber: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(20),
-    ]),
-    vatRegistrationCountry: new FormControl<string | null>(null, [
-      Validators.required,
-    ]),
-    vatNumber: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(20),
-    ]),
-    addressLine1: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(100),
-    ]),
-    postalCode: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(20),
-    ]),
-    city: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(50),
-    ]),
+    companyName: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(100)]),
+    registrationNumber: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
+    vatRegistrationCountry: new FormControl<string | null>(null, [Validators.required]),
+    vatNumber: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
+    addressLine1: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(100)]),
+    postalCode: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
+    city: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
     country: new FormControl<string | null>(null, [Validators.required]),
-    stateProvince: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(50),
-    ]),
-    phoneNumberCompany: new FormControl<string | null>(null, [
-      Validators.required,
-    ]),
-    mobileNumberCompany: new FormControl<string | null>(null, [
-      Validators.maxLength(15),
-      Validators.pattern(/^\d*$/),
-    ]),
+    stateProvince: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
+    phoneNumberCompany: new FormControl<string | null>(null, [Validators.required]),
+    mobileNumberCompany: new FormControl<string | null>(null, [Validators.maxLength(15), Validators.pattern(/^\d*$/)]),
     fleetType: new FormControl<string | null>(null, [Validators.required]),
     areasCovered: new FormArray([], []),
     containerTypes: new FormArray([], [Validators.required]),
-    expiryDate: new FormControl<Moment | null>(null, [Validators.required]),
-    whereDidYouHearAboutUs: new FormControl<string | null>(null, [
-      Validators.required,
-    ]),
-
-    acceptTerm: new FormControl<boolean | null>(null, [
-      Validators.requiredTrue,
-    ]),
+    whereDidYouHearAboutUs: new FormControl<string | null>(null, [Validators.required]),
+    acceptTerm: new FormControl<boolean | null>(null, [Validators.requiredTrue]),
   });
 
   showEUcountry = signal(false);
@@ -179,7 +112,8 @@ export class HaulageFormComponent implements OnInit {
   selectAllContainerTypes = signal(false);
   fileError = signal<string | null>(null);
   expiryDateError = signal<string | null>(null);
-  selectedFile = signal<File[]>([]);
+  selectedFiles = signal<FileInfo[]>([]);
+  fileUploadValid = signal<boolean>(false);
   submitting = signal<boolean>(false);
   pwdStrength = signal<string | null>(''); // weak, medium, strong
 
@@ -212,36 +146,14 @@ export class HaulageFormComponent implements OnInit {
       }
     });
 
-    this.formGroup?.valueChanges
-      .pipe(takeUntilDestroyed(), debounceTime(300))
-      .subscribe((value) => {
-        const { expiryDate, password } = value; // expiryDate: moment type
-        const now = new Date();
-        if (!value) return;
-
-        const expiryDateDate = expiryDate?.toDate();
-
-        if (expiryDateDate) {
-          if (expiryDateDate < now) {
-            this.expiryDateError.set('Licence expired');
-          } else {
-            const diffInTime = expiryDateDate.getTime() - now.getTime();
-            const diffInDays = Math.ceil(diffInTime / (1000 * 3600 * 24));
-
-            if (diffInDays < 7) {
-              this.expiryDateError.set('Licence is about to expire soon');
-            } else {
-              this.expiryDateError.set(null);
-            }
-          }
-        }
-        if (password) {
-          this.pwdStrength.set(checkPasswordStrength(password));
-        }
+    this.formGroup
+      .get('password')
+      ?.valueChanges.pipe(takeUntilDestroyed(), debounceTime(300))
+      .subscribe((password) => {
+        if (!password) return;
+        this.pwdStrength.set(checkPasswordStrength(password));
       });
   }
-
-  ngOnInit() {}
 
   onAreaChange(event: MatRadioChange) {
     this.selectedAreasCovered.clear();
@@ -269,9 +181,7 @@ export class HaulageFormComponent implements OnInit {
     if (event.checked) {
       formArray.push(new FormControl(item));
     } else {
-      const idx = formArray.controls.findIndex(
-        (control) => control.value === item,
-      );
+      const idx = formArray.controls.findIndex((control) => control.value === item);
       if (idx !== -1) {
         formArray.removeAt(idx);
       }
@@ -280,39 +190,40 @@ export class HaulageFormComponent implements OnInit {
     formArray.updateValueAndValidity();
   }
 
-  handleFileReady(file: File[]) {
-    if (file) {
-      this.selectedFile.set(file);
+  handleFileReady(files: FileInfo[]) {
+    if (files) {
+      this.selectedFiles.set(files);
     }
-  }
-
-  handleFileError(error: string) {
-    this.fileError.set(error);
-    this.cd.detectChanges();
   }
 
   send() {
     this.formGroup.markAllAsTouched();
-    const { acceptTerm, expiryDate, ...value } = this.formGroup.value;
+    const { ...value } = this.formGroup.value;
 
-    if (this.selectedFile().length > 0) {
+    if (this.selectedFiles().length > 0) {
       this.submitting.set(true);
+      const files = this.selectedFiles().map((file) => file.file);
+      const expiryDates = this.selectedFiles().map((file) => file.expirationDate?.format('DD/MM/YYYY'));
       this.registrationService
-        .uploadFileHaulier(this.selectedFile())
+        .uploadFileHaulier(files)
         .pipe(
           finalize(() => this.submitting.set(false)),
-          concatMap((url) => {
-            if (!url) {
+          concatMap((documentUrls) => {
+            if (!documentUrls) {
               return of(null);
             }
 
             const payload: any = {
               ...value,
-              documentType: 'waste_carrier',
-              documentName: this.selectedFile()[0].name,
-              documentUrl: url,
-              expiryDate: expiryDate?.format('DD/MM/YYYY'),
+              documents: documentUrls.map((url, index) => ({
+                documentType: 'carrier_license',
+                documentUrl: url,
+                expiryDate: expiryDates[index],
+              })),
             };
+
+            // do not submit not required fields
+            delete payload.acceptTerm;
 
             return this.registrationService.registerHaulage(payload).pipe(
               catchError((err) => {
@@ -324,11 +235,9 @@ export class HaulageFormComponent implements OnInit {
             );
           }),
           catchError((err) => {
-            this.snackBar.open(
-              'An error occurred while uploading the file. Please try again.',
-              'Ok',
-              { duration: 3000 },
-            );
+            this.snackBar.open('An error occurred while uploading the file. Please try again.', 'Ok', {
+              duration: 3000,
+            });
             return of(null);
           }),
           concatMap((res) => {

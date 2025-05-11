@@ -120,9 +120,7 @@
             </h6>
             <app-file-upload
               [maxFile]="6"
-              [multiple]="true"
-              (fileReady)="handleFileReady($event, 'document')"
-              (error)="documentFileError.set($event)"
+              (filesAdded)="handleFileReady($event, 'document')"
             ></app-file-upload>
             @if (documentFileError()) {
               <mat-error class="mt-0 mat-error" i18n>
@@ -183,10 +181,8 @@
             </h6>
             <div class="col-12 mb-4">
               <app-file-upload
-                (fileReady)="handleFileReady($event, 'licence')"
-                (error)="wasteLicenceError.set($event)"
+                (filesAdded)="handleFileReady($event, 'licence')"
                 [maxFile]="1"
-                [multiple]="true"
               ></app-file-upload>
               @if (wasteLicenceError()) {
                 <mat-error class="mt-0 mat-error" i18n>

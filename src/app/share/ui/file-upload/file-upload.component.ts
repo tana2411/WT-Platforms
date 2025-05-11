@@ -2,32 +2,62 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnInit,
   Output,
-  signal,
   ViewChild,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Moment } from 'moment';
+
+export interface FileInfo {
+  file: File;
+  expirationDate: Moment | null;
+}
 
 @Component({
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss'],
-  imports: [MatButtonModule, MatIconModule],
+  imports: [
+    MatButtonModule, 
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    ReactiveFormsModule,
+    MatSnackBarModule,
+  ],
 })
 export class FileUploadComponent implements OnInit {
   @Input() maxFile: number = 1;
-  @Input() multiple: boolean = false;
-  @Input() notAcceptable: string[] = [];
-  selectedFile = signal<File[]>([]);
-  isDraggingOver = false;
+  @Input() expirationDateRequired = true;
+  @Input() notAcceptable: string[] = []; // ex: ['.jpg', '.jpeg']
 
-  @Output() fileReady = new EventEmitter<File[]>();
-  @Output() error = new EventEmitter<any>();
+  @Output() filesAdded = new EventEmitter<FileInfo[]>();
+  @Output() uploadValid = new EventEmitter<boolean>();
 
   @ViewChild('fileUploadInput') fileInputRef!: ElementRef<HTMLInputElement>;
+
+  isDraggingOver = false;
+
+  formGroup = new FormGroup({
+    documents: new FormArray([], []),
+  });
+
+  snackBar = inject(MatSnackBar);
+
+  get documents(): FormArray {
+    return this.formGroup.get('documents') as FormArray;
+  }
 
   baseAllowedTypes = [
     { extension: '.jpg', mimeType: 'image/jpeg' },
@@ -47,7 +77,18 @@ export class FileUploadComponent implements OnInit {
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     },
   ];
-  constructor() {}
+  constructor() {
+    this.documents.valueChanges.pipe(
+      takeUntilDestroyed(),
+    ).subscribe(() => {
+      if (this.documents.valid) {
+        this.uploadValid.emit(true);
+        this.filesAdded.emit(this.getFileInfos());
+      } else {
+        this.uploadValid.emit(false);
+      }
+    });
+  }
 
   ngOnInit() {}
 
@@ -84,7 +125,11 @@ export class FileUploadComponent implements OnInit {
   }
 
   private processFiles(files: FileList | null): void {
-    const validFiles: File[] = [];
+    if (this.documents.length >= this.maxFile) {
+      this.snackBar.open(`Only accept ${this.maxFile} file(s) upload`);
+      return;
+    }
+
     const maxSizeInBytes = 25 * 1024 * 1024;
     const allowedMimeType = this.baseAllowedTypes
       .filter((type) => !this.notAcceptable.includes(type.extension))
@@ -94,44 +139,40 @@ export class FileUploadComponent implements OnInit {
       return;
     }
 
-    if (files.length > this.maxFile) {
-      this.error.emit(`Only accept ${this.maxFile} file upload`);
-      this.selectedFile.set([]);
-      this.fileReady.emit([]);
-      return;
-    }
-
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       if (!allowedMimeType.includes(file.type)) {
-        this.error.emit(
+        this.snackBar.open(
           'Invalid file type uploaded. Please upload the document in one of the supported formats',
         );
         continue;
       }
 
       if (file.size > maxSizeInBytes) {
-        this.error.emit(
+        this.snackBar.open(
           'File size is too large. Please upload a file smaller than 25MB.',
         );
         continue;
       }
 
-      validFiles.push(file);
+      this.addNewFileControl(file, this.expirationDateRequired);
     }
-
-    this.multiple
-      ? this.selectedFile.update((current) => [...current, ...validFiles])
-      : this.selectedFile.set(validFiles);
-    this.fileReady.emit(this.selectedFile());
   }
 
-  remove(fileToRemove: File) {
-    this.selectedFile.update((currentFiles) => {
-      const updatedList = currentFiles.filter((f) => f !== fileToRemove);
-      return updatedList;
+  private addNewFileControl(file: File, expirationDateRequired: boolean) {
+    const fileControl = new FormGroup({
+      file: new FormControl<File>(file),
+      expirationDate: new FormControl<Moment | null>(null, expirationDateRequired ? [Validators.required] : []),
     });
-    this.fileReady.emit(this.selectedFile());
+    this.documents.push(fileControl);
+  }
+
+  private getFileInfos(): FileInfo[] {
+    return this.documents.value;
+  }
+
+  remove(fileIndex: number) {
+    this.documents.removeAt(fileIndex);
   }
 
   preventAndStopEvent(event: DragEvent | MouseEvent) {
