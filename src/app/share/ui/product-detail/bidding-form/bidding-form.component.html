@@ -1,0 +1,167 @@
+<div class="bidding-modal container-fluid p-3 p-md-4 p-lg-5">
+  <div class="position-relative">
+    <!-- Close button -->
+    <div class="close-button position-absolute top-0 end-0" [mat-dialog-close]="false">
+      <app-icon iconName="close"></app-icon>
+    </div>
+
+    <h2 class="mb-5">Place a bid</h2>
+  </div>
+
+  <form [formGroup]="formGroup">
+    <div class="col-12 mb-4">
+      <mat-label class="fw-bold mb-2 d-block text-uppercase" i18n>warehouse </mat-label>
+      <p class="sub-label mb-2">Please ensure that you choose the location that the waste material will be delivered to.</p>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-select placeholder="Select Warehouse" formControlName="location">
+          <mat-option value="google_search" i18n>Google Search</mat-option>
+          <mat-option value="prse_trade_show" i18n>PRSE Trade Show</mat-option>
+        </mat-select>
+        @if (formGroup.get('location')?.hasError('required')) {
+          <mat-error i18n>This is a required field.</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="col-12 mb-4 mt-3">
+      <mat-label class="fw-bold mb-1 text-uppercase" i18n>offer valid until</mat-label>
+      <p class="sub-label mb-2">Please ensure that you choose the location that the waste material will be delivered to.</p>
+      <mat-form-field appearance="outline" class="w-100">
+        <input
+          matInput
+          readonly
+          [matDatepicker]="offerValidDate"
+          [min]="todayDate"
+          formControlName="offerValidDate"
+          (click)="offerValidDate.open()"
+        />
+        <mat-datepicker-toggle matIconSuffix [for]="offerValidDate"></mat-datepicker-toggle>
+        <mat-datepicker #offerValidDate></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="col-12 mb-4 mt-3">
+      <mat-label class="fw-bold mb-1 text-uppercase" i18n>earliest delivery date</mat-label>
+      <p class="sub-label mb-2">Please ensure that you choose the location that the waste material will be delivered to.</p>
+      <mat-form-field appearance="outline" class="w-100">
+        <input
+          matInput
+          readonly
+          [min]="todayDate"
+          [matDatepicker]="earliestDeliveryDate"
+          formControlName="earliestDeliveryDate"
+          (click)="earliestDeliveryDate.open()"
+        />
+        <mat-datepicker-toggle matIconSuffix [for]="earliestDeliveryDate"></mat-datepicker-toggle>
+        <mat-datepicker #earliestDeliveryDate></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="col-12 mb-4 mt-3">
+      <mat-label class="fw-bold mb-1 text-uppercase" i18n>Latest Delivery Date</mat-label>
+      <p class="sub-label mb-2">Please ensure that you choose the location that the waste material will be delivered to.</p>
+      <mat-form-field appearance="outline" class="w-100">
+        <input
+          matInput
+          readonly
+          [matDatepicker]="latestDeliveryDate"
+          formControlName="latestDeliveryDate"
+          (click)="latestDeliveryDate.open()"
+        />
+        <mat-datepicker-toggle matIconSuffix [for]="latestDeliveryDate"></mat-datepicker-toggle>
+        <mat-datepicker #latestDeliveryDate></mat-datepicker>
+
+        @if (formGroup.get('latestDeliveryDate')?.hasError('invalidRange')) {
+          <mat-error>Latest delivery date cannot be earlier than earliest delivery date </mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-12 mb-4">
+      <label class="fw-bold mb-2 text-uppercase" i18n>number of loads bid on</label>
+      <p class="sub-label mb-2" i18n>Please enter a number greater than or equal to 1.</p>
+      <mat-form-field appearance="outline" class="w-100">
+        <input matInput type="number" placeholder="Type here" formControlName="loadBidOn" />
+        @if (formGroup.get('loadBidOn')?.hasError('required')) {
+          <mat-error i18n>This is a required field.</mat-error>
+        }
+        @if (formGroup.get('loadBidOn')?.hasError('min')) {
+          <mat-error i18n>Please enter a number greater than or equal to 1.</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="col-12 mb-4">
+      <mat-label class="fw-bold mb-2 d-block text-uppercase" i18n>currency </mat-label>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-select formControlName="currency">
+          <mat-option value="gbp" i18n>£/GBP</mat-option>
+          <mat-option value="usd" i18n>$/USD</mat-option>
+          <mat-option value="euro" i18n>€/EURO</mat-option>
+        </mat-select>
+        @if (formGroup.get('currency')?.hasError('required')) {
+          <mat-error i18n>This is a required field.</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-12 mb-4">
+      <label class="fw-bold mb-2 text-uppercase" i18n>Price Per Metric Tonne</label>
+      <mat-form-field appearance="outline" class="w-100">
+        <input matInput type="number" placeholder="Type here" formControlName="pricePerMetric" />
+        @if (formGroup.get('pricePerMetric')?.hasError('required')) {
+          <mat-error i18n>This is a required field.</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="col-12 mb-4">
+      <mat-label class="fw-bold mb-2 d-block text-uppercase" i18n>incoterms </mat-label>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-select placeholder="Please select..." formControlName="incoterms">
+          <mat-option value="EXW" i18n>EXW</mat-option>
+          <mat-option value="FCA" i18n>FCA</mat-option>
+          <mat-option value="FAS" i18n>FAS</mat-option>
+          <mat-option value="FOB" i18n>FOB</mat-option>
+          <mat-option value="CFR" i18n>CFR</mat-option>
+          <mat-option value="CIF" i18n>CIF</mat-option>
+          <mat-option value="CPT" i18n>CPT</mat-option>
+          <mat-option value="CIP" i18n>CIP</mat-option>
+          <mat-option value="DAP" i18n>DAP</mat-option>
+          <mat-option value="DPU" i18n>DPU</mat-option>
+          <mat-option value="DDP" i18n>DPU</mat-option>
+        </mat-select>
+        @if (formGroup.get('incoterms')?.hasError('required')) {
+          <mat-error i18n>This is a required field.</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    @if (isShowShippingPort) {
+      <div class="col-12 mb-4">
+        <mat-label class="fw-bold mb-2 d-block text-uppercase" i18n>shipping port </mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+          <textarea matInput formControlName="shippingPort" class="w-100"></textarea>
+
+          @if (formGroup.get('shippingPort')?.hasError('required')) {
+            <mat-error i18n>This is a required field.</mat-error>
+          }
+
+          @if (formGroup.get('shippingPort')?.hasError('maxlength')) {
+            <mat-error i18n>Shipping port cannot exceed 100 characters.</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    }
+
+    <button
+      mat-flat-button
+      class="text-uppercase fw-bold text-white background-primary submit-button w-100 mt-4"
+      [class.overlay-spinner]="submitting()"
+      (click)="submit()"
+      i18n
+    >
+      bid now
+    </button>
+  </form>
+</div>
