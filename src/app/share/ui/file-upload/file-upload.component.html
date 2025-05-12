@@ -39,7 +39,7 @@
                 </mat-icon>
               </div>
 
-              @if (expirationDateRequired) {
+              @if (expirationDateMode !== 'hidden') {
                 <div class="col-6">
                   <mat-form-field appearance="outline" floatLabel="auto" class="w-100">
                     <mat-label i18n>Expiry Date</mat-label>
@@ -49,6 +49,9 @@
 
                     @if (fileInfo.get('expirationDate')?.hasError('required')) {
                       <mat-error class="mt-0" i18n> This field is required </mat-error>
+                    }
+                    @if (fileInfo.get('expirationDate')?.hasError('past')) {
+                      <mat-error class="mt-0" i18n> Please provide a valid future expiry date for the document. </mat-error>
                     }
                   </mat-form-field>
                 </div>
