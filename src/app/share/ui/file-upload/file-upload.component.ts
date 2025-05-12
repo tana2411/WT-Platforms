@@ -1,13 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  inject,
-  Input,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { pastDateValidator } from '@app/validators';
 import { Moment } from 'moment';
 
 export interface FileInfo {
@@ -28,7 +20,7 @@ export interface FileInfo {
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss'],
   imports: [
-    MatButtonModule, 
+    MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
@@ -41,6 +33,7 @@ export class FileUploadComponent implements OnInit {
   @Input() maxFile: number = 1;
   @Input() expirationDateRequired = true;
   @Input() notAcceptable: string[] = []; // ex: ['.jpg', '.jpeg']
+  @Input() isFutureDate: boolean = false;
 
   @Output() filesAdded = new EventEmitter<FileInfo[]>();
   @Output() uploadValid = new EventEmitter<boolean>();
@@ -67,20 +60,16 @@ export class FileUploadComponent implements OnInit {
     { extension: '.doc', mimeType: 'application/msword' },
     {
       extension: '.docx',
-      mimeType:
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     },
     { extension: '.xls', mimeType: 'application/vnd.ms-excel' },
     {
       extension: '.xlsx',
-      mimeType:
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     },
   ];
   constructor() {
-    this.documents.valueChanges.pipe(
-      takeUntilDestroyed(),
-    ).subscribe(() => {
+    this.documents.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
       if (this.documents.valid) {
         this.uploadValid.emit(true);
         this.filesAdded.emit(this.getFileInfos());
@@ -142,28 +131,28 @@ export class FileUploadComponent implements OnInit {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       if (!allowedMimeType.includes(file.type)) {
-        this.snackBar.open(
-          'Invalid file type uploaded. Please upload the document in one of the supported formats',
-        );
+        this.snackBar.open('Invalid file type uploaded. Please upload the document in one of the supported formats');
         continue;
       }
 
       if (file.size > maxSizeInBytes) {
-        this.snackBar.open(
-          'File size is too large. Please upload a file smaller than 25MB.',
-        );
+        this.snackBar.open('File size is too large. Please upload a file smaller than 25MB.');
         continue;
       }
 
-      this.addNewFileControl(file, this.expirationDateRequired);
+      this.addNewFileControl(file, this.expirationDateRequired, this.isFutureDate);
     }
   }
 
-  private addNewFileControl(file: File, expirationDateRequired: boolean) {
+  private addNewFileControl(file: File, expirationDateRequired: boolean, isFutureDate: boolean) {
     const fileControl = new FormGroup({
       file: new FormControl<File>(file),
       expirationDate: new FormControl<Moment | null>(null, expirationDateRequired ? [Validators.required] : []),
     });
+
+    if (isFutureDate) {
+      fileControl.get('expirationDate')?.addValidators(pastDateValidator());
+    }
     this.documents.push(fileControl);
   }
 
