@@ -121,20 +121,22 @@
   }
 }
 
-.sort_by-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  flex: 1;
-}
-
 .filter-item-label {
   color: #1d1d1b99;
   font-weight: bold;
   text-transform: uppercase;
 }
 
-.sold_listings {
-  align-items: center !important;
+@media screen and (min-width: 992px) {
+  .sold_listings {
+    align-items: center !important;
+  }
+
+  .sort_by-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    flex: 1;
+  }
 }
 
 :host::ng-deep {
@@ -147,5 +149,46 @@
 
   .filter-wrapper mat-form-field {
     height: 34px;
+  }
+}
+
+.filter-wrapper {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  transition: all 0.3s ease-in-out;
+
+  &.open-mobile-filter {
+    transform: translate(0);
+  }
+
+  @media screen and (max-width: 767px) {
+    background-color: #fff !important;
+    transform: translateX(-100%);
+
+    .sort_by-wrapper {
+      display: none;
+    }
+
+    .select-wrapper {
+      mat-form-field {
+        height: 50px;
+      }
+
+      mat-select {
+        height: 5px;
+      }
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    position: relative;
+
+    .select-wrapper {
+      width: 150px;
+    }
   }
 }

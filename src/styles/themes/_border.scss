@@ -1,4 +1,4 @@
-@import "../variables";
+@import '../variables';
 
 .border-radius-tiny {
   border-radius: $border-radius-tiny;
@@ -18,4 +18,8 @@
 
 .border-primary {
   border-color: $primary !important;
+}
+
+.border-black {
+  border-color: $black !important;
 }

@@ -1,15 +1,21 @@
-import { debounceTime, pipe, map } from 'rxjs';
-import { MatRadioModule } from '@angular/material/radio';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { IconComponent } from 'app/layout/common/icon/icon.component';
+import { ItemOf } from 'app/types/utils';
+import { isEqual, omit } from 'lodash';
+import { debounceTime } from 'rxjs';
 import { countries, materialTypes } from '../../../../statics';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MAP_MATERIAL_TYPE_TO_ITEM } from './constant';
+
+const searchKey = 'searchTerm';
 
 @Component({
   selector: 'app-filter',
@@ -24,6 +30,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatRadioModule,
     MatCheckboxModule,
     ReactiveFormsModule,
+    IconComponent,
   ],
 })
 export class FilterComponent implements OnInit {
@@ -41,22 +48,16 @@ export class FilterComponent implements OnInit {
       options: materialTypes,
     },
     {
-      name: 'MATERIAL GROUP',
-      value: 'material_group',
-    },
-    {
-      name: 'MATERIALS',
-      value: 'materials',
-    },
-    {
-      name: 'PACKING*',
-      value: 'packing',
+      name: 'ITEMS',
+      value: 'item',
+      type: 'select',
+      options: [],
     },
     {
       name: 'SORT BY',
       value: 'sort_by',
       type: 'select',
-      placeholder: "",
+      placeholder: '',
       options: [],
     },
     {
@@ -71,11 +72,12 @@ export class FilterComponent implements OnInit {
     },
 
     {
-      name: 'Show SOLD listings',
+      name: 'SOLD listings',
       value: 'sold_listings',
       type: 'checkbox',
       options: [
         {
+          name: 'Show SOLD listings',
           value: 'sold_listings',
         },
       ],
@@ -98,31 +100,55 @@ export class FilterComponent implements OnInit {
     },
   ];
 
-  @Input() displayFilter: string[] = [];
+  @Input() displayFilter: Array<ItemOf<typeof this.allFilters>['value']> = [];
   @Output() filterChanged = new EventEmitter<any>();
 
   countryList = countries;
-  activeFilter: any;
+  activeFilter: any[] = [];
 
   filterForm = new FormGroup({
-    searchTerm: new FormControl<string | null>(null),
+    [searchKey]: new FormControl<string | null>(null),
   });
 
+  // store the default value after build form
+  // we use it for clear filter, tracking has filter or not
+  formDefaultValue = signal({});
+  openMobileFilter = signal(false);
+  backupMobileFilterParams: any = undefined;
+  destroyRef = inject(DestroyRef);
+
+  get hasFilterParams() {
+    return !isEqual(omit(this.filterForm.value, searchKey), omit(this.formDefaultValue(), searchKey));
+  }
+
   constructor() {
-    this.filterForm.valueChanges
-      .pipe(takeUntilDestroyed(), debounceTime(300))
-      .subscribe((value) => {
-        this.filterChanged.emit(value);
-      });
+    this.filterForm.valueChanges.pipe(takeUntilDestroyed(), debounceTime(300)).subscribe((value) => {
+      this.filterChanged.emit(value);
+    });
   }
 
   ngOnInit() {
     if (this.displayFilter) {
-      this.activeFilter = this.displayFilter.map((f) =>
-        this.allFilters.find((i) => i.value === f),
-      );
+      this.activeFilter = this.displayFilter.map((f) => this.allFilters.find((i) => i.value === f)).filter((i) => !!i);
 
       this.buildForm();
+    }
+
+    // Update the item options according the material_type value
+    if (this.displayFilter.includes('item')) {
+      this.filterForm
+        .get('material_type')
+        ?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe((newMaterialType) => {
+          this.filterForm.get('item')?.setValue(null!);
+
+          let itemOptions: any[] = [];
+          if (newMaterialType) {
+            itemOptions = MAP_MATERIAL_TYPE_TO_ITEM[newMaterialType];
+          }
+
+          this.activeFilter = this.activeFilter.map((i) => (i.value !== 'item' ? i : { ...i, options: itemOptions }));
+        });
     }
   }
 
@@ -130,10 +156,15 @@ export class FilterComponent implements OnInit {
     if (!this.activeFilter || this.activeFilter.length === 0) return;
 
     if (Object.keys(this.filterForm.controls).length > 1) {
-      const searchValue = this.filterForm.get('searchTerm')?.value;
+      const searchValue = this.filterForm.get(searchKey)?.value;
       if (searchValue) {
         this.filterForm = new FormGroup({
           searchTerm: new FormControl<string | null>(searchValue),
+        });
+
+        this.formDefaultValue.set({
+          ...this.formDefaultValue(),
+          searchTerm: searchValue,
         });
       }
     }
@@ -157,25 +188,57 @@ export class FilterComponent implements OnInit {
   }
 
   private addSelectControl(filter: any): void {
-    this.filterForm.addControl(
-      filter.value,
-      new FormControl<string | null>(null),
-    );
+    this.filterForm.addControl(filter.value, new FormControl<string | null>(null));
+    this.formDefaultValue.set({
+      ...this.formDefaultValue(),
+      [filter.value]: null,
+    });
   }
 
   private addCheckboxControls(filter: any): void {
     if (filter.options && filter.options.length > 0) {
       filter.options.forEach((option: any) => {
         const controlName = option.value;
-        this.filterForm.addControl(
-          controlName,
-          new FormControl<boolean>(false),
-        );
+        this.filterForm.addControl(controlName, new FormControl<boolean>(false));
+        this.formDefaultValue.set({
+          ...this.formDefaultValue(),
+          [controlName]: false,
+        });
       });
     }
   }
 
   getOptionValue(item: any, option: any): string {
     return item.value === 'location' ? option.isoCode : option.code;
+  }
+
+  openFilterMobile() {
+    this.openMobileFilter.set(true);
+    this.backupMobileFilterParams = omit(this.filterForm.value, searchKey);
+  }
+
+  closeFilterMobile() {
+    this.openMobileFilter.set(false);
+  }
+
+  onUpdateFilter() {
+    this.closeFilterMobile();
+  }
+
+  onCloseFilterMobile() {
+    this.closeFilterMobile();
+    // reset the old filter
+    this.filterForm.patchValue({
+      [searchKey]: this.filterForm.value[searchKey],
+      ...this.backupMobileFilterParams,
+    });
+  }
+
+  clearFilter() {
+    this.filterForm.patchValue({
+      ...this.formDefaultValue(),
+      [searchKey]: this.filterForm.value[searchKey] ?? '',
+    });
+    this.closeFilterMobile();
   }
 }
