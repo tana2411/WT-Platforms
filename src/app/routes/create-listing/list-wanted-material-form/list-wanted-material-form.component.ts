@@ -78,8 +78,6 @@ export class ListWantedMaterialFormComponent implements OnInit {
 
   constructor() {
     this.formGroup.valueChanges.pipe(takeUntilDestroyed()).subscribe((value) => {
-      console.log(this.formGroup);
-
       const { materialType, additionalInformation, weightUnit, materialWeight } = value;
       if (materialType) {
         const selectedMateriaType = materialTypes.find((m) => m.code == materialType);
@@ -95,7 +93,7 @@ export class ListWantedMaterialFormComponent implements OnInit {
     });
 
     effect(() => {
-      const { form, grading } = this.formGroup.controls;
+      const { form, grading, item } = this.formGroup.controls;
       if (this.formOption().length > 0) {
         form.setValidators(Validators.required);
       } else {
@@ -110,6 +108,13 @@ export class ListWantedMaterialFormComponent implements OnInit {
         grading.setValue('N/A', { emitEvent: false });
       }
 
+      if (this.itemOption().length > 0) {
+        item.setValidators(Validators.required);
+      } else {
+        item.clearValidators();
+      }
+
+      item.updateValueAndValidity();
       form.updateValueAndValidity();
       grading.updateValueAndValidity();
       this.formGroup.updateValueAndValidity();
