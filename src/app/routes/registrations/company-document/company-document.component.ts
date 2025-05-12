@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -26,6 +27,7 @@ import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
     MatSelectModule,
     AccountOnboardingStatusComponent,
     MatIconModule,
+    MatButtonModule,
     MatRadioModule,
     ReactiveFormsModule,
     UnAuthLayoutComponent,
@@ -136,10 +138,11 @@ export class CompanyDocumentComponent implements OnInit {
       ...this.selectedWasteLicenceFile().map((f) => ({ ...f, documentType: 'waste_carrier_license' })),
     ];
 
+    this.submitting.set(true);
     this.registrationService
       .uploadMultiFile(fileUpload.map((f) => f.file))
       .pipe(
-        finalize(() => this.submitting.set(true)),
+        finalize(() => this.submitting.set(false)),
         catchError((err) => {
           this.snackBar.open('An error occurred while uploading the file. Please try again.', 'Ok', {
             duration: 3000,
