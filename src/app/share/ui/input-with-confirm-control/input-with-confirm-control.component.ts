@@ -1,11 +1,6 @@
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, forwardRef, Input, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  forwardRef,
-  Input,
-  OnInit,
-} from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -20,7 +15,6 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { CommonModule } from '@angular/common';
 import { strictEmailValidator } from '@app/validators';
 
 const CONTROL_VALUE_ACCESSOR: any = {
@@ -40,21 +34,15 @@ const CONTROL_VALUE_VALIDATORS: any = {
   templateUrl: './input-with-confirm-control.component.html',
   styleUrls: ['./input-with-confirm-control.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatIconModule,
-  ],
+  imports: [CommonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatIconModule],
   providers: [CONTROL_VALUE_ACCESSOR, CONTROL_VALUE_VALIDATORS],
   standalone: true,
 })
-export class InputWithConfirmControlComponent
-  implements ControlValueAccessor, Validator, OnInit
-{
+export class InputWithConfirmControlComponent implements ControlValueAccessor, Validator, OnInit {
   @Input() valueLabel: string | null = null;
   @Input() confirmLabel: string | null = null;
+  @Input() valueErrorLabel: string | null = 'Password';
+  @Input() valueErrorConfirmLabel: string | null = 'Confirm Password';
   @Input() type: 'text' | 'password' = 'text';
   @Input() placeholder: string | undefined = undefined;
   @Input() isRequired: boolean = false;
@@ -70,19 +58,15 @@ export class InputWithConfirmControlComponent
   onValidationChange: (() => void) | undefined;
 
   constructor() {
-    this.valueControl.valueChanges
-      .pipe(takeUntilDestroyed())
-      .subscribe((value) => {
-        if (value) {
-          this.updateChanges();
-        }
-      });
-    this.confirmControl.valueChanges
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => {
+    this.valueControl.valueChanges.pipe(takeUntilDestroyed()).subscribe((value) => {
+      if (value) {
         this.updateChanges();
-        this.onValidationChange?.();
-      });
+      }
+    });
+    this.confirmControl.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
+      this.updateChanges();
+      this.onValidationChange?.();
+    });
   }
 
   ngOnInit(): void {
@@ -128,10 +112,7 @@ export class InputWithConfirmControlComponent
   }
 
   validate(control: AbstractControl): ValidationErrors | null {
-    if (
-      this.isRequired &&
-      (!this.valueControl.value || !this.confirmControl.value)
-    ) {
+    if (this.isRequired && (!this.valueControl.value || !this.confirmControl.value)) {
       return { required: true };
     }
     if (this.valueControl.value !== this.confirmControl.value) {

@@ -69,6 +69,8 @@
           <app-input-with-confirm-control
             valueLabel="EMAIL*"
             confirmLabel="CONFIRM EMAIL*"
+            valueErrorLabel="Email"
+            valueErrorLabel="Confirm Email"
             placeholder="sample@gmail.com"
             formControlName="email"
             [type]="'text'"
@@ -347,7 +349,7 @@
             <a class="fw-bold text-dark text-decoration-none" href="/termsandconditions" target="_blank">Terms & Condition</a>
             and
             <a class="fw-bold text-dark text-decoration-none" href="/privacy-policy" target="_blank">Privacy Policy </a>
-            by join WasteTrade
+            by join WasteTrade. *
           </mat-checkbox>
           @if (formGroup.get('acceptTerm')?.invalid && formGroup.get('acceptTerm')?.touched) {
             <mat-error class="mt-0 mat-error" i18n> You must accept the Terms & Conditions and Privacy Policy to proceed. </mat-error>

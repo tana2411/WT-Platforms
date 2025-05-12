@@ -10,21 +10,15 @@
         [placeholder]="placeholder ?? ''"
         (blur)="onTouched?.()"
       />
-      @if (type === "password") {
+      @if (type === 'password') {
         <mat-icon matSuffix style="cursor: pointer" (click)="toggleShowValue()">
-          {{ showValue ? "visibility" : "visibility_off" }}
+          {{ showValue ? 'visibility' : 'visibility_off' }}
         </mat-icon>
       }
-      @if (
-        valueControl.hasError("required") &&
-        (valueControl.dirty || valueControl.touched)
-      ) {
+      @if (valueControl.hasError('required') && (valueControl.dirty || valueControl.touched)) {
         <mat-error> This field is required </mat-error>
       }
-      @if (
-        valueControl.hasError("email") &&
-        (valueControl.dirty || valueControl.touched)
-      ) {
+      @if (valueControl.hasError('email') && (valueControl.dirty || valueControl.touched)) {
         <mat-error>Please enter a valid email address</mat-error>
       }
     </mat-form-field>
@@ -41,25 +35,16 @@
         [placeholder]="placeholder ?? ''"
         (blur)="onTouched?.()"
       />
-      @if (type === "password") {
-        <mat-icon
-          matSuffix
-          style="cursor: pointer"
-          (click)="toggleShowConfirmValue()"
-        >
-          {{ showConfirmValue ? "visibility" : "visibility_off" }}
+      @if (type === 'password') {
+        <mat-icon matSuffix style="cursor: pointer" (click)="toggleShowConfirmValue()">
+          {{ showConfirmValue ? 'visibility' : 'visibility_off' }}
         </mat-icon>
       }
-      @if (
-        confirmControl.hasError("required") &&
-        (confirmControl.dirty || confirmControl.touched)
-      ) {
+      @if (confirmControl.hasError('required') && (confirmControl.dirty || confirmControl.touched)) {
         <mat-error> This field is required </mat-error>
       }
-      @if (confirmControl.hasError("mismatch")) {
-        <mat-error>
-          {{ valueLabel }} and {{ confirmLabel }} do not match
-        </mat-error>
+      @if (confirmControl.hasError('mismatch')) {
+        <mat-error> {{ valueErrorLabel }} and {{ valueErrorConfirmLabel }} do not match </mat-error>
       }
     </mat-form-field>
   </div>
