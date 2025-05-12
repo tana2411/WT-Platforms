@@ -1,5 +1,5 @@
 <div class="sidebar-wrapper {{ headerService.isOpenMenu ? 'open' : '' }}">
-  <div class="close-button d-lg-none" (click)="headerService.closeMenu()">
+  <div class="close-button cursor-pointer d-lg-none" (click)="headerService.closeMenu()">
     <mat-icon>close</mat-icon>
   </div>
 
@@ -10,38 +10,20 @@
     </div>
 
     <div class="d-none d-lg-block logo-wrapper">
-      <img
-        src="assets/images/compact-logo.svg"
-        alt="Logo"
-        class="cursor-pointer"
-        routerLink="/login"
-      />
+      <img src="assets/images/compact-logo.svg" alt="Logo" class="cursor-pointer" routerLink="/login" />
     </div>
 
-    <a
-      class="menu-item dashboard d-flex gap-3 align-items-center"
-      routerLink="/dashboard"
-      routerLinkActive="active-link"
-    >
+    <a class="menu-item dashboard d-flex gap-3 align-items-center" routerLink="/dashboard" routerLinkActive="active-link">
       <app-icon iconName="view_quilt"></app-icon>
       <p class="fw-bold mb-0">Dashboard</p>
     </a>
 
-    <p class="mb-0 px-3 px-lg-5 text-uppercase mt-2 mt-lg-3 mb-lg-3">
-      PLATFORM
-    </p>
+    <p class="mb-0 px-3 px-lg-5 text-uppercase mt-2 mt-lg-3 mb-lg-3">PLATFORM</p>
 
     <div class="d-flex flex-column">
       @for (item of listMenuPlatform; track item.title) {
-        <a
-          routerLink="{{ item.link }}"
-          routerLinkActive="active-link"
-          class="menu-item d-flex gap-3 align-items-center"
-        >
-          <app-icon
-            iconName="{{ item.icon }}"
-            className="{{ item.iconClass }}"
-          ></app-icon>
+        <a routerLink="{{ item.link }}" routerLinkActive="active-link" class="menu-item d-flex gap-3 align-items-center">
+          <app-icon iconName="{{ item.icon }}" className="{{ item.iconClass }}"></app-icon>
           <p class="fw-bold mb-0">{{ item.title }}</p>
         </a>
       }

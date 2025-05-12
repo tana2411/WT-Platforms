@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
+import { Product, ProductStatus } from 'app/models/product.model';
 import { BiddingFormComponent } from 'app/share/ui/product-detail/bidding-form/bidding-form.component';
 import { FilterComponent } from '../../share/ui/listing/filter/filter.component';
 import { ListingFooterComponent } from '../../share/ui/listing/listing-footer/listing-footer.component';
@@ -34,7 +35,8 @@ export class MarketPlaceComponent {
 
   onBid() {
     const dialogRef = this.dialog.open(BiddingFormComponent, {
-      maxWidth: '960px',
+      maxWidth: '750px',
+      width: '100%',
       panelClass: 'px-3',
     });
 
@@ -47,4 +49,58 @@ export class MarketPlaceComponent {
     //   }
     // });
   }
+
+  products: Product[] = [
+    {
+      name: 'HDPE Reels - Natural',
+      location: 'Norway',
+      averaWeightPerLoad: '350MT',
+      imageSrc: '',
+      status: ProductStatus.Available,
+      fromDate: '2025-05-12T10:35:47.353Z',
+    },
+    {
+      name: 'HDPE Reels - Natural',
+      location: 'Norway',
+      averaWeightPerLoad: '350MT',
+      imageSrc: '',
+      status: ProductStatus.Required,
+      fromDate: '2025-05-12T10:35:47.353Z',
+    },
+    {
+      name: 'HDPE Reels - Natural',
+      location: 'Norway',
+      averaWeightPerLoad: '350MT',
+      imageSrc: '',
+      status: ProductStatus.Available,
+    },
+    {
+      name: 'HDPE Reels - Natural',
+      location: 'Norway',
+      averaWeightPerLoad: '350MT',
+      imageSrc: '',
+      status: ProductStatus.Required,
+    },
+    {
+      name: 'HDPE Reels - Natural',
+      location: 'Norway',
+      averaWeightPerLoad: '350MT',
+      imageSrc: '',
+      status: ProductStatus.Sold,
+    },
+    {
+      name: 'HDPE Reels - Natural',
+      location: 'Norway',
+      averaWeightPerLoad: '350MT',
+      imageSrc: '',
+      status: ProductStatus.Expired,
+    },
+    {
+      name: 'HDPE Reels - Natural',
+      location: 'Norway',
+      averaWeightPerLoad: '350MT',
+      imageSrc: '',
+      status: ProductStatus.Ongoing,
+    },
+  ];
 }

@@ -1,0 +1,51 @@
+@if (product) {
+  @switch (product.status) {
+    @case (ProductStatus.Available) {
+      <div class="border rounded py-1 rounded-pill mb-3 available">
+        <div class="fw-bold w-100 d-flex justify-content-center align-items-center gap-1 item-content">
+          <mat-icon class="icon">lens</mat-icon>
+          @if (fromDate) {
+            <span i18n>Available From</span> <span>{{ fromDate }}</span>
+          } @else {
+            <span i18n>Available Now</span>
+          }
+        </div>
+      </div>
+    }
+
+    @case (ProductStatus.Required) {
+      <div class="border rounded py-1 rounded-pill mb-3 required">
+        <div class="fw-bold w-100 d-flex justify-content-center align-items-center gap-1 item-content">
+          <mat-icon class="icon">lens</mat-icon>
+          @if (fromDate) {
+            <span i18n>Required From</span> <span>{{ fromDate }}</span>
+          } @else {
+            <span i18n>Required Now</span>
+          }
+        </div>
+      </div>
+    }
+
+    @case (ProductStatus.Sold) {
+      <div class="border rounded py-1 rounded-pill mb-3 sold">
+        <div class="fw-bold w-100 d-flex justify-content-center align-items-center gap-1 item-content" i18n>Sold</div>
+      </div>
+    }
+
+    @case (ProductStatus.Expired) {
+      <div class="border rounded py-1 rounded-pill mb-3 expired">
+        <div class="fw-bold w-100 d-flex justify-content-center align-items-center gap-1 item-content" i18n>
+          <mat-icon class="icon">lens</mat-icon>Expired
+        </div>
+      </div>
+    }
+
+    @case (ProductStatus.Ongoing) {
+      <div class="border rounded py-1 rounded-pill mb-3 ongoing">
+        <div class="fw-bold w-100 d-flex justify-content-center align-items-center gap-1 item-content" i18n>
+          <mat-icon class="icon">lens</mat-icon>Ongoing
+        </div>
+      </div>
+    }
+  }
+}

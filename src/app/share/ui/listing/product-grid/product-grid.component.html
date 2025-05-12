@@ -1,74 +1,10 @@
 <div class="mt-5">
   <p class="fw-bold">{{ items.length }} RESULT OF {{ totalItems }}</p>
 
-  <div class="row col-12">
+  <div class="row px-1">
     @for (item of items; track $index) {
       <div class="col-md-6 mb-4">
-        <div
-          class="border shadow-sm border-primary d-flex flex-column flex-md-row gap-4 p-3 rounded rounded-4 h-100"
-        >
-          <!-- Left side: image and availability -->
-          <div class="col-12 col-md-6 d-flex flex-column h-100">
-            <div class="border background-info rounded py-1 rounded-pill mb-3">
-              <div
-                class="fw-bold w-100 d-flex justify-content-center align-items-center"
-                i18n
-              >
-                <mat-icon class="primary">lens</mat-icon>Available Now
-              </div>
-            </div>
-            <div class="mt-2 flex-fill" style="border-radius: 28px">
-              <img
-                src="assets/images/product-placeholder-image.png"
-                alt="Product Image"
-                style="object-fit: contain; background-color: #f5f5f5"
-                class="img-fluid w-100 rounded h-100"
-                loading="lazy"
-              />
-            </div>
-          </div>
-
-          <!-- Right side: product details -->
-          <div class="col-12 col-md-6 mt-3 mt-md-0">
-            <h4 class="fs-5 fw-bold">HDPE Reels - Natural</h4>
-            <div class="d-flex gap-3 align-items-center mt-4">
-              <app-icon
-                iconName="location_on"
-                iconClassName="primary"
-                backgroundColor="#E5F6F0"
-              ></app-icon>
-              <div class="column">
-                <div class="small" i18n>Material Location</div>
-                <div class="fw-bold">Norway</div>
-              </div>
-            </div>
-            <div class="d-flex gap-3 align-items-center mt-4">
-              <app-icon
-                iconName="lock"
-                iconClassName="primary"
-                backgroundColor="#E5F6F0"
-              ></app-icon>
-              <div class="column">
-                <div class="small" i18n>Average Weight per Load</div>
-                <div class="fw-bold">350MT</div>
-              </div>
-            </div>
-            <div class="d-flex gap-3 align-items-center mt-4">
-              <app-icon
-                iconName="thumbs_up_down"
-                backgroundColor="#FF7B00"
-              ></app-icon>
-              <div
-                class="secondary"
-                style="cursor: pointer"
-                (click)="materialInterest.emit(item)"
-                i18n
-              >
-                Material Interest
-              </div>
-            </div>
-          </div>
-        </div>
+        <app-product-card [product]="item" />
       </div>
     }
   </div>
