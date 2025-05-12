@@ -39,7 +39,7 @@
                 </mat-icon>
               </div>
 
-              @if (expirationDateRequired) {
+              @if (expirationDateMode !== 'hidden') {
                 <div class="col-6">
                   <mat-form-field appearance="outline" floatLabel="auto" class="w-100">
                     <mat-label i18n>Expiry Date</mat-label>

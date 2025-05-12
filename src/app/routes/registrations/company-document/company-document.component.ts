@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -10,12 +9,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AccountOnboardingStatusComponent, FileInfo, FileUploadComponent } from '@app/ui';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { AuthService } from 'app/services/auth.service';
-import { catchError, filter, of, take } from 'rxjs';
-
+import { RegistrationsService } from 'app/services/registrations.service';
+import moment from 'moment';
+import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
 @Component({
   selector: 'app-company-document',
   templateUrl: './company-document.component.html',
@@ -38,35 +38,29 @@ import { catchError, filter, of, take } from 'rxjs';
   providers: [provideNativeDateAdapter()],
 })
 export class CompanyDocumentComponent implements OnInit {
-  selectedDocumentFile = signal<FileInfo[]>([]);
+  companyId: number | undefined;
+
+  selectedDocumentFile = signal<any[]>([]);
   selectedWasteLicenceFile = signal<FileInfo[]>([]);
   documentValid = signal<boolean | null>(null);
   wasteLicenceValid = signal<boolean | null>(null);
-
   onSelectUploadLater = signal<boolean | null>(null);
+  submitting = signal<boolean>(false);
+
   formGroup = new FormGroup({
     companyType: new FormControl<string | null>(null, [Validators.required]),
     documentType: new FormControl<string | null>(null, [Validators.required]),
-    otherDocumentType: new FormControl<string | null>(null),
+    // otherDocumentType: new FormControl<string | null>(null),
     wasteLicence: new FormControl<boolean | null>(null, [Validators.required]),
     boxClearingAgent: new FormControl<boolean | null>(null, Validators.required),
   });
 
   authService = inject(AuthService);
   snackBar = inject(MatSnackBar);
+  registrationService = inject(RegistrationsService);
+  router = inject(Router);
 
-  constructor() {
-    this.formGroup.valueChanges.pipe(takeUntilDestroyed()).subscribe((value) => {
-      const { documentType } = value;
-      if (!this.onSelectUploadLater() && documentType == 'other') {
-        this.formGroup.get('otherDocumentType')?.setValidators(Validators.required);
-      } else {
-        this.formGroup.get('otherDocumentType')?.clearValidators();
-      }
-      this.formGroup.get('otherDocumentType')?.updateValueAndValidity({ onlySelf: true, emitEvent: false });
-      this.formGroup.updateValueAndValidity({ emitEvent: false });
-    });
-  }
+  constructor() {}
 
   ngOnInit() {
     this.authService.user$
@@ -90,7 +84,7 @@ export class CompanyDocumentComponent implements OnInit {
             companyType: user.company?.companyType ?? '',
           });
 
-          // this.companyId = user.company?.id;
+          this.companyId = user.company?.id;
         }
       });
   }
@@ -115,10 +109,13 @@ export class CompanyDocumentComponent implements OnInit {
     this.formGroup.get('documentType')?.setValue(item);
   }
 
-  handleFileReady(file: FileInfo[], type: 'document' | 'licence') {
+  handleFileReady(file: FileInfo[], type: 'document' | 'licence', documentType: string) {
     if (file) {
       if (type === 'document') {
-        this.selectedDocumentFile.set(file);
+        this.selectedDocumentFile.set([
+          ...this.selectedDocumentFile().filter((f) => f.documentType != documentType),
+          ...file.map((f) => ({ ...f, documentType: documentType })),
+        ]);
       } else {
         this.selectedWasteLicenceFile.set(file);
       }
@@ -132,9 +129,66 @@ export class CompanyDocumentComponent implements OnInit {
 
   send() {
     this.formGroup.markAllAsTouched();
-    const { ...value } = this.formGroup.value;
-    console.log(this.selectedDocumentFile());
-    console.log(this.selectedWasteLicenceFile());
-    console.log(this.formGroup);
+    const { boxClearingAgent } = this.formGroup.value;
+
+    const fileUpload = [
+      ...this.selectedDocumentFile(),
+      ...this.selectedWasteLicenceFile().map((f) => ({ ...f, documentType: 'waste_carrier_license' })),
+    ];
+
+    this.registrationService
+      .uploadMultiFile(fileUpload.map((f) => f.file))
+      .pipe(
+        finalize(() => this.submitting.set(true)),
+        catchError((err) => {
+          this.snackBar.open('An error occurred while uploading the file. Please try again.', 'Ok', {
+            duration: 3000,
+          });
+          return of(null);
+        }),
+        concatMap((documentUrls) => {
+          if (!documentUrls) {
+            return of(null);
+          }
+          const payload: any = {
+            companyId: this.companyId,
+            documents: documentUrls.map((url, index) => {
+              let expirationDate = null;
+
+              if (fileUpload[index].expirationDate) {
+                if (moment.isMoment(fileUpload[index].expirationDate)) {
+                  expirationDate = fileUpload[index].expirationDate.format('DD/MM/YYYY');
+                } else {
+                  expirationDate = moment(fileUpload[index].expirationDate).format('DD/MM/YYYY');
+                }
+              }
+
+              return {
+                documentType: fileUpload[index].documentType,
+                documentUrl: url,
+                expiryDate: expirationDate,
+              };
+            }),
+            boxClearingAgent,
+          };
+
+          return this.registrationService.updateCompanyDocuments(payload).pipe(
+            finalize(() => {
+              this.submitting.set(false);
+            }),
+            catchError((err) => {
+              this.snackBar.open(`${err.error.error.message}`, 'Ok', {
+                duration: 3000,
+              });
+              return of(null);
+            }),
+          );
+        }),
+      )
+      .subscribe((result) => {
+        if (result) {
+          this.router.navigate(['/site-location']);
+        }
+      });
   }
 }

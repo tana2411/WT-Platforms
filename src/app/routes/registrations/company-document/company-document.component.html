@@ -56,10 +56,10 @@
           <div class="col-12 mb-4">
             <mat-label class="fw-bold mb-1 d-block" i18n>WHICH OF THE FOLLOWING DO YOU HAVE*</mat-label>
             <mat-radio-group class="d-flex justify-content-between flex-wrap" formControlName="documentType">
-              <mat-radio-button value="environmentalPermit" (change)="onSelectUploadLater.set(false)" i18n
+              <mat-radio-button value="envỉonmental_permit" (change)="onSelectUploadLater.set(false)" i18n
                 >Environmental Permit
               </mat-radio-button>
-              <mat-radio-button value="wasteExemptions" (change)="onSelectUploadLater.set(false)" i18n> Waste Exemptions </mat-radio-button>
+              <mat-radio-button value="waste_exemption" (change)="onSelectUploadLater.set(false)" i18n> Waste Exemptions </mat-radio-button>
               <mat-radio-button value="other" (change)="onSelectUploadLater.set(false)" i18n> Other </mat-radio-button>
               <mat-radio-button value="uploadLater" (change)="onSelectUploadLater.set(true)" i18n> Upload Later </mat-radio-button>
             </mat-radio-group>
@@ -78,20 +78,43 @@
             </div>
           }
           @if (!onSelectUploadLater() && documentType.value) {
-            <h6 class="mt-5 mb-4 primary" i18n>
-              @switch (documentType.value) {
-                @case ('environmentalPermit') {
-                  Environmental Permit Upload*
-                }
-                @case ('wasteExemptions') {
-                  Waste Exemptions Upload*
-                }
-                @default {
-                  Other Document Upload*
-                }
-              }
-            </h6>
-            @if (documentType.value == 'other') {
+            <div class="col-12 mb-4" [hidden]="!(documentType.value == 'envỉonmental_permit')">
+              <h6 class="mt-5 mb-4 primary" i18n>Environmental Permit Upload*</h6>
+              <app-file-upload
+                [maxFile]="1"
+                (filesAdded)="handleFileReady($event, 'document', 'envỉonmental_permit')"
+                (uploadValid)="documentValid.set($event)"
+                [isFutureDate]="true"
+                [notAcceptable]="['.doc', '.docx', '.xls', '.xlsx']"
+                [expirationDateMode]="'optional'"
+              ></app-file-upload>
+            </div>
+
+            <div class="col-12 mb-4" [hidden]="!(documentType.value == 'waste_exemption')">
+              <h6 class="mt-5 mb-4 primary" i18n>Waste Exemptions Upload*</h6>
+              <app-file-upload
+                [maxFile]="1"
+                (filesAdded)="handleFileReady($event, 'document', 'waste_exemption')"
+                (uploadValid)="documentValid.set($event)"
+                [isFutureDate]="true"
+                [notAcceptable]="['.doc', '.docx', '.xls', '.xlsx']"
+                [expirationDateMode]="'optional'"
+              ></app-file-upload>
+            </div>
+
+            <div class="col-12 mb-4" [hidden]="!(documentType.value == 'other')">
+              <h6 class="mt-5 mb-4 primary" i18n>Other Document Upload*</h6>
+              <app-file-upload
+                [maxFile]="1"
+                (filesAdded)="handleFileReady($event, 'document', 'other')"
+                (uploadValid)="documentValid.set($event)"
+                [isFutureDate]="true"
+                [notAcceptable]="['.doc', '.docx', '.xls', '.xlsx']"
+                [expirationDateMode]="'optional'"
+              ></app-file-upload>
+            </div>
+
+            <!-- @if (documentType.value == 'other') {
               <div class="col-md-12 mb-4">
                 <label class="fw-bold" i18n>DOCUMENT TYPE*</label>
                 <mat-form-field appearance="outline" class="w-100">
@@ -101,14 +124,7 @@
                   }
                 </mat-form-field>
               </div>
-            }
-            <app-file-upload
-              [maxFile]="6"
-              (filesAdded)="handleFileReady($event, 'document')"
-              (uploadValid)="documentValid.set($event)"
-              [isFutureDate]="true"
-              [notAcceptable]="['.doc', '.docx', '.xls', '.xlsx']"
-            ></app-file-upload>
+            } -->
           }
           <hr />
           <div class="col-12 mb-4">
@@ -131,9 +147,10 @@
             <h6 class="mb-4 mt-5 primary" i18n>WASTE CARRIER LICENCE UPLOAD*</h6>
             <div class="col-12 mb-4">
               <app-file-upload
-                (filesAdded)="handleFileReady($event, 'licence')"
-                [maxFile]="1"
+                (filesAdded)="handleFileReady($event, 'licence', 'waste_carrier_license')"
+                [maxFile]="6"
                 (uploadValid)="wasteLicenceValid.set($event)"
+                [expirationDateMode]="'optional'"
               ></app-file-upload>
             </div>
           }
@@ -166,6 +183,7 @@
               type="submit"
               [class.background-primary]="!isSubmitDisabled"
               [class.text-white]="!isSubmitDisabled"
+              [class.overlay-spinner]="submitting()"
               mat-flat-button
               class="w-100 p-2 fw-bold rounded"
               (click)="send()"

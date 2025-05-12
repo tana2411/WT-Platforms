@@ -31,7 +31,7 @@ export interface FileInfo {
 })
 export class FileUploadComponent implements OnInit {
   @Input() maxFile: number = 1;
-  @Input() expirationDateRequired = true;
+  @Input() expirationDateMode: 'required' | 'optional' | 'hidden' = 'required';
   @Input() notAcceptable: string[] = []; // ex: ['.jpg', '.jpeg']
   @Input() isFutureDate: boolean = false;
 
@@ -140,14 +140,23 @@ export class FileUploadComponent implements OnInit {
         continue;
       }
 
-      this.addNewFileControl(file, this.expirationDateRequired, this.isFutureDate);
+      this.addNewFileControl(file, this.expirationDateMode, this.isFutureDate);
     }
   }
 
-  private addNewFileControl(file: File, expirationDateRequired: boolean, isFutureDate: boolean) {
+  private addNewFileControl(file: File, expirationDateMode: string, isFutureDate: boolean) {
+    const validators = [];
+
+    if (this.expirationDateMode === 'required') {
+      validators.push(Validators.required);
+    }
+
+    if (this.expirationDateMode !== 'hidden' && this.isFutureDate) {
+      validators.push(pastDateValidator());
+    }
     const fileControl = new FormGroup({
       file: new FormControl<File>(file),
-      expirationDate: new FormControl<Moment | null>(null, expirationDateRequired ? [Validators.required] : []),
+      expirationDate: new FormControl<Moment | null>(null, validators),
     });
 
     if (isFutureDate) {
