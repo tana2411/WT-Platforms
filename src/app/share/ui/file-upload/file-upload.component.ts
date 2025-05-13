@@ -31,7 +31,7 @@ export interface FileInfo {
 })
 export class FileUploadComponent implements OnInit {
   @Input() maxFile: number = 1;
-  @Input() required = true;
+  @Input() required: boolean = true;
   @Input() expirationDateMode: 'required' | 'optional' | 'hidden' = 'required';
   @Input() notAcceptable: string[] = []; // ex: ['.jpg', '.jpeg']
   @Input() isFutureDate: boolean = false;
@@ -78,7 +78,9 @@ export class FileUploadComponent implements OnInit {
           return;
         }
       }
-
+      if (this.documents.length == 0) {
+        this.filesAdded.emit(this.getFileInfos());
+      }
       this.uploadValid.emit(false);
     });
   }

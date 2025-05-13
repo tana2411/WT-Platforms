@@ -1,24 +1,19 @@
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { AccountOnboardingStatusComponent } from '../../../share/ui/account-onboarding-status/account-onboarding-status.component';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
-import { AuthService } from 'app/services/auth.service';
-import { catchError, concatMap, filter, finalize, map, of, take } from 'rxjs';
-import { RegistrationsService } from 'app/services/registrations.service';
+import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { countries } from './../../../statics/country-data';
+import { countries } from '@app/statics';
+import { AccountOnboardingStatusComponent } from '@app/ui';
+import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
+import { AuthService } from 'app/services/auth.service';
+import { RegistrationsService } from 'app/services/registrations.service';
+import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
 
 @Component({
   selector: 'app-company-information-section',
@@ -41,30 +36,14 @@ export class CompanyInformationSectionComponent implements OnInit {
   countryList = countries;
   formGroup = new FormGroup({
     companyType: new FormControl<string | null>(null, [Validators.required]),
-    registrationNumber: new FormControl<string | null>(null, [
-      Validators.required,
-    ]),
-    vatRegistrationCountry: new FormControl<string | null>(null, [
-      Validators.required,
-    ]),
+    registrationNumber: new FormControl<string | null>(null, [Validators.required]),
+    vatRegistrationCountry: new FormControl<string | null>(null, [Validators.required]),
     vatNumber: new FormControl<string | null>(null, [Validators.required]),
-    addressLine1: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(100),
-    ]),
-    postalCode: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(20),
-    ]),
-    city: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(50),
-    ]),
+    addressLine1: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(100)]),
+    postalCode: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
+    city: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
     country: new FormControl<string | null>(null, [Validators.required]),
-    stateProvince: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(50),
-    ]),
+    stateProvince: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
   });
   authService = inject(AuthService);
   submitting = signal(false);
@@ -126,16 +105,22 @@ export class CompanyInformationSectionComponent implements OnInit {
         }),
         catchError((err) => {
           if (err) {
-            this.snackBar.open(
-              'Failed to submit your information due to a network error. Please try again.',
-              'Ok',
-              { duration: 3000 },
-            );
+            this.snackBar.open('Failed to submit your information due to a network error. Please try again.', 'Ok', {
+              duration: 3000,
+            });
+          }
+          return of(null);
+        }),
+        // refresh /me to set latest user data into auth service
+        concatMap((res) => {
+          if (res) {
+            return this.authService.checkToken();
           }
           return of(null);
         }),
       )
       .subscribe((result) => {
+        console.log('result', result);
         if (result) {
           this.router.navigate(['/company-document']);
         }

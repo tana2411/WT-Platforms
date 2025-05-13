@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -50,9 +50,9 @@ export class CompanyDocumentComponent implements OnInit {
   submitting = signal<boolean>(false);
 
   formGroup = new FormGroup({
-    companyType: new FormControl<string | null>(null, [Validators.required]),
+    companyType: new FormControl<string | null>({ value: null, disabled: true }),
     documentType: new FormControl<string | null>(null, [Validators.required]),
-    // otherDocumentType: new FormControl<string | null>(null),
+    otherDocumentType: new FormControl<string | null>(null),
     wasteLicence: new FormControl<boolean | null>(null, [Validators.required]),
     boxClearingAgent: new FormControl<boolean | null>(null, Validators.required),
   });
@@ -61,8 +61,20 @@ export class CompanyDocumentComponent implements OnInit {
   snackBar = inject(MatSnackBar);
   registrationService = inject(RegistrationsService);
   router = inject(Router);
+  cd = inject(ChangeDetectorRef);
 
-  constructor() {}
+  constructor() {
+    effect(() => {
+      const otherFile = this.selectedDocumentFile().find((f) => f.documentType == 'other');
+      if (otherFile) {
+        this.formGroup.get('otherDocumentType')?.setValidators(Validators.required);
+      } else {
+        this.formGroup.get('otherDocumentType')?.clearValidators();
+      }
+      this.formGroup.get('otherDocumentType')?.updateValueAndValidity();
+      this.formGroup.updateValueAndValidity();
+    });
+  }
 
   ngOnInit() {
     this.authService.user$
@@ -95,12 +107,16 @@ export class CompanyDocumentComponent implements OnInit {
     return this.formGroup.get('documentType') as FormControl;
   }
 
+  get otherDocumentType() {
+    return this.formGroup.get('otherDocumentType') as FormControl;
+  }
   get isSubmitDisabled() {
     if (this.formGroup.invalid) {
       return true;
     } else {
+      const exitsFile = this.selectedDocumentFile().filter((f) => f.documentType == this.documentType.value);
       const { documentType, wasteLicence } = this.formGroup.value;
-      const validDocument = documentType !== 'uploadLater' ? this.selectedDocumentFile().length > 0 : true;
+      const validDocument = documentType !== 'uploadLater' ? exitsFile.length > 0 : true;
       const validLicence = wasteLicence ? this.selectedWasteLicenceFile().length > 0 : true;
 
       return !(validDocument && validLicence);
@@ -111,17 +127,21 @@ export class CompanyDocumentComponent implements OnInit {
     this.formGroup.get('documentType')?.setValue(item);
   }
 
-  handleFileReady(file: FileInfo[], type: 'document' | 'licence', documentType: string) {
-    if (file) {
-      if (type === 'document') {
+  handleFileReady(file: FileInfo[] | null, type: 'document' | 'licence', documentType: string) {
+    if (type === 'document') {
+      if (file && file.length > 0) {
         this.selectedDocumentFile.set([
-          ...this.selectedDocumentFile().filter((f) => f.documentType != documentType),
-          ...file.map((f) => ({ ...f, documentType: documentType })),
+          ...this.selectedDocumentFile().filter((f) => f.documentType !== documentType),
+          ...file.map((f) => ({ ...f, documentType })),
         ]);
       } else {
-        this.selectedWasteLicenceFile.set(file);
+        this.selectedDocumentFile.set(this.selectedDocumentFile().filter((f) => f.documentType !== documentType));
       }
+    } else {
+      this.selectedWasteLicenceFile.set(file ?? []);
     }
+
+    this.cd.detectChanges();
     this.formGroup.updateValueAndValidity();
   }
 
@@ -131,14 +151,28 @@ export class CompanyDocumentComponent implements OnInit {
 
   send() {
     this.formGroup.markAllAsTouched();
-    const { boxClearingAgent } = this.formGroup.value;
+    const { boxClearingAgent, wasteLicence } = this.formGroup.value;
 
-    const fileUpload = [
-      ...this.selectedDocumentFile(),
-      ...this.selectedWasteLicenceFile().map((f) => ({ ...f, documentType: 'waste_carrier_license' })),
-    ];
+    const isUploadLater = this.documentType.value === 'uploadLater';
+    const hasWasteLicence = !!wasteLicence;
+
+    const documentFiles = this.selectedDocumentFile().map((f) =>
+      f.documentType == 'other' ? { ...f, documentType: this.otherDocumentType.value } : f,
+    );
+    const licenceFiles = this.selectedWasteLicenceFile().map((f) => ({
+      ...f,
+      documentType: 'waste_carrier_license',
+    }));
+
+    const fileUpload = [...documentFiles, ...licenceFiles];
+
+    if (isUploadLater && !hasWasteLicence) {
+      this.submitWithNoFile({ companyId: this.companyId, boxClearingAgent, documents: [] });
+      return;
+    }
 
     this.submitting.set(true);
+
     this.registrationService
       .uploadMultiFile(fileUpload.map((f) => f.file))
       .pipe(
@@ -150,42 +184,60 @@ export class CompanyDocumentComponent implements OnInit {
           return of(null);
         }),
         concatMap((documentUrls) => {
-          if (!documentUrls) {
-            return of(null);
-          }
-          const payload: any = {
-            companyId: this.companyId,
-            documents: documentUrls.map((url, index) => {
-              let expirationDate = null;
+          if (!documentUrls) return of(null);
 
-              if (fileUpload[index].expirationDate) {
-                if (moment.isMoment(fileUpload[index].expirationDate)) {
-                  expirationDate = fileUpload[index].expirationDate.format('DD/MM/YYYY');
-                } else {
-                  expirationDate = moment(fileUpload[index].expirationDate).format('DD/MM/YYYY');
-                }
-              }
+          const documents = documentUrls.map((url, index) => {
+            const file = fileUpload[index];
 
+            if (file.expirationDate) {
               return {
-                documentType: fileUpload[index].documentType,
+                documentType: file.documentType,
                 documentUrl: url,
-                expiryDate: expirationDate,
+                expiryDate: moment(file.expirationDate).format('DD/MM/YYYY'),
               };
-            }),
-            boxClearingAgent,
-          };
+            }
 
-          return this.registrationService.updateCompanyDocuments(payload).pipe(
-            finalize(() => {
-              this.submitting.set(false);
-            }),
-            catchError((err) => {
-              this.snackBar.open(`${err.error.error.message}`, 'Ok', {
-                duration: 3000,
-              });
-              return of(null);
-            }),
-          );
+            return {
+              documentType: file.documentType,
+              documentUrl: url,
+            };
+          });
+
+          return this.registrationService
+            .updateCompanyDocuments({
+              companyId: this.companyId,
+              boxClearingAgent,
+              documents,
+            })
+            .pipe(
+              finalize(() => this.submitting.set(false)),
+              catchError((err) => {
+                this.snackBar.open(`${err.error?.error?.message ?? 'Unknown error'}`, 'Ok', {
+                  duration: 3000,
+                });
+                return of(null);
+              }),
+            );
+        }),
+      )
+      .subscribe((result) => {
+        if (result) {
+          this.router.navigate(['/site-location']);
+        }
+      });
+  }
+
+  private submitWithNoFile(payload: any) {
+    this.submitting.set(true);
+    this.registrationService
+      .updateCompanyDocuments(payload)
+      .pipe(
+        finalize(() => this.submitting.set(false)),
+        catchError((err) => {
+          this.snackBar.open(`${err.error?.error?.message ?? 'Unknown error'}`, 'Ok', {
+            duration: 3000,
+          });
+          return of(null);
         }),
       )
       .subscribe((result) => {
