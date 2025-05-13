@@ -1,41 +1,25 @@
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  OnInit,
-  signal,
-} from '@angular/core';
-import {
-  FormArray,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTimepickerModule } from '@angular/material/timepicker';
 import { Router, RouterModule } from '@angular/router';
 import { TelephoneFormControlComponent } from '@app/ui';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
-import { AccountOnboardingStatusComponent } from 'app/share/ui/account-onboarding-status/account-onboarding-status.component';
-import { countries } from './../../../statics/country-data';
-import { provideNativeDateAdapter } from '@angular/material/core';
-import { MatTimepickerModule } from '@angular/material/timepicker';
-import {
-  MatCheckboxChange,
-  MatCheckboxModule,
-} from '@angular/material/checkbox';
 import { AuthService } from 'app/services/auth.service';
-import { catchError, filter, finalize, of, take } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { User } from 'app/types/requests/auth';
 import { RegistrationsService } from 'app/services/registrations.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AccountOnboardingStatusComponent } from 'app/share/ui/account-onboarding-status/account-onboarding-status.component';
+import { User } from 'app/types/requests/auth';
+import { catchError, filter, finalize, of, take } from 'rxjs';
+import { countries } from './../../../statics/country-data';
 
 @Component({
   selector: 'app-site-location-section',
@@ -120,9 +104,7 @@ export class SiteLocationSectionComponent implements OnInit {
     locationName: new FormControl<string | null>(null, [Validators.required]),
     firstName: new FormControl<string | null>(null, [Validators.required]),
     lastName: new FormControl<string | null>(null, [Validators.required]),
-    positionInCompany: new FormControl<string | null>(null, [
-      Validators.required,
-    ]),
+    positionInCompany: new FormControl<string | null>(null, [Validators.required]),
     phoneNumber: new FormControl<string | null>(null, [Validators.required]),
     adressLine: new FormControl<string | null>(null, [Validators.required]),
     postcode: new FormControl<string | null>(null, [Validators.required]),
@@ -138,9 +120,7 @@ export class SiteLocationSectionComponent implements OnInit {
     loadingRamp: new FormControl<boolean | null>(null, [Validators.required]),
     weighbridge: new FormControl<boolean | null>(null, [Validators.required]),
     containerType: new FormArray([], [Validators.required]),
-    selfLoadUnLoadCapability: new FormControl<string | null>(null, [
-      Validators.required,
-    ]),
+    selfLoadUnLoadCapability: new FormControl<string | null>(null, [Validators.required]),
     accessRestrictions: new FormControl<string | null>(null, []),
   });
 
@@ -166,9 +146,7 @@ export class SiteLocationSectionComponent implements OnInit {
   constructor() {
     effect(() => {
       if (this.showAccessRestriction()) {
-        this.formGroup
-          .get('accessRestrictions')
-          ?.setValidators([Validators.required]);
+        this.formGroup.get('accessRestrictions')?.setValidators([Validators.required]);
       } else {
         this.formGroup.get('accessRestrictions')?.clearValidators();
         this.formGroup.get('accessRestrictions')?.markAsUntouched();
@@ -216,25 +194,21 @@ export class SiteLocationSectionComponent implements OnInit {
       this.formGroup.updateValueAndValidity();
     });
 
-    this.formGroup.valueChanges
-      .pipe(takeUntilDestroyed())
-      .subscribe((value) => {
-        console.log(this.formGroup);
-
-        const { adressLine, postcode, city, country, stateProvince } = value;
-        const previousAddress = this.user()?.company;
-        if (previousAddress) {
-          if (
-            previousAddress.addressLine1 !== adressLine ||
-            previousAddress.postalCode != postcode ||
-            previousAddress.city != city ||
-            previousAddress.country != country ||
-            previousAddress.stateProvince != stateProvince
-          ) {
-            this.selectPreviousAddress.set(false);
-          }
+    this.formGroup.valueChanges.pipe(takeUntilDestroyed()).subscribe((value) => {
+      const { adressLine, postcode, city, country, stateProvince } = value;
+      const previousAddress = this.user()?.company;
+      if (previousAddress) {
+        if (
+          previousAddress.addressLine1 !== adressLine ||
+          previousAddress.postalCode != postcode ||
+          previousAddress.city != city ||
+          previousAddress.country != country ||
+          previousAddress.stateProvince != stateProvince
+        ) {
+          this.selectPreviousAddress.set(false);
         }
-      });
+      }
+    });
   }
 
   ngOnInit() {
@@ -272,9 +246,7 @@ export class SiteLocationSectionComponent implements OnInit {
     if (event.checked) {
       this.containerType.push(new FormControl(item));
     } else {
-      const idx = this.containerType.controls.findIndex(
-        (control) => control.value === item,
-      );
+      const idx = this.containerType.controls.findIndex((control) => control.value === item);
       if (idx !== -1) {
         this.containerType.removeAt(idx);
       }
@@ -301,13 +273,9 @@ export class SiteLocationSectionComponent implements OnInit {
         }),
         catchError((err) => {
           if (err) {
-            this.snackBar.open(
-              `${err?.error?.error?.message ?? 'Some thing went wrong. Please try again.'}`,
-              'Ok',
-              {
-                duration: 3000,
-              },
-            );
+            this.snackBar.open(`${err?.error?.error?.message ?? 'Some thing went wrong. Please try again.'}`, 'Ok', {
+              duration: 3000,
+            });
           }
           return of(null);
         }),
