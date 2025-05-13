@@ -34,9 +34,9 @@ import { catchError, finalize, from, of, tap } from 'rxjs';
   styleUrl: './bidding-form.component.scss',
 })
 export class BiddingFormComponent {
-  private validateRange = (control: AbstractControl): ValidationErrors | null => {
-    const earliestDate = this.formGroup?.get('earliestDeliveryDate')?.value;
-    const latestDate = control.value;
+  private validateRange = (group: AbstractControl): ValidationErrors | null => {
+    const earliestDate = group.get('earliestDeliveryDate')?.value;
+    const latestDate = group.get('latestDeliveryDate')?.value;
 
     if (earliestDate && latestDate) {
       const earliest = new Date(earliestDate);
@@ -49,17 +49,22 @@ export class BiddingFormComponent {
     return null;
   };
 
-  formGroup = new FormGroup({
-    location: new FormControl<string | null>('', [Validators.required]),
-    offerValidDate: new FormControl<string | null>(null, []),
-    earliestDeliveryDate: new FormControl<string | null>(null, []),
-    latestDeliveryDate: new FormControl<string | null>(null, [this.validateRange]),
-    loadBidOn: new FormControl<number | null>(null, [Validators.required, Validators.min(1)]),
-    currency: new FormControl<string | null>('gbp', [Validators.required]),
-    pricePerMetric: new FormControl<number | null>(null, [Validators.required, Validators.min(1)]),
-    incoterms: new FormControl<string | null>(null, [Validators.required]),
-    shippingPort: new FormControl<string>('', [Validators.required, Validators.maxLength(100)]),
-  });
+  formGroup = new FormGroup(
+    {
+      location: new FormControl<string | null>('', [Validators.required]),
+      offerValidDate: new FormControl<string | null>(null, []),
+      earliestDeliveryDate: new FormControl<string | null>(null, []),
+      latestDeliveryDate: new FormControl<string | null>(null, []),
+      loadBidOn: new FormControl<number | null>(null, [Validators.required, Validators.min(1)]),
+      currency: new FormControl<string | null>('gbp', [Validators.required]),
+      pricePerMetric: new FormControl<number | null>(null, [Validators.required, Validators.min(1)]),
+      incoterms: new FormControl<string | null>(null, [Validators.required]),
+      shippingPort: new FormControl<string>('', [Validators.required, Validators.maxLength(100)]),
+    },
+    {
+      validators: this.validateRange,
+    },
+  );
 
   todayDate = new Date();
   submitting = signal(false);
@@ -74,6 +79,7 @@ export class BiddingFormComponent {
     }
 
     this.formGroup.markAllAsTouched();
+    console.log(this.formGroup.valid);
     if (!this.formGroup.valid) {
       console.log(this.formGroup.controls);
       return;

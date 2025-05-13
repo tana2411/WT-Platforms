@@ -1,5 +1,7 @@
 @import 'variables';
 
+$lg-break-point: 1200px;
+
 .sidebar-wrapper {
   position: fixed;
   left: 0;
@@ -25,7 +27,7 @@
     transform: translateX(0);
   }
 
-  @media screen and (min-width: 1200px) {
+  @media screen and (min-width: $lg-break-point) {
     transform: translateX(0) !important;
     position: static;
     height: 100vh;
@@ -53,14 +55,14 @@
 .sidebar {
   background-color: #f6f6f6;
   position: absolute;
-  width: 240px;
+  width: 250px;
   left: 0;
   top: 0;
   bottom: 0;
   overflow: auto;
   z-index: 20;
 
-  @media screen and (min-width: 992px) {
+  @media screen and (min-width: $lg-break-point) {
     position: static;
     height: 100%;
   }

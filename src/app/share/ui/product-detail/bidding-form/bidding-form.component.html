@@ -70,11 +70,11 @@
         />
         <mat-datepicker-toggle matIconSuffix [for]="latestDeliveryDate"></mat-datepicker-toggle>
         <mat-datepicker #latestDeliveryDate></mat-datepicker>
-
-        @if (formGroup.get('latestDeliveryDate')?.hasError('invalidRange')) {
-          <mat-error>Latest delivery date cannot be earlier than earliest delivery date </mat-error>
-        }
       </mat-form-field>
+
+      @if (formGroup.errors?.['invalidRange']) {
+        <mat-error class="fs-12 px-3"> Latest delivery date cannot be earlier than earliest delivery date </mat-error>
+      }
     </div>
 
     <div class="col-md-12 mb-4">

@@ -1,0 +1,43 @@
+<p class="fw-bold mb-4 mb-lg-5">{{ items.length }} RESULT OF {{ totalItems }}</p>
+
+@for (item of items; track item.id) {
+  <div class="wrapper w-100 overflow-auto mb-4 mb-md-5">
+    <div class="d-flex p-4 border rounded border-primary justify-content-between gap-4 row-item">
+      <img class="image" src="https://picsum.photos/200/300" loading="lazy" alt="" />
+
+      <div class="column-item">
+        <p class="label" i18n>Material</p>
+        <p class="content material-name">Non-Ferrous - Stainless Steel 304</p>
+      </div>
+
+      <div class="column-item">
+        <p class="label" i18n>Quantity</p>
+        <p class="content">23MT</p>
+      </div>
+
+      <div class="column-item">
+        <p class="label" i18n>Bid date</p>
+        <p class="content">2023-11-13</p>
+      </div>
+
+      <div class="column-item">
+        <p class="label" i18n>Country</p>
+        <p class="content">United Kingdom</p>
+      </div>
+
+      <div class="column-item">
+        <p class="label" i18n>Status</p>
+        <p class="content fw-bold">Pending</p>
+      </div>
+
+      <div class="column-item">
+        <p class="label" i18n>Bid amount</p>
+        <p class="content fw-bold primary">$1500/MT</p>
+      </div>
+
+      <button mat-stroked-button class="view-detail-btn primary border-primary">View details</button>
+    </div>
+  </div>
+}
+
+<app-pagination class="mt-5" [pageNumber]="4" [totalPage]="10" (pageChange)="onPageChange($event)"></app-pagination>

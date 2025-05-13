@@ -9,8 +9,8 @@
     }
   </div>
 
-  <div class="tab-wrapper {{ activeTab() !== undefined ? 'd-block' : 'd-none d-lg-block' }}">
-    <mat-tab-group [selectedIndex]="activeTab()" animationDuration="0ms">
+  <div class="{{ activeTab() !== undefined ? 'd-block' : 'd-none d-lg-block' }}">
+    <mat-tab-group class="common-tab" [selectedIndex]="activeTab()" animationDuration="0ms">
       <mat-tab label="my profile">
         <app-tab-container (back)="closeTab()">
           <app-my-profile></app-my-profile>

@@ -1,5 +1,11 @@
 @import 'variables';
 
+.wrapper {
+  @media screen and (min-width: 1200px) {
+    display: flex;
+  }
+}
+
 .content-container {
   max-width: 1375px;
   margin: 0 auto;
@@ -44,5 +50,22 @@
     font-size: 15px !important;
     width: 15px;
     height: 15px;
+  }
+}
+
+.content-wrapper {
+  margin: 40px 0;
+
+  @media screen and (min-width: 992px) {
+    margin-top: 70px;
+    margin-bottom: 48px;
+  }
+}
+
+.header-desktop {
+  display: none;
+
+  @media screen and (min-width: 1200px) {
+    display: flex;
   }
 }

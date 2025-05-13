@@ -1,31 +1,25 @@
 import { Routes } from '@angular/router';
-import { TradingFlatformFormComponent } from './routes/registrations/trading-flatform-form/trading-flatform-form.component';
-import { HaulageFormComponent } from './routes/registrations/haulage-form/haulage-form.component';
-import { RegistrationPendingResultComponent } from './routes/registrations/registration-pending-result/registration-pending-result.component';
-import { RegistrationCompleteResultComponent } from './routes/registrations/registration-complete-result/registration-complete-result.component';
-import { CompanyInformationSectionComponent } from './routes/registrations/company-information-section/company-information-section.component';
-import { CompanyDocumentComponent } from './routes/registrations/company-document/company-document.component';
-import { LoginPageComponent } from './routes/login-pages/login-page/login-page.component';
-import { TermComponent } from './routes/term/term.component';
-import { PrivacyComponent } from './routes/privacy/privacy.component';
-import {
-  CanActivateAuthPage,
-  CanActivateUnAuthPage,
-} from './guards/auth/auth.guard';
 import { ROUTES } from './constants/route.const';
+import { CanActivateAuthPage, CanActivateUnAuthPage } from './guards/auth/auth.guard';
 import {} from './guards/auth/utils';
-import { GuardRequireRole } from './types/auth';
 import { LogoutComponent } from './routes/logout/logout.component';
+import { PrivacyComponent } from './routes/privacy/privacy.component';
+import { CompanyDocumentComponent } from './routes/registrations/company-document/company-document.component';
+import { CompanyInformationSectionComponent } from './routes/registrations/company-information-section/company-information-section.component';
+import { HaulageFormComponent } from './routes/registrations/haulage-form/haulage-form.component';
+import { RegistrationCompleteResultComponent } from './routes/registrations/registration-complete-result/registration-complete-result.component';
+import { RegistrationPendingResultComponent } from './routes/registrations/registration-pending-result/registration-pending-result.component';
 import { SiteLocationSectionComponent } from './routes/registrations/site-location-section/site-location-section.component';
+import { TradingFlatformFormComponent } from './routes/registrations/trading-flatform-form/trading-flatform-form.component';
+import { TermComponent } from './routes/term/term.component';
+import { GuardRequireRole } from './types/auth';
 
 export const routes: Routes = [
   {
     path: ROUTES.login,
     canActivate: [CanActivateUnAuthPage],
     loadComponent: () =>
-      import('./routes/login-pages/login-page/login-page.component').then(
-        (m) => m.LoginPageComponent,
-      ),
+      import('./routes/login-pages/login-page/login-page.component').then((m) => m.LoginPageComponent),
   },
   {
     path: 'logout',
@@ -71,57 +65,44 @@ export const routes: Routes = [
     path: ROUTES.buy,
     canActivate: [CanActivateAuthPage],
     data: {
-      requireAuthParams: [
-        GuardRequireRole.SuperAdmin,
-        GuardRequireRole.Trading,
-      ],
+      requireAuthParams: [GuardRequireRole.SuperAdmin, GuardRequireRole.Trading],
     },
-    loadComponent: () =>
-      import('./routes/market-place/market-place.component').then(
-        (m) => m.MarketPlaceComponent,
-      ),
+    loadComponent: () => import('./routes/market-place/market-place.component').then((m) => m.MarketPlaceComponent),
   },
   {
     path: ROUTES.wanted,
     canActivate: [CanActivateAuthPage],
     data: {
-      requireAuthParams: [
-        GuardRequireRole.SuperAdmin,
-        GuardRequireRole.Trading,
-      ],
+      requireAuthParams: [GuardRequireRole.SuperAdmin, GuardRequireRole.Trading],
     },
     loadComponent: () =>
-      import('./routes/wanted-material/wanted-material.component').then(
-        (m) => m.WantedMaterialComponent,
-      ),
+      import('./routes/wanted-material/wanted-material.component').then((m) => m.WantedMaterialComponent),
   },
   {
     path: ROUTES.sell,
     canActivate: [CanActivateAuthPage],
     data: {
-      requireAuthParams: [
-        GuardRequireRole.SuperAdmin,
-        GuardRequireRole.Trading,
-      ],
+      requireAuthParams: [GuardRequireRole.SuperAdmin, GuardRequireRole.Trading],
     },
     loadComponent: () =>
-      import('./routes/create-listing/create-listing.component').then(
-        (m) => m.CreateListingComponent,
-      ),
+      import('./routes/create-listing/create-listing.component').then((m) => m.CreateListingComponent),
   },
   {
     path: ROUTES.haulier,
     canActivate: [CanActivateAuthPage],
     data: {
-      requireAuthParams: [
-        GuardRequireRole.SuperAdmin,
-        GuardRequireRole.Haulier,
-      ],
+      requireAuthParams: [GuardRequireRole.SuperAdmin, GuardRequireRole.Haulier],
     },
     loadComponent: () =>
-      import(
-        './routes/haulier/haulier-dashboard/haulier-dashboard.component'
-      ).then((m) => m.HaulierDashboardComponent),
+      import('./routes/haulier/haulier-dashboard/haulier-dashboard.component').then((m) => m.HaulierDashboardComponent),
+  },
+  {
+    path: ROUTES.myOffers,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [GuardRequireRole.Trading, GuardRequireRole.SuperAdmin],
+    },
+    loadComponent: () => import('./routes/my-offers/my-offers.component').then((m) => m.MyOffersComponent),
   },
   {
     path: ROUTES.admin,
@@ -130,18 +111,14 @@ export const routes: Routes = [
       requireAuthParams: [GuardRequireRole.SuperAdmin],
     },
     loadComponent: () =>
-      import('./routes/admin/admin-dashboard/admin-dashboard.component').then(
-        (m) => m.AdminDashboardComponent,
-      ),
+      import('./routes/admin/admin-dashboard/admin-dashboard.component').then((m) => m.AdminDashboardComponent),
   },
 
   {
     path: ROUTES.settings,
     canActivate: [CanActivateAuthPage],
     loadComponent: () =>
-      import('./routes/account-setting/account-setting.component').then(
-        (m) => m.AccountSettingComponent,
-      ),
+      import('./routes/account-setting/account-setting.component').then((m) => m.AccountSettingComponent),
   },
   { path: '**', pathMatch: 'full', redirectTo: 'login' },
 ];
