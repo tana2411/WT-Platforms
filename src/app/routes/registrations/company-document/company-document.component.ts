@@ -50,7 +50,7 @@ export class CompanyDocumentComponent implements OnInit {
   submitting = signal<boolean>(false);
 
   formGroup = new FormGroup({
-    companyType: new FormControl<string | null>(null),
+    companyType: new FormControl<string | null>({ value: null, disabled: true }),
     documentType: new FormControl<string | null>(null, [Validators.required]),
     otherDocumentType: new FormControl<string | null>(null),
     wasteLicence: new FormControl<boolean | null>(null, [Validators.required]),
@@ -188,16 +188,18 @@ export class CompanyDocumentComponent implements OnInit {
 
           const documents = documentUrls.map((url, index) => {
             const file = fileUpload[index];
-            let expiryDate = null;
 
             if (file.expirationDate) {
-              expiryDate = moment(file.expirationDate).format('DD/MM/YYYY');
+              return {
+                documentType: file.documentType,
+                documentUrl: url,
+                expiryDate: moment(file.expirationDate).format('DD/MM/YYYY'),
+              };
             }
 
             return {
               documentType: file.documentType,
               documentUrl: url,
-              expiryDate,
             };
           });
 
