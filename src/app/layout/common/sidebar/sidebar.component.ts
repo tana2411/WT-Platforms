@@ -1,4 +1,4 @@
-import { Component, computed, signal, Signal } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
@@ -6,7 +6,6 @@ import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { AuthService } from 'app/services/auth.service';
 import { HeaderService } from 'app/services/header.service';
 import { User } from 'app/types/requests/auth';
-import { map } from 'rxjs';
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
@@ -52,7 +51,7 @@ export class SidebarComponent {
 
     {
       title: 'My Offers',
-      link: '/todo/my-offer',
+      link: ROUTES_WITH_SLASH.myOffers,
       icon: 'ballot',
     },
 

@@ -7,6 +7,7 @@ export const ROUTES = {
   haulier: 'haulier-dashboard',
   settings: 'settings',
   logout: 'logout',
+  myOffers: 'my-offer',
 };
 
 export const ROUTES_WITH_SLASH = {
@@ -18,4 +19,5 @@ export const ROUTES_WITH_SLASH = {
   haulier: '/haulier-dashboard',
   settings: '/settings',
   logout: '/logout',
+  myOffers: '/my-offer',
 };
