@@ -14,9 +14,9 @@ import { colour, countries, finishing, materialTypes, packing } from '@app/stati
 import { FileInfo, FileUploadComponent } from '@app/ui';
 import { noForbiddenPatternsValidator, pastDateValidator } from '@app/validators';
 import { AuthService } from 'app/services/auth.service';
+import { ListingService } from 'app/services/listing.service';
 import { UploadService } from 'app/share/services/upload.service';
 import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
-import { ListingService } from '../create-listing.service';
 
 @Component({
   selector: 'app-list-wanted-material-form',
@@ -69,7 +69,6 @@ export class ListWantedMaterialFormComponent implements OnInit {
     capacityPerMonth: new FormControl<string | null>(null, [Validators.required, Validators.min(1)]),
     materialFlowIndex: new FormControl<string | null>(null, [Validators.required]),
     wasteStoration: new FormControl<string | null>(null, [Validators.required]),
-    quantityWanted: new FormControl<string | null>(null, [Validators.required, Validators.min(1)]),
     materialWeightWanted: new FormControl<number | null>(null, [Validators.required, Validators.min(3)]),
     weightUnit: new FormControl<string | null>(null, [Validators.required]),
     startDate: new FormControl<Date | null>(null, [Validators.required, pastDateValidator()]),
@@ -187,7 +186,7 @@ export class ListWantedMaterialFormComponent implements OnInit {
 
   send() {
     if (this.formGroup.invalid) return;
-    let { weightUnit, materialWeightWanted, quantityWanted, ongoingListing, ...value } = this.formGroup.value;
+    let { weightUnit, materialWeightWanted, ongoingListing, ...value } = this.formGroup.value;
 
     const payload: any = {
       ...value,
@@ -233,7 +232,7 @@ export class ListWantedMaterialFormComponent implements OnInit {
             };
           });
 
-          return this.listingService.createWantedListing({ ...payload, documents }).pipe(
+          return this.listingService.createListing({ ...payload, documents }).pipe(
             finalize(() => this.submitting.set(false)),
             catchError((err) => {
               this.snackBar.open(`${err.error?.error?.message ?? 'Unknown error'}`, 'Ok', {

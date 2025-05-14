@@ -183,24 +183,12 @@
           <div class="col-9 mx-auto mb-5">
             <div class="mb-2 fw-500">QUANTITY WANTED*</div>
             <mat-form-field appearance="outline" class="w-100">
-              <input type="number" min="1" matInput placeholder="Type here" formControlName="quantityWanted" />
-              @if (formGroup.get('quantityWanted')?.hasError('required')) {
-                <mat-error class="mt-0" i18n> This field is required </mat-error>
-              }
-              @if (formGroup.get('quantityWanted')?.hasError('min')) {
-                <mat-error class="mt-0" i18n> Please enter a positive number </mat-error>
-              }
-            </mat-form-field>
-          </div>
-          <div class="col-9 mx-auto mb-5">
-            <div class="mb-2 fw-500">MATERIAL WEIGHT*</div>
-            <mat-form-field appearance="outline" class="w-100">
-              <input type="number" step="any" matInput placeholder="Type here" formControlName="materialWeightWanted" />
+              <input type="number" min="1" matInput placeholder="Type here" formControlName="materialWeightWanted" />
               @if (formGroup.get('materialWeightWanted')?.hasError('required')) {
                 <mat-error class="mt-0" i18n> This field is required </mat-error>
               }
               @if (formGroup.get('materialWeightWanted')?.hasError('min')) {
-                <mat-error class="mt-0" i18n> Please enter in a number greater or equal to 3 </mat-error>
+                <mat-error class="mt-0" i18n> Please enter a positive number </mat-error>
               }
             </mat-form-field>
           </div>

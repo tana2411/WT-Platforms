@@ -8,12 +8,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { packing } from '@app/statics';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
+import { countries, materialTypes } from 'app/statics';
 import { ItemOf } from 'app/types/utils';
 import { isEqual, omit } from 'lodash';
-import { debounceTime } from 'rxjs';
-import { countries, materialTypes } from '../../../../statics';
-import { MAP_MATERIAL_TYPE_TO_ITEM } from './constant';
+import { debounceTime, distinctUntilChanged, from, switchMap } from 'rxjs';
 
 const searchKey = 'searchTerm';
 
@@ -37,21 +37,27 @@ export class FilterComponent implements OnInit {
   allFilters = [
     {
       name: 'LOCATION',
-      value: 'location',
+      value: 'country',
       type: 'select',
       options: countries,
     },
     {
       name: 'MATERIAL TYPE',
-      value: 'material_type',
+      value: 'materialType',
       type: 'select',
       options: materialTypes,
     },
     {
       name: 'ITEMS',
-      value: 'item',
+      value: 'materialItem',
       type: 'select',
       options: [],
+    },
+    {
+      name: 'PACKING',
+      value: 'materialPacking',
+      type: 'select',
+      options: packing,
     },
     {
       name: 'SORT BY',
@@ -62,11 +68,11 @@ export class FilterComponent implements OnInit {
     },
     {
       name: 'FULFILLED LISTINGS',
-      value: 'fulfilled_listings',
+      value: 'showFullfilledListing',
       type: 'checkbox',
       options: [
         {
-          value: 'fulfilled_listings',
+          value: 'showFullfilledListing',
         },
       ],
     },
@@ -85,15 +91,15 @@ export class FilterComponent implements OnInit {
 
     {
       name: 'STORED',
-      value: 'stored',
+      value: 'wasteStoration',
       type: 'checkbox',
       options: [
         {
-          value: 'indoors',
+          value: 'indoor',
           name: 'Indoors',
         },
         {
-          value: 'outdoors',
+          value: 'outdoor',
           name: 'Outdoors',
         },
       ],
@@ -122,9 +128,34 @@ export class FilterComponent implements OnInit {
   }
 
   constructor() {
-    this.filterForm.valueChanges.pipe(takeUntilDestroyed(), debounceTime(300)).subscribe((value) => {
-      this.filterChanged.emit(value);
-    });
+    this.filterForm.valueChanges
+      .pipe(
+        debounceTime(500),
+        switchMap((value) => {
+          let wasteStoration = '';
+          if (this.displayFilter.includes('wasteStoration')) {
+            const indoor = this.filterForm.get('indoor')?.value;
+            const outdoor = this.filterForm.get('outdoor')?.value;
+
+            if (indoor && outdoor) {
+              wasteStoration = 'both';
+            }
+          }
+
+          const filter = this.normalizeFilterParams(value);
+          return from(
+            Promise.resolve({
+              ...filter,
+              wasteStoration: wasteStoration != 'both' ? filter['wasteStoration'] : wasteStoration,
+            }),
+          );
+        }),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+        takeUntilDestroyed(),
+      )
+      .subscribe((value) => {
+        this.filterChanged.emit(value);
+      });
   }
 
   ngOnInit() {
@@ -135,19 +166,24 @@ export class FilterComponent implements OnInit {
     }
 
     // Update the item options according the material_type value
-    if (this.displayFilter.includes('item')) {
+    if (this.displayFilter.includes('materialItem')) {
       this.filterForm
-        .get('material_type')
+        .get('materialType')
         ?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe((newMaterialType) => {
-          this.filterForm.get('item')?.setValue(null!);
+          this.filterForm.get('materialItem')?.setValue(null!);
 
           let itemOptions: any[] = [];
           if (newMaterialType) {
-            itemOptions = MAP_MATERIAL_TYPE_TO_ITEM[newMaterialType];
+            const selectedMaterialType = materialTypes.find((m) => m.code == newMaterialType);
+            if (selectedMaterialType) {
+              itemOptions = selectedMaterialType.materials;
+            }
           }
 
-          this.activeFilter = this.activeFilter.map((i) => (i.value !== 'item' ? i : { ...i, options: itemOptions }));
+          this.activeFilter = this.activeFilter.map((i) =>
+            i.value !== 'materialItem' ? i : { ...i, options: itemOptions },
+          );
         });
     }
   }
@@ -206,6 +242,44 @@ export class FilterComponent implements OnInit {
         });
       });
     }
+  }
+
+  private normalizeFilterParams(rawValue: any) {
+    const result: Record<string, any> = {};
+
+    const selectFilters = this.allFilters.filter((f) => f.type === 'select').map((f) => f.value);
+    const checkboxFilters = this.allFilters.filter((f) => f.type === 'checkbox');
+
+    for (const key in rawValue) {
+      const value = rawValue[key];
+
+      if (value === null || value === '' || value === false) continue;
+
+      if (selectFilters.includes(key)) {
+        result[key] = Array.isArray(value) ? value : [value];
+        continue;
+      }
+
+      const isCheckbox = checkboxFilters.some((cb) => cb.options.some((opt: any) => opt.value === key));
+
+      if (isCheckbox) {
+        const parentFilter = checkboxFilters.find((filter) =>
+          filter.options?.some((option) => 'value' in option && option.value === key),
+        );
+        if (parentFilter && Array.isArray(parentFilter.options) && parentFilter.options.length > 1) {
+          if (value) {
+            result[parentFilter.value] = key;
+          }
+        } else {
+          result[key] = value;
+        }
+        continue;
+      }
+
+      result[key] = value;
+    }
+
+    return result;
   }
 
   getOptionValue(item: any, option: any): string {

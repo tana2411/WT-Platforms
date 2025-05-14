@@ -37,7 +37,7 @@
                 <mat-label class="mb-2 text-wrap filter-item-label">{{ item.name }}</mat-label>
                 <mat-form-field appearance="outline" class="w-100 bg-white">
                   <mat-select [formControlName]="item.value" placeholder="{{ item.placeholder ?? 'All' }}">
-                    <mat-option [value]="null">All</mat-option>
+                    <mat-option [value]="'All'">All</mat-option>
                     @for (option of item.options; track $index) {
                       <mat-option [value]="getOptionValue(item, option)">
                         {{ option.name }}
