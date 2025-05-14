@@ -1,0 +1,22 @@
+<app-common-layout [title]="'My Offers'">
+  <mat-tab-group
+    class="d-block mb-4 mb-lg-5 common-tab"
+    [selectedIndex]="activeTab()"
+    (selectedTabChange)="selectTab($event)"
+    animationDuration="0ms"
+  >
+    @for (tab of listTabOffer; track tab.label) {
+      <mat-tab label="{{ tab.label }}"> </mat-tab>
+    }
+  </mat-tab-group>
+
+  @if (loading()) {
+    <app-spinner></app-spinner>
+  } @else if (items() && !items()?.length) {
+    @if (emptyProps(); as emptyProps) {
+      <app-empty-offer [title]="emptyProps.title" [content]="emptyProps.content" [buttons]="emptyProps.buttons" />
+    }
+  } @else {
+    <app-offer-table [totalItems]="55" [items]="items()!" />
+  }
+</app-common-layout>
