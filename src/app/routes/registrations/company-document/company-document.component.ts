@@ -15,6 +15,7 @@ import { AccountOnboardingStatusComponent, FileInfo, FileUploadComponent } from 
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { AuthService } from 'app/services/auth.service';
 import { RegistrationsService } from 'app/services/registrations.service';
+import { UploadService } from 'app/share/services/upload.service';
 import moment from 'moment';
 import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
 @Component({
@@ -62,6 +63,7 @@ export class CompanyDocumentComponent implements OnInit {
   registrationService = inject(RegistrationsService);
   router = inject(Router);
   cd = inject(ChangeDetectorRef);
+  uploadService = inject(UploadService);
 
   constructor() {
     effect(() => {
@@ -173,7 +175,7 @@ export class CompanyDocumentComponent implements OnInit {
 
     this.submitting.set(true);
 
-    this.registrationService
+    this.uploadService
       .uploadMultiFile(fileUpload.map((f) => f.file))
       .pipe(
         finalize(() => this.submitting.set(false)),
