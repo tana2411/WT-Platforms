@@ -16,6 +16,15 @@ import { isEqual, omit } from 'lodash';
 import { debounceTime, distinctUntilChanged, from, switchMap } from 'rxjs';
 
 const searchKey = 'searchTerm';
+export interface Filter {
+  name: string;
+  value: string;
+  type: 'select' | 'checkbox';
+  options: any[];
+  selectAllOption?: string;
+  returnArray?: boolean;
+  placeholder?: string;
+}
 
 @Component({
   selector: 'app-filter',
@@ -34,7 +43,7 @@ const searchKey = 'searchTerm';
   ],
 })
 export class FilterComponent implements OnInit {
-  allFilters = [
+  allFilters: Filter[] = [
     {
       name: 'LOCATION',
       value: 'country',
@@ -61,7 +70,7 @@ export class FilterComponent implements OnInit {
     },
     {
       name: 'SORT BY',
-      value: 'sort_by',
+      value: 'sortBy',
       type: 'select',
       placeholder: '',
       options: [],
@@ -79,12 +88,12 @@ export class FilterComponent implements OnInit {
 
     {
       name: 'SOLD listings',
-      value: 'sold_listings',
+      value: 'soldListings',
       type: 'checkbox',
       options: [
         {
           name: 'Show SOLD listings',
-          value: 'sold_listings',
+          value: 'soldListings',
         },
       ],
     },
@@ -93,6 +102,7 @@ export class FilterComponent implements OnInit {
       name: 'STORED',
       value: 'wasteStoration',
       type: 'checkbox',
+      selectAllOption: 'both',
       options: [
         {
           value: 'indoor',
@@ -132,23 +142,8 @@ export class FilterComponent implements OnInit {
       .pipe(
         debounceTime(500),
         switchMap((value) => {
-          let wasteStoration = '';
-          if (this.displayFilter.includes('wasteStoration')) {
-            const indoor = this.filterForm.get('indoor')?.value;
-            const outdoor = this.filterForm.get('outdoor')?.value;
-
-            if (indoor && outdoor) {
-              wasteStoration = 'both';
-            }
-          }
-
           const filter = this.normalizeFilterParams(value);
-          return from(
-            Promise.resolve({
-              ...filter,
-              wasteStoration: wasteStoration != 'both' ? filter['wasteStoration'] : wasteStoration,
-            }),
-          );
+          return from(Promise.resolve(filter));
         }),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
         takeUntilDestroyed(),
@@ -161,7 +156,6 @@ export class FilterComponent implements OnInit {
   ngOnInit() {
     if (this.displayFilter) {
       this.activeFilter = this.displayFilter.map((f) => this.allFilters.find((i) => i.value === f)).filter((i) => !!i);
-
       this.buildForm();
     }
 
@@ -248,7 +242,6 @@ export class FilterComponent implements OnInit {
     const result: Record<string, any> = {};
 
     const selectFilters = this.allFilters.filter((f) => f.type === 'select').map((f) => f.value);
-    const checkboxFilters = this.allFilters.filter((f) => f.type === 'checkbox');
 
     for (const key in rawValue) {
       const value = rawValue[key];
@@ -259,26 +252,55 @@ export class FilterComponent implements OnInit {
         result[key] = Array.isArray(value) ? value : [value];
         continue;
       }
-
-      const isCheckbox = checkboxFilters.some((cb) => cb.options.some((opt: any) => opt.value === key));
-
-      if (isCheckbox) {
-        const parentFilter = checkboxFilters.find((filter) =>
-          filter.options?.some((option) => 'value' in option && option.value === key),
-        );
-        if (parentFilter && Array.isArray(parentFilter.options) && parentFilter.options.length > 1) {
-          if (value) {
-            result[parentFilter.value] = key;
-          }
-        } else {
-          result[key] = value;
-        }
-        continue;
-      }
-
-      result[key] = value;
     }
 
+    const checkboxResult = this.normalizeCheckboxFilter(rawValue);
+    Object.assign(result, checkboxResult);
+    return result;
+  }
+
+  normalizeCheckboxFilter(rawValue: any) {
+    const checkboxFilters = this.allFilters.filter(
+      (f) => f.type === 'checkbox' && this.displayFilter.includes(f.value),
+    );
+    const result: Record<string, any> = {};
+
+    checkboxFilters.forEach((filter) => {
+      const selected: string[] = [];
+
+      filter.options.forEach((option: any) => {
+        const key = option.value;
+        if (rawValue[key]) {
+          selected.push(key);
+        }
+      });
+
+      const totalOptions = filter.options.length;
+      if (totalOptions === 1) {
+        const key = filter.options[0].value;
+        result[filter.value] = rawValue[key] === true;
+      }
+
+      if (totalOptions === 2) {
+        if (selected.length === 2 && filter.selectAllOption) {
+          result[filter.value] = filter.selectAllOption;
+        }
+
+        if (selected.length === 1) {
+          result[filter.value] = selected[0];
+        }
+
+        if (selected.length === 0) {
+          result[filter.value] = null;
+        }
+      }
+
+      if (totalOptions > 2) {
+        if (filter.returnArray) {
+          result[filter.value] = selected;
+        }
+      }
+    });
     return result;
   }
 
