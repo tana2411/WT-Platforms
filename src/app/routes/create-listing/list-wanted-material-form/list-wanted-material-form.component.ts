@@ -8,9 +8,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { colour, countries, finishing, materialTypes, packing } from '@app/statics';
+import { FileInfo, FileUploadComponent } from '@app/ui';
 import { noForbiddenPatternsValidator, pastDateValidator } from '@app/validators';
-import { FileInfo, FileUploadComponent } from '../../../share/ui/file-upload/file-upload.component';
-import { colour, countries, finishing, materialTypes, packing } from './../../../statics';
+import { AuthService } from 'app/services/auth.service';
+import { ListingService } from 'app/services/listing.service';
+import { UploadService } from 'app/share/services/upload.service';
+import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
 
 @Component({
   selector: 'app-list-wanted-material-form',
@@ -34,51 +40,49 @@ export class ListWantedMaterialFormComponent implements OnInit {
   colourOption = colour;
   finishingOption = finishing;
   packingOption = packing;
+  companyId: number | undefined;
 
   onGoingListing = signal<boolean | undefined>(undefined);
-  itemOption = signal<string[]>([]);
-  formOption = signal<string[]>([]);
-  gradingOption = signal<string[]>([]);
-  showCustomDuration = signal(false);
-  fileError = signal<string | null>(null);
+  itemOption = signal<{ code: string; name: string }[]>([]);
+  formOption = signal<{ code: string; name: string }[]>([]);
+  gradingOption = signal<{ code: string; name: string }[]>([]);
   selectedFile = signal<FileInfo[]>([]);
   additionalInformationLength = signal<number>(0);
+  submitting = signal<boolean>(false);
 
   cd = inject(ChangeDetectorRef);
+  uploadService = inject(UploadService);
+  snackBar = inject(MatSnackBar);
+  listingService = inject(ListingService);
+  authService = inject(AuthService);
+  router = inject(Router);
 
   formGroup = new FormGroup({
     country: new FormControl<string | null>(null, [Validators.required]),
     materialType: new FormControl<string | null>(null, [Validators.required]),
-    item: new FormControl<string | null>(null, [Validators.required]),
-    form: new FormControl<string | null>(null, [Validators.required]),
-    grading: new FormControl<string | null>(null, [Validators.required]),
-    colour: new FormControl<string | null>(null, [Validators.required]),
-    finishing: new FormControl<string | null>(null, [Validators.required]),
-    packing: new FormControl<string | null>(null, [Validators.required]),
-    capacityPerMonth: new FormControl<string | null>(null, [Validators.required]),
+    materialItem: new FormControl<string | null>(null, [Validators.required]),
+    materialForm: new FormControl<string | null>(null, [Validators.required]),
+    materialGrading: new FormControl<string | null>(null, [Validators.required]),
+    materialColor: new FormControl<string | null>(null, [Validators.required]),
+    materialFinishing: new FormControl<string | null>(null, [Validators.required]),
+    materialPacking: new FormControl<string | null>(null, [Validators.required]),
+    capacityPerMonth: new FormControl<string | null>(null, [Validators.required, Validators.min(1)]),
     materialFlowIndex: new FormControl<string | null>(null, [Validators.required]),
-    stored: new FormControl<string | null>(null, [Validators.required]),
-    quantityWanted: new FormControl<string | null>(null, [Validators.required]),
-    materialWeight: new FormControl<number | null>(null, [Validators.required, Validators.min(3)]),
+    wasteStoration: new FormControl<string | null>(null, [Validators.required]),
+    materialWeightWanted: new FormControl<number | null>(null, [Validators.required, Validators.min(3)]),
     weightUnit: new FormControl<string | null>(null, [Validators.required]),
-    requiredFrom: new FormControl<Date | null>(null, [Validators.required, pastDateValidator()]),
+    startDate: new FormControl<Date | null>(null, [Validators.required, pastDateValidator()]),
 
-    additionalInformation: new FormControl<string | null>(null, [
-      Validators.maxLength(1000),
-      noForbiddenPatternsValidator(),
-    ]),
+    additionalNotes: new FormControl<string | null>(null, [Validators.maxLength(1000), noForbiddenPatternsValidator()]),
 
     ongoingListing: new FormControl<string | null>(null, [Validators.required]),
     listingRenewalPeriod: new FormControl<string | null>(null, [Validators.required]),
-    listingDuration: new FormControl<string | Date | null>('30_days', [Validators.required]),
-    customDurationValue: new FormControl<number | null>(null),
-    customDurationUnit: new FormControl<string | null>(null),
-    selectEndDate: new FormControl<Date | null>(null, []),
+    listingDuration: new FormControl<Date | null>(null),
   });
 
   constructor() {
     this.formGroup.valueChanges.pipe(takeUntilDestroyed()).subscribe((value) => {
-      const { materialType, additionalInformation, weightUnit, materialWeight } = value;
+      const { materialType, additionalNotes } = value;
       if (materialType) {
         const selectedMateriaType = materialTypes.find((m) => m.code == materialType);
         if (selectedMateriaType) {
@@ -87,46 +91,72 @@ export class ListWantedMaterialFormComponent implements OnInit {
           this.gradingOption.set(selectedMateriaType?.grading);
         }
       }
-      if (additionalInformation) {
-        this.additionalInformationLength.set(additionalInformation?.length);
+      if (additionalNotes) {
+        this.additionalInformationLength.set(additionalNotes?.length);
       }
     });
 
+    const currentDate = new Date();
+    const futureDate = new Date(currentDate);
+    futureDate.setDate(currentDate.getDate() + 30);
+
+    this.formGroup.patchValue({ listingDuration: futureDate }, { emitEvent: false });
+
     effect(() => {
-      const { form, grading, item } = this.formGroup.controls;
+      const { materialForm, materialGrading, materialItem } = this.formGroup.controls;
       if (this.formOption().length > 0) {
-        form.setValidators(Validators.required);
+        materialForm.setValidators(Validators.required);
       } else {
-        form.clearValidators();
-        form.setValue('N/A', { emitEvent: false });
+        materialForm.clearValidators();
+        materialForm.setValue('N/A', { emitEvent: false });
       }
 
       if (this.gradingOption().length > 0) {
-        grading.setValidators(Validators.required);
+        materialGrading.setValidators(Validators.required);
       } else {
-        grading.clearValidators();
-        grading.setValue('N/A', { emitEvent: false });
+        materialGrading.clearValidators();
+        materialGrading.setValue('N/A', { emitEvent: false });
       }
 
       if (this.itemOption().length > 0) {
-        item.setValidators(Validators.required);
+        materialItem.setValidators(Validators.required);
       } else {
-        item.clearValidators();
+        materialItem.clearValidators();
       }
 
-      item.updateValueAndValidity();
-      form.updateValueAndValidity();
-      grading.updateValueAndValidity();
+      materialItem.updateValueAndValidity();
+      materialForm.updateValueAndValidity();
+      materialGrading.updateValueAndValidity();
       this.formGroup.updateValueAndValidity();
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.authService.user$
+      .pipe(
+        filter((user) => !!user),
+        take(1),
+        catchError((err) => {
+          if (err) {
+            this.snackBar.open(
+              'An error occurred while retrieving your information. Please refresh the page or contact support if the problem persists.',
+              'Ok',
+              { duration: 3000 },
+            );
+          }
+          return of(null);
+        }),
+      )
+      .subscribe((user) => {
+        if (user) {
+          this.companyId = user.company?.id;
+        }
+      });
+  }
 
   handleFileReady(file: FileInfo[]) {
-    if (file.length > 0) {
+    if (file) {
       this.selectedFile.set(file);
-      this.fileError.set(null);
     }
   }
 
@@ -138,57 +168,88 @@ export class ListWantedMaterialFormComponent implements OnInit {
       listingDuration.clearValidators();
       listingRenewalPeriod.setValidators(Validators.required);
     } else {
-      listingDuration.setValidators(Validators.required);
+      listingDuration.setValidators([Validators.required, pastDateValidator()]);
       listingRenewalPeriod.clearValidators();
     }
   }
 
-  onCustomDurationChange() {
-    const { customDurationUnit, customDurationValue, selectEndDate } = this.formGroup.controls;
+  private convertToTon() {
+    const { weightUnit, materialWeightWanted } = this.formGroup.value;
+    if (!weightUnit || !materialWeightWanted) return null;
 
-    if (customDurationValue.value || customDurationUnit.value) {
-      selectEndDate.disable();
-
-      customDurationValue.setValidators(Validators.required);
-      customDurationUnit.setValidators(Validators.required);
-    } else {
-      selectEndDate.enable();
-      customDurationValue.clearValidators();
-      customDurationUnit.clearValidators();
-    }
-
-    customDurationUnit.updateValueAndValidity();
-    customDurationValue.updateValueAndValidity();
-    selectEndDate.updateValueAndValidity();
-  }
-
-  onEndDateChange() {
-    if (this.formGroup.get('selectEndDate')?.value) {
-      this.formGroup.get('customDurationValue')?.disable();
-      this.formGroup.get('customDurationUnit')?.disable();
-    } else {
-      this.formGroup.get('customDurationValue')?.enable();
-      this.formGroup.get('customDurationUnit')?.enable();
-    }
+    return weightUnit === 'lbs'
+      ? materialWeightWanted / 2204.62263
+      : weightUnit === 'kg'
+        ? materialWeightWanted / 1000
+        : materialWeightWanted;
   }
 
   send() {
     if (this.formGroup.invalid) return;
+    let { weightUnit, materialWeightWanted, ongoingListing, ...value } = this.formGroup.value;
 
-    const { weightUnit, materialWeight, ...value } = this.formGroup.value;
+    const payload: any = {
+      ...value,
+      listingType: 'wanted',
+      companyId: this.companyId,
+      materialWeightWanted: this.convertToTon(),
+      startDate: value.startDate?.toISOString(),
+    };
 
-    if (weightUnit && materialWeight) {
-      const payload: any = {
-        ...value,
-        weightUnit,
-        materialWeight:
-          weightUnit == 'lbs'
-            ? materialWeight / 2204.62263
-            : weightUnit == 'kg'
-              ? materialWeight / 1000
-              : materialWeight,
-      };
-      console.log(payload);
+    if (!this.itemOption().length) {
+      delete payload.materialItem;
     }
+
+    if (!this.formOption().length) {
+      delete payload.materialForm;
+    }
+
+    if (!this.gradingOption().length) {
+      delete payload.materialGrading;
+    }
+
+    ongoingListing == 'true' ? delete payload.listingDuration : delete payload.listingRenewalPeriod;
+
+    this.submitting.set(true);
+
+    this.uploadService
+      .uploadMultiFile(this.selectedFile().map((f) => f.file))
+      .pipe(
+        finalize(() => this.submitting.set(false)),
+        catchError((err) => {
+          this.snackBar.open('An error occurred while uploading the file. Please try again.', 'Ok', {
+            duration: 3000,
+          });
+          return of(null);
+        }),
+        concatMap((documentUrls) => {
+          if (!documentUrls) return of(null);
+
+          const documents = documentUrls.map((url) => {
+            return {
+              documentType: 'feature_image',
+              documentUrl: url,
+            };
+          });
+
+          return this.listingService.createListing({ ...payload, documents }).pipe(
+            finalize(() => this.submitting.set(false)),
+            catchError((err) => {
+              this.snackBar.open(`${err.error?.error?.message ?? 'Unknown error'}`, 'Ok', {
+                duration: 3000,
+              });
+              return of(null);
+            }),
+          );
+        }),
+      )
+      .subscribe((result) => {
+        if (result) {
+          this.snackBar.open('Your listing is under review', 'Ok', {
+            duration: 3000,
+          });
+          this.router.navigate(['/wanted']);
+        }
+      });
   }
 }
