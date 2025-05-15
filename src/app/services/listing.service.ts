@@ -13,10 +13,18 @@ export class ListingService {
     return this.httpClient.post('/listings', payload);
   }
 
-  get(filter?: FilterParams): Observable<ListingResponse> {
-    const encodedFilter = JSON.stringify(filter);
+  get(filter?: FilterParams, search?: string): Observable<ListingResponse> {
+    let params = new HttpParams();
 
-    const params = new HttpParams().set('filter', encodedFilter);
+    if (filter) {
+      const encodedFilter = JSON.stringify(filter);
+      params = params.set('filter', encodedFilter);
+    }
+
+    if (search) {
+      params = params.set('search', search);
+    }
+
     return this.httpClient.get<ListingResponse>('/listings', { params });
   }
 }

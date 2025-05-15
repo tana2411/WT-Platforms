@@ -2,13 +2,14 @@
   <app-filter
     [displayFilter]="['country', 'materialType', 'materialItem', 'materialPacking', 'wasteStoration', 'showFullfilledListing']"
     (filterChanged)="onFilterChange($event)"
+    (searchTerm)="searchTerm.set($event)"
   ></app-filter>
   @if (loading()) {
     <app-spinner></app-spinner>
   } @else {
     <app-product-grid [items]="items()" [totalItems]="totalItem()"></app-product-grid>
   }
-  <app-pagination [pageNumber]="1" [totalPage]="10" (pageChange)="onPageChange($event)"></app-pagination>
+  <app-pagination [pageNumber]="1" [totalPage]="totalPage()" (pageChange)="onPageChange($event)"></app-pagination>
   <hr />
   <app-listing-footer></app-listing-footer>
 </app-common-layout>
