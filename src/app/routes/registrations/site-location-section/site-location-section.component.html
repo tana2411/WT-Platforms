@@ -4,7 +4,7 @@
     <div class="col-4">
       <div class="d-flex justify-content-between">
         <mat-icon class="primary">check_circle</mat-icon>
-        <div class="w-75 mx-auto primary" i18n>COMPANY DOCUMENT</div>
+        <div class="w-75 mx-auto primary" i18n>COMPANY INFORMATION</div>
         <mat-icon>remove</mat-icon>
       </div>
       <hr />
@@ -28,7 +28,7 @@
             <div class="w-25 text-center">
               <mat-icon class="material-icons-outlined primary">error_outline</mat-icon>
             </div>
-            <div i18n class="fw-500 fs-16">Ensure all details are correct, error may delay verification (*Required field).</div>
+            <div i18n class="fw-500 fs-16">Ensure all details are correct; errors may delay verification (*Required field).</div>
           </div>
           <div class="col-12 mb-5">
             <mat-label class="fw-bold mb-1" i18n>LOCATION NAME*</mat-label>
@@ -152,6 +152,9 @@
                 @if (formGroup.get('officeOpenTime')?.hasError('required')) {
                   <mat-error i18n>This field is required </mat-error>
                 }
+                @if (formGroup.get('officeOpenTime')?.hasError('matTimepickerParse')) {
+                  <mat-error i18n>Please enter the opening and closing times in HH:MM format. </mat-error>
+                }
               </mat-form-field>
             </div>
             <div class="col-md-6">
@@ -164,6 +167,9 @@
                 <mat-timepicker #close />
                 @if (formGroup.get('officeCloseTime')?.hasError('required')) {
                   <mat-error i18n>This field is required </mat-error>
+                }
+                @if (formGroup.get('officeCloseTime')?.hasError('matTimepickerParse')) {
+                  <mat-error i18n>Please enter the opening and closing times in HH:MM format. </mat-error>
                 }
               </mat-form-field>
             </div>
@@ -202,7 +208,7 @@
           </div>
 
           <div class="col-md-12 mb-5">
-            <mat-label class="mb-0 fw-bold" i18n> LOADING RAMP ONSITE* </mat-label>
+            <mat-label class="mb-0 fw-bold" i18n> IS THERE A LOADING RAMP ON THIS SITE?* </mat-label>
             <mat-radio-group formControlName="loadingRamp" class="col-6 d-flex justify-content-between radio-mat-error" name="loadingRamp">
               <mat-radio-button [value]="true" i18n>Yes </mat-radio-button>
               <mat-radio-button [value]="false" i18n> No </mat-radio-button>
@@ -215,7 +221,7 @@
             }
           </div>
           <div class="col-md-12 mb-5">
-            <mat-label class="mb-0 fw-bold" i18n> HAVE YOU GOT A WEIGH-BRIDGE ONSITE* </mat-label>
+            <mat-label class="mb-0 fw-bold" i18n> HAVE YOU GOT A WEIGHBRIDGE ON THIS SITE?* </mat-label>
             <mat-radio-group formControlName="weighbridge" class="col-6 d-flex justify-content-between radio-mat-error" name="weighbridge">
               <mat-radio-button [value]="true" i18n>Yes </mat-radio-button>
               <mat-radio-button [value]="false" i18n> No </mat-radio-button>
@@ -228,7 +234,7 @@
             }
           </div>
           <div class="col-12 mb-4">
-            <mat-label class="mb-0 fw-bold" i18n>CAN ACCEPT THE FOLLOWING TO SITE* </mat-label>
+            <mat-label class="mb-0 fw-bold" i18n>WHICH CONTAINER TYPES CAN YOU MANAGE ON THIS SITE?* </mat-label>
             <mat-checkbox class="d-block" color="primary" (change)="selectAllContainerTypes.set(!selectAllContainerTypes())">{{
               selectAllContainerTypes() ? 'Deselect All' : 'Select All'
             }}</mat-checkbox>
@@ -263,7 +269,7 @@
             </div>
           </div>
           <div class="col-md-12 mb-5">
-            <mat-label class="mb-0 fw-bold" i18n> CAN LOAD/UNLOAD OWN MATERIAL* </mat-label>
+            <mat-label class="mb-0 fw-bold" i18n> CAN YOU LOAD/UNLOAD MATERIAL YOURSELF ON THIS SITE?* </mat-label>
             <mat-radio-group
               formControlName="selfLoadUnLoadCapability"
               class="col-6 d-flex justify-content-between radio-mat-error"
@@ -280,7 +286,7 @@
             }
           </div>
           <div class="col-md-12 mb-5">
-            <mat-label class="mb-0 fw-bold" i18n> DO YOU HAVE ANY ACCESS RESTRICTIONS* </mat-label>
+            <mat-label class="mb-0 fw-bold" i18n> DO YOU HAVE ANY ACCESS RESTRICTIONS?* </mat-label>
             <mat-radio-group class="col-6 d-flex justify-content-between radio-mat-error">
               <mat-radio-button value="true" (change)="showAccessRestriction.set(true)" i18n>Yes </mat-radio-button>
               <mat-radio-button value="N/a" (change)="showAccessRestriction.set(false)" i18n> No </mat-radio-button>

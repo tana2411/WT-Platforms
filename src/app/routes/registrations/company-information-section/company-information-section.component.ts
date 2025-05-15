@@ -120,7 +120,6 @@ export class CompanyInformationSectionComponent implements OnInit {
         }),
       )
       .subscribe((result) => {
-        console.log('result', result);
         if (result) {
           this.router.navigate(['/company-document']);
         }
