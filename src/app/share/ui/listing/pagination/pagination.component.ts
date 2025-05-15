@@ -1,12 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -30,6 +22,7 @@ export class PaginationComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['pageNumber'] || changes['totalPage']) {
+      this.pageNumber = 1;
       this.updatePages();
     }
   }
@@ -52,10 +45,7 @@ export class PaginationComponent implements OnInit, OnChanges {
 
       if (this.pageNumber <= Math.ceil(maxButtonsToShow / 2)) {
         startPage = 1;
-      } else if (
-        this.pageNumber + Math.floor(maxButtonsToShow / 2) >=
-        this.totalPage
-      ) {
+      } else if (this.pageNumber + Math.floor(maxButtonsToShow / 2) >= this.totalPage) {
         startPage = this.totalPage - maxButtonsToShow + 1;
       } else {
         startPage = this.pageNumber - Math.floor(maxButtonsToShow / 2);

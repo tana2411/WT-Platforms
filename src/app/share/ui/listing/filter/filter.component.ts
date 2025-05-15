@@ -21,7 +21,6 @@ export interface Filter {
   value: string;
   type: 'select' | 'checkbox';
   options: any[];
-  selectAllOption?: string;
   returnArray?: boolean;
   placeholder?: string;
 }
@@ -102,7 +101,6 @@ export class FilterComponent implements OnInit {
       name: 'STORED',
       value: 'wasteStoration',
       type: 'checkbox',
-      selectAllOption: 'both',
       options: [
         {
           value: 'indoor',
@@ -118,6 +116,7 @@ export class FilterComponent implements OnInit {
 
   @Input() displayFilter: Array<ItemOf<typeof this.allFilters>['value']> = [];
   @Output() filterChanged = new EventEmitter<any>();
+  @Output() searchTerm = new EventEmitter<string | null>();
 
   countryList = countries;
   activeFilter: any[] = [];
@@ -142,6 +141,9 @@ export class FilterComponent implements OnInit {
       .pipe(
         debounceTime(500),
         switchMap((value) => {
+          if (value[searchKey] == '') {
+            this.searchTerm.emit(null);
+          }
           const filter = this.normalizeFilterParams(value);
           return from(Promise.resolve(filter));
         }),
@@ -278,12 +280,14 @@ export class FilterComponent implements OnInit {
       const totalOptions = filter.options.length;
       if (totalOptions === 1) {
         const key = filter.options[0].value;
-        result[filter.value] = rawValue[key] === true;
+        if (rawValue[key]) {
+          result[filter.value] = rawValue[key] === true;
+        }
       }
 
       if (totalOptions === 2) {
-        if (selected.length === 2 && filter.selectAllOption) {
-          result[filter.value] = filter.selectAllOption;
+        if (selected.length === totalOptions) {
+          result[filter.value] = null;
         }
 
         if (selected.length === 1) {
@@ -305,7 +309,7 @@ export class FilterComponent implements OnInit {
   }
 
   getOptionValue(item: any, option: any): string {
-    return item.value === 'location' ? option.isoCode : option.code;
+    return item.value === 'country' ? option.isoCode : option.code;
   }
 
   openFilterMobile() {
@@ -336,5 +340,10 @@ export class FilterComponent implements OnInit {
       [searchKey]: this.filterForm.value[searchKey] ?? '',
     });
     this.closeFilterMobile();
+  }
+
+  search() {
+    const search = this.filterForm.get('searchTerm')?.value || '';
+    this.searchTerm.emit(search);
   }
 }
