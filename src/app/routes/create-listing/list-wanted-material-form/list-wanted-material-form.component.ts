@@ -171,6 +171,9 @@ export class ListWantedMaterialFormComponent implements OnInit {
       listingDuration.setValidators([Validators.required, pastDateValidator()]);
       listingRenewalPeriod.clearValidators();
     }
+
+    listingDuration.updateValueAndValidity();
+    listingRenewalPeriod.updateValueAndValidity();
   }
 
   private convertToTon() {
