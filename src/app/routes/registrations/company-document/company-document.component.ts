@@ -118,8 +118,8 @@ export class CompanyDocumentComponent implements OnInit {
     } else {
       const exitsFile = this.selectedDocumentFile().filter((f) => f.documentType == this.documentType.value);
       const { documentType, wasteLicence } = this.formGroup.value;
-      const validDocument = documentType !== 'uploadLater' ? exitsFile.length > 0 : true;
-      const validLicence = wasteLicence ? this.selectedWasteLicenceFile().length > 0 : true;
+      const validDocument = documentType !== 'uploadLater' ? exitsFile.length > 0 && this.documentValid() : true;
+      const validLicence = wasteLicence ? this.selectedWasteLicenceFile().length > 0 && this.wasteLicenceValid() : true;
 
       return !(validDocument && validLicence);
     }
