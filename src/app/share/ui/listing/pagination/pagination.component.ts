@@ -1,12 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, computed, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -18,7 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class PaginationComponent implements OnInit, OnChanges {
   @Input() pageNumber: number = 0;
-  @Input() totalPage: number = 0;
+  @Input() totalCount: number = 0;
+  @Input() size: number = 10;
   @Output() pageChange = new EventEmitter();
   pages: number[] = [];
 
@@ -34,17 +27,19 @@ export class PaginationComponent implements OnInit, OnChanges {
     }
   }
 
+  totalPage = computed(() => Math.ceil(this.totalCount / this.size));
+
   private updatePages(): void {
     const pages: number[] = [];
     const maxButtonsToShow = 5;
 
-    if (this.totalPage === 0) {
+    if (this.totalPage() === 0) {
       this.pages = [];
       return;
     }
 
-    if (this.totalPage <= maxButtonsToShow) {
-      for (let i = 1; i <= this.totalPage; i++) {
+    if (this.totalPage() <= maxButtonsToShow) {
+      for (let i = 1; i <= this.totalPage(); i++) {
         pages.push(i);
       }
     } else {
@@ -52,11 +47,8 @@ export class PaginationComponent implements OnInit, OnChanges {
 
       if (this.pageNumber <= Math.ceil(maxButtonsToShow / 2)) {
         startPage = 1;
-      } else if (
-        this.pageNumber + Math.floor(maxButtonsToShow / 2) >=
-        this.totalPage
-      ) {
-        startPage = this.totalPage - maxButtonsToShow + 1;
+      } else if (this.pageNumber + Math.floor(maxButtonsToShow / 2) >= this.totalPage()) {
+        startPage = this.totalPage() - maxButtonsToShow + 1;
       } else {
         startPage = this.pageNumber - Math.floor(maxButtonsToShow / 2);
       }
@@ -69,7 +61,7 @@ export class PaginationComponent implements OnInit, OnChanges {
   }
 
   onPageButtonClick(page: number): void {
-    if (page >= 1 && page <= this.totalPage) {
+    if (page >= 1 && page <= this.totalPage()) {
       this.pageNumber = page;
       this.pageChange.emit(page);
       this.updatePages();
@@ -85,7 +77,7 @@ export class PaginationComponent implements OnInit, OnChanges {
   }
 
   onNextPage(): void {
-    if (this.pageNumber < this.totalPage) {
+    if (this.pageNumber < this.totalPage()) {
       this.pageChange.emit(this.pageNumber + 1);
       this.pageNumber = this.pageNumber + 1;
       this.updatePages();

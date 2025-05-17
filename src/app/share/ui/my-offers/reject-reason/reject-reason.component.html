@@ -1,0 +1,30 @@
+<form [formGroup]="rejectForm" (ngSubmit)="onSubmit()" class="reject-form">
+  <mat-label class="d-block fw-bold mb-2" i18n>Reason for rejection</mat-label>
+  <mat-form-field appearance="outline" class="full-width">
+    <textarea matInput formControlName="reason" placeholder="Please provide a reason for rejection" rows="4"> </textarea>
+    @if (rejectForm.get('reason')?.errors; as errors) {
+      <mat-error>
+        @if (errors['required']) {
+          <span>This field is required</span>
+        }
+        @if (errors['maxlength']) {
+          <span>Maximum 500 characters allowed</span>
+        }
+        @if (errors['containsEmail']) {
+          <span>Email addresses are not allowed</span>
+        }
+        @if (errors['containsPhone']) {
+          <span>Phone numbers are not allowed</span>
+        }
+        @if (errors['containsUrl']) {
+          <span>URLs are not allowed</span>
+        }
+      </mat-error>
+    }
+  </mat-form-field>
+
+  <div class="button-row">
+    <button mat-button type="button" (click)="onCancel()">Cancel</button>
+    <button mat-flat-button class="background-primary text-white" type="submit" [disabled]="!rejectForm.valid">Submit</button>
+  </div>
+</form>

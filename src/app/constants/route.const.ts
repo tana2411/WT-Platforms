@@ -8,6 +8,7 @@ export const ROUTES = {
   settings: 'settings',
   logout: 'logout',
   myOffers: 'my-offer',
+  offerDetail: 'offer-detail',
 };
 
 export const ROUTES_WITH_SLASH = {
@@ -20,4 +21,5 @@ export const ROUTES_WITH_SLASH = {
   settings: '/settings',
   logout: '/logout',
   myOffers: '/my-offer',
+  offerDetail: '/offer-detail',
 };

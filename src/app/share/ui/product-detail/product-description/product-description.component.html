@@ -1,0 +1,14 @@
+<div class="border rounded border-primary background-on-primary fw-bold px-3 py-2 mb-2" i18n>Material Description</div>
+
+<div class="border rounded border-primary px-4 py-3 d-flex flex-wrap gap-3">
+  @for (item of items; track item.label) {
+    <div class="item d-flex gap-3 align-items-center">
+      <app-icon backgroundColor="#E5F6F0" iconClassName="primary" [iconName]="item.icon" />
+
+      <div class="">
+        <p class="fw-bold text-uppercase mb-0">{{ item.label }}</p>
+        <p class="text-uppercase mb-0">{{ item.value ?? '' }}</p>
+      </div>
+    </div>
+  }
+</div>

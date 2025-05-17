@@ -4,7 +4,7 @@
     (filterChanged)="onFilterChange($event)"
   ></app-filter>
   <app-product-grid [items]="products" [totalItems]="100"></app-product-grid>
-  <app-pagination [pageNumber]="4" [totalPage]="10" (pageChange)="onPageChange($event)"></app-pagination>
+  <app-pagination [pageNumber]="1" [totalCount]="100" (pageChange)="onPageChange($event)"></app-pagination>
   <hr />
   <app-listing-footer></app-listing-footer>
 </app-common-layout>

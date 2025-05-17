@@ -1,0 +1,49 @@
+@import 'variables';
+
+.row-item {
+  min-width: 1200px;
+}
+
+.image {
+  width: 95px;
+  height: 83px;
+  object-fit: contain;
+  background-color: #d9d9d9;
+  border-radius: 20px;
+}
+
+.column-item {
+  max-width: 130px;
+}
+
+.label {
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.content {
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+.material-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.accept-btn,
+.reject-btn {
+  height: 60px;
+  align-self: center;
+}
+
+.reject-btn {
+  background-color: #e84f63 !important;
+}
+
+.Rejected {
+  color: $error !important;
+}

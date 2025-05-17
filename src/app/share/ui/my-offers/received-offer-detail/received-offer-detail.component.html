@@ -1,0 +1,24 @@
+<div class="d-flex gap-3">
+  <div class="product-image-wrapper">
+    <app-product-image />
+  </div>
+
+  <div class="flex-1">
+    <app-product-description [items]="offerDescription()" />
+  </div>
+</div>
+
+@if (loadingListing()) {
+  <app-spinner></app-spinner>
+} @else {
+  @if (listingItems(); as listingItems) {
+    <app-offer-listing
+      class="d-block mt-4 mt-lg-5"
+      [items]="listingItems"
+      [page]="page()"
+      [totalItems]="totalItems()"
+      (pageChange)="onPageChange($event)"
+      (refresh)="onRefresh()"
+    />
+  }
+}

@@ -1,18 +1,15 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
 
-import { routes } from './app.routes';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import {
-  CanActivateAuthPage,
-  CanActivateUnAuthPage,
-} from './guards/auth/auth.guard';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { apiBaseUrlInterceptor } from './interceptors/base-url.interceptor';
-import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
-import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { routes } from './app.routes';
+import { CanActivateAuthPage, CanActivateUnAuthPage } from './guards/auth/auth.guard';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { apiBaseUrlInterceptor } from './interceptors/base-url.interceptor';
 
 export const CUSTOM_DATE_FORMATS = {
   parse: {
@@ -30,10 +27,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideRouter(
-      routes,
-      withInMemoryScrolling({ scrollPositionRestoration: 'top' }),
-    ),
+    provideRouter(routes, withInMemoryScrolling({ scrollPositionRestoration: 'top' })),
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { subscriptSizing: 'dynamic' },
@@ -44,9 +38,7 @@ export const appConfig: ApplicationConfig = {
         duration: 3000,
       },
     },
-    provideHttpClient(
-      withInterceptors([apiBaseUrlInterceptor, AuthInterceptor]),
-    ),
+    provideHttpClient(withInterceptors([apiBaseUrlInterceptor, AuthInterceptor])),
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,

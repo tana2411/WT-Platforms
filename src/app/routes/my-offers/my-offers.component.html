@@ -12,11 +12,13 @@
 
   @if (loading()) {
     <app-spinner></app-spinner>
-  } @else if (items() && !items()?.length) {
-    @if (emptyProps(); as emptyProps) {
-      <app-empty-offer [title]="emptyProps.title" [content]="emptyProps.content" [buttons]="emptyProps.buttons" />
+  } @else if (items()) {
+    @if (items()?.length) {
+      <app-offer-table [page]="page()" [totalItems]="totalItems()" [items]="items()!" (pageChange)="onPageChange($event)" />
+    } @else {
+      @if (emptyProps(); as emptyProps) {
+        <app-empty-offer [title]="emptyProps.title" [content]="emptyProps.content" [buttons]="emptyProps.buttons" />
+      }
     }
-  } @else {
-    <app-offer-table [totalItems]="55" [items]="items()!" />
   }
 </app-common-layout>

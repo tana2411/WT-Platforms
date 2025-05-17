@@ -2,15 +2,20 @@ import { Component, effect, signal } from '@angular/core';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
-import { Offer, OfferStatus } from 'app/models/offer';
+import { TableOfferItem } from 'app/models/offer';
+import { OfferService } from 'app/services/offer.service';
 import { EmptyOfferButton, EmptyOfferComponent } from 'app/share/ui/my-offers/empty-offer/empty-offer.component';
 import { OfferTableComponent } from 'app/share/ui/my-offers/offer-table/offer-table.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
+import { OfferDetail } from 'app/types/requests/offer';
+import moment from 'moment';
+import { finalize } from 'rxjs';
 import { LIST_TAB_OFFER, MAP_OFFER_TYPE_TO_EMPTY_OFFER_PROP, OfferType } from './constants';
 
 @Component({
   selector: 'app-my-offers',
   imports: [OfferTableComponent, MatTabsModule, SpinnerComponent, CommonLayoutComponent, EmptyOfferComponent],
+  providers: [OfferService],
   templateUrl: './my-offers.component.html',
   styleUrl: './my-offers.component.scss',
 })
@@ -18,8 +23,10 @@ export class MyOffersComponent {
   listTabOffer = LIST_TAB_OFFER;
   listEmptyProps = signal<ReturnType<typeof MAP_OFFER_TYPE_TO_EMPTY_OFFER_PROP>>({} as any);
 
-  totalItems = 55;
-  items = signal<Offer[] | null>(null);
+  totalItems = signal(0);
+  page = signal(1);
+
+  items = signal<TableOfferItem[] | null>(null);
   loading = signal(false);
   activeTab = signal<number>(0);
   emptyProps = signal<
@@ -31,73 +38,54 @@ export class MyOffersComponent {
     | undefined
   >(undefined);
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private offerService: OfferService,
+  ) {
     this.listEmptyProps.set(MAP_OFFER_TYPE_TO_EMPTY_OFFER_PROP(this.router));
 
     // effect to fetching data and update empty props when the tab change
     effect(async () => {
-      this.loading.set(true);
       const tabKey = this.getTabKey(this.activeTab());
       this.updateEmptyProps(tabKey);
 
-      await new Promise<void>((res) =>
-        setTimeout(() => {
-          if (tabKey === OfferType.Received) {
-            this.items.set([
-              {
-                id: '1',
-                date: '2025-05-13T08:08:14.030Z',
-                materialName: 'Non-Ferrous - Stainless Steel 304',
-                quantity: '23MT',
-                country: 'United Kingdom',
-                status: OfferStatus.pending,
-                bidAmount: '$1500/MT',
-              },
-              {
-                id: '2',
-                date: '2025-05-13T08:08:14.030Z',
-                materialName: 'Non-Ferrous - Stainless Steel 304',
-                quantity: '23MT',
-                country: 'United Kingdom',
-                status: OfferStatus.pending,
-                bidAmount: '$1500/MT',
-              },
-              {
-                id: '3',
-                date: '2025-05-13T08:08:14.030Z',
-                materialName: 'Non-Ferrous - Stainless Steel 304',
-                quantity: '23MT',
-                country: 'United Kingdom',
-                status: OfferStatus.pending,
-                bidAmount: '$1500/MT',
-              },
-              {
-                id: '4',
-                date: '2025-05-13T08:08:14.030Z',
-                materialName: 'Non-Ferrous - Stainless Steel 304',
-                quantity: '23MT',
-                country: 'United Kingdom',
-                status: OfferStatus.pending,
-                bidAmount: '$1500/MT',
-              },
-              {
-                id: '5',
-                date: '2025-05-13T08:08:14.030Z',
-                materialName: 'Non-Ferrous - Stainless Steel 304',
-                quantity: '23MT',
-                country: 'United Kingdom',
-                status: OfferStatus.pending,
-                bidAmount: '$1500/MT',
-              },
-            ]);
-          } else {
-            this.items.set([]);
-          }
-          res();
-        }, 1000),
-      );
-      this.loading.set(false);
+      if (tabKey !== OfferType.Received) {
+        this.items.set([]);
+        return;
+      }
+
+      this.loading.set(true);
+      this.offerService
+        .getOffers({ page: this.page(), isSeller: true })
+        .pipe(
+          finalize(() => {
+            this.loading.set(false);
+          }),
+        )
+        .subscribe((res) => {
+          const tableData = res.results.map(this.mapOfferToTableItem);
+          this.items.set(tableData);
+          this.totalItems.set(res.totalCount);
+        });
     });
+  }
+
+  mapOfferToTableItem(offerDetail: OfferDetail): TableOfferItem {
+    const { listing, offer, buyerCompany } = offerDetail;
+
+    return {
+      id: offer.id,
+      date: moment(offer.createdAt).format('YYYY-MM-DD'),
+      materialName: listing.title ?? '',
+      quantity: offer.quantity,
+      country: buyerCompany.country,
+      status: offer.status,
+      bidAmount: `${offer.pricePerUnit}/${listing.materialWeightPerUnit}`,
+    };
+  }
+
+  onPageChange(page: number) {
+    this.page.set(page);
   }
 
   // get the tab key by index
