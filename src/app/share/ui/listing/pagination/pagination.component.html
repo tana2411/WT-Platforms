@@ -8,12 +8,12 @@
         </button>
 
         <div class="col-6 d-flex justify-content-center align-items-center flex-wrap">
-          @if (pages.length > 0) {
-            @for (page of pages; track $index) {
+          @if (pages().length > 0) {
+            @for (page of pages(); track $index) {
               <button
                 class="rounded text-center border border-2 border-dark p-1 fw-bold mx-1 bg-white"
-                [class.background-dark]="page == pageNumber"
-                [class.text-white]="page == pageNumber"
+                [class.background-dark]="page == pageNumber$()"
+                [class.text-white]="page == pageNumber$()"
                 (click)="onPageButtonClick(page)"
                 [style.min-width]="'40px'"
               >
@@ -23,7 +23,7 @@
           }
         </div>
 
-        <button mat-flat-button class="col-3" [disabled]="pageNumber === totalPage || totalPage === 0" (click)="onNextPage()">
+        <button mat-flat-button class="col-3" [disabled]="pageNumber$() === totalPage() || totalPage() === 0" (click)="onNextPage()">
           <span i18n>NEXT</span>
           <mat-icon>arrow_forward</mat-icon>
         </button>

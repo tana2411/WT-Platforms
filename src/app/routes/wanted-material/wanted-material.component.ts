@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
@@ -30,16 +30,13 @@ export class WantedMaterialComponent implements OnInit {
   filter = signal<FilterParams | undefined>(undefined);
   loading = signal<boolean>(false);
   totalItem = signal<number>(0);
+  page = signal<number>(1);
   searchTerm = signal<string | null>(null);
 
   listingService = inject(ListingService);
   snackBar = inject(MatSnackBar);
   router = inject(Router);
   route = inject(ActivatedRoute);
-
-  totalPage = computed(() => {
-    return Math.ceil(this.totalItem() / PAGE_SIZE);
-  });
 
   constructor() {
     this.filter.set({
@@ -54,6 +51,7 @@ export class WantedMaterialComponent implements OnInit {
   ngOnInit() {}
 
   onPageChange(page: number) {
+    this.page.set(page);
     this.updateFilter({
       ...this.filter(),
       skip: (page - 1) * PAGE_SIZE,

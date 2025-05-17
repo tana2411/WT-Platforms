@@ -1,15 +1,23 @@
 export enum OfferStatus {
-  pending = 'pending',
-  accepted = 'pending',
-  rejected = 'pending',
+  pending = 'Pending',
+  accepted = 'Accepted',
+  rejected = 'Rejected',
 }
 
-export type Offer = {
-  id: string;
+export type TableOfferItem = {
+  id: number;
   date: string;
   materialName: string;
-  quantity: string;
+  quantity: number;
   country: string;
   status: OfferStatus;
   bidAmount: string;
+};
+
+export type OfferListingItem = {
+  id: number;
+  date: string;
+  buyerId: number;
+  bidAmount: string;
+  status: OfferStatus;
 };

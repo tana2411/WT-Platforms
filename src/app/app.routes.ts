@@ -104,6 +104,15 @@ export const routes: Routes = [
     },
     loadComponent: () => import('./routes/my-offers/my-offers.component').then((m) => m.MyOffersComponent),
   },
+
+  {
+    path: `${ROUTES.offerDetail}/:offerId`,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [GuardRequireRole.Trading, GuardRequireRole.SuperAdmin],
+    },
+    loadComponent: () => import('./routes/offers-detail/offers-detail.component').then((m) => m.OffersDetailComponent),
+  },
   {
     path: ROUTES.admin,
     canActivate: [CanActivateAuthPage],

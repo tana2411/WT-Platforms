@@ -1,19 +1,22 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { Offer } from 'app/models/offer';
+import { RouterModule } from '@angular/router';
+import { TableOfferItem } from 'app/models/offer';
 import { PaginationComponent } from '../../listing/pagination/pagination.component';
 
 @Component({
   selector: 'app-offer-table',
-  imports: [PaginationComponent, MatButtonModule],
+  imports: [PaginationComponent, MatButtonModule, RouterModule],
   templateUrl: './offer-table.component.html',
   styleUrl: './offer-table.component.scss',
 })
 export class OfferTableComponent {
   @Input() totalItems: number = 0;
-  @Input() items: Offer[] = [];
+  @Input() page: number = 1;
+  @Input() items: TableOfferItem[] = [];
+  @Output() pageChange = new EventEmitter<number>();
 
   onPageChange(page: number) {
-    console.log(page);
+    this.pageChange.emit(page);
   }
 }
