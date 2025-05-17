@@ -1,43 +1,22 @@
-import {
-  Component,
-  effect,
-  inject,
-  OnInit,
-  signal,
-  ViewChild,
-} from '@angular/core';
-import {
-  MatCheckboxChange,
-  MatCheckboxModule,
-} from '@angular/material/checkbox';
+import { TitleCasePipe, UpperCasePipe } from '@angular/common';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
-import { MatSelectChange, MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { countries } from '../../../statics/country-data';
-import {
-  FormArray,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { InputWithConfirmControlComponent } from '../../../share/ui/input-with-confirm-control/input-with-confirm-control.component';
-import {
-  checkPasswordStrength,
-  pwdStrengthValidator,
-} from '../../../share/validators/password-strength';
-import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-control/telephone-form-control.component';
-import { Router } from '@angular/router';
-import { RegistrationsService } from 'app/services/registrations.service';
-import { catchError, concatMap, finalize, of, switchMap } from 'rxjs';
-import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { countries, materialTypes } from '@app/statics';
+import { InputWithConfirmControlComponent, TelephoneFormControlComponent } from '@app/ui';
+import { checkPasswordStrength, pwdStrengthValidator } from '@app/validators';
+import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { AuthService } from 'app/services/auth.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TitleCasePipe } from '@angular/common';
+import { RegistrationsService } from 'app/services/registrations.service';
+import { catchError, concatMap, finalize, of } from 'rxjs';
 @Component({
   selector: 'app-trading-flatform-form',
   templateUrl: './trading-flatform-form.component.html',
@@ -54,108 +33,31 @@ import { TitleCasePipe } from '@angular/common';
     TelephoneFormControlComponent,
     UnAuthLayoutComponent,
     TitleCasePipe,
+    UpperCasePipe,
   ],
 })
 export class TradingFlatformFormComponent implements OnInit {
   countryList = countries;
-  materialsAccept = [
-    {
-      name: 'LDPE',
-      value: 'ldpe',
-    },
-    {
-      name: 'PP',
-      value: 'pp',
-    },
-    {
-      name: 'PC',
-      value: 'pc',
-    },
-    {
-      name: 'ABS',
-      value: 'abs',
-    },
-    {
-      name: 'Acrylic',
-      value: 'acrylic',
-    },
-    {
-      name: 'Granulates',
-      value: 'granulates',
-    },
-    {
-      name: 'HDPE',
-      value: 'hdpe',
-    },
-    {
-      name: 'PVC',
-      value: 'pvc',
-    },
-    {
-      name: 'PET',
-      value: 'pet',
-    },
-    {
-      name: 'PA',
-      value: 'pa',
-    },
-    {
-      name: 'PS',
-      value: 'ps',
-    },
-    {
-      name: 'Other (Mix)',
-      value: 'other (mix)',
-    },
-    {
-      name: 'Other (Single Sources)',
-      value: 'other (single sources)',
-    },
-  ];
+  materialsAccept = materialTypes;
 
   formGroup = new FormGroup({
     prefix: new FormControl<string | null>('mr', [Validators.required]),
-    firstName: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(50),
-    ]),
-    lastName: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(50),
-    ]),
-    jobTitle: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(50),
-    ]),
+    firstName: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
+    lastName: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
+    jobTitle: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
     phoneNumber: new FormControl<string | null>(null, [Validators.required]),
-    email: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.email,
-    ]),
-    password: new FormControl<string | null>(null, [
-      Validators.required,
-      pwdStrengthValidator
-    ]),
-    whereDidYouHearAboutUs: new FormControl<string | null>(null, [
-      Validators.required,
-    ]),
-    otherMaterial: new FormControl<string | null>(null, [
-      Validators.maxLength(100),
-    ]),
-    companyName: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(100),
-    ]),
-    companyInterest: new FormControl<string | null>('both', [
-      Validators.required,
-    ]),
+    email: new FormControl<string | null>(null, [Validators.required, Validators.email]),
+    password: new FormControl<string | null>(null, [Validators.required, pwdStrengthValidator]),
+    whereDidYouHearAboutUs: new FormControl<string | null>(null, [Validators.required]),
+    otherMaterial: new FormControl<string | null>(null, [Validators.maxLength(100)]),
+    companyName: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(100)]),
+    companyInterest: new FormControl<string | null>('both', [Validators.required]),
     favoriteMaterials: new FormArray([], [Validators.required]),
-    acceptTerm: new FormControl<boolean | null>(null, [
-      Validators.requiredTrue,
-    ]),
+    acceptTerm: new FormControl<boolean | null>(null, [Validators.requiredTrue]),
   });
 
   selectAllMaterial = signal(false);
+  selectedType = signal<string | null>(null);
   showOtherMaterial = signal(false);
   submitting = signal(false);
   pwdStrength = signal<string | null>(''); // weak, medium, strong
@@ -168,9 +70,15 @@ export class TradingFlatformFormComponent implements OnInit {
     effect(() => {
       if (this.selectAllMaterial()) {
         this.materials.clear();
-        this.materialsAccept.forEach((item) => {
-          this.materials.push(new FormControl(item.value));
-        });
+        this.materialsAccept
+          .map((m) => m.materials)
+          .forEach((items) => {
+            if (items.length > 0) {
+              items.forEach((item) => {
+                this.materials.push(new FormControl(item.code));
+              });
+            }
+          });
         this.showOtherMaterial.set(true);
         this.materials.markAsTouched();
       } else {
@@ -215,9 +123,7 @@ export class TradingFlatformFormComponent implements OnInit {
     if (event.checked) {
       this.materials.push(new FormControl(item));
     } else {
-      const idx = this.materials.controls.findIndex(
-        (control) => control.value === item,
-      );
+      const idx = this.materials.controls.findIndex((control) => control.value === item);
       if (idx !== -1) {
         this.materials.removeAt(idx);
       }
@@ -274,13 +180,15 @@ export class TradingFlatformFormComponent implements OnInit {
         }),
         catchError((err) => {
           if (err) {
-            this.snackBar.open(
-              `${err?.error?.error?.message ?? 'Some thing went wrong. Please try again.'}`,
-              'Ok',
-              {
+            if (err?.error?.error?.statusCode == 422 && err?.error?.error?.message == 'existed-user') {
+              this.snackBar.open('This email already exists. Please enter an alternative email address', 'Ok', {
                 duration: 3000,
-              },
-            );
+              });
+            } else {
+              this.snackBar.open(`${err?.error?.error?.message ?? 'Some thing went wrong. Please try again.'}`, 'Ok', {
+                duration: 3000,
+              });
+            }
           }
           return of(null);
         }),

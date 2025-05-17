@@ -51,7 +51,7 @@
 
           @if (item.type == 'checkbox') {
             <div class="d-flex flex-column align-items-start align-self-lg-end {{ item.value }}">
-              <mat-label class="mb-2 filter-item-label">{{ item.name }}</mat-label>
+              <mat-label class="filter-item-label">{{ item.name }}</mat-label>
               <div class="d-flex gap-2">
                 @if (item.options && item.options.length === 1) {
                   <mat-checkbox class="large-checkbox" [formControlName]="item.options[0].value || item.value">

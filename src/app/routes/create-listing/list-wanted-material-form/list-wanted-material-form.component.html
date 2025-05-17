@@ -32,7 +32,7 @@
           <div class="col-9 mx-auto mb-5">
             <div class="mb-2 fw-500" i18n>COUNTRY WASTE REQUIRED IN*</div>
             <mat-form-field appearance="outline" class="w-100">
-              <mat-select formControlName="country" placeholder="Select">
+              <mat-select formControlName="country" placeholder="Please Select">
                 @for (country of countryOption; track country.isoCode) {
                   <mat-option [value]="country.isoCode">{{ country.name }}</mat-option>
                 }
@@ -45,7 +45,7 @@
           <div class="col-9 mx-auto mb-5">
             <div class="mb-2 fw-500" i18n>MATERIAL TYPE*</div>
             <mat-form-field appearance="outline" class="w-100">
-              <mat-select formControlName="materialType" placeholder="Select">
+              <mat-select formControlName="materialType" placeholder="Please Select">
                 @for (materialType of materialTypes; track materialType.code) {
                   <mat-option [value]="materialType.code">{{ materialType.name }}</mat-option>
                 }
@@ -58,7 +58,7 @@
           <div class="col-9 mx-auto mb-5">
             <div class="mb-2 fw-500" i18n>ITEM*</div>
             <mat-form-field appearance="outline" class="w-100">
-              <mat-select formControlName="materialItem" placeholder="Select">
+              <mat-select formControlName="materialItem" placeholder="Please Select">
                 @for (item of itemOption(); track $index) {
                   <mat-option [value]="item.code">{{ item.name }}</mat-option>
                 }
@@ -71,7 +71,7 @@
           <div class="col-9 mx-auto mb-5">
             <div class="mb-2 fw-500" i18n>FORM*</div>
             <mat-form-field appearance="outline" class="w-100">
-              <mat-select formControlName="materialForm" placeholder="Select">
+              <mat-select formControlName="materialForm" placeholder="Please Select">
                 @if (formOption().length == 0 && formGroup.get('materialType')?.touched) {
                   <mat-option value="N/A">N/A</mat-option>
                 } @else {
@@ -88,7 +88,7 @@
           <div class="col-9 mx-auto mb-5">
             <div class="mb-2 fw-500" i18n>GRADING*</div>
             <mat-form-field appearance="outline" class="w-100">
-              <mat-select formControlName="materialGrading" placeholder="Select">
+              <mat-select formControlName="materialGrading" placeholder="Please Select">
                 @if (gradingOption().length == 0 && formGroup.get('materialType')?.touched) {
                   <mat-option value="N/A">N/A</mat-option>
                 } @else {
@@ -105,7 +105,7 @@
           <div class="col-9 mx-auto mb-5">
             <div class="mb-2 fw-500" i18n>COLOUR*</div>
             <mat-form-field appearance="outline" class="w-100">
-              <mat-select formControlName="materialColor" placeholder="Select">
+              <mat-select formControlName="materialColor" placeholder="Please Select">
                 @for (colour of colourOption; track $index) {
                   <mat-option [value]="colour.code">{{ colour.name }}</mat-option>
                 }
@@ -118,7 +118,7 @@
           <div class="col-9 mx-auto mb-5">
             <div class="mb-2 fw-500" i18n>FISHING*</div>
             <mat-form-field appearance="outline" class="w-100">
-              <mat-select formControlName="materialFinishing" placeholder="Select">
+              <mat-select formControlName="materialFinishing" placeholder="Please Select">
                 @for (finishing of finishingOption; track $index) {
                   <mat-option [value]="finishing.code">{{ finishing.name }}</mat-option>
                 }
@@ -131,7 +131,7 @@
           <div class="col-9 mx-auto mb-5">
             <div class="mb-2 fw-500" i18n>PACKING*</div>
             <mat-form-field appearance="outline" class="w-100">
-              <mat-select formControlName="materialPacking" placeholder="Select">
+              <mat-select formControlName="materialPacking" placeholder="Please Select">
                 @for (packing of packingOption; track $index) {
                   <mat-option [value]="packing.code">{{ packing.name }}</mat-option>
                 }
@@ -169,7 +169,7 @@
           <div class="col-9 mx-auto mb-5">
             <div class="mb-2 fw-500" i18n>HOW SHOULD THE WASTE BE STORED*</div>
             <mat-form-field appearance="outline" class="w-100">
-              <mat-select formControlName="wasteStoration" placeholder="Select">
+              <mat-select formControlName="wasteStoration" placeholder="Please Select">
                 <mat-option value="indoor" i18n>Indoor</mat-option>
                 <mat-option value="outdoor" i18n>Outdoor</mat-option>
                 <mat-option value="both" i18n>Both</mat-option>
@@ -203,7 +203,7 @@
           <div class="col-9 mx-auto mb-5">
             <div class="mb-2 fw-500" i18n>MATERIAL REQUIRED FROM*</div>
             <mat-form-field appearance="outline" class="w-100">
-              <input matInput [matDatepicker]="picker" formControlName="startDate" />
+              <input matInput [matDatepicker]="picker" formControlName="startDate" readonly />
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
               @if (formGroup.get('startDate')?.hasError('required')) {
@@ -265,7 +265,7 @@
             <div class="col-9 mx-auto mb-5">
               <div class="mb-2 fw-500">RENEWAL PERIOD*</div>
               <mat-form-field appearance="outline" class="w-100">
-                <mat-select formControlName="listingRenewalPeriod" placeholder="Select">
+                <mat-select formControlName="listingRenewalPeriod" placeholder="Please Select">
                   <mat-option value="weekly">Weekly</mat-option>
                   <mat-option value="fortnightly">Fortnightly</mat-option>
                   <mat-option value="monthly">Monthly</mat-option>
@@ -280,7 +280,7 @@
             <div class="col-9 mx-auto mb-5">
               <div class="mb-2 fw-500" i18n>SELECT END DATE*</div>
               <mat-form-field appearance="outline" class="w-100">
-                <input matInput [matDatepicker]="picker1" formControlName="listingDuration" />
+                <input matInput [matDatepicker]="picker1" formControlName="listingDuration" readonly />
                 <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
                 @if (formGroup.get('listingDuration')?.hasError('required')) {
