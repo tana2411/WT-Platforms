@@ -7,7 +7,7 @@
       </mat-form-field>
     </div>
     <div class="col-4 col-md-3" style="padding-left: 0">
-      <button mat-flat-button class="background-primary w-100 h-100 fs-16" i18n>
+      <button mat-flat-button class="background-primary w-100 h-100 fs-16" (click)="search()" i18n>
         <mat-icon class="d-none d-md-block">search</mat-icon>
         Search
       </button>
@@ -37,7 +37,7 @@
                 <mat-label class="mb-2 text-wrap filter-item-label">{{ item.name }}</mat-label>
                 <mat-form-field appearance="outline" class="w-100 bg-white">
                   <mat-select [formControlName]="item.value" placeholder="{{ item.placeholder ?? 'All' }}">
-                    <mat-option [value]="null">All</mat-option>
+                    <mat-option [value]="'All'">All</mat-option>
                     @for (option of item.options; track $index) {
                       <mat-option [value]="getOptionValue(item, option)">
                         {{ option.name }}
@@ -51,7 +51,7 @@
 
           @if (item.type == 'checkbox') {
             <div class="d-flex flex-column align-items-start align-self-lg-end {{ item.value }}">
-              <mat-label class="mb-2 filter-item-label">{{ item.name }}</mat-label>
+              <mat-label class="filter-item-label">{{ item.name }}</mat-label>
               <div class="d-flex gap-2">
                 @if (item.options && item.options.length === 1) {
                   <mat-checkbox class="large-checkbox" [formControlName]="item.options[0].value || item.value">
@@ -68,33 +68,6 @@
             </div>
           }
         }
-
-        <!-- @for (item of activeFilter; track item.value) { -->
-        <!-- @if (item.type == "checkbox") {
-            <div class="d-flex flex-column align-items-start align-self-end">
-              <mat-label class="fw-500 mb-2">{{ item.name }}</mat-label>
-              <div class="d-flex gap-2">
-                @if (item.options && item.options.length === 1) {
-                  <mat-checkbox
-                    class="large-checkbox"
-                    [formControlName]="item.options[0].value || item.value"
-                  >
-                    <span class="fw-bold">{{ item.options[0].name }}</span>
-                  </mat-checkbox>
-                } @else {
-                  @for (option of item.options; track $index) {
-                    <mat-checkbox
-                      class="large-checkbox"
-                      [formControlName]="option.value"
-                    >
-                      <span class="fw-bold">{{ option.name }}</span>
-                    </mat-checkbox>
-                  }
-                }
-              </div>
-            </div>
-          } -->
-        <!-- } -->
       </div>
     </div>
 

@@ -29,15 +29,20 @@
             mat-flat-button
             type="button"
             class="accept-btn fw-bold background-primary border-primary text-white"
+            [disabled]="actionLoading()"
             (click)="onAccept(item)"
           >
             Accept Offer
           </button>
-          <button mat-flat-button type="button" class="reject-btn fw-bold text-white" (click)="onReject(item)">Reject Offer</button>
+          <button mat-flat-button type="button" class="reject-btn fw-bold text-white" [disabled]="actionLoading()" (click)="onReject(item)">
+            Reject Offer
+          </button>
         </div>
       } @else {
         <a routerLink="/offer-detail/{{ item.id }}">
-          <button mat-stroked-button type="button" class="view-detail-btn primary border-primary">View details</button>
+          <button mat-stroked-button type="button" [disabled]="actionLoading()" class="view-detail-btn primary border-primary">
+            View details
+          </button>
         </a>
       }
     </div>

@@ -227,9 +227,21 @@ export class HaulageFormComponent {
 
             return this.registrationService.registerHaulage(payload).pipe(
               catchError((err) => {
-                this.snackBar.open(`${err.error.error.message}`, 'Ok', {
-                  duration: 3000,
-                });
+                if (err) {
+                  if (err?.error?.error?.statusCode == 422 && err?.error?.error?.message == 'existed-user') {
+                    this.snackBar.open('This email already exists. Please enter an alternative email address', 'Ok', {
+                      duration: 3000,
+                    });
+                  } else {
+                    this.snackBar.open(
+                      `${err?.error?.error?.message ?? 'Some thing went wrong. Please try again.'}`,
+                      'Ok',
+                      {
+                        duration: 3000,
+                      },
+                    );
+                  }
+                }
                 return of(null);
               }),
             );

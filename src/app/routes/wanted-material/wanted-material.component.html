@@ -1,10 +1,15 @@
 <app-common-layout title="Wanted Material">
   <app-filter
-    [displayFilter]="['location', 'material_type', 'stored', 'sort_by', 'fulfilled_listings']"
+    [displayFilter]="['country', 'materialType', 'materialItem', 'materialPacking', 'wasteStoration', 'showFullfilledListing']"
     (filterChanged)="onFilterChange($event)"
+    (searchTerm)="searchTerm.set($event)"
   ></app-filter>
-  <app-product-grid [items]="products" [totalItems]="100"></app-product-grid>
-  <app-pagination [pageNumber]="1" [totalCount]="100" (pageChange)="onPageChange($event)"></app-pagination>
+  @if (loading()) {
+    <app-spinner></app-spinner>
+  } @else {
+    <app-product-grid [items]="items()" [totalItems]="totalItem()"></app-product-grid>
+  }
+  <app-pagination [pageNumber]="page()" [totalCount]="totalItem()" (pageChange)="onPageChange($event)"></app-pagination>
   <hr />
   <app-listing-footer></app-listing-footer>
 </app-common-layout>

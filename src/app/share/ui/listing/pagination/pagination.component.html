@@ -2,23 +2,28 @@
   <div class="row justify-content-start">
     <div class="w-100 mt-5 p-4 p-md-5 background-on-primary rounded rounded-3">
       <div class="d-flex justify-content-between align-items-center col-md-8 col-lg-7 col-xl-6 mx-auto gap-2">
-        <button mat-stroked-button class="col-3 bg-white" (click)="onPreviousPage()">
+        <button mat-stroked-button class="col-3 bg-white" [disabled]="pageNumber === 1" (click)="onPreviousPage()">
           <mat-icon>arrow_back</mat-icon>
           <span i18n>BACK</span>
         </button>
-        <div class="col-7 d-flex justify-content-around align-items-center">
-          @for (page of pages; track $index) {
-            <button
-              class="rounded text-center border border-2 border-dark p-1 fw-bold col-2 col-auto bg-white align-middle mx-1"
-              [class.background-dark]="page == pageNumber"
-              [class.text-white]="page == pageNumber"
-              (click)="onPageButtonClick(page)"
-            >
-              {{ page }}
-            </button>
+
+        <div class="col-6 d-flex justify-content-center align-items-center flex-wrap">
+          @if (pages().length > 0) {
+            @for (page of pages(); track $index) {
+              <button
+                class="rounded text-center border border-2 border-dark p-1 fw-bold mx-1 bg-white"
+                [class.background-dark]="page == pageNumber$()"
+                [class.text-white]="page == pageNumber$()"
+                (click)="onPageButtonClick(page)"
+                [style.min-width]="'40px'"
+              >
+                {{ page }}
+              </button>
+            }
           }
         </div>
-        <button mat-flat-button class="col-3" (click)="onNextPage()">
+
+        <button mat-flat-button class="col-3" [disabled]="pageNumber$() === totalPage() || totalPage() === 0" (click)="onNextPage()">
           <span i18n>NEXT</span>
           <mat-icon>arrow_forward</mat-icon>
         </button>

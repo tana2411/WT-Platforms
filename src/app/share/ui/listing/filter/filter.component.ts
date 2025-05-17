@@ -8,14 +8,22 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { packing } from '@app/statics';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
+import { countries, materialTypes } from 'app/statics';
 import { ItemOf } from 'app/types/utils';
 import { isEqual, omit } from 'lodash';
-import { debounceTime } from 'rxjs';
-import { countries, materialTypes } from '../../../../statics';
-import { MAP_MATERIAL_TYPE_TO_ITEM } from './constant';
+import { debounceTime, distinctUntilChanged, from, switchMap } from 'rxjs';
 
 const searchKey = 'searchTerm';
+export interface Filter {
+  name: string;
+  value: string;
+  type: 'select' | 'checkbox';
+  options: any[];
+  returnArray?: boolean;
+  placeholder?: string;
+}
 
 @Component({
   selector: 'app-filter',
@@ -34,66 +42,72 @@ const searchKey = 'searchTerm';
   ],
 })
 export class FilterComponent implements OnInit {
-  allFilters = [
+  allFilters: Filter[] = [
     {
       name: 'LOCATION',
-      value: 'location',
+      value: 'country',
       type: 'select',
       options: countries,
     },
     {
       name: 'MATERIAL TYPE',
-      value: 'material_type',
+      value: 'materialType',
       type: 'select',
       options: materialTypes,
     },
     {
       name: 'ITEMS',
-      value: 'item',
+      value: 'materialItem',
       type: 'select',
       options: [],
     },
     {
+      name: 'PACKING',
+      value: 'materialPacking',
+      type: 'select',
+      options: packing,
+    },
+    {
       name: 'SORT BY',
-      value: 'sort_by',
+      value: 'sortBy',
       type: 'select',
       placeholder: '',
       options: [],
     },
     {
       name: 'FULFILLED LISTINGS',
-      value: 'fulfilled_listings',
+      value: 'showFullfilledListing',
       type: 'checkbox',
       options: [
         {
-          value: 'fulfilled_listings',
+          value: 'showFullfilledListing',
         },
       ],
     },
 
     {
       name: 'SOLD listings',
-      value: 'sold_listings',
+      value: 'soldListings',
       type: 'checkbox',
       options: [
         {
           name: 'Show SOLD listings',
-          value: 'sold_listings',
+          value: 'soldListings',
         },
       ],
     },
 
     {
       name: 'STORED',
-      value: 'stored',
+      value: 'wasteStoration',
       type: 'checkbox',
       options: [
         {
-          value: 'indoors',
+          value: 'indoor',
           name: 'Indoors',
         },
         {
-          value: 'outdoors',
+          value: 'outdoor',
           name: 'Outdoors',
         },
       ],
@@ -102,6 +116,7 @@ export class FilterComponent implements OnInit {
 
   @Input() displayFilter: Array<ItemOf<typeof this.allFilters>['value']> = [];
   @Output() filterChanged = new EventEmitter<any>();
+  @Output() searchTerm = new EventEmitter<string | null>();
 
   countryList = countries;
   activeFilter: any[] = [];
@@ -122,32 +137,50 @@ export class FilterComponent implements OnInit {
   }
 
   constructor() {
-    this.filterForm.valueChanges.pipe(takeUntilDestroyed(), debounceTime(300)).subscribe((value) => {
-      this.filterChanged.emit(value);
-    });
+    this.filterForm.valueChanges
+      .pipe(
+        debounceTime(500),
+        switchMap((value) => {
+          if (value[searchKey] == '') {
+            const filter = this.normalizeFilterParams(value);
+            return from(Promise.resolve({ ...filter, searchTerm: null }));
+          }
+          const filter = this.normalizeFilterParams(value);
+          return from(Promise.resolve(filter));
+        }),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+        takeUntilDestroyed(),
+      )
+      .subscribe((value) => {
+        this.filterChanged.emit(value);
+      });
   }
 
   ngOnInit() {
     if (this.displayFilter) {
       this.activeFilter = this.displayFilter.map((f) => this.allFilters.find((i) => i.value === f)).filter((i) => !!i);
-
       this.buildForm();
     }
 
     // Update the item options according the material_type value
-    if (this.displayFilter.includes('item')) {
+    if (this.displayFilter.includes('materialItem')) {
       this.filterForm
-        .get('material_type')
+        .get('materialType')
         ?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe((newMaterialType) => {
-          this.filterForm.get('item')?.setValue(null!);
+          this.filterForm.get('materialItem')?.setValue(null!);
 
           let itemOptions: any[] = [];
           if (newMaterialType) {
-            itemOptions = MAP_MATERIAL_TYPE_TO_ITEM[newMaterialType];
+            const selectedMaterialType = materialTypes.find((m) => m.code == newMaterialType);
+            if (selectedMaterialType) {
+              itemOptions = selectedMaterialType.materials;
+            }
           }
 
-          this.activeFilter = this.activeFilter.map((i) => (i.value !== 'item' ? i : { ...i, options: itemOptions }));
+          this.activeFilter = this.activeFilter.map((i) =>
+            i.value !== 'materialItem' ? i : { ...i, options: itemOptions },
+          );
         });
     }
   }
@@ -208,8 +241,76 @@ export class FilterComponent implements OnInit {
     }
   }
 
+  private normalizeFilterParams(rawValue: any) {
+    const result: Record<string, any> = {};
+
+    const selectFilters = this.allFilters.filter((f) => f.type === 'select').map((f) => f.value);
+
+    for (const key in rawValue) {
+      const value = rawValue[key];
+
+      if (value === null || value === '' || value === false) continue;
+
+      if (selectFilters.includes(key)) {
+        result[key] = Array.isArray(value) ? value : [value];
+        continue;
+      }
+    }
+
+    const checkboxResult = this.normalizeCheckboxFilter(rawValue);
+    Object.assign(result, checkboxResult);
+    return result;
+  }
+
+  normalizeCheckboxFilter(rawValue: any) {
+    const checkboxFilters = this.allFilters.filter(
+      (f) => f.type === 'checkbox' && this.displayFilter.includes(f.value),
+    );
+    const result: Record<string, any> = {};
+
+    checkboxFilters.forEach((filter) => {
+      const selected: string[] = [];
+
+      filter.options.forEach((option: any) => {
+        const key = option.value;
+        if (rawValue[key]) {
+          selected.push(key);
+        }
+      });
+
+      const totalOptions = filter.options.length;
+      if (totalOptions === 1) {
+        const key = filter.options[0].value;
+        if (rawValue[key]) {
+          result[filter.value] = rawValue[key] === true;
+        }
+      }
+
+      if (totalOptions === 2) {
+        if (selected.length === totalOptions) {
+          result[filter.value] = null;
+        }
+
+        if (selected.length === 1) {
+          result[filter.value] = selected[0];
+        }
+
+        if (selected.length === 0) {
+          result[filter.value] = null;
+        }
+      }
+
+      if (totalOptions > 2) {
+        if (filter.returnArray) {
+          result[filter.value] = selected;
+        }
+      }
+    });
+    return result;
+  }
+
   getOptionValue(item: any, option: any): string {
-    return item.value === 'location' ? option.isoCode : option.code;
+    return item.value === 'country' ? option.isoCode : option.code;
   }
 
   openFilterMobile() {
@@ -240,5 +341,12 @@ export class FilterComponent implements OnInit {
       [searchKey]: this.filterForm.value[searchKey] ?? '',
     });
     this.closeFilterMobile();
+  }
+
+  search() {
+    const filterValue = this.filterForm.value;
+    if (filterValue[searchKey]) {
+      this.filterChanged.emit({ ...this.normalizeFilterParams(filterValue), searchTerm: filterValue[searchKey] });
+    }
   }
 }

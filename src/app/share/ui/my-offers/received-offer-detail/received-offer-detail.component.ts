@@ -71,24 +71,17 @@ export class ReceivedOfferDetailComponent implements OnInit {
       if (offer) {
         this.loadingListing.set(true);
 
-        this.updator
-          .pipe(
-            startWith(0),
-            switchMap(() =>
-              this.offerService.getOffers({ page: this.page(), isSeller: true, listingId: offer.listing.id }),
-            ),
-          )
-          .subscribe({
-            next: (res) => {
-              const tableData = res.results.map(this.mapOfferToTableItem);
-              this.listingItems.set(tableData);
-              this.totalItems.set(res.totalCount);
-              this.loadingListing.set(false);
-            },
-            error: () => {
-              this.loadingListing.set(false);
-            },
-          });
+        this.offerService.getOffers({ page: this.page(), isSeller: true, listingId: offer.listing.id }).subscribe({
+          next: (res) => {
+            const tableData = res.results.map(this.mapOfferToTableItem);
+            this.listingItems.set(tableData);
+            this.totalItems.set(res.totalCount);
+            this.loadingListing.set(false);
+          },
+          error: () => {
+            this.loadingListing.set(false);
+          },
+        });
       }
     });
   }
@@ -118,10 +111,17 @@ export class ReceivedOfferDetailComponent implements OnInit {
   }
 
   setup() {
-    if (this.offerId) {
-      this.offerService.getOfferDetail(this.offerId).subscribe((res) => {
+    if (!this.offerId) {
+      return;
+    }
+
+    this.updator
+      .pipe(
+        startWith(0),
+        switchMap(() => this.offerService.getOfferDetail(this.offerId!)),
+      )
+      .subscribe((res) => {
         this.offer.set(res.data);
       });
-    }
   }
 }

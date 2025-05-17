@@ -1,4 +1,4 @@
-import { Component, computed, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, computed, effect, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -8,33 +8,38 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./pagination.component.scss'],
   imports: [MatButtonModule, MatIconModule],
 })
-export class PaginationComponent implements OnInit, OnChanges {
-  @Input() pageNumber: number = 0;
-  @Input() totalCount: number = 0;
+export class PaginationComponent implements OnInit {
+  @Input() set pageNumber(val: number) {
+    this.pageNumber$.set(val);
+  }
+  @Input() set totalCount(val: number) {
+    this.totalCount$.set(val);
+  }
   @Input() size: number = 10;
   @Output() pageChange = new EventEmitter();
-  pages: number[] = [];
 
-  constructor() {}
+  pages = signal<number[]>([]);
+  totalCount$ = signal(0);
+  pageNumber$ = signal(0);
+
+  constructor() {
+    effect(() => {
+      this.updatePages();
+    });
+  }
 
   ngOnInit() {
     this.updatePages();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['pageNumber'] || changes['totalPage']) {
-      this.updatePages();
-    }
-  }
-
-  totalPage = computed(() => Math.ceil(this.totalCount / this.size));
+  totalPage = computed(() => Math.ceil(this.totalCount$() / this.size));
 
   private updatePages(): void {
     const pages: number[] = [];
     const maxButtonsToShow = 5;
 
     if (this.totalPage() === 0) {
-      this.pages = [];
+      this.pages.set([]);
       return;
     }
 
@@ -45,41 +50,37 @@ export class PaginationComponent implements OnInit, OnChanges {
     } else {
       let startPage: number;
 
-      if (this.pageNumber <= Math.ceil(maxButtonsToShow / 2)) {
+      if (this.pageNumber$() <= Math.ceil(maxButtonsToShow / 2)) {
         startPage = 1;
-      } else if (this.pageNumber + Math.floor(maxButtonsToShow / 2) >= this.totalPage()) {
+      } else if (this.pageNumber$() + Math.floor(maxButtonsToShow / 2) >= this.totalPage()) {
         startPage = this.totalPage() - maxButtonsToShow + 1;
       } else {
-        startPage = this.pageNumber - Math.floor(maxButtonsToShow / 2);
+        startPage = this.pageNumber$() - Math.floor(maxButtonsToShow / 2);
       }
 
       for (let i = 0; i < maxButtonsToShow; i++) {
         pages.push(startPage + i);
       }
     }
-    this.pages = pages;
+    this.pages.set(pages);
   }
 
   onPageButtonClick(page: number): void {
     if (page >= 1 && page <= this.totalPage()) {
-      this.pageNumber = page;
       this.pageChange.emit(page);
-      this.updatePages();
     }
   }
 
   onPreviousPage(): void {
-    if (this.pageNumber > 1) {
-      this.pageChange.emit(this.pageNumber - 1);
-      this.pageNumber = this.pageNumber - 1;
+    if (this.pageNumber$() > 1) {
+      this.pageChange.emit(this.pageNumber$() - 1);
       this.updatePages();
     }
   }
 
   onNextPage(): void {
-    if (this.pageNumber < this.totalPage()) {
-      this.pageChange.emit(this.pageNumber + 1);
-      this.pageNumber = this.pageNumber + 1;
+    if (this.pageNumber$() < this.totalPage()) {
+      this.pageChange.emit(this.pageNumber$() + 1);
       this.updatePages();
     }
   }

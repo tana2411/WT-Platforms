@@ -20,12 +20,6 @@
           <div class="w-75 mx-auto" i18n>SITE LOCATION</div>
           <mat-icon>remove</mat-icon>
         </div>
-        <hr />
-        <div class="d-flex justify-content-between">
-          <mat-icon></mat-icon>
-          <div class="w-75 mx-auto" i18n>REVIEW</div>
-          <mat-icon>remove</mat-icon>
-        </div>
       </div>
     </div>
     <div class="col-7">
@@ -36,21 +30,21 @@
             <div class="w-25 text-center">
               <mat-icon class="material-icons-outlined primary">error_outline</mat-icon>
             </div>
-            <div i18n class="fw-500 fs-16">Ensure all details are correct, error may delay verification (*Required field).</div>
+            <div i18n class="fw-500 fs-16">
+              Ensure uploaded documents are up-to-date versions and licence numbers are correct; errors may delay verification (*Required
+              Field).
+            </div>
           </div>
           <div class="col-12 mb-4">
             <mat-label class="fw-bold mb-1" i18n>COMPANY TYPE*</mat-label>
             <mat-form-field appearance="outline" class="w-100">
-              <mat-select formControlName="companyType">
+              <mat-select formControlName="companyType" placeholder="Please Select">
                 <mat-option value="manufacturer" i18n> Manufacturer </mat-option>
                 <mat-option value="processor" i18n>Processor</mat-option>
                 <mat-option value="recycler" i18n>Recycler</mat-option>
                 <mat-option value="broker" i18n>Broker</mat-option>
                 <mat-option value="waste_producer" i18n>Waste Producer</mat-option>
               </mat-select>
-              @if (formGroup.get('companyType')?.hasError('required')) {
-                <mat-error i18n>This field is required </mat-error>
-              }
             </mat-form-field>
           </div>
           <div class="col-12 mb-4">
@@ -64,19 +58,17 @@
               <mat-radio-button value="uploadLater" (change)="onSelectUploadLater.set(true)" i18n> Upload Later </mat-radio-button>
             </mat-radio-group>
           </div>
-          @if (onSelectUploadLater()) {
-            <div class="col-12 mb-4">
-              <div class="d-flex align-items-center justify-content-arround col-10 border rounded background-on-error w-100 p-2">
-                <div class="w-25 d-flex justify-content-center">
-                  <mat-icon class="error" style="font-size: 30px; height: 30px; width: 30px">error</mat-icon>
-                </div>
-                <div class="text-dark fw-500 fs-16" i18n>
-                  You can start buying and selling materials now, but please note that all transactions will be pending until you upload
-                  your company documents.
-                </div>
+          <div class="col-12 mb-4" [hidden]="!onSelectUploadLater()">
+            <div class="d-flex align-items-center justify-content-arround col-10 border rounded background-on-error w-100 p-2">
+              <div class="w-25 d-flex justify-content-center">
+                <mat-icon class="error" style="font-size: 30px; height: 30px; width: 30px">error</mat-icon>
+              </div>
+              <div class="text-dark fw-500 fs-16" i18n>
+                You can start buying and selling material now, but please note that all transactions will be pending until you upload your
+                company documentation.
               </div>
             </div>
-          }
+          </div>
           @if (!onSelectUploadLater() && documentType.value) {
             <div class="col-12 mb-4" [hidden]="!(documentType.value == 'envỉonmental_permit')">
               <h6 class="mt-5 mb-4 primary" i18n>Environmental Permit Upload*</h6>
@@ -102,6 +94,17 @@
               ></app-file-upload>
             </div>
 
+            @if (documentType.value == 'other') {
+              <div class="col-md-12 mb-4">
+                <label class="fw-bold" i18n>OTHER DOCUMENT DESCRIPTION*</label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input matInput placeholder="Type here" type="text" formControlName="otherDocumentType" />
+                  @if (formGroup.get('otherDocumentType')?.hasError('required')) {
+                    <mat-error i18n>This field is required </mat-error>
+                  }
+                </mat-form-field>
+              </div>
+            }
             <div class="col-12 mb-4" [hidden]="!(documentType.value == 'other')">
               <h6 class="mt-5 mb-4 primary" i18n>Other Document Upload*</h6>
               <app-file-upload
@@ -113,18 +116,6 @@
                 [expirationDateMode]="'optional'"
               ></app-file-upload>
             </div>
-
-            <!-- @if (documentType.value == 'other') {
-              <div class="col-md-12 mb-4">
-                <label class="fw-bold" i18n>DOCUMENT TYPE*</label>
-                <mat-form-field appearance="outline" class="w-100">
-                  <input matInput placeholder="Type here" type="text" formControlName="otherDocumentType" />
-                  @if (formGroup.get('otherDocumentType')?.hasError('required')) {
-                    <mat-error i18n>This field is required </mat-error>
-                  }
-                </mat-form-field>
-              </div>
-            } -->
           }
           <hr />
           <div class="col-12 mb-4">
@@ -148,9 +139,10 @@
             <div class="col-12 mb-4">
               <app-file-upload
                 (filesAdded)="handleFileReady($event, 'licence', 'waste_carrier_license')"
-                [maxFile]="6"
+                [maxFile]="1"
                 (uploadValid)="wasteLicenceValid.set($event)"
                 [expirationDateMode]="'optional'"
+                [isFutureDate]="true"
               ></app-file-upload>
             </div>
           }
@@ -168,14 +160,7 @@
         </div>
         <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-between">
           <div class="col-5">
-            <button
-              mat-stocked-button
-              class="w-100 text-center bg-white rounded border p-2 primary fw-bold"
-              [routerLink]="['/company-information']"
-              i18n
-            >
-              BACK
-            </button>
+            <button mat-stroked-button type="button" class="w-100" [routerLink]="['/company-information']" i18n>BACK</button>
           </div>
           <div class="col-5">
             <button
@@ -189,7 +174,7 @@
               (click)="send()"
               i18n
             >
-              SAVE AND CONTINUE
+              NEXT
             </button>
           </div>
         </div>

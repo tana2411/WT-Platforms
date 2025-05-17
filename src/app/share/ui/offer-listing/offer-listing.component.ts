@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { OfferListingItem, OfferStatus } from 'app/models/offer';
 import { OfferService } from 'app/services/offer.service';
+import { finalize } from 'rxjs';
 import { PaginationComponent } from '../listing/pagination/pagination.component';
 import { RejectReasonComponent } from '../my-offers/reject-reason/reject-reason.component';
 
@@ -21,6 +22,8 @@ export class OfferListingComponent {
   @Output() pageChange = new EventEmitter<number>();
   @Output() refresh = new EventEmitter<void>();
 
+  actionLoading = signal(false);
+
   constructor(
     private offerService: OfferService,
     private snackBar: MatSnackBar,
@@ -36,38 +39,62 @@ export class OfferListingComponent {
   }
 
   onAccept(item: OfferListingItem) {
-    this.offerService.acceptBid(item.id).subscribe({
-      next: () => {
-        this.snackBar.open('Bid accepted successfully.');
-        this.refresh.emit();
-      },
-      error: () => {
-        this.snackBar.open('Failed to accept the bid. Please check your network connection and try again.');
-      },
-    });
+    if (this.actionLoading()) {
+      return;
+    }
+
+    this.actionLoading.set(true);
+    this.offerService
+      .acceptBid(item.id)
+      .pipe(
+        finalize(() => {
+          this.actionLoading.set(false);
+        }),
+      )
+      .subscribe({
+        next: () => {
+          this.snackBar.open('Bid accepted successfully.');
+          this.refresh.emit();
+        },
+        error: () => {
+          this.snackBar.open('Failed to accept the bid. Please check your network connection and try again.');
+        },
+      });
   }
 
   onReject(item: OfferListingItem) {
+    if (this.actionLoading()) {
+      return;
+    }
+
+    this.actionLoading.set(true);
     const dialogRef = this.dialog.open(RejectReasonComponent, {
       maxWidth: '500px',
       width: '100%',
       panelClass: 'px-3',
     });
 
-    dialogRef.afterClosed().subscribe((reason) => {
-      if (!reason) {
-        return;
-      }
+    dialogRef
+      .afterClosed()
+      .pipe(
+        finalize(() => {
+          this.actionLoading.set(false);
+        }),
+      )
+      .subscribe((reason) => {
+        if (!reason) {
+          return;
+        }
 
-      this.offerService.rejectBid(item.id, reason).subscribe({
-        next: () => {
-          this.snackBar.open('Bid rejected successfully.');
-          this.refresh.emit();
-        },
-        error: () => {
-          this.snackBar.open('Failed to reject the bid. Please try again later.');
-        },
+        this.offerService.rejectBid(item.id, reason).subscribe({
+          next: () => {
+            this.snackBar.open('Bid rejected successfully.');
+            this.refresh.emit();
+          },
+          error: () => {
+            this.snackBar.open('Failed to reject the bid. Please try again later.');
+          },
+        });
       });
-    });
   }
 }

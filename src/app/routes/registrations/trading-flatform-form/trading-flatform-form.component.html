@@ -1,18 +1,18 @@
 <app-un-auth-layout>
   <div class="col-md-6 mx-auto">
-    <div class="border rounded p-3 background-primary border-radius text-white text-center mt-5 mb-3" i18n>
+    <div class="border border-1 border-dark p-3 background-primary border-radius text-white text-center mt-3 mb-5" i18n>
       Do you have a WasteTrade account?
       <a href="" class="text-white fw-bold text-decoration-underline">Login</a>
     </div>
-    <div class="border border-radius p-4 bg-white">
+    <div class="border border-radius border-1 border-dark p-4 bg-white">
       <h3 class="mb-4 fw-bold" i18n>Register</h3>
+      <h6 class="mb-4 mt-5 primary fw-bold" i18n>BASIC INFORMATION</h6>
       <form [formGroup]="formGroup">
-        <h6 class="mb-4 mt-5 primary" i18n>BASIC INFORMATION</h6>
-        <div class="row g-3 mb-3">
+        <div class="row g-3 mb-4">
           <div class="col-md-2">
             <mat-label class="fw-bold mb-1" i18n>PREFIX*</mat-label>
             <mat-form-field appearance="outline" class="w-100">
-              <mat-select formControlName="prefix">
+              <mat-select formControlName="prefix" placeholder="Please Select">
                 <mat-option value="dr" i18n> Dr.</mat-option>
                 <mat-option value="miss" i18n>Miss.</mat-option>
                 <mat-option value="mr" i18n>Mr.</mat-option>
@@ -112,7 +112,7 @@
           }
         </div>
 
-        <h6 class="mb-4 mt-5 primary" i18n>COMPANY INFORMATION</h6>
+        <h6 class="mb-4 mt-5 primary fw-bold" i18n>COMPANY INFORMATION</h6>
         <div class="col-12 mb-4">
           <mat-label class="fw-bold mb-1" i18n>WHERE DID YOU HEAR ABOUT US*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
@@ -146,7 +146,7 @@
         <div class="col-12 mb-4">
           <mat-label class="mb-0 fw-bold" i18n> COMPANY INTEREST* </mat-label>
           <mat-form-field appearance="outline" class="w-100">
-            <mat-select placeholder="" formControlName="companyInterest">
+            <mat-select placeholder="Please Select" formControlName="companyInterest">
               <mat-option value="both" i18n> Both</mat-option>
               <mat-option value="seller" i18n>Seller</mat-option>
               <mat-option value="buyer" i18n>Buyer</mat-option>
@@ -156,49 +156,56 @@
             <mat-error class="mt-0 mat-error" i18n>This field is required</mat-error>
           }
         </div>
-        <h6 class="mb-4 mt-5 primary" i18n>MATERIALS SELECTION</h6>
-        <div class="col-12 mb-5">
-          <mat-label class="mb-0 fw-bold" i18n>MATERIALS ACCEPTED <span class="fw-normal">(MULTIPLE SELECTION)*</span></mat-label>
-          <div class="col-12">
-            <mat-checkbox class="tri-state-checkbox" color="primary" (click)="selectAllMaterial.set(!selectAllMaterial())">{{
-              selectAllMaterial() ? 'Deselect All' : 'Select All'
-            }}</mat-checkbox>
-          </div>
-          <div class="row px-3 mb-4">
-            @for (item of materialsAccept; track $index; let i = $index) {
-              <div class="col-4">
-                <mat-checkbox
-                  color="primary"
-                  (change)="onSelectedMaterial($event, item.value)"
-                  [checked]="materials.value.includes(item.value)"
-                  >{{ item.name }}</mat-checkbox
-                >
+        <h6 class="mb-4 mt-5 primary fw-bold" i18n>MATERIALS SELECTION</h6>
+        <div class="col-12 mb-3">
+          <mat-checkbox class="tri-state-checkbox" color="primary" (change)="selectAllMaterial.set(!selectAllMaterial())">{{
+            selectAllMaterial() ? 'Deselect All' : 'Select All'
+          }}</mat-checkbox>
+        </div>
+        @for (material of materialsAccept; track $index) {
+          @if (material.materials.length > 0) {
+            <div class="col-12 mb-4" style="margin-left: 10px">
+              <div class="mb-2 fw-bold" i18n>{{ material.name | uppercase }}</div>
+              <div class="row px-3">
+                @for (item of material.materials; track $index; let i = $index) {
+                  <div class="col-12 col-sm-4 mb-2 pe-4" [class.col-sm-4]="item.name.length < 20">
+                    <div class="d-flex">
+                      <mat-checkbox
+                        color="primary"
+                        (change)="onSelectedMaterial($event, item.code)"
+                        [checked]="materials.value.includes(item.code)"
+                      >
+                        <span class="text-wrap">{{ item.name }}</span>
+                      </mat-checkbox>
+                    </div>
+                  </div>
+                }
               </div>
-            }
-            <div class="col-4">
-              <mat-checkbox color="primary" (change)="showOtherMaterial.set(!showOtherMaterial())" [checked]="selectAllMaterial()"
-                >Other</mat-checkbox
-              >
-            </div>
-            @if (materials.hasError('required') && materials.touched) {
-              <mat-error class="mat-error" i18n>This field is required</mat-error>
-            }
-          </div>
-          @if (showOtherMaterial()) {
-            <div class="col-12">
-              <mat-label class="fw-bold" i18n>OTHER MATERIAL*</mat-label>
-              <mat-form-field appearance="outline" class="w-100">
-                <input matInput placeholder="Type here" type="text" formControlName="otherMaterial" />
-                @if (formGroup.get('otherMaterial')?.hasError('required') && formGroup.get('otherMaterial')?.touched) {
-                  <mat-error i18n>This field is required </mat-error>
-                }
-                @if (formGroup.get('otherMaterial')?.hasError('maxlength')) {
-                  <mat-error i18n>Other Material cannot exceed 100 characters </mat-error>
-                }
-              </mat-form-field>
             </div>
           }
+        }
+        <div class="col-auto mb-2">
+          <mat-checkbox color="primary" (change)="showOtherMaterial.set(!showOtherMaterial())" [checked]="selectAllMaterial()">
+            Other
+          </mat-checkbox>
         </div>
+        @if (showOtherMaterial()) {
+          <div class="col-12">
+            <mat-label class="fw-bold" i18n>OTHER MATERIAL*</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+              <input matInput placeholder="Type here" type="text" formControlName="otherMaterial" />
+              @if (formGroup.get('otherMaterial')?.hasError('required') && formGroup.get('otherMaterial')?.touched) {
+                <mat-error i18n>This field is required </mat-error>
+              }
+              @if (formGroup.get('otherMaterial')?.hasError('maxlength')) {
+                <mat-error i18n>Other Material cannot exceed 100 characters </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        }
+        @if (materials.hasError('required') && materials.touched) {
+          <mat-error class="mat-error" i18n>This field is required</mat-error>
+        }
         <hr />
         <!-- <h6 class="mb-4 mt-5 primary" i18n>DECLARATION</h6> -->
         <div class="col-12 mt-3">
@@ -207,7 +214,7 @@
             <a class="fw-bold text-dark text-decoration-none" href="/termsandconditions" target="_blank">Terms & Condition</a>
             and
             <a class="fw-bold text-dark text-decoration-none" href="/privacy-policy" target="_blank">Privacy Policy </a>
-            by join WasteTrade. *
+            by joining WasteTrade. *
           </mat-checkbox>
           @if (formGroup.get('acceptTerm')?.invalid && formGroup.get('acceptTerm')?.touched) {
             <mat-error class="mt-0 mat-error" i18n> You must accept the Terms & Conditions and Privacy Policy to proceed. </mat-error>
