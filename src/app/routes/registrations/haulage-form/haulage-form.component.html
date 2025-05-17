@@ -1,18 +1,18 @@
 <app-un-auth-layout>
   <div class="col-md-6 mx-auto">
-    <div class="border rounded p-3 background-primary border-radius text-white text-center mt-5 mb-4" i18n>
+    <div class="border border-1 border-dark p-3 background-primary border-radius text-white text-center mt-3 mb-5" i18n>
       Do you have a WasteTrade account?
       <a href="" class="text-white fw-bold text-decoration-underline">Login</a>
     </div>
-    <div class="border border-radius p-4 bg-white">
-      <h3 class="my-4 fw-bold" i18n>Haulier Register</h3>
-      <h6 class="mb-3 primary" i18n>PERSONAL INFORMATION</h6>
+    <div class="border border-radius border-1 border-dark p-4 bg-white">
+      <h3 class="mb-4 fw-bold" i18n>Haulier Register</h3>
+      <h6 class="mb-4 mt-5 primary fw-bold" i18n>PERSONAL INFORMATION</h6>
       <form [formGroup]="formGroup">
         <div class="row g-3 mb-4">
           <div class="col-md-2">
             <mat-label class="fw-bold mb-1" i18n>PREFIX*</mat-label>
             <mat-form-field appearance="outline" class="w-100">
-              <mat-select formControlName="prefix">
+              <mat-select formControlName="prefix" placeholder="Please Select">
                 <mat-option value="dr" i18n> Dr.</mat-option>
                 <mat-option value="miss" i18n>Miss.</mat-option>
                 <mat-option value="mr" i18n>Mr.</mat-option>
@@ -64,7 +64,9 @@
             }
           </mat-form-field>
         </div>
-        <app-telephone-form-control [isRequired]="true" formControlName="phoneNumberUser"></app-telephone-form-control>
+        <div class="row mb-4">
+          <app-telephone-form-control [isRequired]="true" formControlName="phoneNumberUser"></app-telephone-form-control>
+        </div>
         <div class="row mb-4">
           <app-input-with-confirm-control
             valueLabel="EMAIL*"
@@ -111,7 +113,7 @@
         </div>
 
         <!-- Company information -->
-        <h6 class="mb-4 mt-5 primary" i18n>COMPANY INFORMATION</h6>
+        <h6 class="mb-4 mt-5 primary fw-bold" i18n>COMPANY INFORMATION</h6>
         <div class="col-md-12 mb-4">
           <label class="fw-bold" i18n>COMPANY NAME*</label>
           <mat-form-field appearance="outline" class="w-100">
@@ -206,7 +208,7 @@
           <div class="col-md-6">
             <mat-label class="fw-bold mb-1" i18n>COUNTRY*</mat-label>
             <mat-form-field appearance="outline" class="w-100">
-              <mat-select formControlName="country">
+              <mat-select formControlName="country" placeholder="Please Select">
                 @for (item of countryList; track $index; let i = $index) {
                   <mat-option color="primary" [value]="item.isoCode">{{ item.isoCode }} - {{ item.name }}</mat-option>
                 }
@@ -242,7 +244,7 @@
         </div>
 
         <!-- Additional information -->
-        <h6 class="mt-5 mb-4 primary" i18n>ADDITIONAL INFORMATION</h6>
+        <h6 class="mb-4 mt-5 primary fw-bold" i18n>ADDITIONAL INFORMATION</h6>
         <div class="col-12 mb-4">
           <mat-label class="mb-0 fw-bold" i18n> FLEET TYPE* </mat-label>
           <mat-radio-group formControlName="fleetType" class="d-flex justify-content-between col-8 radio-mat-error">
@@ -311,7 +313,7 @@
           </div>
         </div>
         <!-- Document upload -->
-        <h6 class="mb-4 mt-5 primary" i18n>WASTE CARRIER LICENCE UPLOAD*</h6>
+        <h6 class="mb-4 mt-5 primary fw-bold" i18n>WASTE CARRIER LICENCE UPLOAD*</h6>
         <div class="col-12 mb-4">
           <app-file-upload
             [maxFile]="6"

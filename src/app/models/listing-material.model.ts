@@ -37,6 +37,7 @@ export interface FilterParams {
     materialPacking?: string;
     wasteStoration?: string;
     showFullfilledListing?: boolean;
+    searchTerm?: string;
   };
 }
 

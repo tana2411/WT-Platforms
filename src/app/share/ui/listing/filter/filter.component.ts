@@ -142,7 +142,8 @@ export class FilterComponent implements OnInit {
         debounceTime(500),
         switchMap((value) => {
           if (value[searchKey] == '') {
-            this.searchTerm.emit(null);
+            const filter = this.normalizeFilterParams(value);
+            return from(Promise.resolve({ ...filter, searchTerm: null }));
           }
           const filter = this.normalizeFilterParams(value);
           return from(Promise.resolve(filter));
@@ -343,7 +344,9 @@ export class FilterComponent implements OnInit {
   }
 
   search() {
-    const search = this.filterForm.get('searchTerm')?.value || '';
-    this.searchTerm.emit(search);
+    const filterValue = this.filterForm.value;
+    if (filterValue[searchKey]) {
+      this.filterChanged.emit({ ...this.normalizeFilterParams(filterValue), searchTerm: filterValue[searchKey] });
+    }
   }
 }

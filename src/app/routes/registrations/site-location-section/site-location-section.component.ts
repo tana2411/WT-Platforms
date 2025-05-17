@@ -1,3 +1,4 @@
+import { UpperCasePipe } from '@angular/common';
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -12,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTimepickerModule } from '@angular/material/timepicker';
 import { Router, RouterModule } from '@angular/router';
+import { materialTypes } from '@app/statics';
 import { TelephoneFormControlComponent } from '@app/ui';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { AuthService } from 'app/services/auth.service';
@@ -40,65 +42,13 @@ import { countries } from './../../../statics/country-data';
     TelephoneFormControlComponent,
     MatTimepickerModule,
     MatCheckboxModule,
+    UpperCasePipe,
   ],
 })
 export class SiteLocationSectionComponent implements OnInit {
   countryList = countries;
 
-  materialsAccept = [
-    {
-      name: 'LDPE',
-      value: 'ldpe',
-    },
-    {
-      name: 'PP',
-      value: 'pp',
-    },
-    {
-      name: 'PC',
-      value: 'pc',
-    },
-    {
-      name: 'ABS',
-      value: 'abs',
-    },
-    {
-      name: 'Acrylic',
-      value: 'acrylic',
-    },
-    {
-      name: 'Granulates',
-      value: 'granulates',
-    },
-    {
-      name: 'HDPE',
-      value: 'hdpe',
-    },
-    {
-      name: 'PVC',
-      value: 'pvc',
-    },
-    {
-      name: 'PET',
-      value: 'pet',
-    },
-    {
-      name: 'PA',
-      value: 'pa',
-    },
-    {
-      name: 'PS',
-      value: 'ps',
-    },
-    {
-      name: 'Other (Mix)',
-      value: 'other (mix)',
-    },
-    {
-      name: 'Other (Single Sources)',
-      value: 'other (single sources)',
-    },
-  ];
+  materialTypes = materialTypes;
 
   formGroup = new FormGroup({
     locationName: new FormControl<string | null>(null, [Validators.required]),
@@ -138,9 +88,12 @@ export class SiteLocationSectionComponent implements OnInit {
   registrationService = inject(RegistrationsService);
   router = inject(Router);
 
-  materialAccept = computed(() => {
-    const userMaterial = this.user()?.company.favoriteMaterials;
-    return this.materialsAccept.filter((m) => userMaterial?.includes(m.value));
+  materialsAccept = computed(() => {
+    const userMaterial = this.user()?.company.favoriteMaterials || [];
+    return this.materialTypes
+      .flatMap((type) => type.materials)
+      .filter((material) => userMaterial.includes(material.code))
+      .map((i) => i.code);
   });
 
   constructor() {

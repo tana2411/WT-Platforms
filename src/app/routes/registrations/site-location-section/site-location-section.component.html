@@ -119,7 +119,7 @@
             <div class="col-md-6">
               <mat-label class="fw-bold mb-1" i18n>COUNTRY*</mat-label>
               <mat-form-field appearance="outline" class="w-100">
-                <mat-select formControlName="country">
+                <mat-select formControlName="country" placeholder="Please Select">
                   @for (item of countryList; track $index; let i = $index) {
                     <mat-option color="primary" [value]="item.isoCode">{{ item.isoCode }} - {{ item.name }}</mat-option>
                   }
@@ -177,20 +177,28 @@
           <hr />
 
           <div class="col-12 mb-5">
-            <mat-label class="mb-0 fw-bold" i18n
-              >MATERIALS ACCEPTED
-              <!-- <span class="fw-normal">(MULTIPLE SELECTION)*</span> -->
-            </mat-label>
-            <div class="row px-3 mb-4">
-              @for (item of materialAccept(); track $index; let i = $index) {
-                <div class="col-4">
-                  <mat-checkbox color="primary" [checked]="true">{{ item.name }}</mat-checkbox>
+            <mat-label class="mb-0 fw-bold" i18n>MATERIALS ACCEPTED </mat-label>
+            @for (material of materialTypes; track $index) {
+              @if (material.materials.length > 0) {
+                <div class="col-12 mb-4" style="margin-left: 10px">
+                  <div class="mb-2 pl-5 fw-bold" i18n>{{ material.name | uppercase }}</div>
+                  <div class="row px-3">
+                    @for (item of material.materials; track $index; let i = $index) {
+                      <div class="col-12 col-sm-4 mb-2 pe-4" [class.col-sm-4]="item.name.length < 20">
+                        <div class="d-flex">
+                          <mat-checkbox color="primary" [checked]="materialsAccept().includes(item.code)">
+                            <span class="text-wrap">{{ item.name }}</span>
+                          </mat-checkbox>
+                        </div>
+                      </div>
+                    }
+                  </div>
                 </div>
               }
-              @if (formGroup.get('materials')?.invalid && formGroup.get('materials')?.touched) {
-                <mat-error class="mat-error" i18n>This field is required</mat-error>
-              }
-            </div>
+            }
+            @if (formGroup.get('materials')?.invalid && formGroup.get('materials')?.touched) {
+              <mat-error class="mat-error" i18n>This field is required</mat-error>
+            }
             @if (showOtherMaterial()) {
               <div class="col-12">
                 <mat-label class="fw-bold" i18n>OTHER MATERIAL*</mat-label>

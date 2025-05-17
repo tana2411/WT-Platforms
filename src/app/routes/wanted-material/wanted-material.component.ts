@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
@@ -40,6 +40,7 @@ export class WantedMaterialComponent implements OnInit {
   totalPage = computed(() => {
     return Math.ceil(this.totalItem() / PAGE_SIZE);
   });
+
   constructor() {
     this.filter.set({
       skip: 0,
@@ -47,21 +48,6 @@ export class WantedMaterialComponent implements OnInit {
       where: {
         listingType: 'wanted',
       },
-    });
-
-    effect(() => {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: { search: this.searchTerm() },
-        queryParamsHandling: 'merge',
-      });
-    });
-
-    this.route.queryParamMap.subscribe((params) => {
-      const search = params.get('search');
-      if (search) {
-        this.refresh();
-      }
     });
   }
 
@@ -79,11 +65,11 @@ export class WantedMaterialComponent implements OnInit {
     const cleanedParams = Object.fromEntries(
       Object.entries(filterParams).filter(([_, value]) => value != null && value != '' && value != 'All'),
     );
-
     this.updateFilter({
       skip: 0,
       where: Object.keys(cleanedParams).length > 0 ? { ...cleanedParams } : { listingType: 'wanted' },
     });
+
     this.refresh();
   }
 
@@ -105,9 +91,8 @@ export class WantedMaterialComponent implements OnInit {
   refresh() {
     const currentFilter = this.filter();
     this.loading.set(true);
-    const search = this.searchTerm() || '';
     this.listingService
-      .get(currentFilter, search)
+      .get(currentFilter)
       .pipe(
         finalize(() => this.loading.set(false)),
         catchError((err) => {
