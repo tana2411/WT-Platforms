@@ -14,7 +14,6 @@
     <app-spinner></app-spinner>
   } @else if (items()) {
     @if (items()?.length) {
-      <p>{{ page() }}</p>
       <app-offer-table [page]="page()" [totalItems]="totalItems()" [items]="items()!" (pageChange)="onPageChange($event)" />
     } @else {
       @if (emptyProps(); as emptyProps) {

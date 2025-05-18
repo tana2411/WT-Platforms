@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { mapCountryCodeToName } from '@app/statics';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
-import { Product } from 'app/models/product.model';
+import { ListingImageType, ListingMaterial } from 'app/models';
 import { ProductStatusComponent } from '../product-status/product-status.component';
 
 @Component({
@@ -12,5 +13,14 @@ import { ProductStatusComponent } from '../product-status/product-status.compone
 })
 export class ProductCardComponent {
   @Input() materialInterest = true;
-  @Input({ required: true }) product: Product | undefined;
+  @Input({ required: true }) product: ListingMaterial | undefined;
+
+  mapCountryCodeToName = mapCountryCodeToName;
+  constructor() {
+    console.log({ mapCountryCodeToName });
+  }
+
+  get featureImage() {
+    return this.product?.documents.find((i) => i.documentType === ListingImageType.FEATURE_IMAGE)?.documentUrl ?? '';
+  }
 }

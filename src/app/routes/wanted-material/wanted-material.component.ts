@@ -89,6 +89,10 @@ export class WantedMaterialComponent implements OnInit {
   refresh() {
     const currentFilter = this.filter();
     this.loading.set(true);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
     this.listingService
       .get(currentFilter)
       .pipe(

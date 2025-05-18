@@ -8,8 +8,8 @@
     <app-spinner></app-spinner>
   } @else {
     <app-product-grid [items]="items()" [totalItems]="totalItem()"></app-product-grid>
+    <app-pagination [pageNumber]="page()" [totalCount]="totalItem()" (pageChange)="onPageChange($event)"></app-pagination>
   }
-  <app-pagination [pageNumber]="page()" [totalCount]="totalItem()" (pageChange)="onPageChange($event)"></app-pagination>
   <hr />
   <app-listing-footer></app-listing-footer>
 </app-common-layout>

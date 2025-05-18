@@ -49,6 +49,11 @@ export class MyOffersComponent {
       const tabKey = this.getTabKey(this.activeTab());
       this.updateEmptyProps(tabKey);
 
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+
       if (tabKey !== OfferType.Received) {
         this.items.set([]);
         return;
@@ -71,16 +76,16 @@ export class MyOffersComponent {
   }
 
   mapOfferToTableItem(offerDetail: OfferDetail): TableOfferItem {
-    const { listing, offer, buyerCompany } = offerDetail;
+    const { listing, offer, buyer } = offerDetail;
 
     return {
       id: offer.id,
       date: moment(offer.createdAt).format('YYYY-MM-DD'),
       materialName: listing.title ?? '',
       quantity: offer.quantity,
-      country: buyerCompany.country,
+      country: offer.buyerCountry,
       status: offer.status,
-      bidAmount: `${offer.pricePerUnit}/${listing.materialWeightPerUnit}`,
+      bidAmount: `${offer.offeredPricePerUnit}/MT`,
     };
   }
 
