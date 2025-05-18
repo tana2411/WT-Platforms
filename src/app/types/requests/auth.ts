@@ -33,6 +33,12 @@ export type ResponseMe = {
   };
 };
 
+export enum CompanyStatus {
+  PENDING_VERIFICATION = 'pending_verification',
+  VERIFIED = 'verified',
+  REJECTED = 'rejected',
+}
+
 type Company = {
   id: number;
   countryCode: string | null;
@@ -56,7 +62,7 @@ type Company = {
   fleetType: string | null;
   areasCovered: string | null;
   containerTypes: string | null;
-  status: 'pending_verification' | 'verified' | 'rejected';
+  status: CompanyStatus;
   verifiedAt: string | null;
   createdAt: string;
   updatedAt: string;

@@ -4,12 +4,15 @@
     (filterChanged)="onFilterChange($event)"
   ></app-filter>
 
-  <button (click)="onBid()">Bidding</button>
+  <!-- <button (click)="onBid()">Bidding</button> -->
 
   <div class="mid-content-wrapper">
-    <app-product-grid [items]="products" [totalItems]="100"></app-product-grid>
-
-    <app-pagination [pageNumber]="1" [totalCount]="100" (pageChange)="onPageChange($event)"></app-pagination>
+    @if (loading()) {
+      <app-spinner></app-spinner>
+    } @else {
+      <app-product-grid [items]="items()" [totalItems]="totalItem()"></app-product-grid>
+      <app-pagination [pageNumber]="page()" [totalCount]="totalItem()" (pageChange)="onPageChange($event)"></app-pagination>
+    }
 
     <hr class="mt-5 mb-0" />
 

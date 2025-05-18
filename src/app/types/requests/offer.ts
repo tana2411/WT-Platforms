@@ -1,38 +1,69 @@
 import { OfferStatus } from 'app/models/offer';
+import { CompanyStatus } from './auth';
 
-export type OfferDetail = {
-  offer: {
-    id: number;
-    createdAt: string;
-    quantity: number;
-    totalPrice: number;
-    pricePerUnit: number;
-    status: OfferStatus;
-    message: string | null;
-    rejectionReason: string | null;
-    sellerTotalAmount: number;
+interface Offer {
+  id: number;
+  createdAt: string;
+  quantity: number;
+  offeredPricePerUnit: number;
+  totalPrice: number;
+  status: OfferStatus;
+  state: string;
+  expiresAt: string | null;
+  earliestDeliveryDate: string | null;
+  latestDeliveryDate: string | null;
+  currency: string | null;
+  message: string | null;
+  rejectionReason: string | null;
+  incoterms: string | null;
+  shippingPort: string | null;
+  needsTransport: boolean;
+  listingId: number;
+  buyerCompanyId: number | null;
+  buyerLocationId: number | null;
+  buyerUserId: number | null;
+  buyerCountry: string | null;
+  sellerCompanyId: number;
+  sellerLocationId: number | null;
+  sellerUserId: number;
+  sellerCountry: string | null;
+  acceptedByUserId: number | null;
+  rejectedByUserId: number | null;
+  createdByUserId: number | null;
+  updatedAt: string;
+}
+
+interface Listing {
+  id: number;
+  title: string;
+  status: string;
+  state: string;
+  materialWeightWanted: number | null;
+  quantity: number;
+  remainingQuantity: number;
+  materialPacking: string;
+  materialType: string;
+  numberOfOffers?: number;
+  bestOffer?: number;
+}
+
+interface Company {
+  id: number | null;
+  name: string | null;
+  country: string | null;
+  status: CompanyStatus | null;
+}
+
+export interface OfferDetail {
+  offer: Offer;
+  listing: Listing;
+  seller: {
+    company: Company;
   };
-  listing: {
-    id: number;
-    title: string | null;
-    materialWeightPerUnit: string | null;
-    status: OfferStatus;
-    remainingQuantity: number | null;
-    bestOffer: string;
-    numberOfOffers: string;
+  buyer: {
+    company: Company;
   };
-  buyerCompany: {
-    id: number;
-    name: string;
-    country: string;
-  };
-  sellerCompany?: {
-    id: number;
-    name: string;
-    country: string | null;
-    status: string;
-  };
-};
+}
 
 export type RequestGetOffersParams = {
   listingId?: number;

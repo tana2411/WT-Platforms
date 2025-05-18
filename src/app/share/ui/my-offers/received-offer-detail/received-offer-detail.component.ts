@@ -1,5 +1,8 @@
 import { Component, computed, effect, Input, OnInit, signal } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { OfferListingItem } from 'app/models/offer';
 import { OfferService } from 'app/services/offer.service';
 import { OfferDetail } from 'app/types/requests/offer';
@@ -12,7 +15,14 @@ import { SpinnerComponent } from '../../spinner/spinner.component';
 
 @Component({
   selector: 'app-received-offer-detail',
-  imports: [ProductImageComponent, ProductDescriptionComponent, SpinnerComponent, OfferListingComponent],
+  imports: [
+    ProductImageComponent,
+    ProductDescriptionComponent,
+    SpinnerComponent,
+    OfferListingComponent,
+    MatIconModule,
+    MatButtonModule,
+  ],
   templateUrl: './received-offer-detail.component.html',
   styleUrl: './received-offer-detail.component.scss',
 })
@@ -30,28 +40,33 @@ export class ReceivedOfferDetailComponent implements OnInit {
     return [
       {
         label: 'Weight',
-        icon: 'weight',
-        value: offer?.listing.materialWeightPerUnit,
+        icon: 'fitness_center',
+        value: offer?.listing.materialWeightWanted,
       },
       {
         label: 'Best Offer',
-        icon: 'library_books',
+        icon: 'pages',
         value: offer?.listing.bestOffer,
       },
       {
-        label: `Seller's Total Amount`,
+        label: `No. loads`,
         icon: 'sell',
-        value: offer?.offer.sellerTotalAmount,
+        value: offer?.listing.quantity,
       },
       {
-        label: 'Number of Offers',
-        icon: 'low_density',
+        label: 'No. offers',
+        icon: 'list_alt',
         value: offer?.listing.numberOfOffers,
       },
       {
         label: 'Loads Remaining',
         icon: 'hourglass_top',
         value: offer?.listing.remainingQuantity,
+      },
+      {
+        label: 'Status',
+        icon: 'hourglass_top',
+        value: offer?.listing.status,
       },
       // {
       //   label: 'Price per Load',
@@ -87,14 +102,15 @@ export class ReceivedOfferDetailComponent implements OnInit {
   }
 
   mapOfferToTableItem(offerDetail: OfferDetail): OfferListingItem {
-    const { listing, offer, buyerCompany } = offerDetail;
+    const { listing, offer, buyer } = offerDetail;
 
     return {
       id: offer.id,
       date: moment(offer.createdAt).format('YYYY-MM-DD'),
-      buyerId: buyerCompany.id,
+      buyerId: offer.buyerCompanyId,
       status: offer.status,
-      bidAmount: `${offer.pricePerUnit}/${listing.materialWeightPerUnit}`,
+      bidAmount: `${offer.offeredPricePerUnit}/MT`,
+      buyerStatus: buyer.company.status,
     };
   }
 
@@ -104,6 +120,10 @@ export class ReceivedOfferDetailComponent implements OnInit {
 
   onRefresh() {
     this.updator.next();
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   }
 
   ngOnInit(): void {
@@ -123,5 +143,9 @@ export class ReceivedOfferDetailComponent implements OnInit {
       .subscribe((res) => {
         this.offer.set(res.data);
       });
+  }
+
+  onBack() {
+    this.router.navigateByUrl(ROUTES_WITH_SLASH.myOffers);
   }
 }

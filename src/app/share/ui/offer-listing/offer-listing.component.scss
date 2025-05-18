@@ -2,6 +2,7 @@
 
 .row-item {
   min-width: 1200px;
+  padding-right: 20px;
 }
 
 .image {
@@ -46,4 +47,8 @@
 
 .Rejected {
   color: $error !important;
+}
+
+.counter-button {
+  background-color: #fff;
 }

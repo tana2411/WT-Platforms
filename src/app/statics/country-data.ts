@@ -1920,3 +1920,11 @@ export const countries = [
     normalizedCode: '263',
   },
 ];
+
+export const mapCountryCodeToName = countries.reduce(
+  (memo, item) => {
+    memo[item.isoCode] = item.name;
+    return memo;
+  },
+  {} as Record<string, string>,
+);

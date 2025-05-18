@@ -1,12 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
-import { Product, ProductStatus } from 'app/models/product.model';
+import { FilterParams, ListingMaterial } from 'app/models';
+import { ListingService } from 'app/services/listing.service';
 import { BiddingFormComponent } from 'app/share/ui/product-detail/bidding-form/bidding-form.component';
+import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
+import { catchError, finalize, of } from 'rxjs';
 import { FilterComponent } from '../../share/ui/listing/filter/filter.component';
 import { ListingFooterComponent } from '../../share/ui/listing/listing-footer/listing-footer.component';
 import { PaginationComponent } from '../../share/ui/listing/pagination/pagination.component';
 import { ProductGridComponent } from '../../share/ui/listing/product-grid/product-grid.component';
+
+const PAGE_SIZE = 10;
 
 @Component({
   selector: 'app-market-place',
@@ -20,17 +27,95 @@ import { ProductGridComponent } from '../../share/ui/listing/product-grid/produc
     ListingFooterComponent,
     MatDialogModule,
     BiddingFormComponent,
+    SpinnerComponent,
   ],
 })
 export class MarketPlaceComponent {
-  constructor(private dialog: MatDialog) {}
+  items = signal<ListingMaterial[]>([]);
+  filter = signal<FilterParams | undefined>(undefined);
+  loading = signal<boolean>(false);
+  totalItem = signal<number>(0);
+  page = signal<number>(1);
+  searchTerm = signal<string | null>(null);
+
+  listingService = inject(ListingService);
+  snackBar = inject(MatSnackBar);
+  router = inject(Router);
+  route = inject(ActivatedRoute);
+  dialog = inject(MatDialog);
+
+  constructor() {
+    this.filter.set({
+      skip: 0,
+      limit: PAGE_SIZE,
+      where: {
+        listingType: 'sell',
+      },
+    });
+  }
 
   onPageChange(page: number) {
-    console.log(page);
+    this.page.set(page);
+    this.updateFilter({
+      ...this.filter(),
+      skip: (page - 1) * PAGE_SIZE,
+    });
+    this.refresh();
   }
 
   onFilterChange(filterParams: any) {
-    console.log(filterParams);
+    const cleanedParams = Object.fromEntries(
+      Object.entries(filterParams).filter(([_, value]) => value != null && value != '' && value != 'All'),
+    );
+    this.updateFilter({
+      skip: 0,
+      where: Object.keys(cleanedParams).length > 0 ? { ...cleanedParams } : { listingType: 'wanted' },
+    });
+
+    this.refresh();
+  }
+
+  updateFilter(newFilter: Partial<FilterParams>) {
+    this.filter.update((currentFilter) => {
+      const existing = currentFilter || { skip: 0, limit: PAGE_SIZE, where: {} };
+
+      return {
+        ...existing,
+        ...newFilter,
+        where: {
+          listingType: existing.where.listingType,
+          ...newFilter.where,
+        },
+      };
+    });
+  }
+
+  refresh() {
+    const currentFilter = this.filter();
+    this.loading.set(true);
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+
+    this.listingService
+      .get(currentFilter)
+      .pipe(
+        finalize(() => this.loading.set(false)),
+        catchError((err) => {
+          this.snackBar.open(`${err.error?.error?.message ?? 'Unknown error'}`, 'Ok', {
+            duration: 3000,
+          });
+          return of(null);
+        }),
+      )
+      .subscribe((data) => {
+        if (data) {
+          this.items.set(data.results);
+          this.totalItem.set(data.totalCount);
+        }
+      });
   }
 
   onBid() {
@@ -49,58 +134,4 @@ export class MarketPlaceComponent {
     //   }
     // });
   }
-
-  products: Product[] = [
-    {
-      name: 'HDPE Reels - Natural',
-      location: 'Norway',
-      averaWeightPerLoad: '350MT',
-      imageSrc: '',
-      status: ProductStatus.Available,
-      fromDate: '2025-05-12T10:35:47.353Z',
-    },
-    {
-      name: 'HDPE Reels - Natural',
-      location: 'Norway',
-      averaWeightPerLoad: '350MT',
-      imageSrc: '',
-      status: ProductStatus.Required,
-      fromDate: '2025-05-12T10:35:47.353Z',
-    },
-    {
-      name: 'HDPE Reels - Natural',
-      location: 'Norway',
-      averaWeightPerLoad: '350MT',
-      imageSrc: '',
-      status: ProductStatus.Available,
-    },
-    {
-      name: 'HDPE Reels - Natural',
-      location: 'Norway',
-      averaWeightPerLoad: '350MT',
-      imageSrc: '',
-      status: ProductStatus.Required,
-    },
-    {
-      name: 'HDPE Reels - Natural',
-      location: 'Norway',
-      averaWeightPerLoad: '350MT',
-      imageSrc: '',
-      status: ProductStatus.Sold,
-    },
-    {
-      name: 'HDPE Reels - Natural',
-      location: 'Norway',
-      averaWeightPerLoad: '350MT',
-      imageSrc: '',
-      status: ProductStatus.Expired,
-    },
-    {
-      name: 'HDPE Reels - Natural',
-      location: 'Norway',
-      averaWeightPerLoad: '350MT',
-      imageSrc: '',
-      status: ProductStatus.Ongoing,
-    },
-  ];
 }
