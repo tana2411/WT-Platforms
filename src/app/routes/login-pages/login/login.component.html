@@ -1,38 +1,23 @@
 <div class="page-wrapper mx-auto">
-  <div
-    class="border border-radius fs-3 p-3 background-primary border-radius text-white text-center mb-4"
-  >
+  <div class="border border-radius fs-3 p-3 background-primary border-radius text-white text-center mb-4">
     <span i18n>Need a WasteTrade account? </span>
-    <a
-      routerLink="/register"
-      class="text-white fw-bold text-decoration-underline"
-      (click)="openCreateAccountModal()"
-      >Create an account</a
-    >
+    <a routerLink="/register" class="text-white fw-bold text-decoration-underline" (click)="openCreateAccountModal()">Create an account</a>
   </div>
 
   <div class="border border-radius form-container py-3 px-4 px-sm-5 py-md-4">
     <h4 class="fw-bold fs-1 mb-3" i18n>Login</h4>
-    <h6 class="text-primary mb-4 fw-bold" i18n>Welcome Back!</h6>
+    <h6 class="primary mb-4 fw-bold" i18n>Welcome Back!</h6>
 
     <form [formGroup]="formGroup">
       <div class="col-12 mb-4">
         <mat-label class="fw-bold mb-1" i18n>EMAIL ADDRESS</mat-label>
         <mat-form-field appearance="outline" class="w-100">
-          <input
-            matInput
-            placeholder="ex. sample@gmail.com"
-            type="text"
-            formControlName="email"
-          />
+          <input matInput placeholder="ex. sample@gmail.com" type="text" formControlName="email" />
         </mat-form-field>
-        @if (
-          formGroup.get("email")?.hasError("required") &&
-          formGroup.get("email")?.touched
-        ) {
+        @if (formGroup.get('email')?.hasError('required') && formGroup.get('email')?.touched) {
           <mat-error i18n>This is a required field.</mat-error>
         }
-        @if (formGroup.get("email")?.hasError("email")) {
+        @if (formGroup.get('email')?.hasError('email')) {
           <mat-error i18n>Please enter a valid email address.</mat-error>
         }
       </div>
@@ -40,17 +25,9 @@
       <div class="col-12 mb-3">
         <mat-label class="fw-bold mb-1" i18n>PASSWORD</mat-label>
         <mat-form-field appearance="outline" class="w-100">
-          <input
-            matInput
-            type="password"
-            placeholder="******"
-            formControlName="password"
-          />
+          <input matInput type="password" placeholder="******" formControlName="password" />
         </mat-form-field>
-        @if (
-          formGroup.get("password")?.hasError("required") &&
-          formGroup.get("password")?.touched
-        ) {
+        @if (formGroup.get('password')?.hasError('required') && formGroup.get('password')?.touched) {
           <mat-error i18n>This is a required field.</mat-error>
         }
         @if (serverError()) {
@@ -69,13 +46,7 @@
       </button>
 
       <div class="text-center mt-4 pb-2 fw-bold">
-        <a
-          href="/login?lost_pass=1"
-          class="text-decoration-underline text-success"
-          i18n
-        >
-          LOST YOUR PASSWORD?
-        </a>
+        <a href="/login?lost_pass=1" class="text-decoration-underline text-success" i18n> LOST YOUR PASSWORD? </a>
       </div>
     </form>
   </div>
