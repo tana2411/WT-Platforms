@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FilterParams, ListingMaterialPayload, ListingResponse } from 'app/models';
+import { ListingMaterialDetailResponse } from 'app/models/listing-material-detail.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -22,5 +23,9 @@ export class ListingService {
     }
 
     return this.httpClient.get<ListingResponse>('/listings', { params });
+  }
+
+  getDetail(listingId: number) {
+    return this.httpClient.get<ListingMaterialDetailResponse>(`/listings/${listingId}`);
   }
 }

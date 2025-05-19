@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { FilterParams, ListingMaterial } from 'app/models';
 import { ListingService } from 'app/services/listing.service';
@@ -112,57 +113,7 @@ export class WantedMaterialComponent implements OnInit {
       });
   }
 
-  // products: Product[] = [
-  //   {
-  //     name: 'HDPE Reels - Natural',
-  //     location: 'Norway',
-  //     averaWeightPerLoad: '350MT',
-  //     imageSrc: '',
-  //     status: ProductStatus.Available,
-  //     fromDate: '2025-05-12T10:35:47.353Z',
-  //   },
-  //   {
-  //     name: 'HDPE Reels - Natural',
-  //     location: 'Norway',
-  //     averaWeightPerLoad: '350MT',
-  //     imageSrc: '',
-  //     status: ProductStatus.Required,
-  //     fromDate: '2025-05-12T10:35:47.353Z',
-  //   },
-  //   {
-  //     name: 'HDPE Reels - Natural',
-  //     location: 'Norway',
-  //     averaWeightPerLoad: '350MT',
-  //     imageSrc: '',
-  //     status: ProductStatus.Available,
-  //   },
-  //   {
-  //     name: 'HDPE Reels - Natural',
-  //     location: 'Norway',
-  //     averaWeightPerLoad: '350MT',
-  //     imageSrc: '',
-  //     status: ProductStatus.Required,
-  //   },
-  //   {
-  //     name: 'HDPE Reels - Natural',
-  //     location: 'Norway',
-  //     averaWeightPerLoad: '350MT',
-  //     imageSrc: '',
-  //     status: ProductStatus.Sold,
-  //   },
-  //   {
-  //     name: 'HDPE Reels - Natural',
-  //     location: 'Norway',
-  //     averaWeightPerLoad: '350MT',
-  //     imageSrc: '',
-  //     status: ProductStatus.Expired,
-  //   },
-  //   {
-  //     name: 'HDPE Reels - Natural',
-  //     location: 'Norway',
-  //     averaWeightPerLoad: '350MT',
-  //     imageSrc: '',
-  //     status: ProductStatus.Ongoing,
-  //   },
-  // ];
+  onSelect(item: ListingMaterial) {
+    this.router.navigateByUrl(`${ROUTES_WITH_SLASH.listingOfferDetail}/${item.id}`);
+  }
 }

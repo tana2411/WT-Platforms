@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OffersDetailComponent } from './offers-detail.component';
+import { ShareListingComponent } from './share-listing.component';
 
-describe('OffersDetailComponent', () => {
-  let component: OffersDetailComponent;
-  let fixture: ComponentFixture<OffersDetailComponent>;
+describe('ShareListingComponent', () => {
+  let component: ShareListingComponent;
+  let fixture: ComponentFixture<ShareListingComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OffersDetailComponent]
+      imports: [ShareListingComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(OffersDetailComponent);
+    fixture = TestBed.createComponent(ShareListingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

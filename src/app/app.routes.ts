@@ -111,7 +111,20 @@ export const routes: Routes = [
     data: {
       requireAuthParams: [GuardRequireRole.Trading, GuardRequireRole.SuperAdmin],
     },
-    loadComponent: () => import('./routes/offers-detail/offers-detail.component').then((m) => m.OffersDetailComponent),
+    loadComponent: () =>
+      import('./routes/my-offers-detail/my-offers-detail.component').then((m) => m.MyOffersDetailComponent),
+  },
+
+  {
+    path: `${ROUTES.listingOfferDetail}/:offerId`,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [GuardRequireRole.Trading, GuardRequireRole.SuperAdmin],
+    },
+    loadComponent: () =>
+      import('./routes/listing-offers-detail/listing-offers-detail.component').then(
+        (m) => m.ListingOffersDetailComponent,
+      ),
   },
   {
     path: ROUTES.admin,

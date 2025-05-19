@@ -13,6 +13,8 @@ export class ProductGridComponent implements OnInit {
   @Input() items: any[] = [];
   @Input() totalItems: number = 10;
   @Output() materialInterest = new EventEmitter();
+  @Output() selectItem = new EventEmitter<any>();
+
   constructor() {}
 
   ngOnInit() {}
