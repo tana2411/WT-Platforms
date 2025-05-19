@@ -9,6 +9,7 @@ export const ROUTES = {
   logout: 'logout',
   myOffers: 'my-offer',
   offerDetail: 'offer-detail',
+  listingOfferDetail: 'wt_wanted_listing',
 };
 
 export const ROUTES_WITH_SLASH = {
@@ -22,4 +23,5 @@ export const ROUTES_WITH_SLASH = {
   logout: '/logout',
   myOffers: '/my-offer',
   offerDetail: '/offer-detail',
+  listingOfferDetail: '/wt_wanted_listing',
 };

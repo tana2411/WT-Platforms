@@ -5,13 +5,13 @@ import { OfferService } from 'app/services/offer.service';
 import { ReceivedOfferDetailComponent } from 'app/share/ui/my-offers/received-offer-detail/received-offer-detail.component';
 
 @Component({
-  selector: 'app-offers-detail',
+  selector: 'app-my-offers-detail',
   imports: [ReceivedOfferDetailComponent, CommonLayoutComponent],
   providers: [OfferService],
-  templateUrl: './offers-detail.component.html',
-  styleUrl: './offers-detail.component.scss',
+  templateUrl: './my-offers-detail.component.html',
+  styleUrl: './my-offers-detail.component.scss',
 })
-export class OffersDetailComponent {
+export class MyOffersDetailComponent {
   offerId = signal<number | undefined>(undefined);
 
   constructor(private route: ActivatedRoute) {

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OfferOwnerComponent } from './offer-owner.component';
+import { MaterialActionComponent } from './material-action.component';
 
-describe('OfferOwnerComponent', () => {
-  let component: OfferOwnerComponent;
-  let fixture: ComponentFixture<OfferOwnerComponent>;
+describe('MaterialActionComponent', () => {
+  let component: MaterialActionComponent;
+  let fixture: ComponentFixture<MaterialActionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OfferOwnerComponent]
+      imports: [MaterialActionComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(OfferOwnerComponent);
+    fixture = TestBed.createComponent(MaterialActionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -8,10 +8,10 @@ import { OfferService } from 'app/services/offer.service';
 import { OfferDetail } from 'app/types/requests/offer';
 import moment from 'moment';
 import { startWith, Subject, switchMap } from 'rxjs';
-import { OfferListingComponent } from '../../offer-listing/offer-listing.component';
 import { ProductDescriptionComponent } from '../../product-detail/product-description/product-description.component';
 import { ProductImageComponent } from '../../product-detail/product-image/product-image.component';
 import { SpinnerComponent } from '../../spinner/spinner.component';
+import { OfferListingComponent } from '../offer-listing/offer-listing.component';
 
 @Component({
   selector: 'app-received-offer-detail',

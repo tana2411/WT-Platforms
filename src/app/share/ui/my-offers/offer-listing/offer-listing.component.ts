@@ -6,8 +6,8 @@ import { RouterModule } from '@angular/router';
 import { OfferListingItem, OfferStatus } from 'app/models/offer';
 import { OfferService } from 'app/services/offer.service';
 import { finalize } from 'rxjs';
-import { PaginationComponent } from '../listing/pagination/pagination.component';
-import { RejectReasonComponent } from '../my-offers/reject-reason/reject-reason.component';
+import { PaginationComponent } from '../../listing/pagination/pagination.component';
+import { RejectReasonComponent } from '../reject-reason/reject-reason.component';
 
 @Component({
   selector: 'app-offer-listing',

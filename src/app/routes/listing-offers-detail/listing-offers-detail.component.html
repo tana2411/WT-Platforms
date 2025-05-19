@@ -1,0 +1,29 @@
+<app-common-layout [title]="''">
+  @if (loading()) {
+    <app-spinner />
+  } @else {
+    @if (listingDetail(); as listingDetail) {
+      <div class="d-flex gap-4">
+        <div class="d-flex flex-column gap-4 col-12 col-md-6 col-lg-9">
+          <app-product-image />
+
+          <app-product-description [items]="descriptionItems()">
+            @if (isSeller(); as isSeller) {
+              <button mat-flat-button class="text-uppercase fw-bold w-100 request-button" i18n>request sample</button>
+            } @else {
+              <button mat-flat-button class="text-uppercase fw-bold w-100 request-button" i18n>Sell material</button>
+            }
+          </app-product-description>
+
+          <app-share-listing [title]="listingDetail.listing.title" />
+        </div>
+
+        <div class="d-flex flex-column gap-4 col-12 col-md-6 col-lg-3 flex-fill">
+          <app-material-owner [listingDetail]="listingDetail" />
+
+          <app-material-action [isSeller]="isSeller()" />
+        </div>
+      </div>
+    }
+  }
+</app-common-layout>

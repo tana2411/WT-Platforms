@@ -1,0 +1,9 @@
+<div class="d-flex flex-column align-items-center border border-primary background-on-primary rounded gap-3 p-4">
+  @if (isSeller) {
+    <button mat-flat-button class="text-uppercase w-100 action-button" (click)="onBid()">bid now</button>
+    <p class="text-uppercase text-decoration-underline fw-bold underlink" i18n>Request information</p>
+  } @else {
+    <button mat-flat-button class="text-uppercase action-button">Sell material</button>
+    <p class="text-uppercase text-decoration-underline fw-bold underlink" i18n>message buyer</p>
+  }
+</div>

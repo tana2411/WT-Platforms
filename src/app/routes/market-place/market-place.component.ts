@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { FilterParams, ListingMaterial } from 'app/models';
 import { ListingService } from 'app/services/listing.service';
@@ -69,7 +70,7 @@ export class MarketPlaceComponent {
     );
     this.updateFilter({
       skip: 0,
-      where: Object.keys(cleanedParams).length > 0 ? { ...cleanedParams } : { listingType: 'wanted' },
+      where: Object.keys(cleanedParams).length > 0 ? { ...cleanedParams } : { listingType: 'sell' },
     });
 
     this.refresh();
@@ -118,20 +119,7 @@ export class MarketPlaceComponent {
       });
   }
 
-  onBid() {
-    const dialogRef = this.dialog.open(BiddingFormComponent, {
-      maxWidth: '750px',
-      width: '100%',
-      panelClass: 'px-3',
-    });
-
-    // dialogRef.afterClosed().subscribe((result) => {
-    //   if (result === 'buyer-seller') {
-    //     // Handle buyer/seller registration
-    //     this.router.navigateByUrl('/create-account');
-    //   } else if (result === 'haulier') {
-    //     this.router.navigateByUrl('/create-haulier-account');
-    //   }
-    // });
+  onSelect(item: ListingMaterial) {
+    this.router.navigateByUrl(`${ROUTES_WITH_SLASH.listingOfferDetail}/${item.id}`);
   }
 }

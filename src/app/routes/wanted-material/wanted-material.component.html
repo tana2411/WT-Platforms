@@ -7,7 +7,7 @@
   @if (loading()) {
     <app-spinner></app-spinner>
   } @else {
-    <app-product-grid [items]="items()" [totalItems]="totalItem()"></app-product-grid>
+    <app-product-grid [items]="items()" [totalItems]="totalItem()" (selectItem)="onSelect($event)"></app-product-grid>
     <app-pagination [pageNumber]="page()" [totalCount]="totalItem()" (pageChange)="onPageChange($event)"></app-pagination>
   }
   <hr />
