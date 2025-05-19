@@ -70,27 +70,27 @@
             </div>
           </div>
           @if (!onSelectUploadLater() && documentType.value) {
-            <div class="col-12 mb-4" [hidden]="!(documentType.value == 'envỉonmental_permit')">
+            <div class="col-12 mb-4" [hidden]="!(documentType.value == CompanyDocumentType.EnvironmentalPermit)">
               <h6 class="mt-5 mb-4 primary" i18n>Environmental Permit Upload*</h6>
               <app-file-upload
                 [maxFile]="1"
-                (filesAdded)="handleFileReady($event, 'document', 'envỉonmental_permit')"
+                (filesAdded)="handleFileReady($event, 'document', CompanyDocumentType.EnvironmentalPermit)"
                 (uploadValid)="documentValid.set($event)"
-                [isFutureDate]="true"
                 [notAcceptable]="['.doc', '.docx', '.xls', '.xlsx']"
                 [expirationDateMode]="'optional'"
+                [fileList]="environmentPermitDocuments"
               ></app-file-upload>
             </div>
 
-            <div class="col-12 mb-4" [hidden]="!(documentType.value == 'waste_exemption')">
+            <div class="col-12 mb-4" [hidden]="!(documentType.value == CompanyDocumentType.WasteExemption)">
               <h6 class="mt-5 mb-4 primary" i18n>Waste Exemptions Upload*</h6>
               <app-file-upload
                 [maxFile]="1"
-                (filesAdded)="handleFileReady($event, 'document', 'waste_exemption')"
+                (filesAdded)="handleFileReady($event, 'document', CompanyDocumentType.WasteExemption)"
                 (uploadValid)="documentValid.set($event)"
-                [isFutureDate]="true"
                 [notAcceptable]="['.doc', '.docx', '.xls', '.xlsx']"
                 [expirationDateMode]="'optional'"
+                [fileList]="wasteExemptionDocuments"
               ></app-file-upload>
             </div>
 
@@ -111,9 +111,9 @@
                 [maxFile]="1"
                 (filesAdded)="handleFileReady($event, 'document', 'other')"
                 (uploadValid)="documentValid.set($event)"
-                [isFutureDate]="true"
                 [notAcceptable]="['.doc', '.docx', '.xls', '.xlsx']"
                 [expirationDateMode]="'optional'"
+                [fileList]="otherDocuments"
               ></app-file-upload>
             </div>
           }
@@ -138,11 +138,11 @@
             <h6 class="mb-4 mt-5 primary" i18n>WASTE CARRIER LICENCE UPLOAD*</h6>
             <div class="col-12 mb-4">
               <app-file-upload
-                (filesAdded)="handleFileReady($event, 'licence', 'waste_carrier_license')"
+                (filesAdded)="handleFileReady($event, 'licence', CompanyDocumentType.WasteCarrierLicense)"
                 [maxFile]="1"
                 (uploadValid)="wasteLicenceValid.set($event)"
                 [expirationDateMode]="'optional'"
-                [isFutureDate]="true"
+                [fileList]="wasteCarrierLicenseDocuments"
               ></app-file-upload>
             </div>
           }

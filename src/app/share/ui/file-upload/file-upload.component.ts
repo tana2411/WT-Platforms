@@ -1,4 +1,15 @@
-import { Component, ElementRef, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  inject,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,12 +18,19 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { pastDateValidator } from '@app/validators';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 
 export interface FileInfo {
   file: File;
-  expirationDate: Moment | null;
+  expirationDate?: Moment | null;
+}
+
+export interface DocumentFileInfo {
+  id?: number;
+  documentType?: string;
+  documentUrl?: string;
+  documentName?: string;
+  expiryDate?: string;
 }
 
 @Component({
@@ -29,12 +47,12 @@ export interface FileInfo {
     MatSnackBarModule,
   ],
 })
-export class FileUploadComponent implements OnInit {
+export class FileUploadComponent implements OnInit, OnChanges {
   @Input() maxFile: number = 1;
   @Input() required: boolean = true;
   @Input() expirationDateMode: 'required' | 'optional' | 'hidden' = 'required';
   @Input() notAcceptable: string[] = []; // ex: ['.jpg', '.jpeg']
-  @Input() isFutureDate: boolean = false;
+  @Input() fileList: DocumentFileInfo[] = [];
 
   @Output() filesAdded = new EventEmitter<FileInfo[]>();
   @Output() uploadValid = new EventEmitter<boolean>();
@@ -42,6 +60,7 @@ export class FileUploadComponent implements OnInit {
   @ViewChild('fileUploadInput') fileInputRef!: ElementRef<HTMLInputElement>;
 
   isDraggingOver = false;
+  today = new Date();
 
   formGroup = new FormGroup({
     documents: new FormArray([], []),
@@ -70,6 +89,7 @@ export class FileUploadComponent implements OnInit {
     },
   ];
   constructor() {
+    this.today.setDate(this.today.getDate() - 0);
     this.documents.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
       if (this.documents.valid) {
         if (this.required && this.documents.length > 0) {
@@ -86,6 +106,42 @@ export class FileUploadComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['fileList']) {
+      this.patchFilesFromInput();
+    }
+  }
+
+  private patchFilesFromInput() {
+    if (this.documents.length) {
+      this.documents.clear();
+    }
+    if (this.fileList && this.fileList.length > 0) {
+      this.fileList.forEach((file) => {
+        const fileName = file.documentName
+          ? file.documentName
+          : file.documentUrl
+            ? this.extractFileName(file.documentUrl)
+            : '';
+
+        const expiryDate = file.expiryDate ? moment(file.expiryDate, 'DD/MM/YYYY').toDate() : null;
+
+        const fileControl = new FormGroup({
+          fileName: new FormControl(fileName),
+          fileId: new FormControl(file.id ?? null),
+          documentUrl: new FormControl(file.documentUrl ?? ''),
+          documentType: new FormControl(file.documentType ?? ''),
+          expirationDate: new FormControl(expiryDate),
+        });
+        this.documents.push(fileControl);
+      });
+    }
+  }
+
+  extractFileName(url: string): string {
+    return url.split('/').pop() || '';
+  }
 
   handleUploadFile(event: MouseEvent) {
     this.preventAndStopEvent(event);
@@ -146,28 +202,21 @@ export class FileUploadComponent implements OnInit {
         continue;
       }
 
-      this.addNewFileControl(file, this.expirationDateMode, this.isFutureDate);
+      this.addNewFileControl(file, this.expirationDateMode);
     }
   }
 
-  private addNewFileControl(file: File, expirationDateMode: string, isFutureDate: boolean) {
+  private addNewFileControl(file: File, expirationDateMode: string) {
     const validators = [];
 
     if (this.expirationDateMode === 'required') {
       validators.push(Validators.required);
     }
 
-    if (this.expirationDateMode !== 'hidden' && this.isFutureDate) {
-      validators.push(pastDateValidator());
-    }
     const fileControl = new FormGroup({
       file: new FormControl<File>(file),
       expirationDate: new FormControl<Moment | null>(null, validators),
     });
-
-    if (isFutureDate) {
-      fileControl.get('expirationDate')?.addValidators(pastDateValidator());
-    }
     this.documents.push(fileControl);
   }
 

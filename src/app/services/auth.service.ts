@@ -1,5 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { ROUTES } from 'app/constants/route.const';
+import { getDefaultRouteByRole } from 'app/guards/auth/utils';
+import { ACCESS_TOKEN_KEY } from 'app/interceptors/auth.interceptor';
+import { BehaviorSubject, catchError, map, of, switchMap, tap } from 'rxjs';
 import {
   RequestForgotPasswordParams,
   RequestLoginParams,
@@ -8,11 +13,6 @@ import {
   ResponseMe,
   User,
 } from '../types/requests/auth';
-import { BehaviorSubject, catchError, map, of, switchMap, tap } from 'rxjs';
-import { Router } from '@angular/router';
-import { ROUTES } from 'app/constants/route.const';
-import { ACCESS_TOKEN_KEY } from 'app/interceptors/auth.interceptor';
-import { getDefaultRouteByRole } from 'app/guards/auth/utils';
 
 export const NOT_INITIAL_USER = null;
 
@@ -20,9 +20,7 @@ export const NOT_INITIAL_USER = null;
   providedIn: 'root',
 })
 export class AuthService {
-  private _user$ = new BehaviorSubject<User | null | undefined>(
-    NOT_INITIAL_USER,
-  );
+  private _user$ = new BehaviorSubject<User | null | undefined>(NOT_INITIAL_USER);
 
   get isNotFinishCheckAuth() {
     return this._user$.value === NOT_INITIAL_USER;
@@ -121,7 +119,9 @@ export class AuthService {
   getMe() {
     return this.http.get<ResponseMe>('/users/me').pipe(
       map((res) => {
-        return res.data?.companyUser;
+        const user = res.data?.companyUser;
+        user.company.companyDocuments = res.data.companyDocuments;
+        return user;
       }),
     );
   }

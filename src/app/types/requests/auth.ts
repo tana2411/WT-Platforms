@@ -30,6 +30,7 @@ export type RequestSetPasswordParams = {
 export type ResponseMe = {
   data: {
     companyUser: User;
+    companyDocuments: CompanyDocuments[];
   };
 };
 
@@ -38,6 +39,22 @@ export enum CompanyStatus {
   VERIFIED = 'verified',
   REJECTED = 'rejected',
 }
+
+export type CompanyDocuments = {
+  id: number;
+  uploadedByUserId: number;
+  reviewedByUserId: number | null;
+  documentType: string;
+  documentName: string;
+  documentUrl: string;
+  status: string;
+  rejectionReason: string | null;
+  reviewedAt: string | null;
+  expiryDate: string;
+  createdAt: string;
+  updatedAt: string;
+  companyId: number;
+};
 
 type Company = {
   id: number;
@@ -58,6 +75,7 @@ type Company = {
   companyType: string | null;
   favoriteMaterials: string[];
   materialInterest: string | null;
+  boxClearingAgent?: boolean;
   isHaulier: boolean;
   fleetType: string | null;
   areasCovered: string | null;
@@ -66,6 +84,7 @@ type Company = {
   verifiedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  companyDocuments: CompanyDocuments[];
 };
 
 type UserInfor = {

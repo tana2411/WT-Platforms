@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, inject, 
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,13 +10,21 @@ import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
-import { AccountOnboardingStatusComponent, FileInfo, FileUploadComponent } from '@app/ui';
+import { AccountOnboardingStatusComponent, DocumentFileInfo, FileInfo, FileUploadComponent } from '@app/ui';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { AuthService } from 'app/services/auth.service';
 import { RegistrationsService } from 'app/services/registrations.service';
 import { UploadService } from 'app/share/services/upload.service';
+import { CompanyDocuments } from 'app/types/requests/auth';
 import moment from 'moment';
 import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
+
+export enum CompanyDocumentType {
+  EnvironmentalPermit = 'environmental_permit',
+  WasteExemption = 'waste_exemption',
+  WasteCarrierLicense = 'waste_carrier_license',
+}
+
 @Component({
   selector: 'app-company-document',
   templateUrl: './company-document.component.html',
@@ -38,13 +45,19 @@ import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
     RouterModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [provideNativeDateAdapter()],
 })
 export class CompanyDocumentComponent implements OnInit {
+  CompanyDocumentType = CompanyDocumentType;
+
   companyId: number | undefined;
+  companyDocuments: CompanyDocuments[] = [];
+  environmentPermitDocuments: DocumentFileInfo[] = [];
+  wasteExemptionDocuments: DocumentFileInfo[] = [];
+  wasteCarrierLicenseDocuments: DocumentFileInfo[] = [];
+  otherDocuments: DocumentFileInfo[] = [];
 
   selectedDocumentFile = signal<any[]>([]);
-  selectedWasteLicenceFile = signal<FileInfo[]>([]);
+  selectedWasteLicenceFile = signal<any[]>([]);
   documentValid = signal<boolean | null>(null);
   wasteLicenceValid = signal<boolean | null>(null);
   onSelectUploadLater = signal<boolean | null>(null);
@@ -95,14 +108,85 @@ export class CompanyDocumentComponent implements OnInit {
         }),
       )
       .subscribe((user) => {
-        if (user) {
-          this.formGroup.patchValue({
-            companyType: user.company?.companyType ?? '',
-          });
+        if (!user) return;
+        this.companyId = user.company?.id;
+        this.companyDocuments = user.company.companyDocuments;
 
-          this.companyId = user.company?.id;
+        this.formGroup.patchValue(
+          {
+            boxClearingAgent: user.company.boxClearingAgent,
+            companyType: user.company.companyType,
+          },
+          { emitEvent: false },
+        );
+
+        this.environmentPermitDocuments = this.getDocumentList(
+          this.companyDocuments,
+          CompanyDocumentType.EnvironmentalPermit,
+        );
+        this.wasteExemptionDocuments = this.getDocumentList(this.companyDocuments, CompanyDocumentType.WasteExemption);
+        this.wasteCarrierLicenseDocuments = this.getDocumentList(
+          this.companyDocuments,
+          CompanyDocumentType.WasteCarrierLicense,
+        );
+        this.otherDocuments = this.getDocumentList(this.companyDocuments, 'other');
+
+        if (this.wasteCarrierLicenseDocuments.length) {
+          this.formGroup.patchValue({ wasteLicence: true }, { emitEvent: false });
+        } else {
+          this.formGroup.patchValue({ wasteLicence: false }, { emitEvent: false });
+        }
+
+        if (this.otherDocuments.length) {
+          this.formGroup.patchValue(
+            { documentType: 'other', otherDocumentType: this.otherDocuments[0].documentType },
+            { emitEvent: false },
+          );
+        }
+        if (this.environmentPermitDocuments.length) {
+          this.formGroup.patchValue(
+            {
+              documentType: 'environmental_permit',
+            },
+            { emitEvent: false },
+          );
+        }
+        if (this.wasteExemptionDocuments.length) {
+          this.formGroup.patchValue(
+            {
+              documentType: 'waste_exemption',
+            },
+            { emitEvent: false },
+          );
         }
       });
+  }
+
+  getDocumentList(documents: CompanyDocuments[], type: string): DocumentFileInfo[] {
+    if (!documents) return [];
+
+    if (type === 'other') {
+      return documents
+        .filter(
+          (d) =>
+            d.documentType !== CompanyDocumentType.EnvironmentalPermit &&
+            d.documentType !== CompanyDocumentType.WasteExemption &&
+            d.documentType !== CompanyDocumentType.WasteCarrierLicense,
+        )
+        .map((d) => ({
+          documentUrl: d.documentUrl,
+          expiryDate: d.expiryDate,
+          documentType: d.documentType,
+        }));
+    }
+
+    return documents
+      .filter((d) => d.documentType === type)
+      .map((d) => ({
+        documentUrl: d.documentUrl,
+        expiryDate: d.expiryDate,
+        documentType: d.documentType,
+      }));
   }
 
   get documentType() {
@@ -112,14 +196,15 @@ export class CompanyDocumentComponent implements OnInit {
   get otherDocumentType() {
     return this.formGroup.get('otherDocumentType') as FormControl;
   }
+
   get isSubmitDisabled() {
     if (this.formGroup.invalid) {
       return true;
     } else {
       const exitsFile = this.selectedDocumentFile().filter((f) => f.documentType == this.documentType.value);
       const { documentType, wasteLicence } = this.formGroup.value;
-      const validDocument = documentType !== 'uploadLater' ? exitsFile.length > 0 && this.documentValid() : true;
-      const validLicence = wasteLicence ? this.selectedWasteLicenceFile().length > 0 && this.wasteLicenceValid() : true;
+      const validDocument = documentType !== 'uploadLater' ? exitsFile.length > 0 : true;
+      const validLicence = wasteLicence ? this.selectedWasteLicenceFile().length > 0 : true;
 
       return !(validDocument && validLicence);
     }
@@ -142,8 +227,6 @@ export class CompanyDocumentComponent implements OnInit {
     } else {
       this.selectedWasteLicenceFile.set(file ?? []);
     }
-
-    this.cd.detectChanges();
     this.formGroup.updateValueAndValidity();
   }
 
@@ -156,77 +239,108 @@ export class CompanyDocumentComponent implements OnInit {
     const { boxClearingAgent, wasteLicence } = this.formGroup.value;
 
     const isUploadLater = this.documentType.value === 'uploadLater';
-    const hasWasteLicence = !!wasteLicence;
+    const hasWasteLicence = wasteLicence;
 
     const documentFiles = this.selectedDocumentFile().map((f) =>
       f.documentType == 'other' ? { ...f, documentType: this.otherDocumentType.value } : f,
     );
     const licenceFiles = this.selectedWasteLicenceFile().map((f) => ({
       ...f,
-      documentType: 'waste_carrier_license',
+      documentType: CompanyDocumentType.WasteCarrierLicense,
     }));
 
-    const fileUpload = [...documentFiles, ...licenceFiles];
+    const files = [...documentFiles, ...licenceFiles];
 
     if (isUploadLater && !hasWasteLicence) {
       this.submitWithNoFile({ companyId: this.companyId, boxClearingAgent, documents: [] });
       return;
     }
 
+    const fileUpload = files.filter((f) => f.file instanceof File);
+    const alreadyUpload = files
+      .filter((f) => !f.file)
+      .map((file) => {
+        if (file.expirationDate && file.expirationDate instanceof moment) {
+          return {
+            documentType: file.documentType,
+            documentUrl: file.documentUrl,
+            expiryDate: moment(file.expirationDate).format('DD/MM/YYYY'),
+          };
+        }
+
+        return {
+          documentType: file.documentType,
+          documentUrl: file.documentUrl,
+        };
+      });
+
     this.submitting.set(true);
 
-    this.uploadService
-      .uploadMultiFile(fileUpload.map((f) => f.file))
-      .pipe(
-        finalize(() => this.submitting.set(false)),
-        catchError((err) => {
-          this.snackBar.open('An error occurred while uploading the file. Please try again.', 'Ok', {
-            duration: 3000,
-          });
-          return of(null);
-        }),
-        concatMap((documentUrls) => {
-          if (!documentUrls) return of(null);
+    if (fileUpload.length > 0) {
+      this.uploadService
+        .uploadMultiFile(fileUpload.map((f) => f.file))
+        .pipe(
+          finalize(() => this.submitting.set(false)),
+          catchError((err) => {
+            this.snackBar.open('An error occurred while uploading the file. Please try again.', 'Ok', {
+              duration: 3000,
+            });
+            return of(null);
+          }),
+          concatMap((documentUrls) => {
+            if (!documentUrls) return of(null);
 
-          const documents = documentUrls.map((url, index) => {
-            const file = fileUpload[index];
+            const documents = documentUrls.map((url, index) => {
+              const file = fileUpload[index];
+              if (file.expirationDate) {
+                return {
+                  documentType: file.documentType,
+                  documentUrl: url,
+                  expiryDate: moment(file.expirationDate).format('DD/MM/YYYY'),
+                };
+              }
 
-            if (file.expirationDate) {
               return {
                 documentType: file.documentType,
                 documentUrl: url,
-                expiryDate: moment(file.expirationDate).format('DD/MM/YYYY'),
               };
-            }
+            });
 
-            return {
-              documentType: file.documentType,
-              documentUrl: url,
-            };
-          });
-
-          return this.registrationService
-            .updateCompanyDocuments({
-              companyId: this.companyId,
-              boxClearingAgent,
-              documents,
-            })
-            .pipe(
-              finalize(() => this.submitting.set(false)),
-              catchError((err) => {
-                this.snackBar.open(`${err.error?.error?.message ?? 'Unknown error'}`, 'Ok', {
-                  duration: 3000,
-                });
-                return of(null);
-              }),
-            );
-        }),
-      )
-      .subscribe((result) => {
+            return this.submitWithDocument([...documents, ...alreadyUpload], boxClearingAgent);
+          }),
+        )
+        .subscribe((result) => {
+          if (result) {
+            this.router.navigate(['/site-location']);
+          }
+        });
+    } else {
+      this.submitWithDocument(alreadyUpload, boxClearingAgent).subscribe((result) => {
         if (result) {
           this.router.navigate(['/site-location']);
         }
       });
+    }
+  }
+
+  private submitWithDocument(documents: any[], boxClearingAgent: boolean | null | undefined) {
+    return this.registrationService
+      .updateCompanyDocuments({
+        companyId: this.companyId,
+        boxClearingAgent,
+        documents: [...documents],
+      })
+      .pipe(
+        finalize(() => this.submitting.set(false)),
+        catchError((err) => {
+          this.snackBar.open(`${err.error?.error?.message ?? 'Unknown error'}`, 'Ok', { duration: 3000 });
+          return of(null);
+        }),
+        concatMap((result) => {
+          if (result) return this.authService.checkToken();
+          return of(null);
+        }),
+      );
   }
 
   private submitWithNoFile(payload: any) {
