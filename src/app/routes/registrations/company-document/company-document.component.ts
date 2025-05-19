@@ -260,11 +260,11 @@ export class CompanyDocumentComponent implements OnInit {
     const alreadyUpload = files
       .filter((f) => !f.file)
       .map((file) => {
-        if (file.expirationDate && file.expirationDate instanceof moment) {
+        if (file.expiryDate) {
           return {
             documentType: file.documentType,
             documentUrl: file.documentUrl,
-            expiryDate: moment(file.expirationDate).format('DD/MM/YYYY'),
+            expiryDate: moment(file.expiryDate).format('DD/MM/YYYY'),
           };
         }
 
@@ -292,11 +292,11 @@ export class CompanyDocumentComponent implements OnInit {
 
             const documents = documentUrls.map((url, index) => {
               const file = fileUpload[index];
-              if (file.expirationDate) {
+              if (file.expiryDate) {
                 return {
                   documentType: file.documentType,
                   documentUrl: url,
-                  expiryDate: moment(file.expirationDate).format('DD/MM/YYYY'),
+                  expiryDate: moment(file.expiryDate).format('DD/MM/YYYY'),
                 };
               }
 

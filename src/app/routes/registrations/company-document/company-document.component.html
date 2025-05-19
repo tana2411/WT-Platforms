@@ -1,7 +1,7 @@
 <app-un-auth-layout>
   <app-account-onboarding-status [showStatusOnly]="true" [type]="'completing'"></app-account-onboarding-status>
-  <div class="col-md-9 mx-auto d-flex justify-content-between g-3 my-5">
-    <div class="col-4">
+  <div class="col-md-9 mx-auto d-flex justify-content-between g-3 my-5 row">
+    <div class="col-md-4">
       <div>
         <div class="d-flex justify-content-between">
           <mat-icon class="primary">check_circle</mat-icon>
@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-    <div class="col-7">
+    <div class="col-md-7">
       <form [formGroup]="formGroup">
         <div class="border border-dark boder-2 p-4 border-radius">
           <h3 class="text-center my-2" i18n>Company Documents</h3>
@@ -50,7 +50,7 @@
           <div class="col-12 mb-4">
             <mat-label class="fw-bold mb-1 d-block" i18n>WHICH OF THE FOLLOWING DO YOU HAVE*</mat-label>
             <mat-radio-group class="d-flex justify-content-between flex-wrap" formControlName="documentType">
-              <mat-radio-button value="envỉonmental_permit" (change)="onSelectUploadLater.set(false)" i18n
+              <mat-radio-button value="environmental_permit" (change)="onSelectUploadLater.set(false)" i18n
                 >Environmental Permit
               </mat-radio-button>
               <mat-radio-button value="waste_exemption" (change)="onSelectUploadLater.set(false)" i18n> Waste Exemptions </mat-radio-button>
@@ -69,7 +69,7 @@
               </div>
             </div>
           </div>
-          @if (!onSelectUploadLater() && documentType.value) {
+          <div [hidden]="onSelectUploadLater()">
             <div class="col-12 mb-4" [hidden]="!(documentType.value == CompanyDocumentType.EnvironmentalPermit)">
               <h6 class="mt-5 mb-4 primary" i18n>Environmental Permit Upload*</h6>
               <app-file-upload
@@ -77,7 +77,7 @@
                 (filesAdded)="handleFileReady($event, 'document', CompanyDocumentType.EnvironmentalPermit)"
                 (uploadValid)="documentValid.set($event)"
                 [notAcceptable]="['.doc', '.docx', '.xls', '.xlsx']"
-                [expirationDateMode]="'optional'"
+                [expiryDateMode]="'optional'"
                 [fileList]="environmentPermitDocuments"
               ></app-file-upload>
             </div>
@@ -89,7 +89,7 @@
                 (filesAdded)="handleFileReady($event, 'document', CompanyDocumentType.WasteExemption)"
                 (uploadValid)="documentValid.set($event)"
                 [notAcceptable]="['.doc', '.docx', '.xls', '.xlsx']"
-                [expirationDateMode]="'optional'"
+                [expiryDateMode]="'optional'"
                 [fileList]="wasteExemptionDocuments"
               ></app-file-upload>
             </div>
@@ -112,12 +112,14 @@
                 (filesAdded)="handleFileReady($event, 'document', 'other')"
                 (uploadValid)="documentValid.set($event)"
                 [notAcceptable]="['.doc', '.docx', '.xls', '.xlsx']"
-                [expirationDateMode]="'optional'"
+                [expiryDateMode]="'optional'"
                 [fileList]="otherDocuments"
               ></app-file-upload>
             </div>
-          }
+          </div>
+
           <hr />
+
           <div class="col-12 mb-4">
             <mat-label class="mb-0 fw-bold" i18n> WASTE CARRIER LICENCE* </mat-label>
             <mat-radio-group
@@ -141,7 +143,7 @@
                 (filesAdded)="handleFileReady($event, 'licence', CompanyDocumentType.WasteCarrierLicense)"
                 [maxFile]="1"
                 (uploadValid)="wasteLicenceValid.set($event)"
-                [expirationDateMode]="'optional'"
+                [expiryDateMode]="'optional'"
                 [fileList]="wasteCarrierLicenseDocuments"
               ></app-file-upload>
             </div>

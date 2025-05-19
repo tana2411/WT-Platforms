@@ -1,7 +1,7 @@
 <app-un-auth-layout>
   <app-account-onboarding-status [showStatusOnly]="true" [type]="'completing'"></app-account-onboarding-status>
-  <div class="col-md-9 mx-auto d-flex justify-content-between g-3 my-5">
-    <div class="col-4">
+  <div class="col-md-9 mx-auto d-flex justify-content-between g-3 my-5 row">
+    <div class="col-md-4">
       <div class="d-flex justify-content-between">
         <mat-icon class="primary">check_circle</mat-icon>
         <div class="w-75 mx-auto primary" i18n>COMPANY INFORMATION</div>
@@ -20,7 +20,7 @@
         <mat-icon>add</mat-icon>
       </div>
     </div>
-    <div class="col-7">
+    <div class="col-md-7">
       <form [formGroup]="formGroup">
         <div class="border border-dark boder-2 p-4 border-radius">
           <h3 class="text-center my-2" i18n>Site Location</h3>

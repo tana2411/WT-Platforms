@@ -22,7 +22,7 @@ import moment, { Moment } from 'moment';
 
 export interface FileInfo {
   file: File;
-  expirationDate?: Moment | null;
+  expiryDate?: Moment | null;
 }
 
 export interface DocumentFileInfo {
@@ -50,7 +50,7 @@ export interface DocumentFileInfo {
 export class FileUploadComponent implements OnInit, OnChanges {
   @Input() maxFile: number = 1;
   @Input() required: boolean = true;
-  @Input() expirationDateMode: 'required' | 'optional' | 'hidden' = 'required';
+  @Input() expiryDateMode: 'required' | 'optional' | 'hidden' = 'required';
   @Input() notAcceptable: string[] = []; // ex: ['.jpg', '.jpeg']
   @Input() fileList: DocumentFileInfo[] = [];
 
@@ -132,7 +132,7 @@ export class FileUploadComponent implements OnInit, OnChanges {
           fileId: new FormControl(file.id ?? null),
           documentUrl: new FormControl(file.documentUrl ?? ''),
           documentType: new FormControl(file.documentType ?? ''),
-          expirationDate: new FormControl(expiryDate),
+          expiryDate: new FormControl(expiryDate),
         });
         this.documents.push(fileControl);
       });
@@ -202,20 +202,20 @@ export class FileUploadComponent implements OnInit, OnChanges {
         continue;
       }
 
-      this.addNewFileControl(file, this.expirationDateMode);
+      this.addNewFileControl(file, this.expiryDateMode);
     }
   }
 
-  private addNewFileControl(file: File, expirationDateMode: string) {
+  private addNewFileControl(file: File, expiryDateMode: string) {
     const validators = [];
 
-    if (this.expirationDateMode === 'required') {
+    if (this.expiryDateMode === 'required') {
       validators.push(Validators.required);
     }
 
     const fileControl = new FormGroup({
       file: new FormControl<File>(file),
-      expirationDate: new FormControl<Moment | null>(null, validators),
+      expiryDate: new FormControl<Moment | null>(null, validators),
     });
     this.documents.push(fileControl);
   }
