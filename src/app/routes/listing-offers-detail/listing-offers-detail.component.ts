@@ -6,7 +6,7 @@ import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.co
 import { ListingMaterialDetailResponse } from 'app/models/listing-material-detail.model';
 import { ListingService } from 'app/services/listing.service';
 import { MaterialActionComponent } from 'app/share/ui/product-detail/material-action/material-action.component';
-import { OfferOwnerComponent } from 'app/share/ui/product-detail/offer-owner/offer-owner.component';
+import { MaterialOwnerComponent } from 'app/share/ui/product-detail/material-owner/material-owner.component';
 import { ProductDescriptionComponent } from 'app/share/ui/product-detail/product-description/product-description.component';
 import { ProductImageComponent } from 'app/share/ui/product-detail/product-image/product-image.component';
 import { ShareListingComponent } from 'app/share/ui/product-detail/share-listing/share-listing.component';
@@ -18,7 +18,7 @@ import { finalize } from 'rxjs';
   selector: 'app-listing-offers-detail',
   imports: [
     ProductImageComponent,
-    OfferOwnerComponent,
+    MaterialOwnerComponent,
     ProductDescriptionComponent,
     SpinnerComponent,
     MatButtonModule,

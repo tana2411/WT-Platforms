@@ -5,15 +5,14 @@ import { ListingMaterialDetailResponse } from 'app/models/listing-material-detai
 import moment from 'moment';
 
 @Component({
-  selector: 'app-offer-owner',
+  selector: 'app-material-owner',
   imports: [IconComponent],
-  templateUrl: './offer-owner.component.html',
-  styleUrl: './offer-owner.component.scss',
+  templateUrl: './material-owner.component.html',
+  styleUrl: './material-owner.component.scss',
 })
-export class OfferOwnerComponent {
+export class MaterialOwnerComponent {
   listingDetail$ = signal<ListingMaterialDetailResponse['data'] | undefined>(undefined);
   @Input({ required: true }) set listingDetail(val: ListingMaterialDetailResponse['data'] | undefined) {
-    debugger;
     this.listingDetail$.set(val);
   }
 
