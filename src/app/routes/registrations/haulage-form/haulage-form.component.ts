@@ -203,7 +203,7 @@ export class HaulageFormComponent {
     if (this.selectedFiles().length > 0) {
       this.submitting.set(true);
       const files = this.selectedFiles().map((file) => file.file);
-      const expiryDates = this.selectedFiles().map((file) => file.expirationDate?.format('DD/MM/YYYY'));
+      const expiryDates = this.selectedFiles().map((file) => file.expiryDate?.format('DD/MM/YYYY'));
       this.registrationService
         .uploadFileHaulier(files)
         .pipe(
