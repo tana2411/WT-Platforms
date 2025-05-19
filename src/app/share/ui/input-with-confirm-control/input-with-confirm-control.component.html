@@ -16,7 +16,7 @@
         </mat-icon>
       }
       @if (valueControl.hasError('required') && (valueControl.dirty || valueControl.touched)) {
-        <mat-error> This field is required </mat-error>
+        <mat-error> This is a required field </mat-error>
       }
       @if (valueControl.hasError('email') && (valueControl.dirty || valueControl.touched)) {
         <mat-error>Please enter a valid email address</mat-error>
@@ -41,7 +41,7 @@
         </mat-icon>
       }
       @if (confirmControl.hasError('required') && (confirmControl.dirty || confirmControl.touched)) {
-        <mat-error> This field is required </mat-error>
+        <mat-error> This is a required field </mat-error>
       }
       @if (confirmControl.hasError('mismatch')) {
         <mat-error> {{ valueErrorLabel }} and {{ valueErrorConfirmLabel }} do not match </mat-error>
