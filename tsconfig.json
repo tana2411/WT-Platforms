@@ -22,6 +22,7 @@
       "@app/environments": ["environments/environment.ts"],
       "@app/ui": ["app/share/ui/index.ts"],
       "@app/statics": ["app/statics/index.ts"],
+      "@app/directives": ["app/share/directives/index.ts"],
       "@app/validators": ["app/share/validators/index.ts"]
     }
   },

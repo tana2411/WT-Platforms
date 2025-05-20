@@ -1,12 +1,13 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, Input, signal, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { FallbackImageDirective } from '@app/directives';
 import { register, SwiperContainer } from 'swiper/element/bundle';
 // register Swiper custom elements
 register();
 
 @Component({
   selector: 'app-product-image',
-  imports: [MatIconModule],
+  imports: [MatIconModule, FallbackImageDirective],
   templateUrl: './product-image.component.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   styleUrl: './product-image.component.scss',
