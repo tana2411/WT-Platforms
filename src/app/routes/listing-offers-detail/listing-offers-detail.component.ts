@@ -1,10 +1,11 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { mapCountryCodeToName } from '@app/statics';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
+import { ListingMaterial } from 'app/models';
 import { ListingMaterialDetailResponse } from 'app/models/listing-material-detail.model';
 import { ListingService } from 'app/services/listing.service';
 import { MaterialActionComponent } from 'app/share/ui/product-detail/material-action/material-action.component';
@@ -13,11 +14,15 @@ import { ProductDescriptionComponent } from 'app/share/ui/product-detail/product
 import { ProductImageComponent } from 'app/share/ui/product-detail/product-image/product-image.component';
 import { ShareListingComponent } from 'app/share/ui/product-detail/share-listing/share-listing.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
+import { catchError, EMPTY, filter, finalize, map, switchMap, tap } from 'rxjs';
+
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
+import { IconComponent } from 'app/layout/common/icon/icon.component';
+import { ProductGridComponent } from 'app/share/ui/listing/product-grid/product-grid.component';
+import { ProductStatusComponent } from 'app/share/ui/listing/product-status/product-status.component';
+import { ReviewStatusComponent } from 'app/share/ui/product-detail/review-status/review-status.component';
 import { isNil } from 'lodash';
-import { catchError, finalize, of } from 'rxjs';
-import { IconComponent } from '../../layout/common/icon/icon.component';
-import { ProductStatusComponent } from '../../share/ui/listing/product-status/product-status.component';
-import { ReviewStatusComponent } from '../../share/ui/product-detail/review-status/review-status.component';
 
 @Component({
   selector: 'app-listing-offers-detail',
@@ -35,12 +40,14 @@ import { ReviewStatusComponent } from '../../share/ui/product-detail/review-stat
     ReviewStatusComponent,
     MatIconModule,
     RouterModule,
+    ProductGridComponent,
   ],
   templateUrl: './listing-offers-detail.component.html',
   styleUrl: './listing-offers-detail.component.scss',
 })
 export class ListingOffersDetailComponent {
   mapCountryCodeToName = mapCountryCodeToName;
+  relateListing: ListingMaterial[] = [];
 
   offerId = signal<number | undefined>(undefined);
   listingDetail = signal<ListingMaterialDetailResponse['data'] | undefined>(undefined);
@@ -49,6 +56,8 @@ export class ListingOffersDetailComponent {
 
   listingService = inject(ListingService);
   snackBar = inject(MatSnackBar);
+  router = inject(Router);
+  destroyRef = inject(DestroyRef);
 
   images: string[] = [];
   descriptionItems = computed(() => {
@@ -91,10 +100,16 @@ export class ListingOffersDetailComponent {
   });
 
   constructor(private route: ActivatedRoute) {
-    const offerId = route.snapshot.params['offerId'];
-    this.offerId.set(Number(offerId));
-
-    this.setup();
+    this.route.paramMap
+      .pipe(
+        map((params) => params.get('offerId')),
+        filter((id) => id !== null),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((id) => {
+        this.offerId.set(Number(id));
+        this.setup();
+      });
   }
 
   setup() {
@@ -104,26 +119,45 @@ export class ListingOffersDetailComponent {
     }
 
     this.loading.set(true);
+
     this.listingService
       .getDetail(offerId)
       .pipe(
+        takeUntilDestroyed(this.destroyRef),
+
+        tap((res) => {
+          this.listingDetail.set(res.data);
+          this.images = res.data.listing?.documents.map((d) => d.documentUrl) ?? [];
+        }),
+
+        switchMap(() =>
+          this.listingService
+            .get({
+              skip: 0,
+              limit: 10,
+              where: { listingType: 'wanted' },
+            })
+            .pipe(map((res) => res.results.filter((item) => item.id !== this.offerId()).slice(0, 4))),
+        ),
+        tap((res) => {
+          this.relateListing = res;
+        }),
+
+        catchError((err) => {
+          this.snackBar.open(err.error?.error?.message || 'Failed to load details. Please refresh the page.', 'OK', {
+            duration: 3000,
+          });
+          return EMPTY;
+        }),
+
         finalize(() => {
           this.loading.set(false);
         }),
-        catchError((err) => {
-          this.snackBar.open('Failed to load details. Please refresh the page.', 'OK', {
-            duration: 300,
-          });
-          return of(null);
-        }),
       )
-      .subscribe((res) => {
-        if (res) {
-          this.listingDetail.set(res.data);
-          if (this.listingDetail()?.listing) {
-            this.images = this.listingDetail()?.listing.documents.map((image) => image.documentUrl) ?? [];
-          }
-        }
-      });
+      .subscribe();
+  }
+
+  onSelect(item: ListingMaterial) {
+    this.router.navigateByUrl(`${ROUTES_WITH_SLASH.listingOfferDetail}/${item.id}`);
   }
 }

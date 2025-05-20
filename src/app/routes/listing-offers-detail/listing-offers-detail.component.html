@@ -33,13 +33,17 @@
           <app-share-listing [title]="listingDetail.listing.title" />
         </div>
 
-        <div class="d-flex flex-column gap-4 col-12 col-md-6 col-lg-3 flex-fill">
+        <div class="d-flex flex-column gap-4 col-12 col-md-6 col-lg-3 flex-fill mb-3">
           <app-review-status [status]="listingDetail.listing.status"></app-review-status>
           <!-- <app-product-status [product]="listingDetail()"></app-product-status> -->
           <app-material-owner [listingDetail]="listingDetail" />
 
           <app-material-action [isSeller]="isSeller()" [listingId]="listingDetail.listing.id" />
         </div>
+      </div>
+      <div class="mt-5">
+        <h3 i18n>You might also like</h3>
+        <app-product-grid [items]="relateListing" [hideResultCount]="true" (selectItem)="onSelect($event)"></app-product-grid>
       </div>
     }
   }
