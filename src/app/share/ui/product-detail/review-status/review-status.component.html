@@ -1,0 +1,31 @@
+@switch (status) {
+  @case (ReviewStatus.Pending) {
+    <div class="border py-3 rounded rounded-4 background-dark text-center text-white">
+      <div class="mb-2 fw-bold" i18n>REVIEW STATUS</div>
+      <div class="w-100 d-flex justify-content-center align-items-center gap-1 item-content">
+        <mat-icon>pause_circle_outline</mat-icon>
+        <span i18n>Pending</span>
+      </div>
+    </div>
+  }
+
+  @case (ReviewStatus.Approve) {
+    <div class="border rounded py-3 rounded rounded-4 background-primary text-center text-white">
+      <div class="mb-2 fw-bold" i18n>REVIEW STATUS</div>
+      <div class="fw-500 w-100 d-flex justify-content-center align-items-center gap-1 item-content">
+        <mat-icon class="icon">check_circle_outline</mat-icon>
+        <span i18n>Approve</span>
+      </div>
+    </div>
+  }
+
+  @case (ReviewStatus.Reject) {
+    <div class="border rounded py-3 rounded rounded-4 background-error text-center text-white">
+      <div class="mb-2 fw-bold" i18n>REVIEW STATUS</div>
+      <div class="fw-500 w-100 d-flex justify-content-center align-items-center gap-1 item-content">
+        <mat-icon class="icon">highlight_off</mat-icon>
+        <span i18n>Reject</span>
+      </div>
+    </div>
+  }
+}

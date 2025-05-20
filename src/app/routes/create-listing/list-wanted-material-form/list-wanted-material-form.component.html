@@ -203,7 +203,7 @@
           <div class="col-9 mx-auto mb-5">
             <div class="mb-2 fw-500" i18n>MATERIAL REQUIRED FROM*</div>
             <mat-form-field appearance="outline" class="w-100">
-              <input matInput [matDatepicker]="picker" formControlName="startDate" readonly />
+              <input matInput [matDatepicker]="picker" formControlName="startDate" readonly [min]="today" />
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
               @if (formGroup.get('startDate')?.hasError('required')) {
@@ -280,7 +280,7 @@
             <div class="col-9 mx-auto mb-5">
               <div class="mb-2 fw-500" i18n>SELECT END DATE*</div>
               <mat-form-field appearance="outline" class="w-100">
-                <input matInput [matDatepicker]="picker1" formControlName="listingDuration" readonly />
+                <input matInput [matDatepicker]="picker1" formControlName="listingDuration" readonly [min]="today" />
                 <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
                 @if (formGroup.get('listingDuration')?.hasError('required')) {

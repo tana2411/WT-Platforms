@@ -1,6 +1,8 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { ActivatedRoute } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { mapCountryCodeToName } from '@app/statics';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { ListingMaterialDetailResponse } from 'app/models/listing-material-detail.model';
@@ -12,7 +14,10 @@ import { ProductImageComponent } from 'app/share/ui/product-detail/product-image
 import { ShareListingComponent } from 'app/share/ui/product-detail/share-listing/share-listing.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
 import { isNil } from 'lodash';
-import { finalize } from 'rxjs';
+import { catchError, finalize, of } from 'rxjs';
+import { IconComponent } from '../../layout/common/icon/icon.component';
+import { ProductStatusComponent } from '../../share/ui/listing/product-status/product-status.component';
+import { ReviewStatusComponent } from '../../share/ui/product-detail/review-status/review-status.component';
 
 @Component({
   selector: 'app-listing-offers-detail',
@@ -25,20 +30,27 @@ import { finalize } from 'rxjs';
     CommonLayoutComponent,
     ShareListingComponent,
     MaterialActionComponent,
+    IconComponent,
+    ProductStatusComponent,
+    ReviewStatusComponent,
+    MatIconModule,
+    RouterModule,
   ],
   templateUrl: './listing-offers-detail.component.html',
   styleUrl: './listing-offers-detail.component.scss',
 })
 export class ListingOffersDetailComponent {
+  mapCountryCodeToName = mapCountryCodeToName;
+
   offerId = signal<number | undefined>(undefined);
   listingDetail = signal<ListingMaterialDetailResponse['data'] | undefined>(undefined);
   isSeller = computed(() => this.listingDetail()?.listing?.listingType === 'sell');
-
   loading = signal(false);
+
   listingService = inject(ListingService);
+  snackBar = inject(MatSnackBar);
 
-  mapCountryCodeToName = mapCountryCodeToName;
-
+  images: string[] = [];
   descriptionItems = computed(() => {
     const detail = this.listingDetail();
     return [
@@ -60,7 +72,10 @@ export class ListingOffersDetailComponent {
       {
         label: 'Remaining Loads',
         icon: 'hourglass_top',
-        value: detail?.listing.remainingQuantity,
+        value:
+          detail?.listing.remainingQuantity != null
+            ? `${detail.listing.remainingQuantity} of ${detail.listing.quantity}`
+            : '',
       },
       {
         label: 'Average Weight per Load',
@@ -95,9 +110,20 @@ export class ListingOffersDetailComponent {
         finalize(() => {
           this.loading.set(false);
         }),
+        catchError((err) => {
+          this.snackBar.open('Failed to load details. Please refresh the page.', 'OK', {
+            duration: 300,
+          });
+          return of(null);
+        }),
       )
       .subscribe((res) => {
-        this.listingDetail.set(res.data);
+        if (res) {
+          this.listingDetail.set(res.data);
+          if (this.listingDetail()?.listing) {
+            this.images = this.listingDetail()?.listing.documents.map((image) => image.documentUrl) ?? [];
+          }
+        }
       });
   }
 }

@@ -3,15 +3,30 @@
     <app-spinner />
   } @else {
     @if (listingDetail(); as listingDetail) {
+      <div class="mb-3">
+        <div class="d-flex justify-content-between align-items-center col-12 col-md-6 col-lg-9 mb-3">
+          <h2 class="fw-bold">
+            {{ listingDetail.listing.title }}
+          </h2>
+          <app-icon [iconName]="'star_border'" [backgroundColor]="'#E2E2E2'" iconClassName="text-dark"></app-icon>
+        </div>
+        <div class="mb-3 d-flex gap-2">
+          <a class="primary fw-bold text-decoration-none cursor-pointer" [routerLink]="['/wanted']" i18n>Back to the materials</a>
+          <mat-icon class="primary">chevron_left</mat-icon>
+          <span class="fw-bold">{{ listingDetail.listing.title }}</span>
+        </div>
+      </div>
       <div class="d-flex gap-4">
         <div class="d-flex flex-column gap-4 col-12 col-md-6 col-lg-9">
-          <app-product-image />
+          <app-product-image [images]="images" />
 
           <app-product-description [items]="descriptionItems()">
             @if (isSeller(); as isSeller) {
               <button mat-flat-button class="text-uppercase fw-bold w-100 request-button" i18n>request sample</button>
             } @else {
-              <button mat-flat-button class="text-uppercase fw-bold w-100 request-button" i18n>Sell material</button>
+              <button mat-flat-button class="text-uppercase fw-bold w-100 request-button" [routerLink]="['/sell']" i18n>
+                Sell material
+              </button>
             }
           </app-product-description>
 
@@ -19,9 +34,11 @@
         </div>
 
         <div class="d-flex flex-column gap-4 col-12 col-md-6 col-lg-3 flex-fill">
+          <app-review-status [status]="listingDetail.listing.status"></app-review-status>
+          <!-- <app-product-status [product]="listingDetail()"></app-product-status> -->
           <app-material-owner [listingDetail]="listingDetail" />
 
-          <app-material-action [isSeller]="isSeller()" />
+          <app-material-action [isSeller]="isSeller()" [listingId]="listingDetail.listing.id" />
         </div>
       </div>
     }

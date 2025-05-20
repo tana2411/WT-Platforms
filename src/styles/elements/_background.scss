@@ -1,4 +1,4 @@
-@import "../variables";
+@import '../variables';
 
 .background-primary {
   background-color: $primary;
@@ -13,7 +13,7 @@
 }
 
 .background-error {
-  background-color: $error;
+  background-color: $error !important;
 }
 
 .background-info {

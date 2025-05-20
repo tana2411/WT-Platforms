@@ -3,9 +3,9 @@ import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-share-listing',
-  imports: [MatButtonModule],
   templateUrl: './share-listing.component.html',
   styleUrl: './share-listing.component.scss',
+  imports: [MatButtonModule],
 })
 export class ShareListingComponent {
   @Input() url: string = window.location.href;
