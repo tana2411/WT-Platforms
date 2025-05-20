@@ -25,6 +25,7 @@ export interface RegistrationResult {
 }
 
 export interface CompanyInfo {
+  id: number;
   countryCode: string;
   name: string;
   vatNumber: string;

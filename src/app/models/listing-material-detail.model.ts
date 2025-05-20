@@ -1,11 +1,21 @@
+import { CompanyDocumentType } from 'app/routes/registrations/company-document/company-document.component';
+
 // Document model
-export interface Document {
+export interface IDocument {
   createdAt: string;
   updatedAt: string;
   id: number;
-  documentType: string;
+  documentType: CompanyDocumentType;
   documentUrl: string;
   listingId: number;
+  uploadedByUserId: number;
+  reviewedByUserId: number;
+  documentName: string;
+  status: string;
+  rejectionReason?: string;
+  reviewedAt?: string;
+  expiryDate?: string;
+  companyId: number;
 }
 
 // Listing model
@@ -46,7 +56,7 @@ export interface Listing {
   listingRenewalPeriod: string | null;
   listingDuration: string;
   viewCount: number | null;
-  documents: Document[];
+  documents: IDocument[];
 }
 
 // Company model
@@ -89,3 +99,5 @@ export interface ListingMaterialDetailResponse {
   };
   message: string;
 }
+
+export type ListingMaterialDetail = ListingMaterialDetailResponse['data'];

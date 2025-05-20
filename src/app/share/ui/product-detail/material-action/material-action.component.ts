@@ -4,10 +4,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
+import { ListingMaterialDetail } from 'app/models/listing-material-detail.model';
 import { ListingService } from 'app/services/listing.service';
 import { ConfirmModalComponent, ConfirmModalProps } from 'app/share/ui/confirm-modal/confirm-modal.component';
 import { catchError, EMPTY, finalize } from 'rxjs';
-import { BiddingFormComponent } from '../bidding-form/bidding-form.component';
+import { BiddingFormComponent, BiddingFormProps } from '../bidding-form/bidding-form.component';
 
 @Component({
   selector: 'app-material-action',
@@ -17,7 +18,7 @@ import { BiddingFormComponent } from '../bidding-form/bidding-form.component';
 })
 export class MaterialActionComponent {
   @Input({ required: true }) isSeller: boolean = false;
-  @Input({ required: true }) listingId: number | undefined = undefined;
+  @Input({ required: true }) listingDetail: ListingMaterialDetail | undefined;
 
   dialog = inject(MatDialog);
   router = inject(Router);
@@ -32,16 +33,11 @@ export class MaterialActionComponent {
       maxWidth: '750px',
       width: '100%',
       panelClass: 'px-3',
+      data: {
+        listingId: this.listingDetail?.listing?.id,
+        availableQuantity: this.listingDetail?.listing?.quantity,
+      } as BiddingFormProps,
     });
-
-    // dialogRef.afterClosed().subscribe((result) => {
-    //   if (result === 'buyer-seller') {
-    //     // Handle buyer/seller registration
-    //     this.router.navigateByUrl('/create-account');
-    //   } else if (result === 'haulier') {
-    //     this.router.navigateByUrl('/create-haulier-account');
-    //   }
-    // });
   }
 
   onDeleteListing() {
@@ -57,10 +53,10 @@ export class MaterialActionComponent {
       .afterClosed()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((shouldDelete) => {
-        if (shouldDelete && this.listingId) {
+        if (shouldDelete && this.listingDetail?.listing?.id) {
           this.deleting.set(true);
           this.listingService
-            .delete(this.listingId)
+            .delete(this.listingDetail?.listing?.id)
             .pipe(
               takeUntilDestroyed(this.destroyRef),
               finalize(() => {

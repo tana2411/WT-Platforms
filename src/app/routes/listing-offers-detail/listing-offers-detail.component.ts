@@ -6,7 +6,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { mapCountryCodeToName } from '@app/statics';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { ListingMaterial } from 'app/models';
-import { ListingMaterialDetailResponse } from 'app/models/listing-material-detail.model';
+import { ListingMaterialDetail } from 'app/models/listing-material-detail.model';
 import { ListingService } from 'app/services/listing.service';
 import { MaterialActionComponent } from 'app/share/ui/product-detail/material-action/material-action.component';
 import { MaterialOwnerComponent } from 'app/share/ui/product-detail/material-owner/material-owner.component';
@@ -50,7 +50,7 @@ export class ListingOffersDetailComponent {
   relateListing: ListingMaterial[] = [];
 
   offerId = signal<number | undefined>(undefined);
-  listingDetail = signal<ListingMaterialDetailResponse['data'] | undefined>(undefined);
+  listingDetail = signal<ListingMaterialDetail | undefined>(undefined);
   isSeller = computed(() => this.listingDetail()?.listing?.listingType === 'sell');
   loading = signal(false);
 

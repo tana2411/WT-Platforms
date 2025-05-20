@@ -1,17 +1,18 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ROUTES } from 'app/constants/route.const';
 import { getDefaultRouteByRole } from 'app/guards/auth/utils';
 import { ACCESS_TOKEN_KEY } from 'app/interceptors/auth.interceptor';
+import { User } from 'app/models/auth.model';
 import { BehaviorSubject, catchError, map, of, switchMap, tap } from 'rxjs';
 import {
   RequestForgotPasswordParams,
   RequestLoginParams,
   RequestSetPasswordParams,
+  ResponseGetCompanyLocation,
   ResponseLogin,
   ResponseMe,
-  User,
 } from '../types/requests/auth';
 
 export const NOT_INITIAL_USER = null;
@@ -124,6 +125,26 @@ export class AuthService {
         return user;
       }),
     );
+  }
+
+  getCompanyLocation(companyId: number) {
+    const encodedFilter = JSON.stringify({
+      where: {
+        companyId,
+      },
+    });
+
+    let params = new HttpParams({
+      fromObject: {
+        filter: encodedFilter,
+      },
+    });
+
+    params.set('filter', encodedFilter);
+
+    return this.http.get<ResponseGetCompanyLocation>('/company-locations', {
+      params,
+    });
   }
 
   logout() {

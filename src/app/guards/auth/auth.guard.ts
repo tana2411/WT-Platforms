@@ -1,4 +1,5 @@
-import { effect, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
@@ -8,12 +9,11 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
-import { AuthService, NOT_INITIAL_USER } from '../../services/auth.service';
-import { filter, first, map, pipe, tap } from 'rxjs';
-import { checkAllowAccessAuthPage, getDefaultRouteByRole } from './utils';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { User } from 'app/types/requests/auth';
 import { ROUTES } from 'app/constants/route.const';
+import { User } from 'app/models/auth.model';
+import { filter, first, map, pipe, tap } from 'rxjs';
+import { AuthService, NOT_INITIAL_USER } from '../../services/auth.service';
+import { checkAllowAccessAuthPage, getDefaultRouteByRole } from './utils';
 
 @Injectable()
 export class CanActivateAuthPage implements CanActivate {
@@ -23,10 +23,7 @@ export class CanActivateAuthPage implements CanActivate {
     private snackbar: MatSnackBar,
   ) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
-  ): MaybeAsync<GuardResult> {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): MaybeAsync<GuardResult> {
     const requireAuthParams = route.data['requireAuthParams'];
 
     return this.authService.user$.pipe(
