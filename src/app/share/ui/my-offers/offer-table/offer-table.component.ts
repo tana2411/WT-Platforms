@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
+import { FallbackImageDirective } from '@app/directives';
 import { TableOfferItem } from 'app/models/offer';
 import { PaginationComponent } from '../../listing/pagination/pagination.component';
 
 @Component({
   selector: 'app-offer-table',
-  imports: [PaginationComponent, MatButtonModule, RouterModule],
+  imports: [PaginationComponent, MatButtonModule, RouterModule, FallbackImageDirective],
   templateUrl: './offer-table.component.html',
   styleUrl: './offer-table.component.scss',
 })

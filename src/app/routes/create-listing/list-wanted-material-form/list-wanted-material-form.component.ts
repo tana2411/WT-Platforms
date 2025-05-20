@@ -41,6 +41,7 @@ export class ListWantedMaterialFormComponent implements OnInit {
   finishingOption = finishing;
   packingOption = packing;
   companyId: number | undefined;
+  today = new Date();
 
   onGoingListing = signal<boolean | undefined>(undefined);
   itemOption = signal<{ code: string; name: string }[]>([]);
@@ -81,6 +82,7 @@ export class ListWantedMaterialFormComponent implements OnInit {
   });
 
   constructor() {
+    this.today.setDate(this.today.getDate() - 0);
     this.formGroup.valueChanges.pipe(takeUntilDestroyed()).subscribe((value) => {
       const { materialType, additionalNotes } = value;
       if (materialType) {

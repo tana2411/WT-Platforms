@@ -28,4 +28,8 @@ export class ListingService {
   getDetail(listingId: number) {
     return this.httpClient.get<ListingMaterialDetailResponse>(`/listings/${listingId}`);
   }
+
+  delete(listingId: number) {
+    return this.httpClient.delete(`/listings/${listingId}`);
+  }
 }

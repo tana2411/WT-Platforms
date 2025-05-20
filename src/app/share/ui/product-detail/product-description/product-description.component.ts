@@ -9,9 +9,9 @@ type Item = {
 
 @Component({
   selector: 'app-product-description',
-  imports: [IconComponent],
   templateUrl: './product-description.component.html',
   styleUrl: './product-description.component.scss',
+  imports: [IconComponent],
 })
 export class ProductDescriptionComponent {
   @Input({ required: true }) items: Item[] = [];
