@@ -6,6 +6,16 @@ export interface Document {
   documentType: string;
   documentUrl: string;
   listingId: number;
+
+  // todo: added from api get me, check it
+  uploadedByUserId: 3;
+  reviewedByUserId: null;
+  documentName: 'Waste Carrier License';
+  status: string;
+  rejectionReason: string | null;
+  reviewedAt: string | null;
+  expiryDate: string | null;
+  companyId: number;
 }
 
 // Listing model
@@ -89,3 +99,5 @@ export interface ListingMaterialDetailResponse {
   };
   message: string;
 }
+
+export type ListingMaterialDetail = ListingMaterialDetailResponse['data'];

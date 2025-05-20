@@ -1,7 +1,8 @@
 import { Component, inject, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { BiddingFormComponent } from '../bidding-form/bidding-form.component';
+import { ListingMaterialDetail } from 'app/models/listing-material-detail.model';
+import { BiddingFormComponent, BiddingFormProps } from '../bidding-form/bidding-form.component';
 
 @Component({
   selector: 'app-material-action',
@@ -11,6 +12,7 @@ import { BiddingFormComponent } from '../bidding-form/bidding-form.component';
 })
 export class MaterialActionComponent {
   @Input({ required: true }) isSeller: boolean = false;
+  @Input({ required: true }) listingDetail: ListingMaterialDetail | undefined;
 
   dialog = inject(MatDialog);
 
@@ -19,15 +21,10 @@ export class MaterialActionComponent {
       maxWidth: '750px',
       width: '100%',
       panelClass: 'px-3',
+      data: {
+        listingId: this.listingDetail?.listing?.id,
+        availableQuantity: this.listingDetail?.listing?.quantity,
+      } as BiddingFormProps,
     });
-
-    // dialogRef.afterClosed().subscribe((result) => {
-    //   if (result === 'buyer-seller') {
-    //     // Handle buyer/seller registration
-    //     this.router.navigateByUrl('/create-account');
-    //   } else if (result === 'haulier') {
-    //     this.router.navigateByUrl('/create-haulier-account');
-    //   }
-    // });
   }
 }

@@ -14,8 +14,9 @@
       <p class="sub-label mb-2">Please ensure that you choose the location that the waste material will be delivered to.</p>
       <mat-form-field appearance="outline" class="w-100">
         <mat-select placeholder="Select Warehouse" formControlName="location">
-          <mat-option value="google_search" i18n>Google Search</mat-option>
-          <mat-option value="prse_trade_show" i18n>PRSE Trade Show</mat-option>
+          @for (location of locations(); track location.id) {
+            <mat-option [value]="location.id" i18n>{{ location.locationName }}</mat-option>
+          }
         </mat-select>
         @if (formGroup.get('location')?.hasError('required')) {
           <mat-error i18n>This is a required field.</mat-error>
@@ -88,6 +89,9 @@
         @if (formGroup.get('loadBidOn')?.hasError('min')) {
           <mat-error i18n>Please enter a number greater than or equal to 1.</mat-error>
         }
+        @if (formGroup.get('loadBidOn')?.hasError('max')) {
+          <mat-error i18n>Number of loads cannot exceed the available quantity.</mat-error>
+        }
       </mat-form-field>
     </div>
 
@@ -95,9 +99,10 @@
       <mat-label class="fw-bold mb-2 d-block text-uppercase" i18n>currency </mat-label>
       <mat-form-field appearance="outline" class="w-100">
         <mat-select formControlName="currency" placeholder="Please Select">
-          <mat-option value="gbp" i18n>£/GBP</mat-option>
-          <mat-option value="usd" i18n>$/USD</mat-option>
-          <mat-option value="euro" i18n>€/EURO</mat-option>
+          <!-- Todo: mapping the list currency according BE -->
+          <mat-option value="GBP" i18n>£/GBP</mat-option>
+          <mat-option value="USD" i18n>$/USD</mat-option>
+          <mat-option value="EURO" i18n>€/EURO</mat-option>
         </mat-select>
         @if (formGroup.get('currency')?.hasError('required')) {
           <mat-error i18n>This is a required field.</mat-error>

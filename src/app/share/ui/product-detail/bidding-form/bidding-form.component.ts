@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -10,12 +10,22 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogClose } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
-import { catchError, finalize, from, of, tap } from 'rxjs';
+import { CompanyLocation } from 'app/models';
+import { AuthService } from 'app/services/auth.service';
+import { OfferService } from 'app/services/offer.service';
+import { RequestCreateBidParams } from 'app/types/requests/offer';
+import { catchError, finalize, tap } from 'rxjs';
+
+export type BiddingFormProps = {
+  listingId: number;
+  availableQuantity: number;
+};
 
 @Component({
   selector: 'app-bidding-form',
@@ -29,11 +39,19 @@ import { catchError, finalize, from, of, tap } from 'rxjs';
     IconComponent,
     MatButtonModule,
     MatDatepickerModule,
+    MatSnackBarModule,
   ],
+  providers: [OfferService],
   templateUrl: './bidding-form.component.html',
   styleUrl: './bidding-form.component.scss',
 })
-export class BiddingFormComponent {
+export class BiddingFormComponent implements OnInit {
+  offerService = inject(OfferService);
+  authService = inject(AuthService);
+  readonly dialogRef = inject(MatDialogRef<BiddingFormComponent>);
+  readonly props = inject<BiddingFormProps>(MAT_DIALOG_DATA);
+  private snackBar = inject(MatSnackBar);
+
   private validateRange = (group: AbstractControl): ValidationErrors | null => {
     const earliestDate = group.get('earliestDeliveryDate')?.value;
     const latestDate = group.get('latestDeliveryDate')?.value;
@@ -55,7 +73,11 @@ export class BiddingFormComponent {
       offerValidDate: new FormControl<string | null>(null, []),
       earliestDeliveryDate: new FormControl<string | null>(null, []),
       latestDeliveryDate: new FormControl<string | null>(null, []),
-      loadBidOn: new FormControl<number | null>(null, [Validators.required, Validators.min(1)]),
+      loadBidOn: new FormControl<number | null>(null, [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(this.props.availableQuantity),
+      ]),
       currency: new FormControl<string | null>('gbp', [Validators.required]),
       pricePerMetric: new FormControl<number | null>(null, [Validators.required, Validators.min(1)]),
       incoterms: new FormControl<string | null>(null, [Validators.required]),
@@ -68,9 +90,17 @@ export class BiddingFormComponent {
 
   todayDate = new Date();
   submitting = signal(false);
+  locations = signal<CompanyLocation[]>([]);
 
   get isShowShippingPort() {
     return ['FAS', 'FOB', 'CFR', 'CIF'].includes(this.formGroup.get('incoterms')?.value ?? '');
+  }
+
+  ngOnInit() {
+    const user = this.authService.user!;
+    this.authService.getCompanyLocation(28).subscribe((locations) => {
+      this.locations.set(locations);
+    });
   }
 
   submit() {
@@ -79,22 +109,41 @@ export class BiddingFormComponent {
     }
 
     this.formGroup.markAllAsTouched();
-    console.log(this.formGroup.valid);
     if (!this.formGroup.valid) {
       console.log(this.formGroup.controls);
       return;
     }
 
     this.submitting.set(true);
+    const value = this.formGroup.value;
+    const user = this.authService.user!;
 
-    from(new Promise((res, rej) => setTimeout(res, 3000)))
+    const params: RequestCreateBidParams = {
+      listingType: 'sell',
+      listingId: this.props.listingId,
+      companyId: user.companyId,
+      locationId: Number(value.location),
+      createdByUserId: user.id,
+      quantity: Number(value.loadBidOn),
+      offeredPricePerUnit: Number(value.pricePerMetric),
+      currency: value.currency!,
+      incoterms: value.incoterms!,
+      shippingPort: this.isShowShippingPort ? value.shippingPort! : undefined,
+      earliestDeliveryDate: value.earliestDeliveryDate!,
+      latestDeliveryDate: value.latestDeliveryDate!,
+      expiresAt: value.offerValidDate!,
+    };
+
+    this.offerService
+      .createBid(params)
       .pipe(
         tap(() => {
-          console.log('success');
+          this.snackBar.open('Your bid has been successfully created.');
+          this.dialogRef.close();
         }),
         catchError((err) => {
-          console.error(err);
-          return of(undefined);
+          this.snackBar.open('Failed to submit your bid due to a system error. Please try again later.');
+          throw err;
         }),
         finalize(() => {
           this.submitting.set(false);

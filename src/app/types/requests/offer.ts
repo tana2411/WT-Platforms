@@ -1,5 +1,5 @@
+import { CompanyStatus } from 'app/models/auth.model';
 import { OfferStatus } from 'app/models/offer';
-import { CompanyStatus } from './auth';
 
 interface Offer {
   id: number;
@@ -80,4 +80,20 @@ export type RequestGetOfferDetailResponse = {
   data: OfferDetail;
   message: string;
   status: string;
+};
+
+export type RequestCreateBidParams = {
+  listingType: 'sell';
+  listingId: number;
+  companyId: number;
+  locationId: number;
+  createdByUserId: number;
+  quantity: number;
+  offeredPricePerUnit: number;
+  currency: string;
+  incoterms: string;
+  shippingPort?: string;
+  earliestDeliveryDate: string;
+  latestDeliveryDate: string;
+  expiresAt: string;
 };
