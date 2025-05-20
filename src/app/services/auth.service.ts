@@ -121,7 +121,10 @@ export class AuthService {
     return this.http.get<ResponseMe>('/users/me').pipe(
       map((res) => {
         const user = res.data?.companyUser;
-        user.company.companyDocuments = res.data.companyDocuments;
+        if (user.company) {
+          user.company.companyDocuments = res.data.companyDocuments;
+        }
+
         return user;
       }),
     );
