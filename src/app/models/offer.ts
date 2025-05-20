@@ -1,4 +1,4 @@
-import { CompanyStatus } from 'app/types/requests/auth';
+import { CompanyStatus } from './auth.model';
 
 export enum OfferStatus {
   pending = 'Pending',

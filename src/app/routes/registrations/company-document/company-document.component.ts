@@ -12,10 +12,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
 import { AccountOnboardingStatusComponent, DocumentFileInfo, FileInfo, FileUploadComponent } from '@app/ui';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
+import { CompanyDocument } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
 import { RegistrationsService } from 'app/services/registrations.service';
 import { UploadService } from 'app/share/services/upload.service';
-import { CompanyDocuments } from 'app/types/requests/auth';
 import moment from 'moment';
 import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
 
@@ -50,7 +50,7 @@ export class CompanyDocumentComponent implements OnInit {
   CompanyDocumentType = CompanyDocumentType;
 
   companyId: number | undefined;
-  companyDocuments: CompanyDocuments[] = [];
+  companyDocuments: CompanyDocument[] = [];
   environmentPermitDocuments: DocumentFileInfo[] = [];
   wasteExemptionDocuments: DocumentFileInfo[] = [];
   wasteCarrierLicenseDocuments: DocumentFileInfo[] = [];
@@ -162,7 +162,7 @@ export class CompanyDocumentComponent implements OnInit {
       });
   }
 
-  getDocumentList(documents: CompanyDocuments[], type: string): DocumentFileInfo[] {
+  getDocumentList(documents: CompanyDocument[], type: string): DocumentFileInfo[] {
     if (!documents) return [];
 
     if (type === 'other') {

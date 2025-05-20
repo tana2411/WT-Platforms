@@ -1,4 +1,4 @@
-import { Component, inject, Signal } from '@angular/core';
+import { Component, EnvironmentInjector, inject, runInInjectionContext, Signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -23,6 +23,7 @@ export class AvatarComponent {
   routes = ROUTES_WITH_SLASH;
   dialog = inject(MatDialog);
   router = inject(Router);
+  private injector = inject(EnvironmentInjector);
 
   constructor(private authService: AuthService) {
     this.compactUserName = toSignal(
@@ -41,21 +42,24 @@ export class AvatarComponent {
   }
 
   onLogout() {
-    this.dialog
-      .open<ConfirmModalComponent, ConfirmModalProps>(ConfirmModalComponent, {
-        maxWidth: '500px',
-        width: '100%',
-        panelClass: 'px-3',
-        data: {
-          title: 'Are you sure you want to log out?',
-        },
-      })
-      .afterClosed()
-      .pipe(takeUntilDestroyed())
-      .subscribe((shouldLogout) => {
-        if (shouldLogout) {
-          this.router.navigateByUrl(ROUTES_WITH_SLASH.logout);
-        }
-      });
+    runInInjectionContext(this.injector, () => {
+      this.dialog
+        .open<ConfirmModalComponent, ConfirmModalProps>(ConfirmModalComponent, {
+          maxWidth: '500px',
+          width: '100%',
+          panelClass: 'px-3',
+          data: {
+            title: 'Are you sure you want to log out?',
+          },
+        })
+        .afterClosed()
+        .pipe(takeUntilDestroyed())
+        .subscribe((shouldLogout) => {
+          debugger;
+          if (shouldLogout) {
+            this.router.navigateByUrl(ROUTES_WITH_SLASH.logout);
+          }
+        });
+    });
   }
 }

@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
+  RequestCreateBidParams,
   RequestGetOfferDetailResponse,
   RequestGetOffersParams,
   RequestGetOffersResponse,
@@ -55,6 +56,16 @@ export class OfferService {
 
   getOfferListing({ listingId, page, isSeller }: Required<RequestGetOffersParams>) {
     return this.getOffers({ listingId, page, isSeller });
+  }
+
+  createBid(params: RequestCreateBidParams) {
+    return this.http.post(`/offers`, params).pipe(
+      catchError((err) => {
+        this.snackbar.open('Failed to accept the bid. Please check your network connection and try again.');
+
+        throw err;
+      }),
+    );
   }
 
   acceptBid(id: number) {

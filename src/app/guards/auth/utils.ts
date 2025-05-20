@@ -1,4 +1,4 @@
-import { User } from 'app/types/requests/auth';
+import { User } from 'app/models/auth.model';
 import { ROUTES } from '../../constants/route.const';
 import { GuardRequireRole, Role } from '../../types/auth';
 
@@ -31,10 +31,7 @@ const getUserGuardRoles = (user: User): GuardRequireRole[] => {
   return userGuardRoles;
 };
 
-export const checkAllowAccessAuthPage = (
-  user: User,
-  requireRole: GuardRequireRole[],
-) => {
+export const checkAllowAccessAuthPage = (user: User, requireRole: GuardRequireRole[]) => {
   const userGuardRoles = getUserGuardRoles(user);
 
   return userGuardRoles.some((r) => requireRole.includes(r));

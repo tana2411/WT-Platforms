@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
 import { mapCountryCodeToName } from '@app/statics';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
-import { ListingMaterialDetailResponse } from 'app/models/listing-material-detail.model';
+import { ListingMaterialDetail } from 'app/models/listing-material-detail.model';
 import { ListingService } from 'app/services/listing.service';
 import { MaterialActionComponent } from 'app/share/ui/product-detail/material-action/material-action.component';
 import { MaterialOwnerComponent } from 'app/share/ui/product-detail/material-owner/material-owner.component';
@@ -31,7 +31,7 @@ import { finalize } from 'rxjs';
 })
 export class ListingOffersDetailComponent {
   offerId = signal<number | undefined>(undefined);
-  listingDetail = signal<ListingMaterialDetailResponse['data'] | undefined>(undefined);
+  listingDetail = signal<ListingMaterialDetail | undefined>(undefined);
   isSeller = computed(() => this.listingDetail()?.listing?.listingType === 'sell');
 
   loading = signal(false);

@@ -3,9 +3,9 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
+import { User } from 'app/models/auth.model';
 import { AuthService } from 'app/services/auth.service';
 import { HeaderService } from 'app/services/header.service';
-import { User } from 'app/types/requests/auth';
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
