@@ -1,6 +1,6 @@
 import { CompanyLocation } from 'app/models';
 import { User } from 'app/models/auth.model';
-import { Document } from 'app/models/listing-material-detail.model';
+import { IDocument } from 'app/models/listing-material-detail.model';
 
 export type RequestLoginParams = {
   email: string;
@@ -34,7 +34,7 @@ export type ResponseMe = {
   message: string;
   data: {
     companyUser: User;
-    companyDocuments: Document[];
+    companyDocuments: IDocument[];
   };
 };
 

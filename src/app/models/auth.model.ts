@@ -1,4 +1,5 @@
 import { Role } from 'app/types/auth';
+import { IDocument } from './listing-material-detail.model';
 
 export enum CompanyStatus {
   PENDING_VERIFICATION = 'pending_verification',
@@ -25,6 +26,7 @@ type Company = {
   companyType: string | null;
   favoriteMaterials: string[];
   materialInterest: string | null;
+  boxClearingAgent?: boolean;
   isHaulier: boolean;
   fleetType: string | null;
   areasCovered: string | null;
@@ -33,6 +35,7 @@ type Company = {
   verifiedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  companyDocuments: IDocument[];
 };
 
 type UserInfor = {
@@ -71,3 +74,5 @@ export type User = {
   company: Company;
   user: UserInfor;
 };
+
+export type CompanyDocument = IDocument;

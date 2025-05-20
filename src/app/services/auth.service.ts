@@ -120,7 +120,9 @@ export class AuthService {
   getMe() {
     return this.http.get<ResponseMe>('/users/me').pipe(
       map((res) => {
-        return res.data?.companyUser;
+        const user = res.data?.companyUser;
+        user.company.companyDocuments = res.data.companyDocuments;
+        return user;
       }),
     );
   }

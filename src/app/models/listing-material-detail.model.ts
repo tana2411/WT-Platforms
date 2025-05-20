@@ -1,20 +1,20 @@
+import { CompanyDocumentType } from 'app/routes/registrations/company-document/company-document.component';
+
 // Document model
-export interface Document {
+export interface IDocument {
   createdAt: string;
   updatedAt: string;
   id: number;
-  documentType: string;
+  documentType: CompanyDocumentType;
   documentUrl: string;
   listingId: number;
-
-  // todo: added from api get me, check it
-  uploadedByUserId: 3;
-  reviewedByUserId: null;
-  documentName: 'Waste Carrier License';
+  uploadedByUserId: number;
+  reviewedByUserId: number;
+  documentName: string;
   status: string;
-  rejectionReason: string | null;
-  reviewedAt: string | null;
-  expiryDate: string | null;
+  rejectionReason?: string;
+  reviewedAt?: string;
+  expiryDate?: string;
   companyId: number;
 }
 
@@ -56,7 +56,7 @@ export interface Listing {
   listingRenewalPeriod: string | null;
   listingDuration: string;
   viewCount: number | null;
-  documents: Document[];
+  documents: IDocument[];
 }
 
 // Company model
