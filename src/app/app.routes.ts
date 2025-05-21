@@ -135,7 +135,26 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./routes/admin/admin-dashboard/admin-dashboard.component').then((m) => m.AdminDashboardComponent),
   },
-
+  {
+    path: ROUTES.liveActiveTable,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [GuardRequireRole.SuperAdmin],
+    },
+    loadComponent: () =>
+      import('./routes/admin/live-active-table/live-active-table.component').then((m) => m.LiveActiveTableComponent),
+  },
+  {
+    path: ROUTES.commercialManagement,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [GuardRequireRole.SuperAdmin],
+    },
+    loadComponent: () =>
+      import('./routes/admin/commercial-management/commercial-management.component').then(
+        (m) => m.CommercialManagementComponent,
+      ),
+  },
   {
     path: ROUTES.settings,
     canActivate: [CanActivateAuthPage],

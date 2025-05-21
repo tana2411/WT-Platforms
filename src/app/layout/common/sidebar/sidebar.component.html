@@ -13,26 +13,42 @@
       <img src="assets/images/compact-logo.svg" alt="Logo" class="cursor-pointer" routerLink="/login" />
     </div>
 
-    <a class="menu-item dashboard d-flex gap-3 align-items-center" routerLink="/dashboard" routerLinkActive="active-link">
-      <app-icon iconName="view_quilt"></app-icon>
-      <p class="fw-bold mb-0">Dashboard</p>
-    </a>
-
-    <p class="mb-0 px-3 px-lg-5 text-uppercase mt-2 mt-lg-3 mb-lg-3">PLATFORM</p>
-
-    <div class="d-flex flex-column">
-      @for (item of listMenuPlatform; track item.title) {
-        <a routerLink="{{ item.link }}" routerLinkActive="active-link" class="menu-item d-flex gap-3 align-items-center">
-          <app-icon iconName="{{ item.icon }}" className="{{ item.iconClass }}"></app-icon>
-          <p class="fw-bold mb-0">{{ item.title }}</p>
+    @switch (user()?.user?.globalRole) {
+      @case (Role.USER) {
+        <a class="menu-item dashboard d-flex gap-3 align-items-center" routerLink="/dashboard" routerLinkActive="active-link">
+          <app-icon iconName="view_quilt"></app-icon>
+          <p class="fw-bold mb-0">Dashboard</p>
         </a>
-      }
-    </div>
 
-    <div class="menu-item more d-flex gap-3 align-items-center">
-      <app-icon iconName="more_vert"></app-icon>
-      <p class="fw-bold mb-0">More</p>
-      <mat-icon class="more-icon">arrow_drop_down</mat-icon>
-    </div>
+        <p class="mb-0 px-3 px-lg-5 text-uppercase mt-2 mt-lg-3 mb-lg-3">PLATFORM</p>
+
+        <div class="d-flex flex-column">
+          @for (item of listMenuPlatform; track item.title) {
+            <a routerLink="{{ item.link }}" routerLinkActive="active-link" class="menu-item d-flex gap-3 align-items-center">
+              <app-icon iconName="{{ item.icon }}" className="{{ item.iconClass }}"></app-icon>
+              <p class="fw-bold mb-0">{{ item.title }}</p>
+            </a>
+          }
+        </div>
+
+        <div class="menu-item more d-flex gap-3 align-items-center">
+          <app-icon iconName="more_vert"></app-icon>
+          <p class="fw-bold mb-0">More</p>
+          <mat-icon class="more-icon">arrow_drop_down</mat-icon>
+        </div>
+      }
+      @case (Role.SUPER_ADMIN) {
+        <p class="mb-0 px-3 px-lg-5 text-uppercase mt-2 mt-lg-3 mb-lg-3">ADMIN PLATFORM</p>
+
+        <div class="d-flex flex-column">
+          @for (item of adminMenu; track item.title) {
+            <a routerLink="{{ item.link }}" routerLinkActive="active-link" class="menu-item d-flex gap-3 align-items-center">
+              <app-icon iconName="{{ item.icon }}" className="{{ item.iconClass }}"></app-icon>
+              <p class="fw-bold mb-0">{{ item.title }}</p>
+            </a>
+          }
+        </div>
+      }
+    }
   </div>
 </div>
