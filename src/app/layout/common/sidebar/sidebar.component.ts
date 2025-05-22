@@ -72,13 +72,13 @@ export class SidebarComponent {
   adminMenu = [
     {
       title: 'Live Activity Table',
-      link: '/live-activity',
+      link: ROUTES_WITH_SLASH.liveActiveTable,
       icon: 'table_chart',
       iconClass: 'highlight',
     },
     {
       title: 'Commercial Management',
-      link: '/commercial-management',
+      link: ROUTES_WITH_SLASH.commercialManagement,
       icon: 'business_center',
       iconClass: 'highlight',
     },

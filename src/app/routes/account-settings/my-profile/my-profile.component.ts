@@ -21,6 +21,15 @@ export class MyProfileComponent {
   user: Signal<User | undefined | null>;
   loading = computed(() => !this.user());
 
+  userInitials = computed(() => {
+    if (this.user()) {
+      const firstName = this.user()?.user.firstName || '';
+      const lastName = this.user()?.user.lastName || '';
+      return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+    }
+    return '';
+  });
+
   constructor() {
     this.user = toSignal(this.authService.user$);
 
