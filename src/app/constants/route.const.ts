@@ -26,6 +26,6 @@ export const ROUTES_WITH_SLASH = {
   myOffers: '/my-offer',
   offerDetail: '/offer-detail',
   listingOfferDetail: '/wt_wanted_listing',
-  liveActiveTable: '/live-active-table',
+  liveActiveTable: '/live-activity',
   commercialManagement: '/commercial-management',
 };
