@@ -1,42 +1,45 @@
 import { TitleCasePipe } from '@angular/common';
-import { Component, computed, inject, Signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Component, computed, inject, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { User } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
-import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
+import { EditProfileFormComponent } from './edit-profile-form/edit-profile-form.component';
 
 @Component({
   selector: 'app-my-profile',
   templateUrl: './my-profile.component.html',
   styleUrl: './my-profile.component.scss',
-  imports: [MatButtonModule, MatIconModule, SpinnerComponent, TitleCasePipe],
+  imports: [MatButtonModule, MatIconModule, TitleCasePipe],
 })
 export class MyProfileComponent {
-  authService = inject(AuthService);
-  snackBar = inject(MatSnackBar);
+  @Input() user: User | undefined | null;
 
-  user: Signal<User | undefined | null>;
-  loading = computed(() => !this.user());
+  dialog = inject(MatDialog);
+  snackBar = inject(MatSnackBar);
+  authService = inject(AuthService);
 
   userInitials = computed(() => {
-    if (this.user()) {
-      const firstName = this.user()?.user.firstName || '';
-      const lastName = this.user()?.user.lastName || '';
+    if (this.user) {
+      const firstName = this.user?.user.firstName || '';
+      const lastName = this.user?.user.lastName || '';
       return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
     }
     return '';
   });
 
-  constructor() {
-    this.user = toSignal(this.authService.user$);
+  onEditProfile() {
+    const dataConfig: MatDialogConfig = {
+      data: { userInfo: this.user },
+    };
+    const dialogRef = this.dialog.open(EditProfileFormComponent, dataConfig);
 
-    if (!this.user) {
-      this.snackBar.open('Failed to load profile details. Please try again later.', 'OK', {
-        duration: 3000,
-      });
-    }
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.authService.checkToken().subscribe();
+      }
+    });
   }
 }

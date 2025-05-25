@@ -13,19 +13,19 @@
     <mat-tab-group class="common-tab" [selectedIndex]="activeTab()" animationDuration="0ms">
       <mat-tab label="my profile">
         <app-tab-container (back)="closeTab()">
-          <app-my-profile></app-my-profile>
+          <app-my-profile [user]="user()"></app-my-profile>
         </app-tab-container>
       </mat-tab>
 
       <mat-tab label="company info">
         <app-tab-container (back)="closeTab()">
-          <app-info></app-info>
+          <app-info [company]="user()?.company"></app-info>
         </app-tab-container>
       </mat-tab>
 
       <mat-tab label="Material preferences">
         <app-tab-container (back)="closeTab()">
-          <app-location></app-location>
+          <app-material [materials]="user()?.company?.favoriteMaterials"></app-material>
         </app-tab-container>
       </mat-tab>
 
@@ -37,7 +37,7 @@
 
       <mat-tab label="company documents">
         <app-tab-container (back)="closeTab()">
-          <app-document></app-document>
+          <app-document [documents]="user()?.company?.companyDocuments"></app-document>
         </app-tab-container>
       </mat-tab>
 
