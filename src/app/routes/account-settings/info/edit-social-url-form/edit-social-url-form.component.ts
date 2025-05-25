@@ -115,13 +115,6 @@ export class EditSocialUrlFormComponent implements OnInit {
     }
   }
 
-  removeUrlGroup(index: number) {
-    if (index >= 0 && index < this.urls.length) {
-      this.urls.removeAt(index);
-      this.formGroup.updateValueAndValidity();
-    }
-  }
-
   resetForm() {
     this.newUrl.reset();
     this.newUrl.markAsPristine();
