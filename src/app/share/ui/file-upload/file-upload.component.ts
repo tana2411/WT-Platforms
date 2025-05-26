@@ -18,6 +18,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { isNil } from 'lodash';
 import moment, { Moment } from 'moment';
 
 export interface FileInfo {
@@ -52,7 +53,9 @@ export class FileUploadComponent implements OnInit, OnChanges {
   @Input() required: boolean = true;
   @Input() expiryDateMode: 'required' | 'optional' | 'hidden' = 'required';
   @Input() notAcceptable: string[] = []; // ex: ['.jpg', '.jpeg']
+  @Input() acceptable: string[] | undefined = undefined; // ex: ['.jpg', '.jpeg']
   @Input() fileList: DocumentFileInfo[] = [];
+  @Input() maxFileSize: number = 25 * 1024 * 1024;
 
   @Output() filesAdded = new EventEmitter<FileInfo[]>();
   @Output() uploadValid = new EventEmitter<boolean>();
@@ -181,9 +184,16 @@ export class FileUploadComponent implements OnInit, OnChanges {
       return;
     }
 
-    const maxSizeInBytes = 25 * 1024 * 1024;
+    // const maxSizeInBytes = 25 * 1024 * 1024;
     const allowedMimeType = this.baseAllowedTypes
       .filter((type) => !this.notAcceptable.includes(type.extension))
+      .filter((type) => {
+        if (isNil(this.acceptable)) {
+          return true;
+        }
+
+        return this.acceptable.includes(type.extension);
+      })
       .map((type) => type.mimeType);
 
     if (!files || files.length === 0) {
@@ -197,7 +207,7 @@ export class FileUploadComponent implements OnInit, OnChanges {
         continue;
       }
 
-      if (file.size > maxSizeInBytes) {
+      if (file.size > this.maxFileSize) {
         this.snackBar.open('File size is too large. Please upload a file smaller than 25MB.');
         continue;
       }
