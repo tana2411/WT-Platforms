@@ -20,14 +20,18 @@
   border-color: $primary !important;
 }
 
-.border-light {
-  border-color: $primary-light !important;
-}
-
 .border-black {
   border-color: $black !important;
 }
 
 .box-shadow {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.border-error {
+  border-color: $error !important;
+}
+
+.border-thin {
+  border: 0.25px solid $primary !important;
 }

@@ -1,18 +1,18 @@
 <div class="mt-5">
-  <span class="fw-bold" i18n> List available material in marketplace</span>
-  <div class="border border-info rounded rounded-4 p-5 mt-3 col-9">
+  <span class="fw-bold" i18n> List available material in the marketplace</span>
+  <div class="border border-1 border-primary rounded rounded-4 p-5 mt-3 col-9">
     <!-- upload media section -->
     <div class="mb-5">
-      <h6 class="fw-bold mb-2" i18n>Upload Media</h6>
+      <h6 class="fw-bold mb-2 fs-24" style="width: 700px" i18n>Upload Media</h6>
       <div class="px-2 py-3 background-on-primary d-flex align-items-center mb-4">
         <div class="col-1 text-center d-flex align-items-center justify-content-center">
           <mat-icon class="material-icons-outlined primary">error_outline</mat-icon>
         </div>
         <div i18n class="fw-500 fs-16">This is recommended to optimize the matches for your requirements.</div>
       </div>
-      <div class="border p-3 rounded rounded-4">
+      <div class="border-thin p-3 rounded rounded-4">
         <div class="col-7 mx-auto">
-          <span class="fw-bold mb-3" i18n>FEATURED IMAGE</span>
+          <div class="fw-bold mb-4 mt-4" i18n>FEATURED IMAGE*</div>
           <app-file-upload
             [maxFile]="1"
             (filesAdded)="handleFileReady($event)"
@@ -27,14 +27,14 @@
     <!-- material wanted -->
     <form [formGroup]="formGroup">
       <div class="mb-5">
-        <h6 class="fw-bold mb-2" i18n>Material Wanted</h6>
-        <div class="border px-4 py-5 rounded rounded-4">
+        <h6 class="fw-bold mb-2 fs-24" style="width: 700px" i18n>Material Wanted</h6>
+        <div class="border-thin px-4 py-5 rounded rounded-4">
           <div class="col-9 mx-auto mb-5">
-            <div class="mb-2 fw-500" i18n>COUNTRY WASTE REQUIRED IN*</div>
+            <div class="mb-2 fw-bold" i18n>COUNTRY WASTE REQUIRED IN*</div>
             <mat-form-field appearance="outline" class="w-100">
               <mat-select formControlName="country" placeholder="Please Select">
                 @for (country of countryOption; track country.isoCode) {
-                  <mat-option [value]="country.isoCode">{{ country.name }}</mat-option>
+                  <mat-option [value]="country.isoCode" class="option-bold-label">{{ country.name }}</mat-option>
                 }
               </mat-select>
               @if (formGroup.get('country')?.hasError('required')) {
@@ -43,11 +43,11 @@
             </mat-form-field>
           </div>
           <div class="col-9 mx-auto mb-5">
-            <div class="mb-2 fw-500" i18n>MATERIAL TYPE*</div>
+            <div class="mb-2 fw-bold" i18n>MATERIAL TYPE*</div>
             <mat-form-field appearance="outline" class="w-100">
               <mat-select formControlName="materialType" placeholder="Please Select">
                 @for (materialType of materialTypes; track materialType.code) {
-                  <mat-option [value]="materialType.code">{{ materialType.name }}</mat-option>
+                  <mat-option [value]="materialType.code" class="option-bold-label">{{ materialType.name }}</mat-option>
                 }
               </mat-select>
               @if (formGroup.get('materialType')?.hasError('required')) {
@@ -56,7 +56,7 @@
             </mat-form-field>
           </div>
           <div class="col-9 mx-auto mb-5">
-            <div class="mb-2 fw-500" i18n>ITEM*</div>
+            <div class="mb-2 fw-bold" i18n>ITEM*</div>
             <mat-form-field appearance="outline" class="w-100">
               <mat-select formControlName="materialItem" placeholder="Please Select">
                 @for (item of itemOption(); track $index) {
@@ -69,7 +69,7 @@
             </mat-form-field>
           </div>
           <div class="col-9 mx-auto mb-5">
-            <div class="mb-2 fw-500" i18n>FORM*</div>
+            <div class="mb-2 fw-bold" i18n>FORM*</div>
             <mat-form-field appearance="outline" class="w-100">
               <mat-select formControlName="materialForm" placeholder="Please Select">
                 @if (formOption().length == 0 && formGroup.get('materialType')?.touched) {
@@ -85,8 +85,8 @@
               }
             </mat-form-field>
           </div>
-          <div class="col-9 mx-auto mb-5">
-            <div class="mb-2 fw-500" i18n>GRADING*</div>
+          <!-- <div class="col-9 mx-auto mb-5">
+            <div class="mb-2 fw-bold" i18n>GRADING*</div>
             <mat-form-field appearance="outline" class="w-100">
               <mat-select formControlName="materialGrading" placeholder="Please Select">
                 @if (gradingOption().length == 0 && formGroup.get('materialType')?.touched) {
@@ -101,9 +101,9 @@
                 <mat-error class="mt-0" i18n> This field is required </mat-error>
               }
             </mat-form-field>
-          </div>
+          </div> -->
           <div class="col-9 mx-auto mb-5">
-            <div class="mb-2 fw-500" i18n>COLOUR*</div>
+            <div class="mb-2 fw-bold" i18n>COLOUR*</div>
             <mat-form-field appearance="outline" class="w-100">
               <mat-select formControlName="materialColor" placeholder="Please Select">
                 @for (colour of colourOption; track $index) {
@@ -116,7 +116,7 @@
             </mat-form-field>
           </div>
           <div class="col-9 mx-auto mb-5">
-            <div class="mb-2 fw-500" i18n>FISHING*</div>
+            <div class="mb-2 fw-bold" i18n>FISHING*</div>
             <mat-form-field appearance="outline" class="w-100">
               <mat-select formControlName="materialFinishing" placeholder="Please Select">
                 @for (finishing of finishingOption; track $index) {
@@ -129,7 +129,7 @@
             </mat-form-field>
           </div>
           <div class="col-9 mx-auto mb-5">
-            <div class="mb-2 fw-500" i18n>PACKING*</div>
+            <div class="mb-2 fw-bold" i18n>PACKING*</div>
             <mat-form-field appearance="outline" class="w-100">
               <mat-select formControlName="materialPacking" placeholder="Please Select">
                 @for (packing of packingOption; track $index) {
@@ -142,7 +142,7 @@
             </mat-form-field>
           </div>
           <div class="col-9 mx-auto mb-5">
-            <div class="mb-2 fw-500" i18n>CAPACITY PER MONTH*</div>
+            <div class="mb-2 fw-bold" i18n>CAPACITY PER MONTH*</div>
             <mat-form-field appearance="outline" class="w-100">
               <input type="number" min="1" matInput placeholder="Type here" formControlName="capacityPerMonth" />
               @if (formGroup.get('capacityPerMonth')?.hasError('required')) {
@@ -154,8 +154,12 @@
             </mat-form-field>
           </div>
           <div class="col-9 mx-auto mb-5">
-            <div class="mb-2 fw-500" i18n>MFI REQUIREMENTS*</div>
-            <mat-radio-group class="w-100 d-flex justify-content-between" formControlName="materialFlowIndex" name="materialFlowIndex">
+            <div class="mb-2 fw-bold" i18n>MFI REQUIREMENTS*</div>
+            <mat-radio-group
+              class="w-100 d-flex justify-content-between bold-label"
+              formControlName="materialFlowIndex"
+              name="materialFlowIndex"
+            >
               <mat-radio-button value="low" i18n>Low (0.1 - 10)</mat-radio-button>
               <mat-radio-button value="medium" i18n>Medium (10 - 40)</mat-radio-button>
               <mat-radio-button value="high" i18n>High (40+)</mat-radio-button>
@@ -167,13 +171,13 @@
             </div>
           </div>
           <div class="col-9 mx-auto mb-5">
-            <div class="mb-2 fw-500" i18n>HOW SHOULD THE WASTE BE STORED*</div>
+            <div class="mb-2 fw-bold" i18n>HOW SHOULD THE WASTE BE STORED*</div>
             <mat-form-field appearance="outline" class="w-100">
               <mat-select formControlName="wasteStoration" placeholder="Please Select">
-                <mat-option value="indoor" i18n>Indoor</mat-option>
-                <mat-option value="outdoor" i18n>Outdoor</mat-option>
-                <mat-option value="both" i18n>Both</mat-option>
-                <mat-option value="any" i18n>Any</mat-option>
+                <mat-option value="indoor" class="option-bold-label" i18n>Indoor</mat-option>
+                <mat-option value="outdoor" class="option-bold-label" i18n>Outdoor</mat-option>
+                <mat-option value="both" class="option-bold-label" i18n>Both</mat-option>
+                <mat-option value="any" class="option-bold-label" i18n>Any</mat-option>
               </mat-select>
               @if (formGroup.get('wasteStoration')?.hasError('required')) {
                 <mat-error class="mt-0" i18n> This field is required </mat-error>
@@ -181,7 +185,7 @@
             </mat-form-field>
           </div>
           <div class="col-9 mx-auto mb-5">
-            <div class="mb-2 fw-500">QUANTITY WANTED*</div>
+            <div class="mb-2 fw-bold">QUANTITY WANTED*</div>
             <mat-form-field appearance="outline" class="w-100">
               <input type="number" min="1" matInput placeholder="Type here" formControlName="materialWeightWanted" />
               @if (formGroup.get('materialWeightWanted')?.hasError('required')) {
@@ -193,17 +197,25 @@
             </mat-form-field>
           </div>
           <div class="col-9 mx-auto mb-5">
-            <div class="mb-2 fw-500" i18n>MATERIAL WEIGHT UNIT*</div>
-            <mat-radio-group class="col-7 d-flex justify-content-between" formControlName="weightUnit" name="weightUnit">
+            <div class="mb-2 fw-bold" i18n>MATERIAL WEIGHT UNIT*</div>
+            <mat-radio-group class="col-7 d-flex justify-content-between bold-label" formControlName="weightUnit" name="weightUnit">
               <mat-radio-button value="mt" i18n>Mt</mat-radio-button>
               <mat-radio-button value="lbs" i18n>Lbs</mat-radio-button>
               <mat-radio-button value="kg" i18n>Kg</mat-radio-button>
             </mat-radio-group>
           </div>
           <div class="col-9 mx-auto mb-5">
-            <div class="mb-2 fw-500" i18n>MATERIAL REQUIRED FROM*</div>
+            <div class="mb-2 fw-bold" i18n>MATERIAL REQUIRED FROM*</div>
             <mat-form-field appearance="outline" class="w-100">
-              <input matInput [matDatepicker]="picker" formControlName="startDate" readonly [min]="today" />
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="startDate"
+                readonly
+                [min]="today"
+                class="fw-bold"
+                placeholder="dd/mm/yyyy"
+              />
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
               @if (formGroup.get('startDate')?.hasError('required')) {
@@ -219,12 +231,12 @@
 
       <!-- additional information -->
       <div class="mb-5">
-        <h6 class="fw-bold mb-2" i18n>Additional Information</h6>
-        <div class="border px-4 py-5 rounded rounded-4">
+        <h6 class="fw-bold mb-2 fs-24" style="width: 700px" i18n>Additional Information</h6>
+        <div class="border-thin px-4 py-5 rounded rounded-4">
           <div class="col-9 mx-auto">
-            <div class="fw-500 mb-3">DESCRIPTION</div>
+            <div class="fw-bold">DESCRIPTION</div>
             <mat-form-field appearance="outline" class="w-100">
-              <textarea matInput rows="7" style="resize: none" formControlName="additionalNotes"></textarea>
+              <textarea matInput rows="7" style="resize: none; height: 345px" formControlName="additionalNotes"></textarea>
               @if (formGroup.get('additionalNotes')?.hasError('required')) {
                 <mat-error class="mt-0" i18n> This field is required </mat-error>
               }
@@ -247,8 +259,8 @@
       </div>
 
       <div class="mb-5">
-        <h6 class="fw-bold mb-2" i18n>Ongoing Listing</h6>
-        <div class="border px-4 py-5 rounded rounded-4">
+        <h6 class="fw-bold mb-2 fs-24" style="width: 700px" i18n>Ongoing Listing</h6>
+        <div class="border-thin px-4 py-5 rounded rounded-4">
           <div class="col-9 mx-auto mb-5">
             <mat-radio-group
               class="col-5 d-flex justify-content-between"
@@ -263,12 +275,12 @@
 
           @if (formGroup.get('ongoingListing')?.value == 'true') {
             <div class="col-9 mx-auto mb-5">
-              <div class="mb-2 fw-500">RENEWAL PERIOD*</div>
+              <div class="mb-2 fw-bold">RENEWAL PERIOD*</div>
               <mat-form-field appearance="outline" class="w-100">
-                <mat-select formControlName="listingRenewalPeriod" placeholder="Please Select">
-                  <mat-option value="weekly">Weekly</mat-option>
-                  <mat-option value="fortnightly">Fortnightly</mat-option>
-                  <mat-option value="monthly">Monthly</mat-option>
+                <mat-select formControlName="listingRenewalPeriod" placeholder="Please Select" c>
+                  <mat-option class="option-bold-label" value="weekly">Weekly</mat-option>
+                  <mat-option class="option-bold-label" value="fortnightly">Fortnightly</mat-option>
+                  <mat-option class="option-bold-label" value="monthly">Monthly</mat-option>
                 </mat-select>
                 @if (formGroup.get('listingRenewalPeriod')?.hasError('required')) {
                   <mat-error class="mt-0" i18n> This field is required </mat-error>
@@ -278,9 +290,9 @@
           }
           @if (formGroup.get('ongoingListing')?.value == 'false') {
             <div class="col-9 mx-auto mb-5">
-              <div class="mb-2 fw-500" i18n>SELECT END DATE*</div>
+              <div class="mb-2 fw-bold" i18n>SELECT END DATE*</div>
               <mat-form-field appearance="outline" class="w-100">
-                <input matInput [matDatepicker]="picker1" formControlName="listingDuration" readonly [min]="today" />
+                <input matInput [matDatepicker]="picker1" formControlName="listingDuration" readonly [min]="today" class="fw-bold" />
                 <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
                 @if (formGroup.get('listingDuration')?.hasError('required')) {
@@ -299,12 +311,12 @@
         <button
           mat-flat-button
           type="submit"
-          class="w-100"
+          class="w-100 fw-bold"
           [class.overlay-spinner]="submitting()"
           [disabled]="formGroup.invalid || !selectedFile().length"
           (click)="send()"
         >
-          Submit
+          SUBMIT LISTING
         </button>
       </div>
     </form>

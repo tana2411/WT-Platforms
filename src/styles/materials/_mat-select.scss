@@ -1,3 +1,7 @@
 .mat-mdc-select-panel {
-    background-color: white !important;
-  }
+  background-color: white !important;
+}
+
+.option-bold-label .mdc-list-item__primary-text {
+  font-weight: 700 !important;
+}

@@ -1,6 +1,6 @@
 <app-common-layout title="Wanted Material">
   <app-filter
-    [displayFilter]="['country', 'materialType', 'materialItem', 'materialPacking', 'wasteStoration', 'showFullfilledListing']"
+    [displayFilter]="['country', 'materialType', 'materialItem', 'materialPacking', 'wasteStoration', 'showFullfilledListing', 'sortBy']"
     (filterChanged)="onFilterChange($event)"
     (searchTerm)="searchTerm.set($event)"
   ></app-filter>

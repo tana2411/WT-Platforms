@@ -1,25 +1,24 @@
 // Materials
-@use "@angular/material" as mat;
-@use "styles/materials/color-pallets_theme-colors.scss" as my-theme;
+@use '@angular/material' as mat;
+@use 'styles/materials/color-pallets_theme-colors.scss' as my-theme;
 
 // Import functions, variables, and mixins needed by other Bootstrap files
-@import "bootstrap/scss/functions";
-@import "bootstrap/scss/variables";
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
 $enable-dark-mode: false;
-@import "bootstrap/scss/mixins";
-@import "bootstrap/scss/maps";
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/maps';
 // Import Bootstrap Reboot
-@import "bootstrap/scss/root"; // Contains :root CSS variables used by other Bootstrap files
-@import "bootstrap/scss/reboot";
+@import 'bootstrap/scss/root'; // Contains :root CSS variables used by other Bootstrap files
+@import 'bootstrap/scss/reboot';
 // Import Bootstrap features
-@import "bootstrap/scss/alert";
-@import "bootstrap/scss/containers";
-@import "bootstrap/scss/grid";
-@import "bootstrap/scss/card";
-@import "bootstrap/scss/helpers";
-@import "bootstrap/scss/utilities";
-@import "bootstrap/scss/utilities/api";
-
+@import 'bootstrap/scss/alert';
+@import 'bootstrap/scss/containers';
+@import 'bootstrap/scss/grid';
+@import 'bootstrap/scss/card';
+@import 'bootstrap/scss/helpers';
+@import 'bootstrap/scss/utilities';
+@import 'bootstrap/scss/utilities/api';
 
 @import 'styles/elements';
 @import 'styles/materials';
@@ -35,22 +34,24 @@ body {
 }
 
 html {
-  @include mat.theme((
-    color: (
-      primary: my-theme.$primary-palette,
-      tertiary: my-theme.$tertiary-palette,
-    ),
-    typography: Barlow,
-    density: 0,
-  ));
+  @include mat.theme(
+    (
+      color: (
+        primary: my-theme.$primary-palette,
+        tertiary: my-theme.$tertiary-palette,
+      ),
+      typography: Barlow,
+      density: 0,
+    )
+  );
 
-  --mdc-outlined-button-label-text-color: #1D1D1B;
+  --mdc-outlined-button-label-text-color: #1d1d1b;
   --mdc-outlined-button-outline-width: 2px;
 }
 
 body {
   margin: 0;
-  font-family: Barlow, "Helvetica Neue", sans-serif;
+  font-family: Barlow, 'Helvetica Neue', sans-serif;
   color: --var(on-surface);
 }
 
@@ -73,6 +74,10 @@ input::placeholder {
   padding: 0;
 }
 
-.cursor-pointer{
+.cursor-pointer {
   cursor: pointer;
+}
+
+.bold-label .mdc-label {
+  font-weight: 700 !important;
 }

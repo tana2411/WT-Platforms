@@ -1,5 +1,5 @@
 @if (product) {
-  <div class="border shadow-sm border-light p-3 rounded rounded-4 product-card" role="button">
+  <div class="border shadow-sm border-primary p-3 rounded rounded-4 product-card" role="button">
     <div class="row">
       <!-- Left side: image and availability -->
       <div class="col-12 col-sm-7 d-flex flex-column h-100">
@@ -18,7 +18,10 @@
 
       <!-- Right side: product details -->
       <div class="col-12 col-sm-5 product-infor">
-        <h4 class="fs-5 fw-bold">{{ product.title }}</h4>
+        <div class="d-flex justify-content-between align-items-start">
+          <h4 class="fs-5 fw-bold text-wrap">{{ product.title }}</h4>
+          <mat-icon>star_outline</mat-icon>
+        </div>
         <div class="d-flex gap-3 align-items-center mt-2 mt-md-4">
           <app-icon iconName="location_on" iconClassName="primary" backgroundColor="#E5F6F0"></app-icon>
           <div class="column">
@@ -34,12 +37,12 @@
           </div>
         </div>
 
-        @if (materialInterest) {
+        <!-- @if (materialInterest) {
           <div class="d-flex gap-3 align-items-center mt-2 mt-md-4">
             <app-icon iconName="thumbs_up_down" backgroundColor="#FF7B00"></app-icon>
             <div class="secondary" style="cursor: pointer" i18n>Material Interest</div>
           </div>
-        }
+        } -->
       </div>
     </div>
   </div>
