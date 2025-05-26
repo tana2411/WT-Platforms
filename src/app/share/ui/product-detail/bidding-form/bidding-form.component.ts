@@ -98,7 +98,7 @@ export class BiddingFormComponent implements OnInit {
 
   ngOnInit() {
     const user = this.authService.user!;
-    this.authService.getCompanyLocation(28).subscribe((locations) => {
+    this.authService.getCompanyLocation(user.companyId).subscribe((locations) => {
       this.locations.set(locations);
     });
   }

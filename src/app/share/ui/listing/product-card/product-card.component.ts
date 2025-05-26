@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { FallbackImageDirective } from '@app/directives';
 import { mapCountryCodeToName } from '@app/statics';
@@ -15,11 +15,19 @@ import { ProductStatusComponent } from '../product-status/product-status.compone
 export class ProductCardComponent {
   @Input() materialInterest = true;
   @Input({ required: true }) product: ListingMaterial | undefined;
+  @Input() deletable: boolean = false;
+  @Output() delete = new EventEmitter();
 
   mapCountryCodeToName = mapCountryCodeToName;
   constructor() {}
 
   get featureImage() {
     return this.product?.documents.find((i) => i.documentType === ListingImageType.FEATURE_IMAGE)?.documentUrl ?? '';
+  }
+
+  onDelete(e: MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.delete.emit();
   }
 }

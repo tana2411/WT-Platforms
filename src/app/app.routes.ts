@@ -79,6 +79,14 @@ export const routes: Routes = [
       import('./routes/wanted-material/wanted-material.component').then((m) => m.WantedMaterialComponent),
   },
   {
+    path: ROUTES.saleListings,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [GuardRequireRole.SuperAdmin, GuardRequireRole.Trading],
+    },
+    loadComponent: () => import('./routes/sale-listing/sale-listing.component').then((m) => m.SaleListingComponent),
+  },
+  {
     path: ROUTES.sell,
     canActivate: [CanActivateAuthPage],
     data: {

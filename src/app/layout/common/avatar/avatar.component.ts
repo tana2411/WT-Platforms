@@ -55,7 +55,6 @@ export class AvatarComponent {
         .afterClosed()
         .pipe(takeUntilDestroyed())
         .subscribe((shouldLogout) => {
-          debugger;
           if (shouldLogout) {
             this.router.navigateByUrl(ROUTES_WITH_SLASH.logout);
           }
