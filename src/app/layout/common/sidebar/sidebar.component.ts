@@ -45,7 +45,7 @@ export class SidebarComponent {
     },
     {
       title: 'My Listings',
-      link: '/todo/my-listing',
+      link: ROUTES_WITH_SLASH.saleListings,
       icon: 'library_books',
     },
 
