@@ -1,0 +1,21 @@
+<app-admin-layout [title]="'Live Activity Table'">
+  <div class="mt-4">
+    <mat-tab-group class="common-tab" animationDuration="0ms">
+      <mat-tab label="PURCHASES">
+        <app-tab-container>
+          <app-purchases></app-purchases>
+        </app-tab-container>
+      </mat-tab>
+      <mat-tab label="LISTINGS">
+        <app-tab-container>
+          <app-listings></app-listings>
+        </app-tab-container>
+      </mat-tab>
+      <mat-tab label="WANTED">
+        <app-tab-container>
+          <app-wanted></app-wanted>
+        </app-tab-container>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</app-admin-layout>

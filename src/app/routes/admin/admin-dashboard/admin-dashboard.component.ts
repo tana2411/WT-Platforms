@@ -1,10 +1,10 @@
-import { Component, signal } from '@angular/core';
-import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
+import { Component } from '@angular/core';
+import { AdminLayoutComponent } from 'app/layout/admin-layout/admin-layout.component';
 
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.scss'],
-  imports: [CommonLayoutComponent],
+  imports: [AdminLayoutComponent],
 })
 export class AdminDashboardComponent {}

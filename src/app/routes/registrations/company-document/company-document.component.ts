@@ -12,18 +12,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
 import { AccountOnboardingStatusComponent, DocumentFileInfo, FileInfo, FileUploadComponent } from '@app/ui';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
-import { CompanyDocument } from 'app/models';
+import { CompanyDocument, CompanyDocumentType } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
 import { RegistrationsService } from 'app/services/registrations.service';
 import { UploadService } from 'app/share/services/upload.service';
 import moment from 'moment';
 import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
-
-export enum CompanyDocumentType {
-  EnvironmentalPermit = 'environmental_permit',
-  WasteExemption = 'waste_exemption',
-  WasteCarrierLicense = 'waste_carrier_license',
-}
 
 @Component({
   selector: 'app-company-document',

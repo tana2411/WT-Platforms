@@ -7,7 +7,7 @@ export enum CompanyStatus {
   REJECTED = 'rejected',
 }
 
-type Company = {
+export type Company = {
   id: number;
   countryCode: string | null;
   name: string;
@@ -26,13 +26,20 @@ type Company = {
   companyType: string | null;
   favoriteMaterials: string[];
   materialInterest: string | null;
-  boxClearingAgent?: boolean;
+  companyInterest: string;
+  description: string;
+  email: string;
+  boxClearingAgent: boolean;
   isHaulier: boolean;
   fleetType: string | null;
   areasCovered: string | null;
   containerTypes: string | null;
   status: CompanyStatus;
   verifiedAt: string | null;
+  facebookUrl: string | null;
+  instagramUrl: string | null;
+  linkedinUrl: string | null;
+  xUrl: string | null;
   createdAt: string;
   updatedAt: string;
   companyDocuments: IDocument[];
