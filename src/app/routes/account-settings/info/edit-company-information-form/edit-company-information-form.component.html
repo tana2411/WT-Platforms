@@ -26,7 +26,7 @@
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Type Here" type="text" formControlName="website" />
 
-            @if (formGroup.get('website')?.hasError('invalidUrl')) {
+            @if (formGroup.get('website')?.hasError('pattern')) {
               <mat-error i18n> Please enter a valid URL.</mat-error>
             }
           </mat-form-field>

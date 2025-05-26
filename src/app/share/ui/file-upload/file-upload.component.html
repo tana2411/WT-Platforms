@@ -16,18 +16,13 @@
     [multiple]="false"
   />
 
-  <div class="d-flex justify-content-between align-items-center col-11">
-    <div class="d-block mb-2 col-4 fw-500">Drop file here or</div>
-    <button
-      mat-stroked-button
-      color="primary"
-      [disabled]="documents.length >= maxFile"
-      class="fw-bold col-8 border-primary primary bg-white"
-      (click)="handleUploadFile($event)"
-    >
-      SELECT FILES
-    </button>
-  </div>
+  <img src="assets/images/cloud_upload_24px.svg" alt="Upload Icon" class="mb-2" />
+
+  <div class="d-block mb-2">Drop file here or</div>
+
+  <button mat-flat-button color="primary" [disabled]="documents.length >= maxFile" class="fw-bold" (click)="handleUploadFile($event)">
+    SELECT FILES
+  </button>
 
   <form [formGroup]="formGroup">
     <ng-container formArrayName="documents">
