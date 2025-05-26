@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TelephoneFormControlComponent } from '@app/ui';
+import { strictEmailValidator } from '@app/validators';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { User } from 'app/models';
 import { SettingsService } from 'app/services/settings.service';
@@ -37,20 +38,20 @@ export class EditProfileFormComponent implements OnInit {
     firstName: new FormControl<string | null>(null, [
       Validators.required,
       Validators.maxLength(50),
-      Validators.pattern(/^[A-Za-z]+$/),
+      Validators.pattern(/^[A-Za-z\s]+$/),
     ]),
     lastName: new FormControl<string | null>(null, [
       Validators.required,
       Validators.maxLength(50),
-      Validators.pattern(/^[A-Za-z]+$/),
+      Validators.pattern(/^[A-Za-z\s]+$/),
     ]),
     jobTitle: new FormControl<string | null>(null, [
       Validators.required,
       Validators.maxLength(50),
-      Validators.pattern(/^[A-Za-z]+$/),
+      Validators.pattern(/^[A-Za-z\s]+$/),
     ]),
     phoneNumber: new FormControl<string | null>(null, [Validators.required]),
-    email: new FormControl<string | null>(null, [Validators.required, Validators.email]),
+    email: new FormControl<string | null>(null, [Validators.required, strictEmailValidator()]),
   });
 
   submitting = signal(false);

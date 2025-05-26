@@ -33,6 +33,8 @@ export class MyProfileComponent {
   onEditProfile() {
     const dataConfig: MatDialogConfig = {
       data: { userInfo: this.user },
+      width: '100%',
+      maxWidth: '980px',
     };
     const dialogRef = this.dialog.open(EditProfileFormComponent, dataConfig);
 
