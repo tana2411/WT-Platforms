@@ -6,6 +6,7 @@ import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { User } from 'app/models/auth.model';
 import { AuthService } from 'app/services/auth.service';
 import { HeaderService } from 'app/services/header.service';
+import { Role } from 'app/types/auth';
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
@@ -16,7 +17,7 @@ import { IconComponent } from '../icon/icon.component';
 })
 export class SidebarComponent {
   user: Signal<User | undefined | null>;
-
+  Role = Role;
   constructor(
     private authService: AuthService,
     public headerService: HeaderService,
@@ -65,6 +66,21 @@ export class SidebarComponent {
       title: 'Add Locations',
       link: '//todo/add-location',
       icon: 'add_location',
+    },
+  ];
+
+  adminMenu = [
+    {
+      title: 'Live Activity Table',
+      link: ROUTES_WITH_SLASH.liveActiveTable,
+      icon: 'table_chart',
+      iconClass: 'highlight',
+    },
+    {
+      title: 'Commercial Management',
+      link: ROUTES_WITH_SLASH.commercialManagement,
+      icon: 'business_center',
+      iconClass: 'highlight',
     },
   ];
 }

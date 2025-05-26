@@ -1,4 +1,4 @@
-import { CompanyDocumentType } from 'app/routes/registrations/company-document/company-document.component';
+import { CompanyDocumentType } from './document.model';
 
 // Document model
 export interface IDocument {

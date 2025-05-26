@@ -71,7 +71,30 @@ export class FilterComponent implements OnInit {
       name: 'SORT BY',
       value: 'sortBy',
       type: 'select',
-      placeholder: '',
+      options: [],
+    },
+    {
+      name: 'BUYER',
+      value: 'buyer',
+      type: 'select',
+      options: [],
+    },
+    {
+      name: 'SELLER',
+      value: 'seller',
+      type: 'select',
+      options: [],
+    },
+    {
+      name: 'STATUS',
+      value: 'status',
+      type: 'select',
+      options: [],
+    },
+    {
+      name: 'STATE',
+      value: 'state',
+      type: 'select',
       options: [],
     },
     {

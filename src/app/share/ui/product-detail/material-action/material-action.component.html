@@ -1,5 +1,5 @@
 @if (!isSeller || isOwnListing()) {
-  <div class="d-flex flex-column align-items-center border border-on-primary background-on-primary rounded rounded-4 gap-3 p-4 mb-4">
+  <div class="d-flex flex-column align-items-center border border-light background-on-primary rounded rounded-4 gap-3 p-4 mb-4">
     <button mat-flat-button class="text-uppercase action-button" [routerLink]="['/sell']">Sell material</button>
     <p class="text-uppercase text-decoration-underline fw-bold underlink" i18n>message buyer</p>
   </div>
@@ -15,10 +15,8 @@
     </button>
   </div>
 } @else {
-  <div class="d-flex flex-column align-items-center border border-on-primary background-on-primary rounded rounded-4 gap-3 p-4">
+  <div class="d-flex flex-column align-items-center border border-light background-on-primary rounded rounded-4 gap-3 p-4">
     <button mat-flat-button class="text-uppercase w-100 action-button" (click)="onBid()">bid now</button>
     <p class="text-uppercase text-decoration-underline fw-bold underlink" i18n>Request information</p>
   </div>
 }
-
-<p>{{ activeRoute.snapshot.pathFromRoot }}</p>
