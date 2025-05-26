@@ -1,0 +1,167 @@
+import { Component, EnvironmentInjector, inject, runInInjectionContext, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
+import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
+import { FilterParams, ListingMaterial } from 'app/models';
+import { ListingService } from 'app/services/listing.service';
+import { ConfirmModalComponent, ConfirmModalProps } from 'app/share/ui/confirm-modal/confirm-modal.component';
+import { FilterComponent } from 'app/share/ui/listing/filter/filter.component';
+import { ListingFooterComponent } from 'app/share/ui/listing/listing-footer/listing-footer.component';
+import { PaginationComponent } from 'app/share/ui/listing/pagination/pagination.component';
+import { ProductGridComponent } from 'app/share/ui/listing/product-grid/product-grid.component';
+import { BiddingFormComponent } from 'app/share/ui/product-detail/bidding-form/bidding-form.component';
+import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
+import { catchError, EMPTY, finalize, of, switchMap } from 'rxjs';
+import { PAGE_SIZE } from '../wanted-material/wanted-material.component';
+
+@Component({
+  selector: 'app-sale-listing',
+  imports: [
+    CommonLayoutComponent,
+    FilterComponent,
+    ProductGridComponent,
+    PaginationComponent,
+    ListingFooterComponent,
+    MatDialogModule,
+    BiddingFormComponent,
+    SpinnerComponent,
+  ],
+  templateUrl: './sale-listing.component.html',
+  styleUrl: './sale-listing.component.scss',
+})
+export class SaleListingComponent {
+  items = signal<ListingMaterial[]>([]);
+  filter = signal<FilterParams | undefined>(undefined);
+  loading = signal<boolean>(false);
+  totalItem = signal<number>(0);
+  page = signal<number>(1);
+  searchTerm = signal<string | null>(null);
+
+  listingService = inject(ListingService);
+  snackBar = inject(MatSnackBar);
+  router = inject(Router);
+  route = inject(ActivatedRoute);
+  dialog = inject(MatDialog);
+  private injector = inject(EnvironmentInjector);
+
+  constructor() {
+    this.filter.set({
+      skip: 0,
+      limit: PAGE_SIZE,
+      where: {},
+    });
+  }
+
+  onPageChange(page: number) {
+    this.page.set(page);
+    this.updateFilter({
+      ...this.filter(),
+      skip: (page - 1) * PAGE_SIZE,
+    });
+    this.refresh();
+  }
+
+  onFilterChange(filterParams: any) {
+    const cleanedParams = Object.fromEntries(
+      Object.entries(filterParams).filter(([_, value]) => value != null && value != '' && value != 'All'),
+    );
+    this.updateFilter({
+      skip: 0,
+      where: Object.keys(cleanedParams).length > 0 ? { ...cleanedParams } : {},
+    });
+
+    this.refresh();
+  }
+
+  updateFilter(newFilter: Partial<FilterParams>) {
+    this.filter.update((currentFilter) => {
+      const existing = currentFilter || { skip: 0, limit: PAGE_SIZE, where: {} };
+
+      return {
+        ...existing,
+        ...newFilter,
+        where: {
+          listingType: existing.where.listingType,
+          ...newFilter.where,
+        },
+      };
+    });
+  }
+
+  refresh() {
+    const currentFilter = this.filter();
+    this.loading.set(true);
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+
+    this.listingService
+      .getMyListing(currentFilter)
+      .pipe(
+        finalize(() => this.loading.set(false)),
+        catchError((err) => {
+          this.snackBar.open(`${err.error?.error?.message ?? 'Unknown error'}`, 'Ok', {
+            duration: 3000,
+          });
+          return of(null);
+        }),
+      )
+      .subscribe((data) => {
+        if (data) {
+          this.items.set(data.results);
+          this.totalItem.set(data.totalCount);
+        }
+      });
+  }
+
+  onSelect(item: ListingMaterial) {
+    this.router.navigateByUrl(`${ROUTES_WITH_SLASH.listingOfferDetail}/${item.id}`);
+  }
+
+  deleteItem(item: ListingMaterial) {
+    runInInjectionContext(this.injector, () => {
+      this.dialog
+        .open<ConfirmModalComponent, ConfirmModalProps>(ConfirmModalComponent, {
+          maxWidth: '500px',
+          width: '100%',
+          panelClass: 'px-3',
+          data: {
+            title: 'Are you sure you want to remove this listing? This action cannot be undone.',
+          },
+        })
+        .afterClosed()
+        .pipe(
+          takeUntilDestroyed(),
+          switchMap((shouldDelete) => {
+            if (!shouldDelete) {
+              return EMPTY;
+            }
+
+            return this.listingService.delete(item.id);
+          }),
+          catchError(() => {
+            // if (err?.error?.error?.statusCode == 403) {
+            //   this.snackBar.open('You do not have permission to remove this listing.', 'Ok', {
+            //     duration: 3000,
+            //   });
+            // } else {
+            this.snackBar.open('Failed to remove the listing. Please try again later.', 'Ok', {
+              duration: 3000,
+            });
+
+            return EMPTY;
+            // }
+          }),
+        )
+        .subscribe(() => {
+          this.snackBar.open('Your listing has been successfully removed.');
+          this.refresh();
+        });
+    });
+  }
+}
