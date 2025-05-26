@@ -3,12 +3,19 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { TabContainerComponent } from '../account-settings/tab-container/tab-container.component';
 import { ListWantedMaterialFormComponent } from './list-wanted-material-form/list-wanted-material-form.component';
+import { SellLisingMaterialFormComponent } from './sell-lising-material-form/sell-lising-material-form.component';
 
 @Component({
   selector: 'app-create-listing',
   templateUrl: './create-listing.component.html',
   styleUrls: ['./create-listing.component.scss'],
-  imports: [CommonLayoutComponent, MatTabsModule, ListWantedMaterialFormComponent, TabContainerComponent],
+  imports: [
+    CommonLayoutComponent,
+    MatTabsModule,
+    ListWantedMaterialFormComponent,
+    TabContainerComponent,
+    SellLisingMaterialFormComponent,
+  ],
 })
 export class CreateListingComponent implements OnInit {
   constructor() {}
