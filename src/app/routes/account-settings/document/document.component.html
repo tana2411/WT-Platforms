@@ -1,1 +1,114 @@
-<p>document works!</p>
+<div class="col-12 overflow-hidden">
+  <h4 class="fw-bold mt-5 mb-4" i18n>Company Documents</h4>
+  <div class="d-flex flex-column flex-lg-row gap-4">
+    <div
+      class="border border-light rounded-4 p-3 p-md-4 p-lg-5 d-flex flex-column flex-md-row justify-content-between col-12 col-lg-8 overflow-hidden gap-4"
+    >
+      <div class="col-12 col-md-8 col-lg-9 d-flex flex-column justify-content-between overflow-hidden flex-grow-1 min-w-0">
+        <div class="row g-3 mb-4 mx-0">
+          <div class="col-12 px-2">
+            <div class="mb-1">
+              <span class="fw-bold" i18n> WHICH PERMIT / LICENCE DO YOU HAVE ? </span>
+              <mat-radio-group class="col-9 d-flex justify-content-between flex-wrap" [(ngModel)]="selectedType">
+                <mat-radio-button [value]="CompanyDocumentType.EnvironmentalPermit" i18n>Environmental Permit </mat-radio-button>
+                <mat-radio-button [value]="CompanyDocumentType.WasteCarrierLicense" i18n> Waste Exemptions </mat-radio-button>
+                <mat-radio-button [value]="'other'" i18n> Other </mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+          <div class="mb-1" [hidden]="selectedType === CompanyDocumentType.EnvironmentalPermit">
+            <div class="w-100">
+              <span class="fw-bold" i18n> ENVIRONMENTAL PERMIT </span>
+              @for (item of environmentPermitDocuments; track $index) {
+                <div class="d-flex gap-4 align-items-center">
+                  <div class="col-6 rounded d-flex border">
+                    <div
+                      class="col-2 background-on-primary d-flex justify-content-center align-items-center p-2 rounded border border-right-0"
+                    >
+                      <mat-icon class="me-1">file_copy</mat-icon>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center p-2 rounded">{{ extractFileName(item.documentUrl) }}</div>
+                  </div>
+                  <button mat-flat-button>VIEW</button>
+                </div>
+              }
+            </div>
+          </div>
+          <div class="fw-bold small mb-1 text-truncate gap-2" [hidden]="selectedType === CompanyDocumentType.WasteExemption">
+            <div class="w-100">
+              <span class="fw-bold" i18n> WASTE EXEMPTION </span>
+              @for (item of wasteExemptionDocuments; track $index) {
+                <div class="d-flex gap-4 align-items-center">
+                  <div class="col-6 rounded d-flex border">
+                    <div
+                      class="col-2 background-on-primary d-flex justify-content-center align-items-center p-2 rounded border border-right-0"
+                    >
+                      <mat-icon class="me-1">file_copy</mat-icon>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center p-2 rounded">{{ extractFileName(item.documentUrl) }}</div>
+                  </div>
+                  <button mat-flat-button>VIEW</button>
+                </div>
+              }
+            </div>
+          </div>
+          <div class="mb-1" [hidden]="selectedType === 'other'">
+            <div class="w-100">
+              <span class="fw-bold" i18n> OTHER DOCUMENT DESCRIPTION</span>
+              @for (item of otherDocuments; track $index) {
+                <div class="d-flex gap-4 align-items-center">
+                  <div class="col-6 rounded d-flex border">
+                    <div
+                      class="col-2 background-on-primary d-flex justify-content-center align-items-center p-2 rounded border border-right-0"
+                    >
+                      <mat-icon class="me-1">file_copy</mat-icon>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center p-2 rounded">{{ extractFileName(item.documentUrl) }}</div>
+                  </div>
+                  <button mat-flat-button>VIEW</button>
+                </div>
+              }
+            </div>
+          </div>
+          <div class="mb-1">
+            <span class="fw-bold" i18n> DO YOU HAVE A WASTE CARRIER LICENCE ? </span>
+            <div class="d-flex justify-content-between col-6" name="wasteLicence">
+              <mat-radio-button [value]="true" [checked]="wasteCarrierLicenseDocuments.length > 0" i18n> Yes </mat-radio-button>
+              <mat-radio-button [value]="false" [checked]="wasteCarrierLicenseDocuments.length == 0" i18n>
+                Not Applicable
+              </mat-radio-button>
+            </div>
+          </div>
+          @if (wasteCarrierLicenseDocuments.length > 0) {
+            <div class="w-100">
+              <span class="fw-bold"> WASTE CARRIER LICENCE </span>
+              <div class="d-flex gap-4 align-items-center">
+                <div class="col-6 rounded d-flex border">
+                  <div
+                    class="col-2 background-on-primary d-flex justify-content-center align-items-center p-2 rounded border border-right-0"
+                  >
+                    <mat-icon class="me-1">file_copy</mat-icon>
+                  </div>
+                  <div class="d-flex justify-content-center align-items-center p-2 rounded"></div>
+                </div>
+                <button mat-flat-button>VIEW</button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center justify-content-lg-start align-items-start">
+      <button
+        mat-stroked-button
+        class="btn btn-outline-primary d-flex align-items-center gap-2 px-4 py-2 rounded-3 w-100 w-sm-auto"
+        style="max-width: 200px"
+        i18n
+      >
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

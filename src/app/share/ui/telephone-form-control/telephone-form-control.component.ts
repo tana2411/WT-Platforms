@@ -1,65 +1,62 @@
 import { Component, forwardRef, Input, OnInit } from '@angular/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { countries } from '../../../statics/country-data';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
+  AbstractControl,
   ControlValueAccessor,
   FormControl,
+  NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatSelectModule } from '@angular/material/select';
+import { countries } from '../../../statics/country-data';
 
 @Component({
   selector: 'app-telephone-form-control',
   templateUrl: './telephone-form-control.component.html',
   styleUrls: ['./telephone-form-control.component.scss'],
-  imports: [
-    MatFormFieldModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatInputModule,
-  ],
+  imports: [MatFormFieldModule, MatSelectModule, ReactiveFormsModule, MatInputModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => TelephoneFormControlComponent),
       multi: true,
     },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => TelephoneFormControlComponent),
+      multi: true,
+    },
   ],
 })
-export class TelephoneFormControlComponent
-  implements OnInit, ControlValueAccessor
-{
+export class TelephoneFormControlComponent implements OnInit, ControlValueAccessor, Validators {
   @Input() isRequired: boolean = false;
   countryList = countries;
 
   countryCodeControl = new FormControl<any | null>(null);
-  telephoneControl = new FormControl<string | null>(null, [
-    Validators.maxLength(15),
-    Validators.pattern(/^\d*$/),
-  ]);
+  telephoneControl = new FormControl<string | null>(null, [Validators.maxLength(15), Validators.pattern(/^\d*$/)]);
 
   onChange: ((value: any) => void) | undefined;
   onTouched: (() => void) | undefined;
+  onValidatorChange?: () => void;
 
   constructor() {
-    this.telephoneControl.valueChanges
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => {
-        if (this.onChange) {
-          this.onChange(this.getValue());
-        }
-      });
-    this.countryCodeControl.valueChanges
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => {
-        if (this.onChange) {
-          this.onChange(this.getValue());
-        }
-      });
+    this.telephoneControl.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
+      if (this.onChange) {
+        this.onChange(this.getValue());
+        this.onValidatorChange?.();
+      }
+    });
+    this.countryCodeControl.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
+      if (this.onChange) {
+        this.onChange(this.getValue());
+        this.onValidatorChange?.();
+      }
+    });
   }
 
   ngOnInit() {
@@ -82,17 +79,15 @@ export class TelephoneFormControlComponent
 
       if (spaceIndex > 0) {
         countryCodeStr = value.substring(0, spaceIndex);
-        telephone = value.substring(spaceIndex + 1);
-        countryObject = this.countryList.find((c) => c.code === countryCodeStr);
+        telephone = value.substring(spaceIndex + 1).trim();
+        countryObject = this.countryList.find((c) => c.code.trim() === countryCodeStr);
       } else {
-        telephone = value;
+        telephone = value.trim();
         countryObject = null;
       }
     } else {
-      const defaultCountryCodeValue = '+44 ';
-      countryObject = this.countryList.find(
-        (i) => i.code == defaultCountryCodeValue,
-      );
+      const defaultCountryCodeValue = '+44';
+      countryObject = this.countryList.find((i) => i.code.trim() == defaultCountryCodeValue);
       if (!countryObject) {
         countryObject = null;
       }
@@ -108,6 +103,21 @@ export class TelephoneFormControlComponent
 
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
+  }
+
+  validate(control: AbstractControl): ValidationErrors | null {
+    const errors: ValidationErrors = {};
+    if (this.countryCodeControl.errors) {
+      errors['countryCode'] = this.countryCodeControl.errors;
+    }
+    if (this.telephoneControl.errors) {
+      errors['telephone'] = this.telephoneControl.errors;
+    }
+    return Object.keys(errors).length ? errors : null;
+  }
+
+  registerOnValidatorChange(fn: () => void): void {
+    this.onValidatorChange = fn;
   }
 
   getValue() {
