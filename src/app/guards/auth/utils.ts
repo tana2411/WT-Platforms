@@ -9,7 +9,7 @@ export const getDefaultRouteByRole = (user: User) => {
       return ROUTES.liveActiveTable;
 
     case Role.USER:
-      return user.company.isHaulier ? ROUTES.haulier : ROUTES.buy;
+      return user.company?.isHaulier ? ROUTES.haulier : ROUTES.buy;
   }
 };
 

@@ -32,13 +32,13 @@
         <mat-form-field appearance="outline" class="w-100">
           <input matInput placeholder="e.g. Mark" type="text" formControlName="firstName" />
           @if (formGroup.get('firstName')?.hasError('required')) {
-            <mat-error i18n>First Name is required </mat-error>
+            <mat-error i18n>This field is required </mat-error>
           }
           @if (formGroup.get('firstName')?.hasError('maxlength')) {
-            <mat-error i18n>First Name cannot exceed 50 characters</mat-error>
+            <mat-error i18n>First Name must only contain letters and be under 50 characters</mat-error>
           }
           @if (formGroup.get('firstName')?.hasError('pattern')) {
-            <mat-error i18n>First Name must only contain letters</mat-error>
+            <mat-error i18n>First Name must only contain letters and be under 50 characters</mat-error>
           }
         </mat-form-field>
       </div>
@@ -47,13 +47,13 @@
         <mat-form-field appearance="outline" class="w-100">
           <input matInput placeholder="e.g. Smith" type="text" formControlName="lastName" />
           @if (formGroup.get('lastName')?.hasError('required')) {
-            <mat-error i18n>Last Name is required </mat-error>
+            <mat-error i18n>This field is required </mat-error>
           }
           @if (formGroup.get('lastName')?.hasError('maxlength')) {
-            <mat-error i18n>Last Name cannot exceed 50 characters</mat-error>
+            <mat-error i18n>Last Name must only contain letters and be under 50 characters</mat-error>
           }
           @if (formGroup.get('lastName')?.hasError('pattern')) {
-            <mat-error i18n>Last Name must only contain letters</mat-error>
+            <mat-error i18n>Last Name must only contain letters and be under 50 characters</mat-error>
           }
         </mat-form-field>
       </div>
@@ -67,10 +67,10 @@
           <mat-error i18n>This field is required </mat-error>
         }
         @if (formGroup.get('jobTitle')?.hasError('maxlength')) {
-          <mat-error i18n>Job Title cannot exceed 50 characters </mat-error>
+          <mat-error i18n>Job Title must only contain letters, spaces and be under 50 characters </mat-error>
         }
         @if (formGroup.get('jobTitle')?.hasError('pattern')) {
-          <mat-error i18n>Job Title must only contain letters</mat-error>
+          <mat-error i18n>Job Title must only contain letters, spaces and be under 50 characters</mat-error>
         }
       </mat-form-field>
     </div>
@@ -82,7 +82,7 @@
           <mat-error i18n>This field is required </mat-error>
         }
         @if (formGroup.get('email')?.hasError('email')) {
-          <mat-error i18n>Invalid email address format. Please enter a valid email. </mat-error>
+          <mat-error i18n>Invalid email address format. Please enter a valid email </mat-error>
         }
       </mat-form-field>
     </div>
@@ -97,7 +97,7 @@
       <button
         mat-flat-button
         class="text-uppercase fw-bold text-white background-primary w-100 mt-4"
-        [disabled]="formGroup.invalid"
+        [disabled]="formGroup.invalid || formGroup.pristine"
         [class.overlay-spinner]="submitting()"
         (click)="submit()"
         i18n
