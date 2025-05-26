@@ -6,7 +6,7 @@ export const getDefaultRouteByRole = (user: User) => {
   switch (user.user.globalRole) {
     case Role.ADMIN:
     case Role.SUPER_ADMIN:
-      return ROUTES.admin;
+      return ROUTES.liveActiveTable;
 
     case Role.USER:
       return user.company.isHaulier ? ROUTES.haulier : ROUTES.buy;

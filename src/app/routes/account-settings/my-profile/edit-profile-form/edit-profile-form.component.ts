@@ -1,0 +1,114 @@
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule } from '@angular/material/core';
+import { MAT_DIALOG_DATA, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { TelephoneFormControlComponent } from '@app/ui';
+import { IconComponent } from 'app/layout/common/icon/icon.component';
+import { User } from 'app/models';
+import { SettingsService } from 'app/services/settings.service';
+import { catchError, EMPTY, finalize } from 'rxjs';
+
+@Component({
+  selector: 'app-edit-profile-form',
+  templateUrl: './edit-profile-form.component.html',
+  styleUrls: ['./edit-profile-form.component.scss'],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogClose,
+    IconComponent,
+    MatButtonModule,
+    MatSnackBarModule,
+    MatOptionModule,
+    TelephoneFormControlComponent,
+    MatSelectModule,
+  ],
+})
+export class EditProfileFormComponent implements OnInit {
+  formGroup = new FormGroup({
+    prefix: new FormControl<string | null>('mr', [Validators.required]),
+    firstName: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(50),
+      Validators.pattern(/^[A-Za-z]+$/),
+    ]),
+    lastName: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(50),
+      Validators.pattern(/^[A-Za-z]+$/),
+    ]),
+    jobTitle: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(50),
+      Validators.pattern(/^[A-Za-z]+$/),
+    ]),
+    phoneNumber: new FormControl<string | null>(null, [Validators.required]),
+    email: new FormControl<string | null>(null, [Validators.required, Validators.email]),
+  });
+
+  submitting = signal(false);
+
+  readonly dialogRef = inject(MatDialogRef<User>);
+  readonly data = inject<{ userInfo: User }>(MAT_DIALOG_DATA);
+  settingsService = inject(SettingsService);
+  snackBar = inject(MatSnackBar);
+
+  constructor() {}
+
+  ngOnInit() {
+    if (this.data) {
+      const { userInfo } = this.data;
+      this.formGroup.patchValue({
+        prefix: userInfo.user.prefix || 'mr',
+        firstName: userInfo.user.firstName,
+        lastName: userInfo.user.lastName,
+        jobTitle: userInfo.user.jobTitle,
+        phoneNumber: userInfo.user.phoneNumber,
+        email: userInfo.user.email,
+      });
+
+      this.formGroup.updateValueAndValidity();
+    }
+  }
+
+  submit() {
+    if (this.formGroup.pristine) {
+      this.snackBar.open('No changes detected. Please modify your profile details before saving.', 'OK', {
+        duration: 3000,
+      });
+      return;
+    }
+
+    this.formGroup.markAllAsTouched();
+
+    if (this.formGroup.invalid) {
+      return;
+    }
+
+    this.submitting.set(true);
+    const payload = this.formGroup.value;
+
+    this.settingsService
+      .updateProfile(payload)
+      .pipe(
+        catchError((err) => {
+          this.snackBar.open('Profile update failed. Please try again later.', 'OK', { duration: 3000 });
+          return EMPTY;
+        }),
+        finalize(() => {
+          this.submitting.set(false);
+        }),
+      )
+      .subscribe((res) => {
+        this.snackBar.open('Your profile has been updated successfully.', 'OK', { duration: 3000 });
+        this.dialogRef.close(true);
+      });
+  }
+}
