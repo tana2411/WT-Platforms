@@ -56,7 +56,7 @@ export class FilterComponent implements OnInit {
       options: materialTypes,
     },
     {
-      name: 'ITEMS',
+      name: 'ITEM',
       value: 'materialItem',
       type: 'select',
       options: [],
@@ -71,7 +71,12 @@ export class FilterComponent implements OnInit {
       name: 'SORT BY',
       value: 'sortBy',
       type: 'select',
-      options: [],
+      options: [
+        {
+          name: 'Available Listings',
+          code: 'availableListings',
+        },
+      ],
     },
     {
       name: 'BUYER',

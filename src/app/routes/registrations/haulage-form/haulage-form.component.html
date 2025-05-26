@@ -1,11 +1,11 @@
 <app-un-auth-layout>
   <div class="col-md-6 mx-auto">
-    <div class="fs-28 box-shadow p-3 background-primary border-radius text-white text-center mt-3 mb-5" i18n>
-      Do you have a WasteTrade account?
+    <div class="fs-24 box-shadow p-3 background-primary border-radius text-white text-center mt-3 mb-5" i18n>
+      Do you have a WasteTrade account ?
       <a href="" class="text-white fw-bold text-decoration-underline">Login</a>
     </div>
     <div class="border border-radius border-1 border-dark p-4 bg-white">
-      <h3 class="mb-4 fw-bold" i18n>Haulier Register</h3>
+      <div class="mb-4 fw-bold fs-48" i18n>Haulier Register</div>
       <h6 class="mb-4 mt-5 primary fw-bold" i18n>PERSONAL INFORMATION</h6>
       <form [formGroup]="formGroup">
         <div class="row g-3 mb-4">
@@ -89,6 +89,7 @@
             [type]="'password'"
             formControlName="password"
             [isRequired]="true"
+            [isHaulier]="true"
           >
           </app-input-with-confirm-control>
           @if (formGroup.get('password')?.hasError('pwdStrengthInvalid')) {
@@ -113,7 +114,7 @@
         </div>
 
         <!-- Company information -->
-        <h6 class="mb-4 mt-5 primary fw-bold" i18n>COMPANY INFORMATION</h6>
+        <h6 class="mb-4 mt-5 primary fw-bold" i18n>COMPANY DETAILS</h6>
         <div class="col-md-12 mb-4">
           <label class="fw-bold" i18n>COMPANY NAME*</label>
           <mat-form-field appearance="outline" class="w-100">
@@ -139,15 +140,21 @@
           </mat-form-field>
         </div>
         <div class="col-12 mb-4">
-          <mat-label class="mb-0 fw-bold" i18n> COULD YOU PLEASE CONFIRM THE COUNTRY WHERE YOUR VAT REGISTRATION IS LOCATED* </mat-label>
+          <mat-label class="mb-0 fw-bold" i18n> COULD YOU PLEASE CONFIRM THE COUNTRY WHERE YOUR VAT REGISTRATION IS LOCATED ?* </mat-label>
           <mat-radio-group
             formControlName="vatRegistrationCountry"
-            class="d-flex justify-content-between col-9 radio-mat-error"
+            class="d-flex justify-content-between col-9 radio-mat-error fw-bold"
             name="vatRegistrationCountry"
           >
-            <mat-radio-button value="EU" i18n>EU (European Union) </mat-radio-button>
-            <mat-radio-button value="UK" i18n> United Kingdom </mat-radio-button>
-            <mat-radio-button value="EU" i18n> Other </mat-radio-button>
+            <mat-radio-button value="EU" i18n>
+              <span class="fw-bold"> EU (European Union) </span>
+            </mat-radio-button>
+            <mat-radio-button value="UK" i18n>
+              <span class="fw-bold"> United Kingdom </span>
+            </mat-radio-button>
+            <mat-radio-button value="EU" i18n>
+              <span class="fw-bold"> Other </span>
+            </mat-radio-button>
           </mat-radio-group>
           @if (formGroup.get('vatRegistrationCountry')?.hasError('required') && formGroup.get('vatRegistrationCountry')?.touched) {
             <mat-error class="mt-0 mat-error" i18n> This field is required </mat-error>
@@ -156,7 +163,7 @@
         <div class="col-md-12 mb-4">
           <label class="fw-bold" i18n>VAT NUMBER*</label>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Type here" type="text" formControlName="vatNumber" />
+            <input matInput placeholder="Type here" type="text" formControlName="vatNumber" class="fw-bold" />
             @if (formGroup.get('vatNumber')?.hasError('required')) {
               <mat-error i18n>This field is required </mat-error>
             }
@@ -247,7 +254,7 @@
         <h6 class="mb-4 mt-5 primary fw-bold" i18n>ADDITIONAL INFORMATION</h6>
         <div class="col-12 mb-4">
           <mat-label class="mb-0 fw-bold" i18n> FLEET TYPE* </mat-label>
-          <mat-radio-group formControlName="fleetType" class="d-flex justify-content-between col-8 radio-mat-error">
+          <mat-radio-group formControlName="fleetType" class="d-flex justify-content-between col-8 radio-mat-error bold-label">
             <mat-radio-button value="freight_forwarder" i18n>Freight Forwarder </mat-radio-button>
             <mat-radio-button value="own_fleet" i18n> Owner Fleet </mat-radio-button>
           </mat-radio-group>
@@ -256,8 +263,8 @@
           }
         </div>
         <div class="col-12 mb-4">
-          <mat-label class="mb-0 fw-bold" i18n> AREAS COVERED* </mat-label>
-          <mat-radio-group class="d-flex justify-content-between col-8" (change)="onAreaChange($event)">
+          <mat-label class="mb-0 fw-bold" i18n> AREAS YOUR COMPANY CAN COVER* </mat-label>
+          <mat-radio-group class="d-flex justify-content-between col-8 bold-label" (change)="onAreaChange($event)">
             <mat-radio-button value="uk_only" i18n> UK only </mat-radio-button>
             <mat-radio-button value="EU" i18n> Within EU </mat-radio-button>
             <mat-radio-button value="worldwide" i18n> World Wide </mat-radio-button>
@@ -271,13 +278,14 @@
         @if (showEUcountry()) {
           <div class="col-12 mb-4">
             <mat-label class="mb-0 fw-bold" i18n>SELECT THE EU COUNTRY* </mat-label>
-            <mat-checkbox class="d-block" color="primary" (click)="selectAllCountry.set(!selectAllCountry())">{{
+            <mat-checkbox class="d-block bold-label" color="primary" (click)="selectAllCountry.set(!selectAllCountry())">{{
               selectAllCountry() ? 'Deselect All' : 'Select All'
             }}</mat-checkbox>
             <div class="row px-3">
               @for (item of euCountries; track $index; let i = $index) {
                 <div class="col-4">
                   <mat-checkbox
+                    class="bold-label"
                     color="primary"
                     (change)="onSelectedItem($event, item.value, selectedAreasCovered)"
                     [checked]="selectAllCountry()"
@@ -293,13 +301,14 @@
         }
         <div class="col-12 mb-4">
           <mat-label class="mb-0 fw-bold" i18n>CONTAINER TYPES* </mat-label>
-          <mat-checkbox class="d-block" color="primary" (change)="selectAllContainerTypes.set(!selectAllContainerTypes())">{{
+          <mat-checkbox class="d-block bold-label" color="primary" (change)="selectAllContainerTypes.set(!selectAllContainerTypes())">{{
             selectAllContainerTypes() ? 'Deselect All' : 'Select All'
           }}</mat-checkbox>
           <div class="row px-3">
             @for (item of containerTypes; track $index; let i = $index) {
               <div class="col-5">
                 <mat-checkbox
+                  class="bold-label"
                   color="primary"
                   (change)="onSelectedItem($event, item.value, selectedContainerType)"
                   [checked]="selectAllContainerTypes()"
@@ -327,7 +336,7 @@
         </div>
 
         <div class="col-12 mb-4">
-          <mat-label class="fw-bold mb-1" i18n>WHERE DID YOU HEAR ABOUT US*</mat-label>
+          <mat-label class="fw-bold mb-1" i18n>WHERE DID YOU HEAR ABOUT US ?*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <mat-select placeholder="Please select" formControlName="whereDidYouHearAboutUs">
               <mat-option value="google_search" i18n>Google Search</mat-option>
@@ -348,9 +357,9 @@
         <div class="col-12 mt-3">
           <mat-checkbox color="primary" formControlName="acceptTerm" i18n
             >I accept the
-            <a class="fw-bold text-dark text-decoration-none" href="/termsandconditions" target="_blank">Terms & Condition</a>
+            <a class="fw-bold text-dark text-decoration-underline" href="/termsandconditions" target="_blank">Terms & Condition</a>
             and
-            <a class="fw-bold text-dark text-decoration-none" href="/privacy-policy" target="_blank">Privacy Policy </a>
+            <a class="fw-bold text-dark text-decoration-underline" href="/privacy-policy" target="_blank">Privacy Policy </a>
             by joining WasteTrade. *
           </mat-checkbox>
           @if (formGroup.get('acceptTerm')?.invalid && formGroup.get('acceptTerm')?.touched) {
@@ -362,7 +371,7 @@
             type="submit"
             color="primary"
             mat-flat-button
-            class="w-100 big-btn"
+            class="w-100 big-btn fw-bold"
             [class.overlay-spinner]="submitting()"
             [disabled]="formGroup.invalid || !fileUploadValid()"
             (click)="send()"

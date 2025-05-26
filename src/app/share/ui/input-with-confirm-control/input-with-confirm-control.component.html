@@ -1,6 +1,6 @@
 <div class="row">
   <!-- Field 1: Value -->
-  <div class="col-md-6">
+  <div class="col-md-6" [class.col-md-12]="isHaulier" [class.mb-4]="isHaulier">
     <mat-label class="fw-bold mb-1 d-block">{{ valueLabel }}</mat-label>
     <mat-form-field appearance="outline" class="w-100">
       <input
@@ -25,7 +25,7 @@
   </div>
 
   <!-- Field 2: Confirm Value -->
-  <div class="col-md-6">
+  <div class="col-md-6" [class.col-md-12]="isHaulier">
     <mat-label class="fw-bold mb-1 d-block">{{ confirmLabel }}</mat-label>
     <mat-form-field appearance="outline" class="w-100">
       <input

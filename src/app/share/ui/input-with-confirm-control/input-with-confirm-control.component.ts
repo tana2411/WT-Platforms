@@ -47,6 +47,7 @@ export class InputWithConfirmControlComponent implements ControlValueAccessor, V
   @Input() placeholder: string | undefined = undefined;
   @Input() isRequired: boolean = false;
   @Input() isEmail: boolean = false;
+  @Input() isHaulier: boolean = false;
 
   showValue = false;
   showConfirmValue = false;
