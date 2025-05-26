@@ -25,6 +25,17 @@ export class ListingService {
     return this.httpClient.get<ListingResponse>('/listings', { params });
   }
 
+  getMyListing(filter?: FilterParams): Observable<ListingResponse> {
+    let params = new HttpParams();
+
+    if (filter) {
+      const encodedFilter = JSON.stringify(filter);
+      params = params.set('filter', encodedFilter);
+    }
+
+    return this.httpClient.get<ListingResponse>('/listings/user', { params });
+  }
+
   getDetail(listingId: number) {
     return this.httpClient.get<ListingMaterialDetailResponse>(`/listings/${listingId}`);
   }

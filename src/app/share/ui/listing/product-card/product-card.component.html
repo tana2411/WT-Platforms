@@ -44,6 +44,12 @@
           </div>
         } -->
       </div>
+
+      @if (deletable) {
+        <div class="delete-button" (click)="onDelete($event)">
+          <mat-icon>delete</mat-icon>
+        </div>
+      }
     </div>
   </div>
 }

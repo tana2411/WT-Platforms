@@ -2,6 +2,7 @@ export const ROUTES = {
   login: 'login',
   buy: 'buy',
   wanted: 'wanted',
+  saleListings: 'my-account/my-current-listings',
   sell: 'sell',
   admin: 'admin',
   haulier: 'haulier-dashboard',
@@ -9,7 +10,7 @@ export const ROUTES = {
   logout: 'logout',
   myOffers: 'my-offer',
   offerDetail: 'offer-detail',
-  listingOfferDetail: 'wt_wanted_listing',
+  listingOfferDetail: 'wt_waste_listing',
   liveActiveTable: 'live-activity',
   commercialManagement: 'commercial-management',
 };
@@ -18,6 +19,7 @@ export const ROUTES_WITH_SLASH = {
   login: '/login',
   buy: '/buy',
   wanted: '/wanted',
+  saleListings: '/my-account/my-current-listings',
   sell: '/sell',
   admin: '/admin',
   haulier: '/haulier-dashboard',
@@ -25,7 +27,7 @@ export const ROUTES_WITH_SLASH = {
   logout: '/logout',
   myOffers: '/my-offer',
   offerDetail: '/offer-detail',
-  listingOfferDetail: '/wt_wanted_listing',
+  listingOfferDetail: '/wt_waste_listing',
   liveActiveTable: '/live-activity',
   commercialManagement: '/commercial-management',
 };

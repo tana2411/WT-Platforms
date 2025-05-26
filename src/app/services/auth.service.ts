@@ -5,7 +5,7 @@ import { ROUTES } from 'app/constants/route.const';
 import { getDefaultRouteByRole } from 'app/guards/auth/utils';
 import { ACCESS_TOKEN_KEY } from 'app/interceptors/auth.interceptor';
 import { User } from 'app/models/auth.model';
-import { BehaviorSubject, catchError, map, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, filter, map, of, switchMap, tap } from 'rxjs';
 import {
   RequestForgotPasswordParams,
   RequestLoginParams,
@@ -42,6 +42,13 @@ export class AuthService {
   get isTradingUser(): boolean {
     // TODO: check this logic again
     return !this.isHaulierUser;
+  }
+
+  get companyLocations$() {
+    return this.user$.pipe(
+      filter((user) => !!user),
+      switchMap((user) => this.getCompanyLocation(user?.companyId)),
+    );
   }
 
   constructor(
