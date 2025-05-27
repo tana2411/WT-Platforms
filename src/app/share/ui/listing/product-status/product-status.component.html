@@ -1,7 +1,7 @@
 @if (product) {
-  @switch (product.status) {
+  @switch (status) {
     @case (ProductStatus.Available) {
-      <div class="border rounded py-1 rounded-pill mb-3 available">
+      <div class="border rounded rounded-pill mb-2 available h-100 d-flex align-items-center">
         <div class="fw-bold w-100 d-flex justify-content-center align-items-center gap-1 item-content">
           <mat-icon class="icon">lens</mat-icon>
           @if (fromDate) {
@@ -14,7 +14,7 @@
     }
 
     @case (ProductStatus.Required) {
-      <div class="border rounded py-1 rounded-pill mb-3 required">
+      <div class="border rounded rounded-pill mb-2 required h-100 d-flex align-items-center">
         <div class="fw-bold w-100 d-flex justify-content-center align-items-center gap-1 item-content">
           <mat-icon class="icon">lens</mat-icon>
           @if (fromDate) {
@@ -27,13 +27,13 @@
     }
 
     @case (ProductStatus.Sold) {
-      <div class="border rounded py-1 rounded-pill mb-3 sold">
+      <div class="border rounded rounded-pill mb-2 sold h-100 d-flex align-items-center">
         <div class="fw-bold w-100 d-flex justify-content-center align-items-center gap-1 item-content" i18n>Sold</div>
       </div>
     }
 
     @case (ProductStatus.Expired) {
-      <div class="border rounded py-1 rounded-pill mb-3 expired">
+      <div class="border rounded py-1 rounded-pill mb-2 expired h-100 d-flex align-items-center">
         <div class="fw-bold w-100 d-flex justify-content-center align-items-center gap-1 item-content" i18n>
           <mat-icon class="icon">lens</mat-icon>Expired
         </div>
@@ -41,7 +41,7 @@
     }
 
     @case (ProductStatus.Ongoing) {
-      <div class="border rounded py-1 rounded-pill mb-3 ongoing">
+      <div class="border rounded rounded-pill mb-2 ongoing h-100 d-flex align-items-center">
         <div class="fw-bold w-100 d-flex justify-content-center align-items-center gap-1 item-content" i18n>
           <mat-icon class="icon">lens</mat-icon>Ongoing
         </div>

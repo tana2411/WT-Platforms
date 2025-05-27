@@ -1,0 +1,64 @@
+<mat-dialog-content class="p-0" class="dialog-scrollable p-2">
+  <div class="container-fluid p-3 p-md-4 p-lg-4">
+    <div class="position-relative">
+      <div class="close-button position-absolute top-0 end-0" [mat-dialog-close]="false">
+        <app-icon iconName="close"></app-icon>
+      </div>
+    </div>
+
+    <form [formGroup]="formGroup">
+      <h2 class="mb-5">Material Preferences</h2>
+      <div class="col-12 mb-3">
+        <mat-checkbox
+          class="bold-label"
+          color="primary"
+          (change)="selectAllMaterial.set(!selectAllMaterial())"
+          [checked]="isCheckedSelectAllMaterial()"
+          >{{ selectAllMaterial() ? 'Deselect All' : 'Select All' }}</mat-checkbox
+        >
+      </div>
+      @for (material of materialType; track $index) {
+        @if (material.materials.length > 0) {
+          <div class="col-12 mb-4" style="margin-left: 10px">
+            <div class="mb-2 fw-bold text-uppercase" i18n>{{ material.name }}</div>
+            <div class="row px-3">
+              @for (item of material.materials; track $index; let i = $index) {
+                <div class="col-12 col-sm-4 mb-2 pe-4" [class.col-sm-5]="item.name.length < 15" [class.col-sm-12]="item.name.length >= 15">
+                  <div class="d-flex">
+                    <mat-checkbox
+                      color="primary"
+                      class="bold-label"
+                      (change)="onSelectedMaterial($event, item.code)"
+                      [checked]="favoriteMaterials.value.includes(item.code)"
+                    >
+                      <span class="text-wrap">{{ item.name }}</span>
+                    </mat-checkbox>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      }
+      @if (favoriteMaterials.hasError('required') && favoriteMaterials.touched) {
+        <span class="error" i18n>This field is required</span>
+      }
+
+      <div class="d-flex justify-content-between align-items-center gap-3">
+        <button mat-stroked-button class="text-uppercase fw-bold primary border-primary w-100 mt-4" [mat-dialog-close]="false" i18n>
+          Discard Changes
+        </button>
+        <button
+          mat-flat-button
+          [disabled]="favoriteMaterials.value.length == 0 || favoriteMaterials.pristine"
+          class="text-uppercase fw-bold text-white background-primary w-100 mt-4"
+          [class.overlay-spinner]="submitting()"
+          (click)="submit()"
+          i18n
+        >
+          Save Changes
+        </button>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>

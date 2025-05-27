@@ -14,6 +14,7 @@ import { countries, materialTypes } from 'app/statics';
 import { ItemOf } from 'app/types/utils';
 import { isEqual, omit } from 'lodash';
 import { debounceTime, distinctUntilChanged, from, switchMap } from 'rxjs';
+import { companyName } from './constant';
 
 const searchKey = 'searchTerm';
 export interface Filter {
@@ -80,27 +81,40 @@ export class FilterComponent implements OnInit {
     },
     {
       name: 'BUYER',
-      value: 'buyer',
+      value: 'buyerCompanyName',
       type: 'select',
-      options: [],
+      options: companyName,
     },
     {
       name: 'SELLER',
-      value: 'seller',
+      value: 'sellerCompanyName',
       type: 'select',
-      options: [],
+      options: companyName,
     },
     {
       name: 'STATUS',
       value: 'status',
       type: 'select',
-      options: [],
+      options: [
+        { code: 'pending', name: 'Pending' },
+        { code: 'accepted', name: 'Accepted' },
+        { code: 'rejected', name: 'Rejected' },
+      ],
     },
     {
       name: 'STATE',
       value: 'state',
       type: 'select',
-      options: [],
+      options: [
+        {
+          name: 'Active',
+          code: 'active',
+        },
+        {
+          name: 'Inactive',
+          code: 'inactive',
+        },
+      ],
     },
     {
       name: 'FULFILLED LISTINGS',
@@ -147,6 +161,7 @@ export class FilterComponent implements OnInit {
   @Output() searchTerm = new EventEmitter<string | null>();
 
   countryList = countries;
+  companyName = companyName;
   activeFilter: any[] = [];
 
   filterForm = new FormGroup({
@@ -173,14 +188,16 @@ export class FilterComponent implements OnInit {
             const filter = this.normalizeFilterParams(value);
             return from(Promise.resolve({ ...filter, searchTerm: null }));
           }
+
           const filter = this.normalizeFilterParams(value);
+
           return from(Promise.resolve(filter));
         }),
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
         takeUntilDestroyed(),
       )
       .subscribe((value) => {
-        this.filterChanged.emit(value);
+        this.filterChanged.emit({ ...value, searchTerm: this.filterForm.value[searchKey] });
       });
   }
 

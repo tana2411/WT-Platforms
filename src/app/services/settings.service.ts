@@ -16,4 +16,8 @@ export class SettingsService {
   updateCompany(id: number, data: UpdateCompanyPayload): Observable<any> {
     return this.httpClient.patch(`/companies/${id}`, data);
   }
+
+  updateMaterialPreferences(id: number, favoriteMaterials: string[]): Observable<any> {
+    return this.httpClient.patch(`/companies/${id}`, { favoriteMaterials });
+  }
 }

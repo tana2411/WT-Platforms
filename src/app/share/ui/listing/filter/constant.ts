@@ -180,3 +180,18 @@ export const MAP_MATERIAL_TYPE_TO_ITEM = {
     { name: 'Styrene-Butadiene Rubber (SBR)', code: 'Styrene-Butadiene Rubber (SBR' },
   ],
 };
+
+export const companyName = [
+  { code: 'Waste Trade', name: 'Waste Trade' },
+  { code: 'wasteHaulingCo', name: 'Waste Hauling Co' },
+  { code: 'test', name: 'test' },
+  { code: 'abc', name: 'abc' },
+  { code: 'eweq', name: 'eweq' },
+  { code: 'wt', name: 'WT' },
+  { code: 'qeeqw', name: 'qeeqw' },
+  { code: 'b13Ai', name: 'B13 AI' },
+  { code: 'b13', name: 'B13' },
+  { code: 'companyName', name: 'Company name' },
+  { code: 'enterprise1', name: 'Enterprise1' },
+  { code: 'triCompany', name: 'Tri Company' },
+];

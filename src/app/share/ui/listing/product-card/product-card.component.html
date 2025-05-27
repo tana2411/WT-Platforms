@@ -1,55 +1,64 @@
 @if (product) {
   <div class="border shadow-sm border-primary p-3 rounded rounded-4 product-card" role="button">
-    <div class="row">
-      <!-- Left side: image and availability -->
-      <div class="col-12 col-sm-7 d-flex flex-column h-100">
-        <!-- <app-product-status [product]="product" /> -->
-        <div class="mt-2 flex-fill" style="border-radius: 28px">
-          <img
-            [src]="featureImage"
-            [alt]="product.title"
-            appFallbackImage
-            style="object-fit: contain; background-color: #f5f5f5"
-            class="img-fluid w-100 rounded product-image"
-            loading="lazy"
-          />
+    <div class="d-flex flex-column">
+      <div class="row d-flex align-items-between mb-2" style="height: 30px">
+        <div class="col-sm-7">
+          <app-product-status [product]="product" />
+        </div>
+        <div class="col-sm-5">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="fs-24 fw-bold text-wrap">{{ product.title }}</div>
+            <mat-icon>star_outline</mat-icon>
+          </div>
         </div>
       </div>
-
-      <!-- Right side: product details -->
-      <div class="col-12 col-sm-5 product-infor">
-        <div class="d-flex justify-content-between align-items-start">
-          <h4 class="fs-5 fw-bold text-wrap">{{ product.title }}</h4>
-          <mat-icon>star_outline</mat-icon>
-        </div>
-        <div class="d-flex gap-3 align-items-center mt-2 mt-md-4">
-          <app-icon iconName="location_on" iconClassName="primary" backgroundColor="#E5F6F0"></app-icon>
-          <div class="column">
-            <div class="small" i18n>Material Location</div>
-            <div class="fw-bold">{{ mapCountryCodeToName[product.country] }}</div>
+      <div class="row">
+        <div class="col-sm-7">
+          <div class="mt-2 flex-fill rounded-4">
+            <img
+              [src]="featureImage"
+              [alt]="product.title"
+              appFallbackImage
+              style="object-fit: cover; background-color: #f5f5f5"
+              class="img-fluid w-100 rounded product-image rounded rounded-4"
+              loading="lazy"
+            />
           </div>
         </div>
-        <div class="d-flex gap-3 align-items-center mt-2 mt-md-4">
-          <app-icon iconName="lock" iconClassName="primary" backgroundColor="#E5F6F0"></app-icon>
-          <div class="column">
-            <div class="small" i18n>Quantity Available</div>
-            <div class="fw-bold">{{ product.quantity }}MT</div>
+        <div class="col-12 col-sm-5 product-infor">
+          <div class="d-flex gap-3 align-items-center mt-1 mt-md-4">
+            <!-- <mat-icon class="primary background-on-primary rounded-circle">fitness_center</mat-icon> -->
+            <img src="assets/images/kettlebell.svg" appFallbackImage loading="lazy" style="width: 28px" />
+            <div class="column">
+              <div class="small" i18n>Quantity Available</div>
+              <div class="fw-bold">{{ product.quantity }}MT</div>
+            </div>
           </div>
-        </div>
+          <div class="d-flex gap-3 align-items-center mt-1 mt-md-4">
+            <mat-icon
+              class="primary background-on-primary rounded-circle d-flex justify-content-center align-items-center"
+              style="width: 28px; font-size: 24px; height: 28px"
+              >location_on</mat-icon
+            >
+            <div class="column">
+              <div class="small" i18n>Material Location</div>
+              <div class="fw-bold">{{ mapCountryCodeToName[product.country] }}</div>
+            </div>
+          </div>
 
-        <!-- @if (materialInterest) {
+          <!-- @if (materialInterest) {
           <div class="d-flex gap-3 align-items-center mt-2 mt-md-4">
             <app-icon iconName="thumbs_up_down" backgroundColor="#FF7B00"></app-icon>
             <div class="secondary" style="cursor: pointer" i18n>Material Interest</div>
           </div>
         } -->
-      </div>
-
-      @if (deletable) {
-        <div class="delete-button" (click)="onDelete($event)">
-          <mat-icon>delete</mat-icon>
         </div>
-      }
+        @if (deletable) {
+          <div class="delete-button" (click)="onDelete($event)">
+            <mat-icon>delete</mat-icon>
+          </div>
+        }
+      </div>
     </div>
   </div>
 }

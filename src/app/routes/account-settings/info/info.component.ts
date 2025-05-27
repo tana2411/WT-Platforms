@@ -40,7 +40,10 @@ export class InfoComponent {
   openEditSocialUrl() {
     const { facebookUrl, instagramUrl, linkedinUrl, xUrl } = this.company || {};
     const dataConfig: MatDialogConfig = {
-      data: { urlInfo: { facebookUrl, instagramUrl, linkedinUrl, xUrl }, companyId: this.company?.id, width: '600px' },
+      data: {
+        urlInfo: { facebookUrl, instagramUrl, linkedinUrl, xUrl },
+        companyId: this.company?.id,
+      },
     };
     const dialogRef = this.dialog.open(EditSocialUrlFormComponent, dataConfig);
 

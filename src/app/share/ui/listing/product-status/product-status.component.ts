@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { Product, ProductStatus } from 'app/models/product.model';
+import { ListingMaterial } from 'app/models';
+import { ProductStatus } from 'app/models/product.model';
 import moment from 'moment';
 
 @Component({
@@ -9,16 +10,20 @@ import moment from 'moment';
   templateUrl: './product-status.component.html',
   styleUrl: './product-status.component.scss',
 })
-export class ProductStatusComponent {
-  @Input({ required: true }) product: Product | undefined;
-
+export class ProductStatusComponent implements OnInit {
+  @Input({ required: true }) product: ListingMaterial | undefined;
+  status: ProductStatus = ProductStatus.Required;
   ProductStatus = ProductStatus;
 
+  constructor() {}
+
+  ngOnInit() {}
+
   get fromDate() {
-    if (!this.product?.fromDate) {
+    if (!this.product?.startDate) {
       return undefined;
     }
 
-    return moment(this.product.fromDate).format('DD/MM/YYYY');
+    return moment(this.product.startDate).format('DD/MM/YYYY');
   }
 }
