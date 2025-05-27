@@ -191,7 +191,7 @@ export class ListWantedMaterialFormComponent implements OnInit {
 
   send() {
     if (this.formGroup.invalid) return;
-    let { weightUnit, materialWeightWanted, ongoingListing, materialGrading, ...value } = this.formGroup.value;
+    let { weightUnit, materialWeightWanted, ongoingListing, ...value } = this.formGroup.value;
 
     const payload: any = {
       ...value,
