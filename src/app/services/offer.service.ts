@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PurchaseFilterParams, PurchaseResponse } from 'app/models/purchases.model';
 import {
   RequestCreateBidParams,
   RequestGetOfferDetailResponse,
@@ -90,5 +91,15 @@ export class OfferService {
           throw err;
         }),
       );
+  }
+
+  getPurchases(filter?: PurchaseFilterParams) {
+    let params = new HttpParams();
+
+    if (filter) {
+      const encodedFilter = JSON.stringify(filter);
+      params = params.set('filter', encodedFilter);
+    }
+    return this.http.get<PurchaseResponse>('/offers/admin', { params });
   }
 }

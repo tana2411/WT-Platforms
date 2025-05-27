@@ -25,7 +25,7 @@
 
       <mat-tab label="Material preferences">
         <app-tab-container (back)="closeTab()">
-          <app-material [materials]="user()?.company?.favoriteMaterials"></app-material>
+          <app-material [favoriteMaterials]="user()?.company?.favoriteMaterials" [companyId]="user()?.company?.id"></app-material>
         </app-tab-container>
       </mat-tab>
 

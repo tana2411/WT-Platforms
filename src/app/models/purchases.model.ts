@@ -1,0 +1,89 @@
+import { OfferStatus } from './offer';
+
+export interface PurchaseFilterParams {
+  skip: number;
+  limit: number;
+  where: {
+    buyerCompanyName?: string;
+    sellerCompanyName?: string;
+    searchTerm?: string;
+    materialType?: string[];
+    materialPacking?: string;
+    location?: string;
+    status?: string;
+    state?: string;
+  };
+}
+
+export interface Purchase {
+  offer: Offer;
+  listing: Listing;
+  buyer: Buyer;
+  seller: Seller;
+}
+
+export interface PurchaseResponse {
+  totalCount: number;
+  results: Purchase[];
+}
+
+interface Offer {
+  id: number;
+  createdAt: string;
+  quantity: number;
+  offeredPricePerUnit: number;
+  totalPrice: number;
+  status: OfferStatus;
+  state: 'active' | 'inactive';
+  expiresAt: string | null;
+  earliestDeliveryDate: string | null;
+  latestDeliveryDate: string | null;
+  currency: string | null;
+  message: string | null;
+  rejectionReason: string | null;
+  incoterms: string | null;
+  shippingPort: string | null;
+  needsTransport: true;
+  listingId: number;
+  buyerCompanyId: number;
+  buyerLocationId: string | null;
+  buyerUserId: number;
+  buyerCountry: string;
+  sellerCompanyId: string;
+  sellerLocationId: string | null;
+  sellerUserId: string | null;
+  sellerCountry: string | null;
+  acceptedByUserId: number;
+  rejectedByUserId: number;
+  createdByUserId: number;
+  updatedAt: '2025-05-17T17:00:00.000Z';
+}
+
+interface Listing {
+  id: number;
+  title: string;
+  status: OfferStatus;
+  state: 'active' | 'inactive';
+  materialWeightPerUnit: number | null;
+  materialWanted: number | null;
+  quantity: number | null;
+  remainingQuantity: number | null;
+  materialPacking: string | null;
+  materialType: string | null;
+}
+
+interface Buyer {
+  user: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  company: {
+    id: number;
+    name: string;
+  };
+  country: string | null;
+}
+
+interface Seller extends Buyer {}
