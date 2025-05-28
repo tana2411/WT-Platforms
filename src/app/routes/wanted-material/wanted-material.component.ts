@@ -39,6 +39,8 @@ export class WantedMaterialComponent implements OnInit {
   router = inject(Router);
   route = inject(ActivatedRoute);
 
+  private isFirstLoad = true;
+
   constructor() {
     this.filter.set({
       skip: 0,
@@ -97,9 +99,15 @@ export class WantedMaterialComponent implements OnInit {
     this.listingService
       .get(currentFilter)
       .pipe(
-        finalize(() => this.loading.set(false)),
+        finalize(() => {
+          this.loading.set(false);
+          this.isFirstLoad = false;
+        }),
         catchError((err) => {
-          this.snackBar.open(`${err.error?.error?.message ?? 'Unknown error'}`, 'Ok', {
+          const errorMessage = this.isFirstLoad
+            ? 'Failed to load the Wanted Section. Please try refreshing the page.'
+            : 'Unable to apply filters at this time. Please try again.';
+          this.snackBar.open(errorMessage, 'Ok', {
             duration: 3000,
           });
           return of(null);
