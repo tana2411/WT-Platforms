@@ -23,7 +23,11 @@
             <div class="mb-2 fw-bold text-uppercase" i18n>{{ material.name }}</div>
             <div class="row px-3">
               @for (item of material.materials; track $index; let i = $index) {
-                <div class="col-12 col-sm-4 mb-2 pe-4" [class.col-sm-5]="item.name.length < 15" [class.col-sm-12]="item.name.length >= 15">
+                <div
+                  class="col-12 col-sm-3 mb-2 pe-4"
+                  [class.col-sm-6]="item.name.length >= 20 && item.name.length < 30"
+                  [class.col-sm-12]="item.name.length >= 30"
+                >
                   <div class="d-flex">
                     <mat-checkbox
                       color="primary"

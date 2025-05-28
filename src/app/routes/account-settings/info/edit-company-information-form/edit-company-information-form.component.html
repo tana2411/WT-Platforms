@@ -14,10 +14,10 @@
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Type Here" type="text" formControlName="name" />
             @if (formGroup.get('name')?.hasError('required')) {
-              <mat-error i18n>Company Name is required </mat-error>
+              <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
             }
             @if (formGroup.get('name')?.hasError('maxlength')) {
-              <mat-error i18n>Company Name cannot exceed 100 characters</mat-error>
+              <mat-error i18n>This input exceeds the field character limit.</mat-error>
             }
           </mat-form-field>
         </div>
@@ -44,7 +44,7 @@
             </mat-select>
           </mat-form-field>
           @if (formGroup.get('companyInterest')?.hasError('required') && formGroup.get('companyInterest')?.touched) {
-            <mat-error class="mt-0 mat-error" i18n>This field is required</mat-error>
+            <mat-error class="mt-0 mat-error" i18n>This field is required. Please complete it before saving.</mat-error>
           }
         </div>
         <div class="col-md-6">
@@ -58,7 +58,7 @@
               <mat-option value="waste_producer" i18n>Waste Producer</mat-option>
             </mat-select>
             @if (formGroup.get('companyType')?.hasError('required')) {
-              <mat-error i18n>This field is required </mat-error>
+              <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
             }
           </mat-form-field>
         </div>
@@ -69,10 +69,10 @@
         <mat-form-field appearance="outline" class="w-100">
           <input matInput placeholder="Type here" type="text" formControlName="vatNumber" />
           @if (formGroup.get('vatNumber')?.hasError('required')) {
-            <mat-error i18n>This field is required </mat-error>
+            <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
           }
           @if (formGroup.get('vatNumber')?.hasError('maxlength')) {
-            <mat-error i18n>VAT Number cannot exceed 20 characters</mat-error>
+            <mat-error i18n>This input exceeds the field character limit.</mat-error>
           }
         </mat-form-field>
       </div>
@@ -82,10 +82,10 @@
         <mat-form-field appearance="outline" class="w-100">
           <input matInput placeholder="Type here" type="text" formControlName="registrationNumber" />
           @if (formGroup.get('registrationNumber')?.hasError('required')) {
-            <mat-error i18n>This field is required </mat-error>
+            <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
           }
           @if (formGroup.get('registrationNumber')?.hasError('maxlength')) {
-            <mat-error i18n>Company Registration Number cannot exceed 50 characters</mat-error>
+            <mat-error i18n>This input exceeds the field character limit.</mat-error>
           }
         </mat-form-field>
       </div>
@@ -95,7 +95,7 @@
         <mat-form-field appearance="outline" class="w-100">
           <textarea matInput rows="7" style="resize: none" formControlName="description"></textarea>
           @if (formGroup.get('description')?.hasError('maxlength')) {
-            <mat-error i18n>Company Description cannot exceed 500 characters</mat-error>
+            <mat-error i18n>This input exceeds the field character limit.</mat-error>
           }
         </mat-form-field>
       </div>
@@ -107,10 +107,10 @@
         <mat-form-field appearance="outline" class="w-100">
           <input matInput placeholder="Type here" type="text" formControlName="addressLine1" />
           @if (formGroup.get('addressLine1')?.hasError('required')) {
-            <mat-error i18n>This field is required </mat-error>
+            <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
           }
           @if (formGroup.get('addressLine1')?.hasError('maxlength')) {
-            <mat-error i18n>Street Address cannot exceed 200 characters</mat-error>
+            <mat-error i18n>This input exceeds the field character limit.</mat-error>
           }
         </mat-form-field>
       </div>
@@ -120,10 +120,10 @@
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Type here" type="text" formControlName="postalCode" />
             @if (formGroup.get('postalCode')?.hasError('required')) {
-              <mat-error i18n>This field is required </mat-error>
+              <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
             }
             @if (formGroup.get('postalCode')?.hasError('maxlength')) {
-              <mat-error i18n>Post Code cannot exceed 20 characters</mat-error>
+              <mat-error i18n>This input exceeds the field character limit.</mat-error>
             }
           </mat-form-field>
         </div>
@@ -132,10 +132,10 @@
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Type here" type="text" formControlName="city" />
             @if (formGroup.get('city')?.hasError('required')) {
-              <mat-error i18n>This field is required </mat-error>
+              <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
             }
             @if (formGroup.get('city')?.hasError('maxlength')) {
-              <mat-error i18n>City cannot exceed 100 characters</mat-error>
+              <mat-error i18n>This input exceeds the field character limit.</mat-error>
             }
           </mat-form-field>
         </div>
@@ -151,7 +151,7 @@
               }
             </mat-select>
             @if (formGroup.get('country')?.hasError('required')) {
-              <mat-error i18n>This field is required </mat-error>
+              <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
             }
           </mat-form-field>
         </div>
@@ -160,10 +160,10 @@
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Type here" type="text" formControlName="stateProvince" />
             @if (formGroup.get('stateProvince')?.hasError('required')) {
-              <mat-error i18n>This field is required </mat-error>
+              <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
             }
             @if (formGroup.get('stateProvince')?.hasError('maxlength')) {
-              <mat-error i18n>Country / State / Region cannot exceed 50 characters</mat-error>
+              <mat-error i18n>This input exceeds the field character limit.</mat-error>
             }
           </mat-form-field>
         </div>
@@ -173,7 +173,7 @@
         <mat-form-field appearance="outline" class="w-100">
           <input matInput placeholder="Type here" type="text" formControlName="email" />
           @if (formGroup.get('email')?.hasError('required')) {
-            <mat-error i18n>This field is required </mat-error>
+            <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
           }
           @if (formGroup.get('email')?.hasError('email')) {
             <mat-error i18n>Invalid email address format. Please enter a valid email. </mat-error>
@@ -190,7 +190,7 @@
         </button>
         <button
           mat-flat-button
-          [disabled]="formGroup.invalid"
+          [disabled]="formGroup.invalid || formGroup.pristine"
           class="text-uppercase fw-bold text-white background-primary w-100 mt-4"
           [class.overlay-spinner]="submitting()"
           (click)="submit()"

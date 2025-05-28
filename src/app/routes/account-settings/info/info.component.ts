@@ -26,7 +26,9 @@ export class InfoComponent {
 
   openEditCompanyInfo() {
     const dataConfig: MatDialogConfig = {
-      data: { companyInfo: this.company, width: '600px' },
+      data: { companyInfo: this.company },
+      width: '100%',
+      maxWidth: '960px',
     };
     const dialogRef = this.dialog.open(EditCompanyInformationFormComponent, dataConfig);
 
@@ -44,6 +46,8 @@ export class InfoComponent {
         urlInfo: { facebookUrl, instagramUrl, linkedinUrl, xUrl },
         companyId: this.company?.id,
       },
+      width: '100%',
+      maxWidth: '960px',
     };
     const dialogRef = this.dialog.open(EditSocialUrlFormComponent, dataConfig);
 

@@ -56,6 +56,8 @@ export class MaterialComponent implements OnInit, OnChanges {
         materials: this.materials.flatMap((type) => type.materials.map((m: any) => m.code)),
         companyId: this.companyId,
       },
+      width: '100%',
+      maxWidth: '960px',
     };
     const dialogRef = this.dialog.open(EditMaterialFormComponent, dataConfig);
 

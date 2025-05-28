@@ -24,8 +24,8 @@
           </div>
         }
       </div>
-      <div class="mb-4 border rounded p-3">
-        <h3 class="mb-2" i18n>Add new social url</h3>
+      <div class="mb-4 border rounded p-3 col-md-11">
+        <h3 class="mb-5" i18n>Add new social url</h3>
         <div class="row g-3" formGroupName="newUrl">
           <div class="col-md-12 mb-4">
             <mat-label class="fw-bold" i18n>SOCIAL NAME</mat-label>
@@ -73,7 +73,7 @@
         </button>
         <button
           mat-flat-button
-          [disabled]="urls.invalid || urls.length === 0"
+          [disabled]="urls.invalid || urls.pristine"
           class="text-uppercase fw-bold text-white background-primary w-100 mt-4"
           [class.overlay-spinner]="submitting()"
           (click)="submit()"
