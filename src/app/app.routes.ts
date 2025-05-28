@@ -105,12 +105,22 @@ export const routes: Routes = [
       import('./routes/haulier/haulier-dashboard/haulier-dashboard.component').then((m) => m.HaulierDashboardComponent),
   },
   {
-    path: ROUTES.myOffers,
+    path: ROUTES.myOffersSelling,
     canActivate: [CanActivateAuthPage],
     data: {
       requireAuthParams: [GuardRequireRole.Trading, GuardRequireRole.SuperAdmin],
     },
-    loadComponent: () => import('./routes/my-offers/my-offers.component').then((m) => m.MyOffersComponent),
+    loadComponent: () =>
+      import('./routes/my-offers-selling/my-offers-selling.component').then((m) => m.MyOffersSellingComponent),
+  },
+  {
+    path: ROUTES.myOffersBuying,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [GuardRequireRole.Trading, GuardRequireRole.SuperAdmin],
+    },
+    loadComponent: () =>
+      import('./routes/my-offers-selling/my-offers-selling.component').then((m) => m.MyOffersSellingComponent),
   },
 
   {

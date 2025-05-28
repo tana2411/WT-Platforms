@@ -13,13 +13,13 @@ import { finalize } from 'rxjs';
 import { LIST_TAB_OFFER, MAP_OFFER_TYPE_TO_EMPTY_OFFER_PROP, OfferType } from './constants';
 
 @Component({
-  selector: 'app-my-offers',
+  selector: 'app-my-offers-selling',
   imports: [OfferTableComponent, MatTabsModule, SpinnerComponent, CommonLayoutComponent, EmptyOfferComponent],
   providers: [OfferService],
-  templateUrl: './my-offers.component.html',
-  styleUrl: './my-offers.component.scss',
+  templateUrl: './my-offers-selling.component.html',
+  styleUrl: './my-offers-selling.component.scss',
 })
-export class MyOffersComponent {
+export class MyOffersSellingComponent {
   listTabOffer = LIST_TAB_OFFER;
   listEmptyProps = signal<ReturnType<typeof MAP_OFFER_TYPE_TO_EMPTY_OFFER_PROP>>({} as any);
 

@@ -146,6 +146,6 @@ export class ReceivedOfferDetailComponent implements OnInit {
   }
 
   onBack() {
-    this.router.navigateByUrl(ROUTES_WITH_SLASH.myOffers);
+    this.router.navigateByUrl(ROUTES_WITH_SLASH.myOffersSelling);
   }
 }
