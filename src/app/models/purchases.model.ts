@@ -87,3 +87,20 @@ interface Buyer {
 }
 
 interface Seller extends Buyer {}
+
+export interface Companies {
+  id: string;
+  name: string;
+  country: string;
+}
+
+export interface CompaniesResponse {
+  message: string;
+  status: string;
+  data: {
+    buyerCompanies: Companies[];
+    sellerCompanies: Companies[];
+  };
+}
+
+export type CompaniesDetail = CompaniesResponse['data'];

@@ -39,6 +39,8 @@ export class PurchasesComponent implements OnInit {
       limit: PAGE_SIZE,
       where: {},
     });
+
+    this.loading.set(true);
   }
 
   ngOnInit() {}
