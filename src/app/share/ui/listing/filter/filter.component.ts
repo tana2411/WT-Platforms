@@ -10,11 +10,11 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { packing } from '@app/statics';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
+import { CompaniesService } from 'app/share/services/companies.service';
 import { countries, materialTypes } from 'app/statics';
 import { ItemOf } from 'app/types/utils';
 import { isEqual, omit } from 'lodash';
 import { debounceTime, distinctUntilChanged, from, switchMap } from 'rxjs';
-import { companyName } from './constant';
 
 const searchKey = 'searchTerm';
 export interface Filter {
@@ -83,13 +83,13 @@ export class FilterComponent implements OnInit {
       name: 'BUYER',
       value: 'buyerCompanyName',
       type: 'select',
-      options: companyName,
+      options: [],
     },
     {
       name: 'SELLER',
       value: 'sellerCompanyName',
       type: 'select',
-      options: companyName,
+      options: [],
     },
     {
       name: 'STATUS',
@@ -161,7 +161,6 @@ export class FilterComponent implements OnInit {
   @Output() searchTerm = new EventEmitter<string | null>();
 
   countryList = countries;
-  companyName = companyName;
   activeFilter: any[] = [];
 
   filterForm = new FormGroup({
@@ -174,6 +173,7 @@ export class FilterComponent implements OnInit {
   openMobileFilter = signal(false);
   backupMobileFilterParams: any = undefined;
   destroyRef = inject(DestroyRef);
+  companiesService = inject(CompaniesService);
 
   get hasFilterParams() {
     return !isEqual(omit(this.filterForm.value, searchKey), omit(this.formDefaultValue(), searchKey));
@@ -203,8 +203,41 @@ export class FilterComponent implements OnInit {
 
   ngOnInit() {
     if (this.displayFilter) {
-      this.activeFilter = this.displayFilter.map((f) => this.allFilters.find((i) => i.value === f)).filter((i) => !!i);
-      this.buildForm();
+      if (this.displayFilter.includes('buyerCompanyName') || this.displayFilter.includes('sellerCompanyName')) {
+        this.companiesService
+          .getCompanies()
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe(({ buyer, seller }) => {
+            this.allFilters = this.allFilters.map((f) => {
+              if (f.value === 'buyerCompanyName') {
+                return {
+                  ...f,
+                  options: buyer.map((c) => {
+                    return { code: c.name, name: c.name };
+                  }),
+                };
+              }
+              if (f.value === 'sellerCompanyName') {
+                return {
+                  ...f,
+                  options: seller.map((c) => {
+                    return { code: c.name, name: c.name };
+                  }),
+                };
+              }
+              return f;
+            });
+            this.activeFilter = this.displayFilter
+              .map((f) => this.allFilters.find((i) => i.value === f))
+              .filter((i) => !!i);
+            this.buildForm();
+          });
+      } else {
+        this.activeFilter = this.displayFilter
+          .map((f) => this.allFilters.find((i) => i.value === f))
+          .filter((i) => !!i);
+        this.buildForm();
+      }
     }
 
     // Update the item options according the material_type value
