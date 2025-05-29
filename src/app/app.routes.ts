@@ -120,7 +120,7 @@ export const routes: Routes = [
       requireAuthParams: [GuardRequireRole.Trading, GuardRequireRole.SuperAdmin],
     },
     loadComponent: () =>
-      import('./routes/my-offers-selling/my-offers-selling.component').then((m) => m.MyOffersSellingComponent),
+      import('./routes/my-offers-buying/my-offers-buying.component').then((m) => m.MyOffersBuyingComponent),
   },
 
   {

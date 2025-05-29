@@ -6,7 +6,7 @@ export enum OfferStatus {
   rejected = 'Rejected',
 }
 
-export type TableOfferItem = {
+export type TableSellingOfferItem = {
   id: number;
   date: string;
   materialName: string;
@@ -16,11 +16,23 @@ export type TableOfferItem = {
   bidAmount: string;
 };
 
+export type TableBuyingOfferItem = {
+  id: number;
+  materialName: string;
+  quantity: number;
+  status: OfferStatus;
+
+  pickupLocation: string;
+  destination: string;
+  packaging: string;
+  weightPerLoad: string;
+};
+
 export type OfferListingItem = {
   id: number;
   date: string;
   buyerId: number | null;
   bidAmount: string;
   status: OfferStatus;
-  buyerStatus: CompanyStatus | null;
+  buyerStatus?: CompanyStatus;
 };
