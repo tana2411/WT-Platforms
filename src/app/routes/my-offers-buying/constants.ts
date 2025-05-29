@@ -14,18 +14,18 @@ export const LIST_TAB_OFFER = [
     label: 'All',
     key: OfferType.Received,
   },
-  {
-    label: 'Pending offers',
-    key: OfferType.Pending,
-  },
-  {
-    label: 'Accepted Offers',
-    key: OfferType.Accepted,
-  },
-  {
-    label: 'Rejected Offers',
-    key: OfferType.Rejected,
-  },
+  // {
+  //   label: 'Pending offers',
+  //   key: OfferType.Pending,
+  // },
+  // {
+  //   label: 'Accepted Offers',
+  //   key: OfferType.Accepted,
+  // },
+  // {
+  //   label: 'Rejected Offers',
+  //   key: OfferType.Rejected,
+  // },
 ];
 
 export const MAP_OFFER_TYPE_TO_EMPTY_OFFER_PROP = (

@@ -86,7 +86,7 @@ export class ReceivedOfferDetailComponent implements OnInit {
       if (offer) {
         this.loadingListing.set(true);
 
-        this.offerService.getOffers({ page: this.page(), isSeller: true, listingId: offer.listing.id }).subscribe({
+        this.offerService.getSellingOffers({ page: this.page(), listingId: offer.listing.id }).subscribe({
           next: (res) => {
             const tableData = res.results.map(this.mapOfferToTableItem);
             this.listingItems.set(tableData);
@@ -146,6 +146,6 @@ export class ReceivedOfferDetailComponent implements OnInit {
   }
 
   onBack() {
-    this.router.navigateByUrl(ROUTES_WITH_SLASH.myOffers);
+    this.router.navigateByUrl(ROUTES_WITH_SLASH.myOffersSelling);
   }
 }

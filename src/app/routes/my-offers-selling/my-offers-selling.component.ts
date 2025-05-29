@@ -2,10 +2,10 @@ import { Component, effect, signal } from '@angular/core';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
-import { TableOfferItem } from 'app/models/offer';
+import { TableSellingOfferItem } from 'app/models/offer';
 import { OfferService } from 'app/services/offer.service';
 import { EmptyOfferButton, EmptyOfferComponent } from 'app/share/ui/my-offers/empty-offer/empty-offer.component';
-import { OfferTableComponent } from 'app/share/ui/my-offers/offer-table/offer-table.component';
+import { SellingOfferTableComponent } from 'app/share/ui/my-offers/selling-offers/selling-offer-table/selling-offer-table.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
 import { OfferDetail } from 'app/types/requests/offer';
 import moment from 'moment';
@@ -13,20 +13,20 @@ import { finalize } from 'rxjs';
 import { LIST_TAB_OFFER, MAP_OFFER_TYPE_TO_EMPTY_OFFER_PROP, OfferType } from './constants';
 
 @Component({
-  selector: 'app-my-offers',
-  imports: [OfferTableComponent, MatTabsModule, SpinnerComponent, CommonLayoutComponent, EmptyOfferComponent],
+  selector: 'app-my-offers-selling',
+  imports: [SellingOfferTableComponent, MatTabsModule, SpinnerComponent, CommonLayoutComponent, EmptyOfferComponent],
   providers: [OfferService],
-  templateUrl: './my-offers.component.html',
-  styleUrl: './my-offers.component.scss',
+  templateUrl: './my-offers-selling.component.html',
+  styleUrl: './my-offers-selling.component.scss',
 })
-export class MyOffersComponent {
+export class MyOffersSellingComponent {
   listTabOffer = LIST_TAB_OFFER;
   listEmptyProps = signal<ReturnType<typeof MAP_OFFER_TYPE_TO_EMPTY_OFFER_PROP>>({} as any);
 
   totalItems = signal(0);
   page = signal(1);
 
-  items = signal<TableOfferItem[] | null>(null);
+  items = signal<TableSellingOfferItem[] | null>(null);
   loading = signal(false);
   activeTab = signal<number>(0);
   emptyProps = signal<
@@ -61,7 +61,7 @@ export class MyOffersComponent {
 
       this.loading.set(true);
       this.offerService
-        .getOffers({ page: this.page(), isSeller: true })
+        .getSellingOffers({ page: this.page() })
         .pipe(
           finalize(() => {
             this.loading.set(false);
@@ -75,7 +75,7 @@ export class MyOffersComponent {
     });
   }
 
-  mapOfferToTableItem(offerDetail: OfferDetail): TableOfferItem {
+  mapOfferToTableItem(offerDetail: OfferDetail): TableSellingOfferItem {
     const { listing, offer, buyer } = offerDetail;
 
     return {

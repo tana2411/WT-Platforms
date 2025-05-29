@@ -38,7 +38,7 @@ interface Listing {
   title: string;
   status: string;
   state: string;
-  materialWeightWanted: number | null;
+  materialWeightWanted: number;
   quantity: number;
   remainingQuantity: number;
   materialPacking: string;
@@ -47,11 +47,19 @@ interface Listing {
   bestOffer?: number;
 }
 
-interface Company {
-  id: number | null;
-  name: string | null;
-  country: string | null;
-  status: CompanyStatus | null;
+export interface OfferLocation {
+  addressLine1?: string;
+  addressLine2?: string;
+  city?: string;
+  stateProvince?: string;
+  postalCode?: string;
+  country?: string;
+}
+
+interface Company extends OfferLocation {
+  id: number;
+  name: string;
+  status?: CompanyStatus;
 }
 
 export interface OfferDetail {
@@ -68,10 +76,15 @@ export interface OfferDetail {
 export type RequestGetOffersParams = {
   listingId?: number;
   page: number;
-  isSeller: boolean;
+  isSeller?: boolean;
 };
 
-export type RequestGetOffersResponse = {
+export type RequestGetBuyingOffersResponse = {
+  results: OfferDetail[];
+  totalCount: number;
+};
+
+export type RequestGetSellingOffersResponse = {
   results: OfferDetail[];
   totalCount: number;
 };

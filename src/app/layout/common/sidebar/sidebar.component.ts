@@ -51,8 +51,14 @@ export class SidebarComponent {
     },
 
     {
-      title: 'My Offers',
-      link: ROUTES_WITH_SLASH.myOffers,
+      title: 'My Offers Selling',
+      link: ROUTES_WITH_SLASH.myOffersSelling,
+      icon: 'ballot',
+    },
+
+    {
+      title: 'My Offers Buying',
+      link: ROUTES_WITH_SLASH.myOffersBuying,
       icon: 'ballot',
     },
 
