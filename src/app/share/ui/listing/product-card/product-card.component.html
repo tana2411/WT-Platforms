@@ -1,64 +1,77 @@
 @if (product) {
   <div class="border shadow-sm border-primary p-3 rounded rounded-4 product-card" role="button">
     <div class="d-flex flex-column">
-      <div class="row d-flex align-items-between mb-2" style="height: 30px">
-        <div class="col-sm-7">
+      <!-- Header Section -->
+      <div class="row d-flex align-items-center mb-2" style="min-height: 30px">
+        <div class="col-12 col-md-7 order-2 order-md-1">
           <app-product-status [product]="product" />
         </div>
-        <div class="col-sm-5">
+        <div class="col-12 col-md-5 order-1 order-md-2 mb-2 mb-md-0">
           <div class="d-flex justify-content-between align-items-center">
-            <div class="fs-24 fw-bold text-wrap">{{ product.title }}</div>
-            <mat-icon>star_outline</mat-icon>
+            <div class="fs-5 fs-md-4 fw-bold text-wrap flex-grow-1 me-2">{{ product.title }}</div>
+            <mat-icon class="flex-shrink-0">star_outline</mat-icon>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-sm-7">
-          <div class="mt-2 flex-fill rounded-4">
+
+      <!-- Main Content Section -->
+      <div class="row g-3">
+        <!-- Image Section -->
+        <div class="col-12 col-lg-7">
+          <div class="rounded-4">
             <img
               [src]="featureImage"
               [alt]="product.title"
               appFallbackImage
               style="object-fit: cover; background-color: #f5f5f5"
-              class="img-fluid w-100 rounded product-image rounded rounded-4"
+              class="img-fluid w-100 rounded product-image rounded-4"
               loading="lazy"
             />
           </div>
         </div>
-        <div class="col-12 col-sm-5 product-infor">
-          <div class="d-flex gap-3 align-items-center mt-1 mt-md-4">
-            <!-- <mat-icon class="primary background-on-primary rounded-circle">fitness_center</mat-icon> -->
-            <img src="assets/images/kettlebell.svg" appFallbackImage loading="lazy" style="width: 28px" />
-            <div class="column">
-              <div class="small" i18n>Quantity Available</div>
-              <div class="fw-bold">{{ product.quantity }}MT</div>
-            </div>
-          </div>
-          <div class="d-flex gap-3 align-items-center mt-1 mt-md-4">
-            <mat-icon
-              class="primary background-on-primary rounded-circle d-flex justify-content-center align-items-center"
-              style="width: 28px; font-size: 24px; height: 28px"
-              >location_on</mat-icon
-            >
-            <div class="column">
-              <div class="small" i18n>Material Location</div>
-              <div class="fw-bold">{{ mapCountryCodeToName[product.country] }}</div>
-            </div>
-          </div>
 
-          <!-- @if (materialInterest) {
-          <div class="d-flex gap-3 align-items-center mt-2 mt-md-4">
-            <app-icon iconName="thumbs_up_down" backgroundColor="#FF7B00"></app-icon>
-            <div class="secondary" style="cursor: pointer" i18n>Material Interest</div>
+        <!-- Product Information Section -->
+        <div class="col-12 col-lg-5 product-info">
+          <div class="d-flex flex-column gap-3">
+            <!-- Quantity Info -->
+            <div class="d-flex gap-3 align-items-center">
+              <img src="assets/images/kettlebell.svg" appFallbackImage loading="lazy" style="width: 28px; height: 28px; flex-shrink: 0" />
+              <div class="flex-grow-1">
+                <div class="small text-muted" i18n>Quantity Available</div>
+                <div class="fw-bold">{{ product.quantity }}MT</div>
+              </div>
+            </div>
+
+            <!-- Location Info -->
+            <div class="d-flex gap-3 align-items-center">
+              <mat-icon
+                class="primary background-on-primary rounded-circle d-flex justify-content-center align-items-center flex-shrink-0"
+                style="width: 28px; font-size: 24px; height: 28px"
+                >location_on</mat-icon
+              >
+              <div class="flex-grow-1">
+                <div class="small text-muted" i18n>Material Location</div>
+                <div class="fw-bold">{{ mapCountryCodeToName[product.country] }}</div>
+              </div>
+            </div>
+
+            <!-- Material Interest (commented out) -->
+            <!-- @if (materialInterest) {
+              <div class="d-flex gap-3 align-items-center">
+                <app-icon iconName="thumbs_up_down" backgroundColor="#FF7B00"></app-icon>
+                <div class="secondary" style="cursor: pointer" i18n>Material Interest</div>
+              </div>
+            } -->
           </div>
-        } -->
         </div>
-        @if (deletable) {
-          <div class="delete-button" (click)="onDelete($event)">
-            <mat-icon>delete</mat-icon>
-          </div>
-        }
       </div>
+
+      <!-- Delete Button -->
+      @if (deletable) {
+        <div class="delete-button position-absolute" style="top: 10px; right: 10px" (click)="onDelete($event)">
+          <mat-icon class="text-danger">delete</mat-icon>
+        </div>
+      }
     </div>
   </div>
 }

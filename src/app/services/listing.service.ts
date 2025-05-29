@@ -1,13 +1,16 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { FilterParams, ListingMaterialPayload, ListingResponse } from 'app/models';
+import { inject, Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FilterParams, ListingMaterialPayload, ListingResponse, SellListingResponse } from 'app/models';
 import { ListingMaterialDetailResponse } from 'app/models/listing-material-detail.model';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ListingService {
+  snackBar = inject(MatSnackBar);
+
   constructor(private httpClient: HttpClient) {}
 
   createListing(payload: Partial<ListingMaterialPayload>) {
@@ -42,5 +45,19 @@ export class ListingService {
 
   delete(listingId: number) {
     return this.httpClient.delete(`/listings/${listingId}`);
+  }
+
+  getListingsSell(filter?: any) {
+    let params = new HttpParams();
+
+    if (filter) {
+      const encodedFilter = JSON.stringify(filter);
+      params = params.set('filter', encodedFilter);
+    }
+    return this.httpClient.get<SellListingResponse>('/listings/sell', { params }).pipe(
+      catchError(() => {
+        return throwError(() => new Error('Failed to load listings. Please refresh the page to try again.'));
+      }),
+    );
   }
 }

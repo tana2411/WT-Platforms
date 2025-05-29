@@ -1,13 +1,13 @@
 <div class="container-fluid">
   <div class="row justify-content-end">
     <div class="w-100 mt-5 p-4 p-md-5 background-on-primary rounded rounded-3">
-      <div class="d-flex justify-content-between align-items-center col-md-8 col-lg-7 col-xl-6 mx-auto gap-2">
+      <div class="d-flex justify-content-between align-items-center col-auto col-md-8 col-lg-7 col-xl-6 mx-auto gap-2">
         <button mat-stroked-button class="col-3 bg-white" [disabled]="pageNumber === 1" (click)="onPreviousPage()">
           <mat-icon>arrow_back</mat-icon>
           <span i18n>BACK</span>
         </button>
 
-        <div class="col-6 d-flex justify-content-center align-items-center flex-wrap">
+        <div class="col-3 col-md-6 d-flex justify-content-center align-items-center">
           @if (pages().length > 0) {
             @for (page of pages(); track $index) {
               <button

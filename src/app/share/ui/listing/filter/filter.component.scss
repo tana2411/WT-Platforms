@@ -1,3 +1,4 @@
+@import 'variables.scss';
 .large-checkbox {
   display: flex;
   align-items: center;
@@ -190,5 +191,21 @@
     .select-wrapper {
       width: 150px;
     }
+  }
+}
+
+.clear-all-btn {
+  position: absolute;
+  right: 0px;
+  top: 65px;
+  font-size: var(--fs-14);
+  padding: 2px 8px;
+  border-radius: $border-radius-tiny;
+  background-color: $info;
+  cursor: pointer;
+  z-index: 4;
+
+  &:hover {
+    background-color: $on-primary;
   }
 }

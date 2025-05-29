@@ -1,3 +1,11 @@
-<p>
-  listings works!
-</p>
+<app-list-container
+  [fetchFn]="listingsService.getListingsSell.bind(listingsService)"
+  [displayFilter]="['company', 'materialType', 'country', 'status', 'state', 'sortBy']"
+  [pageSize]="20"
+  [pageType]="'sellListing'"
+  [emptyMessage]="'No listings found. Adjust your filters or check back later.'"
+>
+  <ng-template let-listing>
+    <app-listing-detail [listing]="listing"></app-listing-detail>
+  </ng-template>
+</app-list-container>

@@ -4,6 +4,7 @@
       <!-- BUYER Section -->
       <div class="col-12 col-md-6 col-lg-3">
         <div class="fw-bold mb-3">BUYER</div>
+        <p class="mb-1">ID: {{ purchase?.buyer?.user?.id }}</p>
         <p class="mb-1">Full name: {{ purchase?.buyer?.user?.firstName }} {{ purchase?.buyer?.user?.lastName }}</p>
         <p class="mb-1">Company: {{ purchase?.buyer?.company?.name }}</p>
         <p class="mb-1">Buyer location: {{ countryCodeToName(purchase?.buyer?.country) }}</p>
@@ -12,6 +13,7 @@
       <!-- SELLER Section -->
       <div class="col-12 col-md-6 col-lg-3">
         <div class="fw-bold mb-3">SELLER</div>
+        <p class="mb-1">ID: {{ purchase?.seller?.user?.id }}</p>
         <p class="mb-1">Full name: {{ purchase?.seller?.user?.firstName }} {{ purchase?.buyer?.user?.lastName }}</p>
         <p class="mb-1">Company: {{ purchase?.seller?.company?.name }}</p>
         <p class="mb-1">Buyer location: {{ countryCodeToName(purchase?.seller?.country) }}</p>
@@ -32,7 +34,7 @@
           </div>
           <div class="col-4">
             <div class="fw-bold mb-3">PACKING</div>
-            <p class="mb-1">{{ purchase?.listing?.materialPacking | titlecase }}</p>
+            <p class="mb-1">{{ getPackingName(purchase?.listing?.materialPacking) }}</p>
           </div>
           <div class="col-4">
             <div class="fw-bold mb-3">STATUS</div>
@@ -48,7 +50,7 @@
           </div>
           <div class="col-4">
             <div class="fw-bold mb-3">AMOUNT (GBP)</div>
-            <p class="mb-1">&pound;{{ purchase?.offer?.offeredPricePerUnit }}MT</p>
+            <p class="mb-1">{{ purchase?.offer?.offeredPricePerUnit | currency: 'GBP' : 'symbol' : '1.2-2' : 'en-GB' }}</p>
           </div>
           <div class="col-4">
             <div class="fw-bold mb-3">STATE</div>
@@ -60,7 +62,7 @@
             } @else {
               <div class="d-flex align-items-center gap-1">
                 <mat-icon class="error">fiber_manual_record</mat-icon>
-                <span class="error">Inactive</span>
+                <span class="error">Pending</span>
               </div>
             }
           </div>

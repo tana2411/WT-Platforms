@@ -1,21 +1,21 @@
-import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
+import { DatePipe, DecimalPipe, TitleCasePipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { mapCountryCodeToName, materialTypes } from '@app/statics';
-import { Purchase } from 'app/models/purchases.model';
+import { SellListingDetail } from 'app/models';
 
 @Component({
-  selector: 'app-purchase-detail',
-  templateUrl: './purchase-detail.component.html',
-  styleUrls: ['./purchase-detail.component.scss'],
-  imports: [MatButtonModule, MatIconModule, TitleCasePipe, DatePipe, CurrencyPipe],
+  selector: 'app-listing-detail',
+  templateUrl: './listing-detail.component.html',
+  styleUrls: ['./listing-detail.component.scss'],
+  imports: [MatIconModule, MatButtonModule, DatePipe, TitleCasePipe, DecimalPipe],
 })
-export class PurchaseDetailComponent implements OnInit {
-  @Input() purchase: Purchase | undefined = undefined;
-
+export class ListingDetailComponent implements OnInit {
   mapCountryCodeToName = mapCountryCodeToName;
   materialTypes = materialTypes;
+
+  @Input() listing: SellListingDetail | undefined = undefined;
 
   constructor() {}
 
@@ -33,8 +33,10 @@ export class PurchaseDetailComponent implements OnInit {
     return this.materialTypes.find((type) => type.code === code)?.name || '';
   }
 
-  getPackingName(code?: string | null): string {
-    if (!code) return '';
-    return this.materialTypes.flatMap((type) => type.packing).find((packing) => packing.code == code)?.name ?? '';
+  getWeight(weight: number | undefined | null) {
+    if (weight) {
+      return weight * 1000;
+    }
+    return '';
   }
 }

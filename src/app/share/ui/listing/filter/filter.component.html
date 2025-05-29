@@ -1,6 +1,6 @@
-<div class="w-100 mt-5" [formGroup]="filterForm">
+<div class="w-100 mt-4 position-relative" [formGroup]="filterForm">
   <!-- Search Bar Section -->
-  <div class="row">
+  <div class="row mb-4">
     <div class="col-8 col-md-9">
       <mat-form-field appearance="outline" class="w-100">
         <input matInput type="text" placeholder="What are you looking for?" formControlName="searchTerm" />
@@ -14,6 +14,10 @@
     </div>
   </div>
 
+  <!-- clean filter button for desktop  -->
+  @if (hasFilterParams && !openMobileFilter()) {
+    <div class="clear-all-btn fw-bold rounded border" (click)="clearFilter(); $event.stopPropagation()" i18n>Clean Filter</div>
+  }
   <!-- Filter Section -->
   <div class="mt-lg-3 border background-on-primary rounded filter-wrapper" [class.open-mobile-filter]="openMobileFilter()">
     <div class="d-flex flex-wrap p-4 justify-content-between align-items-end">
@@ -36,8 +40,14 @@
               <div class="small-mat-form-field d-flex flex-column align-items-start {{ item.value }}">
                 <mat-label class="mb-2 text-wrap filter-item-label">{{ item.name }}</mat-label>
                 <mat-form-field appearance="outline" class="w-100 bg-white">
-                  <mat-select [formControlName]="item.value" placeholder="{{ item.placeholder ?? 'All' }}">
-                    <mat-option [value]="'All'" class="option-bold-label">All</mat-option>
+                  <mat-select
+                    [formControlName]="item.value"
+                    [placeholder]="item.value === 'sortBy' ? 'Create At ASC' : (item.placeholder ?? 'All')"
+                    class="fw-bold"
+                  >
+                    @if (item.value !== 'sortBy') {
+                      <mat-option [value]="'All'" class="option-bold-label">All</mat-option>
+                    }
                     @for (option of item.options; track $index) {
                       <mat-option [value]="getOptionValue(item, option)" class="option-bold-label">
                         {{ option.name }}
