@@ -1,6 +1,7 @@
 import { Component, computed, Input, signal } from '@angular/core';
 import { mapCountryCodeToName } from '@app/statics';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
+import { ListingType } from 'app/models';
 import { ListingMaterialDetail } from 'app/models/listing-material-detail.model';
 import moment from 'moment';
 
@@ -18,7 +19,7 @@ export class MaterialOwnerComponent {
 
   company = computed(() => this.listingDetail$()?.company);
   listing = computed(() => this.listingDetail$()?.listing);
-  isSeller = computed(() => this.listing()?.listingType === 'sell');
+  isSeller = computed(() => this.listing()?.listingType === ListingType.SELL);
 
   mapCountryCodeToName = mapCountryCodeToName;
 

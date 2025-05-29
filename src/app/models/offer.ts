@@ -1,9 +1,24 @@
 import { CompanyStatus } from './auth.model';
 
 export enum OfferStatus {
-  pending = 'Pending',
-  accepted = 'Accepted',
-  rejected = 'Rejected',
+  ACCEPTED = 'accepted',
+  SHIPPED = 'shipped',
+  REJECTED = 'rejected',
+  PENDING = 'pending',
+}
+
+export enum OfferState {
+  ACTIVE = 'active',
+  PROCESSING = 'processing',
+  PENDING = 'pending',
+  REJECTED = 'rejected',
+  SHIPPED = 'shipped',
+}
+
+export enum OfferRequestActionEnum {
+  ACCEPT = 'accept',
+  REJECT = 'reject',
+  REQUEST_INFORMATION = 'request_information',
 }
 
 export type TableSellingOfferItem = {

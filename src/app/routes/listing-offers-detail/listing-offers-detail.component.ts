@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { mapCountryCodeToName } from '@app/statics';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
-import { ListingMaterial } from 'app/models';
+import { ListingMaterial, ListingType } from 'app/models';
 import { ListingMaterialDetail } from 'app/models/listing-material-detail.model';
 import { ListingService } from 'app/services/listing.service';
 import { MaterialActionComponent } from 'app/share/ui/product-detail/material-action/material-action.component';
@@ -51,7 +51,7 @@ export class ListingOffersDetailComponent {
 
   offerId = signal<number | undefined>(undefined);
   listingDetail = signal<ListingMaterialDetail | undefined>(undefined);
-  isSeller = computed(() => this.listingDetail()?.listing?.listingType === 'sell');
+  isSeller = computed(() => this.listingDetail()?.listing?.listingType === ListingType.SELL);
   loading = signal(false);
 
   listingService = inject(ListingService);
