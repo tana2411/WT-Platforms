@@ -3,6 +3,7 @@
   [displayFilter]="['buyerCompanyName', 'sellerCompanyName', 'materialType', 'country', 'materialPacking', 'status', 'state', 'sortBy']"
   [pageSize]="20"
   [emptyMessage]="'No purchases are currently available for display.'"
+  [isCountryFilter]="false"
 >
   <ng-template let-purchase>
     <app-purchase-detail [purchase]="purchase"></app-purchase-detail>

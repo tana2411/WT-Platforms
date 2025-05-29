@@ -26,6 +26,7 @@ export class ListContainerComponent implements OnInit {
   @Input() pageSize = 20;
   @Input() pageType: PageType = 'default';
   @Input() emptyMessage: string = '';
+  @Input() isCountryFilter: boolean = false;
 
   @ContentChild(TemplateRef) itemTemplate!: TemplateRef<any>;
 
@@ -58,8 +59,12 @@ export class ListContainerComponent implements OnInit {
     );
 
     if ('country' in cleanedParams) {
-      cleanedParams['location'] = [this.countryCodeToName(cleanedParams['country'] as string)];
-      delete cleanedParams['country'];
+      if (!this.isCountryFilter) {
+        cleanedParams['location'] = [this.countryCodeToName(cleanedParams['country'] as string)];
+        delete cleanedParams['country'];
+      } else {
+        cleanedParams['country'] = [this.countryCodeToName(cleanedParams['country'] as string)];
+      }
     }
 
     if ('sortBy' in cleanedParams) {

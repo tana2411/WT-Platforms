@@ -4,6 +4,7 @@
   [pageSize]="20"
   [pageType]="'sellListing'"
   [emptyMessage]="'No listings found. Adjust your filters or check back later.'"
+  [isCountryFilter]="true"
 >
   <ng-template let-listing>
     <app-listing-detail [listing]="listing"></app-listing-detail>
