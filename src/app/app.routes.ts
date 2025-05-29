@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { ROUTES } from './constants/route.const';
 import { CanActivateAuthPage } from './guards/auth/auth.guard';
 import {} from './guards/auth/utils';
+import { LiveActiveTableComponent } from './routes/admin/live-active-table/live-active-table.component';
 import { LogoutComponent } from './routes/logout/logout.component';
 import { PrivacyComponent } from './routes/privacy/privacy.component';
 import { CompanyDocumentComponent } from './routes/registrations/company-document/company-document.component';
@@ -159,8 +160,24 @@ export const routes: Routes = [
     data: {
       requireAuthParams: [GuardRequireRole.SuperAdmin],
     },
-    loadComponent: () =>
-      import('./routes/admin/live-active-table/live-active-table.component').then((m) => m.LiveActiveTableComponent),
+    component: LiveActiveTableComponent,
+    children: [
+      {
+        path: 'purchases',
+        loadComponent: () =>
+          import('./routes/admin/live-active-table/purchases/purchases.component').then((m) => m.PurchasesComponent),
+      },
+      {
+        path: 'listings',
+        loadComponent: () =>
+          import('./routes/admin/live-active-table/listings/listings.component').then((m) => m.ListingsComponent),
+      },
+      {
+        path: 'wanted',
+        loadComponent: () =>
+          import('./routes/admin/live-active-table/wanted/wanted.component').then((m) => m.WantedComponent),
+      },
+    ],
   },
   {
     path: ROUTES.commercialManagement,
