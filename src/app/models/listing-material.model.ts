@@ -1,3 +1,24 @@
+export enum ListingStatus {
+  APPROVED = 'approved',
+  PENDING = 'pending',
+  REJECTED = 'rejected',
+  CANCELLED = 'cancelled',
+  FULLFILLED = 'fullfilled',
+  SOLD = 'sold',
+}
+
+export enum ListingState {
+  ACTIVE = 'active',
+  PROCESSING = 'processing',
+  PENDING = 'pending',
+  REJECTED = 'rejected',
+}
+
+export enum ListingType {
+  SELL = 'sell',
+  WANTED = 'wanted',
+}
+
 export interface ListingMaterialPayload {
   companyId: number;
   materialType: string;
@@ -8,7 +29,7 @@ export interface ListingMaterialPayload {
   materialFinishing: string;
   materialPacking: string;
   country: string;
-  listingType: 'wanted' | 'sell';
+  listingType: ListingType;
   materialFlowIndex: string;
   additionalNotes: string;
   startDate: string;
@@ -54,7 +75,7 @@ export interface ListingMaterial extends ListingMaterialPayload {
   materialRemainInCountry: boolean;
   currency: string | null;
   endDate: string | null;
-  status: 'approved' | 'pending' | 'rejected';
+  status: ListingStatus;
   isFeatured: boolean;
   isUrgent: boolean;
   viewCount: number | null;

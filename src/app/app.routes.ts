@@ -174,6 +174,17 @@ export const routes: Routes = [
       ),
   },
   {
+    path: `${ROUTES.adminSaleListingDetail}/:listingId`,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [GuardRequireRole.SuperAdmin],
+    },
+    loadComponent: () =>
+      import('./routes/admin/detail-sale-listing/detail-sale-listing.component').then(
+        (m) => m.DetailSaleListingComponent,
+      ),
+  },
+  {
     path: ROUTES.settings,
     canActivate: [CanActivateAuthPage],
     loadComponent: () =>

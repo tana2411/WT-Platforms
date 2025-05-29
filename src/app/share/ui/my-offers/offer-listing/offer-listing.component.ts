@@ -31,7 +31,7 @@ export class OfferListingComponent {
   ) {}
 
   canAcceptReject(status: OfferStatus) {
-    return status === OfferStatus.pending;
+    return status === OfferStatus.PENDING;
   }
 
   onPageChange(page: number) {

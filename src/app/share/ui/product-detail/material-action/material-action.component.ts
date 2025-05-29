@@ -5,6 +5,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
+import { ListingType } from 'app/models';
 import { ListingMaterialDetail } from 'app/models/listing-material-detail.model';
 import { AuthService } from 'app/services/auth.service';
 import { ListingService } from 'app/services/listing.service';
@@ -94,7 +95,8 @@ export class MaterialActionComponent {
           .subscribe((result) => {
             this.snackBar.open('Your listing has been successfully removed.');
 
-            const isMySaleListing = this.isOwnListing() && this.listingDetail()?.listing.listingType === 'sell';
+            const isMySaleListing =
+              this.isOwnListing() && this.listingDetail()?.listing.listingType === ListingType.SELL;
             if (isMySaleListing) {
               this.router.navigateByUrl(ROUTES_WITH_SLASH.saleListings);
             } else {
