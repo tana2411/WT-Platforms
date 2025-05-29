@@ -1,0 +1,30 @@
+<div class="col-12 h-100 d-flex flex-column align-items-between" style="overflow: hidden">
+  <app-filter
+    [displayFilter]="displayFilter"
+    (filterChanged)="onFilterChange($event)"
+    (searchTerm)="searchTerm.set($event)"
+    [pageType]="pageType"
+  ></app-filter>
+  <div class="flex-grown position-relative overflow-auto">
+    @if (loading()) {
+      <div class="d-flex justify-content-center align-items-center h-100">
+        <app-spinner></app-spinner>
+      </div>
+    } @else {
+      @if (items().length === 0) {
+        <div class="d-flex justify-content-center align-items-center fs-24 mt-3">
+          <p class="text-muted">{{ emptyMessage }}</p>
+        </div>
+      } @else {
+        <div class="row g-3">
+          @for (item of items(); track $index) {
+            <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"></ng-container>
+          }
+        </div>
+        <div class="mt-auto">
+          <app-pagination [pageNumber]="page()" [totalCount]="total()" (pageChange)="onPageChange($event)" [size]="20"> </app-pagination>
+        </div>
+      }
+    }
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, computed, effect, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
+import { Component, computed, effect, EventEmitter, HostListener, Input, OnInit, Output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -19,6 +19,7 @@ export class PaginationComponent implements OnInit {
   @Output() pageChange = new EventEmitter();
 
   pages = signal<number[]>([]);
+  isMobile = signal(false);
   totalCount$ = signal(0);
   pageNumber$ = signal(0);
 
@@ -30,13 +31,14 @@ export class PaginationComponent implements OnInit {
 
   ngOnInit() {
     this.updatePages();
+    this.checkMobile();
   }
 
   totalPage = computed(() => Math.ceil(this.totalCount$() / this.size));
 
   private updatePages(): void {
     const pages: number[] = [];
-    const maxButtonsToShow = 5;
+    const maxButtonsToShow = this.isMobile() ? 3 : 5;
 
     if (this.totalPage() === 0) {
       this.pages.set([]);
@@ -83,5 +85,14 @@ export class PaginationComponent implements OnInit {
       this.pageChange.emit(this.pageNumber$() + 1);
       this.updatePages();
     }
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.checkMobile();
+  }
+
+  private checkMobile() {
+    this.isMobile.set(window.innerWidth < 768);
   }
 }

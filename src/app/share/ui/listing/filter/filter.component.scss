@@ -1,3 +1,4 @@
+@import 'variables.scss';
 .large-checkbox {
   display: flex;
   align-items: center;
@@ -167,6 +168,7 @@
 
   @media screen and (max-width: 767px) {
     background-color: #fff !important;
+    z-index: 5;
     transform: translateX(-100%);
 
     .sort_by-wrapper {
@@ -190,5 +192,30 @@
     .select-wrapper {
       width: 150px;
     }
+  }
+}
+
+.clear-all-btn {
+  position: absolute;
+  right: 0px;
+  top: 65px;
+  font-size: var(--fs-14);
+  padding: 2px 8px;
+  border-radius: $border-radius-tiny;
+  background-color: $info;
+  cursor: pointer;
+  z-index: 4;
+
+  &:hover {
+    background-color: $on-primary;
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-scrollable {
+    max-height: 60vh;
+    width: 100vh;
+    overflow-y: auto;
+    padding-bottom: 16px;
   }
 }

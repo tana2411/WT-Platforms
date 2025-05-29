@@ -8,24 +8,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { packing } from '@app/statics';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { CompaniesService } from 'app/share/services/companies.service';
 import { countries, materialTypes } from 'app/statics';
 import { ItemOf } from 'app/types/utils';
 import { isEqual, omit } from 'lodash';
 import { debounceTime, distinctUntilChanged, from, switchMap } from 'rxjs';
+import { allFilters, ListingSortBy, listingSortOption } from './constant';
 
 const searchKey = 'searchTerm';
-export interface Filter {
-  name: string;
-  value: string;
-  type: 'select' | 'checkbox';
-  options: any[];
-  returnArray?: boolean;
-  placeholder?: string;
-}
-
+export type PageType = 'default' | 'sellListing';
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
@@ -43,124 +35,13 @@ export interface Filter {
   ],
 })
 export class FilterComponent implements OnInit {
-  allFilters: Filter[] = [
-    {
-      name: 'LOCATION',
-      value: 'country',
-      type: 'select',
-      options: countries,
-    },
-    {
-      name: 'MATERIAL TYPE',
-      value: 'materialType',
-      type: 'select',
-      options: materialTypes,
-    },
-    {
-      name: 'ITEM',
-      value: 'materialItem',
-      type: 'select',
-      options: [],
-    },
-    {
-      name: 'PACKING',
-      value: 'materialPacking',
-      type: 'select',
-      options: packing,
-    },
-    {
-      name: 'SORT BY',
-      value: 'sortBy',
-      type: 'select',
-      options: [
-        {
-          name: 'Available Listings',
-          code: 'availableListings',
-        },
-      ],
-    },
-    {
-      name: 'BUYER',
-      value: 'buyerCompanyName',
-      type: 'select',
-      options: [],
-    },
-    {
-      name: 'SELLER',
-      value: 'sellerCompanyName',
-      type: 'select',
-      options: [],
-    },
-    {
-      name: 'STATUS',
-      value: 'status',
-      type: 'select',
-      options: [
-        { code: 'pending', name: 'Pending' },
-        { code: 'accepted', name: 'Accepted' },
-        { code: 'rejected', name: 'Rejected' },
-      ],
-    },
-    {
-      name: 'STATE',
-      value: 'state',
-      type: 'select',
-      options: [
-        {
-          name: 'Active',
-          code: 'active',
-        },
-        {
-          name: 'Inactive',
-          code: 'inactive',
-        },
-      ],
-    },
-    {
-      name: 'FULFILLED LISTINGS',
-      value: 'showFullfilledListing',
-      type: 'checkbox',
-      options: [
-        {
-          value: 'showFullfilledListing',
-        },
-      ],
-    },
-
-    {
-      name: 'SOLD listings',
-      value: 'soldListings',
-      type: 'checkbox',
-      options: [
-        {
-          name: 'Show SOLD listings',
-          value: 'soldListings',
-        },
-      ],
-    },
-
-    {
-      name: 'STORED',
-      value: 'wasteStoration',
-      type: 'checkbox',
-      options: [
-        {
-          value: 'indoor',
-          name: 'Indoors',
-        },
-        {
-          value: 'outdoor',
-          name: 'Outdoors',
-        },
-      ],
-    },
-  ];
-
   @Input() displayFilter: Array<ItemOf<typeof this.allFilters>['value']> = [];
+  @Input() pageType: PageType = 'default';
   @Output() filterChanged = new EventEmitter<any>();
   @Output() searchTerm = new EventEmitter<string | null>();
 
   countryList = countries;
+  allFilters = allFilters;
   activeFilter: any[] = [];
 
   filterForm = new FormGroup({
@@ -178,6 +59,11 @@ export class FilterComponent implements OnInit {
   get hasFilterParams() {
     return !isEqual(omit(this.filterForm.value, searchKey), omit(this.formDefaultValue(), searchKey));
   }
+
+  sortByMappings: Record<PageType, { code: string; name: string }[]> = {
+    default: [{ code: 'availableListings', name: 'Available Listings' }],
+    sellListing: listingSortOption,
+  };
 
   constructor() {
     this.filterForm.valueChanges
@@ -202,41 +88,39 @@ export class FilterComponent implements OnInit {
   }
 
   ngOnInit() {
+    const sortOption = this.sortByMappings[this.pageType] || [];
+
     if (this.displayFilter) {
-      if (this.displayFilter.includes('buyerCompanyName') || this.displayFilter.includes('sellerCompanyName')) {
+      const needsBuyer = this.displayFilter.includes('buyerCompanyName');
+      const needsSeller = this.displayFilter.includes('sellerCompanyName');
+      const needsCompany = this.displayFilter.includes('company');
+      const needsSortBy = this.displayFilter.includes('sortBy');
+
+      if (needsSortBy) {
+        this.allFilters = this.allFilters.map((f) => (f.value == 'sortBy' ? { ...f, options: sortOption } : f));
+      }
+
+      if (needsBuyer || needsSeller) {
         this.companiesService
-          .getCompanies()
+          .getOfferCompanies()
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe(({ buyer, seller }) => {
-            this.allFilters = this.allFilters.map((f) => {
-              if (f.value === 'buyerCompanyName') {
-                return {
-                  ...f,
-                  options: buyer.map((c) => {
-                    return { code: c.name, name: c.name };
-                  }),
-                };
-              }
-              if (f.value === 'sellerCompanyName') {
-                return {
-                  ...f,
-                  options: seller.map((c) => {
-                    return { code: c.name, name: c.name };
-                  }),
-                };
-              }
-              return f;
-            });
-            this.activeFilter = this.displayFilter
-              .map((f) => this.allFilters.find((i) => i.value === f))
-              .filter((i) => !!i);
-            this.buildForm();
+            this.assignFilterOptions([
+              { key: 'buyerCompanyName', items: buyer },
+              { key: 'sellerCompanyName', items: seller },
+            ]);
+            this.initializeFilters();
+          });
+      } else if (needsCompany) {
+        this.companiesService
+          .getCompanies('sell')
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe((list) => {
+            this.assignFilterOptions([{ key: 'company', items: list }]);
+            this.initializeFilters();
           });
       } else {
-        this.activeFilter = this.displayFilter
-          .map((f) => this.allFilters.find((i) => i.value === f))
-          .filter((i) => !!i);
-        this.buildForm();
+        this.initializeFilters();
       }
     }
 
@@ -261,6 +145,23 @@ export class FilterComponent implements OnInit {
           );
         });
     }
+  }
+
+  private initializeFilters() {
+    this.activeFilter = this.displayFilter
+      .map((val) => this.allFilters.find((f) => f.value === val))
+      .filter((f): f is typeof f => !!f);
+    this.buildForm();
+  }
+
+  private assignFilterOptions(mappings: Array<{ key: string; items: { name: string }[] }>) {
+    this.allFilters = this.allFilters.map((f) => {
+      const m = mappings.find((x) => x.key === f.value);
+      if (!m) return f;
+
+      const options = m.items.map((c) => ({ code: c.name, name: c.name }));
+      return { ...f, options };
+    });
   }
 
   buildForm(): void {
@@ -288,22 +189,18 @@ export class FilterComponent implements OnInit {
         case 'checkbox':
           this.addCheckboxControls(filter);
           break;
-        // case 'radio':
-        //   this.addRadioControl(filter);
-        //   break;
-        // default:
-        //   this.addSelectControl(filter);
-        //   break;
       }
     });
   }
 
   private addSelectControl(filter: any): void {
-    this.filterForm.addControl(filter.value, new FormControl<string | null>(null));
-    this.formDefaultValue.set({
-      ...this.formDefaultValue(),
-      [filter.value]: null,
-    });
+    if (!this.filterForm.get(filter.value)) {
+      this.filterForm.addControl(filter.value, new FormControl<string | null>(this.getDefaultValueForFilter(filter)));
+      this.formDefaultValue.set({
+        ...this.formDefaultValue(),
+        [filter.value]: this.getDefaultValueForFilter(filter),
+      });
+    }
   }
 
   private addCheckboxControls(filter: any): void {
@@ -340,7 +237,7 @@ export class FilterComponent implements OnInit {
     return result;
   }
 
-  normalizeCheckboxFilter(rawValue: any) {
+  private normalizeCheckboxFilter(rawValue: any) {
     const checkboxFilters = this.allFilters.filter(
       (f) => f.type === 'checkbox' && this.displayFilter.includes(f.value),
     );
@@ -377,14 +274,22 @@ export class FilterComponent implements OnInit {
           result[filter.value] = null;
         }
       }
-
-      if (totalOptions > 2) {
-        if (filter.returnArray) {
-          result[filter.value] = selected;
-        }
-      }
     });
     return result;
+  }
+
+  private getDefaultValueForFilter(filter: any): string | null {
+    if (filter.value !== 'sortBy') {
+      return null;
+    }
+
+    const options = filter.options || [];
+
+    if (this.pageType === 'default') {
+      return options[0]?.code ?? null;
+    }
+
+    return options.find((opt: any) => opt.code === ListingSortBy.DEFAULT)?.code ?? null;
   }
 
   getOptionValue(item: any, option: any): string {
@@ -414,10 +319,15 @@ export class FilterComponent implements OnInit {
   }
 
   clearFilter() {
-    this.filterForm.patchValue({
+    const patchValue: any = {
       ...this.formDefaultValue(),
       [searchKey]: this.filterForm.value[searchKey] ?? '',
-    });
+    };
+    if (this.filterForm.contains('sortBy')) {
+      patchValue['sortBy'] = this.getDefaultValueForFilter(this.activeFilter.find((f) => f.value === 'sortBy'));
+    }
+
+    this.filterForm.patchValue(patchValue);
     this.closeFilterMobile();
   }
 

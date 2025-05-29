@@ -9,7 +9,7 @@ import {
   RequestGetOffersParams,
   RequestGetSellingOffersResponse,
 } from 'app/types/requests/offer';
-import { catchError } from 'rxjs';
+import { catchError, throwError } from 'rxjs';
 
 // Since its a stateless service, I make it provided in root
 @Injectable()
@@ -128,6 +128,10 @@ export class OfferService {
       const encodedFilter = JSON.stringify(filter);
       params = params.set('filter', encodedFilter);
     }
-    return this.http.get<PurchaseResponse>('/offers/admin', { params });
+    return this.http.get<PurchaseResponse>('/offers/admin', { params }).pipe(
+      catchError(() => {
+        return throwError(() => new Error('Failed to load purchase data. Please try refreshing the page.'));
+      }),
+    );
   }
 }
