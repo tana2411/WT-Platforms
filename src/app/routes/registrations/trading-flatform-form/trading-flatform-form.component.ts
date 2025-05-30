@@ -4,6 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
@@ -34,6 +35,7 @@ import { catchError, concatMap, finalize, of } from 'rxjs';
     UnAuthLayoutComponent,
     TitleCasePipe,
     UpperCasePipe,
+    MatExpansionModule,
   ],
 })
 export class TradingFlatformFormComponent implements OnInit {

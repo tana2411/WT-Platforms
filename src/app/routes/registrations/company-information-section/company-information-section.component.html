@@ -1,7 +1,7 @@
 <app-un-auth-layout>
   <app-account-onboarding-status [showStatusOnly]="true" [type]="'completing'"></app-account-onboarding-status>
-  <div class="col-md-9 mx-auto d-flex justify-content-between g-3 my-5 row">
-    <div class="col-md-4">
+  <div class="col-md-12 mx-auto d-flex justify-content-between g-3 my-5 row">
+    <div class="" style="width: 320px">
       <div>
         <div class="d-flex justify-content-between">
           <div class="w-75 mx-auto fw-bold" i18n>COMPANY INFORMATION</div>
@@ -9,25 +9,25 @@
         </div>
         <hr />
         <div class="d-flex justify-content-between">
-          <div class="w-75 mx-auto" i18n>COMPANY DOCUMENT</div>
-          <mat-icon>remove</mat-icon>
+          <div class="w-75 mx-auto fw-bold text-empty" i18n>COMPANY DOCUMENT</div>
+          <mat-icon class="text-empty">remove</mat-icon>
         </div>
         <hr />
         <div class="d-flex justify-content-between">
-          <div class="w-75 mx-auto" i18n>SITE LOCATION</div>
-          <mat-icon>remove</mat-icon>
+          <div class="w-75 mx-auto fw-bold text-empty" i18n>SITE LOCATION</div>
+          <mat-icon class="text-empty">remove</mat-icon>
         </div>
       </div>
     </div>
-    <div class="col-md-7">
-      <form [formGroup]="formGroup" (submit)="submit()">
+    <div class="" style="width: 830px">
+      <form [formGroup]="formGroup" (submit)="submit('/company-document')">
         <div class="border border-dark boder-2 p-4 border-radius">
-          <h3 class="text-center my-2" i18n>Company Information</h3>
-          <div class="px-2 py-3 background-on-primary d-flex align-items-center mb-4">
-            <div class="w-25 text-center">
-              <mat-icon class="material-icons-outlined primary">error_outline</mat-icon>
+          <h3 class="text-center my-2 fw-bold fs-40" i18n>Company Information</h3>
+          <div class="px-2 py-3 background-primary d-flex align-items-center mb-4 rounded-4 justify-content-center">
+            <div class="col-1 text-center d-flex align-items-center justify-content-center">
+              <mat-icon class="material-icons-outlined text-white">error_outline</mat-icon>
             </div>
-            <div i18n class="fw-500 fs-16">Ensure all details are correct, error may delay verification (*Required field).</div>
+            <div i18n class="fw-500 fs-16 text-white">Ensure all details are correct, error may delay verification (*Required field).</div>
           </div>
           <div class="col-12 mb-4">
             <mat-label class="fw-bold mb-1" i18n>COMPANY TYPE*</mat-label>
@@ -54,15 +54,15 @@
             </mat-form-field>
           </div>
           <div class="col-md-12 mb-4">
-            <mat-label class="mb-0 fw-bold" i18n> COULD YOU PLEASE CONFIRM THE COUNTRY WHERE YOUR VAT REGISTRATION IS LOCATED* </mat-label>
+            <mat-label class="mb-0 fw-bold" i18n> VAT COUNTRY LOCATION* </mat-label>
             <mat-radio-group
               formControlName="vatRegistrationCountry"
-              class="d-flex justify-content-between radio-mat-error"
+              class="d-flex justify-content-between radio-mat-error col-md-8"
               name="vatRegistrationCountry"
             >
-              <mat-radio-button value="EU" i18n>EU (European Union) </mat-radio-button>
-              <mat-radio-button value="UK" i18n> United Kingdom </mat-radio-button>
-              <mat-radio-button value="Other" i18n> Other </mat-radio-button>
+              <mat-radio-button class="bold-label" value="EU" i18n>EU (European Union) </mat-radio-button>
+              <mat-radio-button class="bold-label" value="UK" i18n> United Kingdom </mat-radio-button>
+              <mat-radio-button class="bold-label" value="Other" i18n> Other </mat-radio-button>
             </mat-radio-group>
             @if (
               formGroup.get('vatRegistrationCountry')?.hasError('required') &&
@@ -71,17 +71,15 @@
               <mat-error class="mt-0 mat-error" i18n> This field is required </mat-error>
             }
           </div>
-          @if (formGroup.get('vatRegistrationCountry')?.value) {
-            <div class="col-md-12 mb-4">
-              <label class="fw-bold" i18n>VAT NUMBER*</label>
-              <mat-form-field appearance="outline" class="w-100">
-                <input matInput placeholder="Type here" type="text" formControlName="vatNumber" />
-                @if (formGroup.get('vatNumber')?.hasError('required')) {
-                  <mat-error i18n>This field is required </mat-error>
-                }
-              </mat-form-field>
-            </div>
-          }
+          <div class="col-md-12 mb-4">
+            <label class="fw-bold" i18n>COMPANY VAT NUMBER*</label>
+            <mat-form-field appearance="outline" class="w-100">
+              <input matInput placeholder="Type here" type="text" formControlName="vatNumber" />
+              @if (formGroup.get('vatNumber')?.hasError('required')) {
+                <mat-error i18n>This field is required </mat-error>
+              }
+            </mat-form-field>
+          </div>
           <div class="col-md-12 mb-4">
             <label class="fw-bold" i18n>STREET ADDRESS*</label>
             <mat-form-field appearance="outline" class="w-100">
@@ -148,12 +146,27 @@
               </mat-form-field>
             </div>
           </div>
-        </div>
-        <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-between">
-          <div class="col-5">
-            <button mat-stroked-button class="w-100" type="button" [routerLink]="['/account-pending-result']" i18n>BACK</button>
+          <div class="mb-3">
+            <app-telephone-form-control
+              [isRequired]="true"
+              formControlName="phoneNumberCompany"
+              [label]="'PHONE NUMBER'"
+            ></app-telephone-form-control>
           </div>
-          <div class="col-5">
+          <div class="mb-4">
+            <app-telephone-form-control
+              [isRequired]="true"
+              formControlName="mobileNumberCompany"
+              [label]="'MOBILE'"
+            ></app-telephone-form-control>
+          </div>
+        </div>
+        <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-between align-items-center">
+          <div class="col-3"></div>
+          <div class="col-5 fw-bold text-decoration-underline cursor-pointer text-center" (click)="submit('/buy')">
+            SAVE AND RESUME LATER
+          </div>
+          <div class="col-3">
             <button
               [disabled]="formGroup.invalid"
               type="submit"

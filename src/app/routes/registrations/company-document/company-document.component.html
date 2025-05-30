@@ -1,12 +1,12 @@
 <app-un-auth-layout>
   <app-account-onboarding-status [showStatusOnly]="true" [type]="'completing'"></app-account-onboarding-status>
-  <div class="col-md-9 mx-auto d-flex justify-content-between g-3 my-5 row">
-    <div class="col-md-4">
+  <div class="col-md-12 mx-auto d-flex justify-content-between g-3 my-5 row">
+    <div class="" style="width: 320px">
       <div>
         <div class="d-flex justify-content-between">
           <mat-icon class="primary">check_circle</mat-icon>
-          <div class="w-75 mx-auto primary" i18n>COMPANY INFORMATION</div>
-          <mat-icon>remove</mat-icon>
+          <div class="w-75 mx-auto fw-bold" i18n>COMPANY INFORMATION</div>
+          <mat-icon class="text-empty">remove</mat-icon>
         </div>
         <hr />
         <div class="d-flex justify-content-between">
@@ -17,20 +17,20 @@
         <hr />
         <div class="d-flex justify-content-between">
           <mat-icon></mat-icon>
-          <div class="w-75 mx-auto" i18n>SITE LOCATION</div>
-          <mat-icon>remove</mat-icon>
+          <div class="w-75 mx-auto fw-bold text-empty" i18n>SITE LOCATION</div>
+          <mat-icon class="text-empty">remove</mat-icon>
         </div>
       </div>
     </div>
-    <div class="col-md-7">
+    <div class="" style="width: 830px">
       <form [formGroup]="formGroup">
         <div class="border border-dark boder-2 p-4 border-radius">
-          <h3 class="text-center my-2" i18n>Company Documents</h3>
-          <div class="px-2 py-3 background-on-primary d-flex align-items-center mb-4">
-            <div class="w-25 text-center">
-              <mat-icon class="material-icons-outlined primary">error_outline</mat-icon>
+          <h3 class="text-center my-2 fw-bold fs-40" i18n>Company Documents</h3>
+          <div class="px-2 py-3 background-primary d-flex align-items-center mb-4 rounded-4 justify-content-center">
+            <div class="col-1 text-center d-flex align-items-center justify-content-center">
+              <mat-icon class="material-icons-outlined text-white">error_outline</mat-icon>
             </div>
-            <div i18n class="fw-500 fs-16">
+            <div i18n class="fw-500 fs-16 text-white">
               Ensure uploaded documents are up-to-date versions and licence numbers are correct; errors may delay verification (*Required
               Field).
             </div>
@@ -48,22 +48,28 @@
             </mat-form-field>
           </div>
           <div class="col-12 mb-4">
-            <mat-label class="fw-bold mb-1 d-block" i18n>WHICH OF THE FOLLOWING DO YOU HAVE*</mat-label>
+            <mat-label class="fw-bold mb-1 d-block" i18n>WHICH PERMIT/LICENCE DO YOU HAVE?*</mat-label>
             <mat-radio-group class="d-flex justify-content-between flex-wrap" formControlName="documentType">
-              <mat-radio-button value="environmental_permit" (change)="onSelectUploadLater.set(false)" i18n
-                >Environmental Permit
+              <div class="col-md-10 d-flex justify-content-between align-items-center">
+                <mat-radio-button class="bold-label" value="environmental_permit" (change)="onSelectUploadLater.set(false)" i18n
+                  >Environmental Permit
+                </mat-radio-button>
+                <mat-radio-button class="bold-label" value="waste_exemption" (change)="onSelectUploadLater.set(false)" i18n>
+                  Waste Exemptions
+                </mat-radio-button>
+                <mat-radio-button class="bold-label" value="other" (change)="onSelectUploadLater.set(false)" i18n> Other </mat-radio-button>
+              </div>
+              <mat-radio-button class="bold-label w-100" value="uploadLater" (change)="onSelectUploadLater.set(true)" i18n>
+                Upload Later
               </mat-radio-button>
-              <mat-radio-button value="waste_exemption" (change)="onSelectUploadLater.set(false)" i18n> Waste Exemptions </mat-radio-button>
-              <mat-radio-button value="other" (change)="onSelectUploadLater.set(false)" i18n> Other </mat-radio-button>
-              <mat-radio-button value="uploadLater" (change)="onSelectUploadLater.set(true)" i18n> Upload Later </mat-radio-button>
             </mat-radio-group>
           </div>
           <div class="col-12 mb-4" [hidden]="!onSelectUploadLater()">
-            <div class="d-flex align-items-center justify-content-arround col-10 border rounded background-on-error w-100 p-2">
-              <div class="w-25 d-flex justify-content-center">
-                <mat-icon class="error" style="font-size: 30px; height: 30px; width: 30px">error</mat-icon>
+            <div class="d-flex align-items-center justify-content-arround col-10 border rounded-4 w-100 p-2 error-message">
+              <div class="col-1 text-center d-flex align-items-center justify-content-center">
+                <mat-icon class="material-icons-outlined text-white error">error_outline</mat-icon>
               </div>
-              <div class="text-dark fw-500 fs-16" i18n>
+              <div class="error fw-bold fw-500 fs-16" i18n>
                 You can start buying and selling material now, but please note that all transactions will be pending until you upload your
                 company documentation.
               </div>
@@ -71,7 +77,7 @@
           </div>
           <div [hidden]="onSelectUploadLater()">
             <div class="col-12 mb-4" [hidden]="!(documentType.value == CompanyDocumentType.EnvironmentalPermit)">
-              <h6 class="mt-5 mb-4 primary" i18n>Environmental Permit Upload*</h6>
+              <h6 class="mt-5 mb-4 fw-bold" i18n>UPLOAD AS ENVIRONMENTAL PERMIT*</h6>
               <app-file-upload
                 [maxFile]="1"
                 (filesAdded)="handleFileReady($event, 'document', CompanyDocumentType.EnvironmentalPermit)"
@@ -80,10 +86,11 @@
                 [expiryDateMode]="'optional'"
                 [fileList]="environmentPermitDocuments"
               ></app-file-upload>
+              <p>Accepted file types: jpg, png, jpeg, pdf, Max. file size: 25 MB, Max. files: 1</p>
             </div>
 
             <div class="col-12 mb-4" [hidden]="!(documentType.value == CompanyDocumentType.WasteExemption)">
-              <h6 class="mt-5 mb-4 primary" i18n>Waste Exemptions Upload*</h6>
+              <h6 class="mt-5 mb-4 fw-bold" i18n>UPLOAD AS WASTE EXEMPTIONS*</h6>
               <app-file-upload
                 [maxFile]="1"
                 (filesAdded)="handleFileReady($event, 'document', CompanyDocumentType.WasteExemption)"
@@ -92,6 +99,7 @@
                 [expiryDateMode]="'optional'"
                 [fileList]="wasteExemptionDocuments"
               ></app-file-upload>
+              <p>Accepted file types: jpg, png, jpeg, pdf, Max. file size: 25 MB, Max. files: 1</p>
             </div>
 
             @if (documentType.value == 'other') {
@@ -106,7 +114,7 @@
               </div>
             }
             <div class="col-12 mb-4" [hidden]="!(documentType.value == 'other')">
-              <h6 class="mt-5 mb-4 primary" i18n>Other Document Upload*</h6>
+              <h6 class="mt-5 mb-4 fw-bold text-uppercase" i18n>Other Document Upload*</h6>
               <app-file-upload
                 [maxFile]="1"
                 (filesAdded)="handleFileReady($event, 'document', 'other')"
@@ -115,29 +123,30 @@
                 [expiryDateMode]="'optional'"
                 [fileList]="otherDocuments"
               ></app-file-upload>
+              <p>Accepted file types: jpg, png, jpeg, pdf, Max. file size: 25 MB, Max. files: 1</p>
             </div>
           </div>
 
-          <hr />
+          <hr style="opacity: 1" />
 
           <div class="col-12 mb-4">
-            <mat-label class="mb-0 fw-bold" i18n> WASTE CARRIER LICENCE* </mat-label>
+            <mat-label class="mb-0 fw-bold" i18n> DO YOU HAVE A WASTE CARRIER LICENCE?* </mat-label>
             <mat-radio-group
               formControlName="wasteLicence"
               class="d-flex justify-content-between col-9"
               name="wasteLicence"
               (change)="onLicenceChange($event)"
             >
-              <mat-radio-button [value]="true" i18n> Yes </mat-radio-button>
-              <mat-radio-button [value]="false" i18n> No </mat-radio-button>
-              <mat-radio-button [value]="false" i18n> Not Applicable </mat-radio-button>
+              <mat-radio-button class="bold-label" [value]="true" i18n> Yes </mat-radio-button>
+              <mat-radio-button class="bold-label" [value]="false" i18n> No </mat-radio-button>
+              <mat-radio-button class="bold-label" [value]="false" i18n> Not Applicable </mat-radio-button>
             </mat-radio-group>
             @if (formGroup.get('wasteLicence')?.hasError('required') && formGroup.get('wasteLicence')?.touched) {
               <mat-error class="mt-0 mat-error" i18n> This field is required </mat-error>
             }
           </div>
           @if (formGroup.get('wasteLicence')?.value) {
-            <h6 class="mb-4 mt-5 primary" i18n>WASTE CARRIER LICENCE UPLOAD*</h6>
+            <h6 class="mb-4 mt-5 fw-bold" i18n>UPLOAD WASTE CARRIER LICENCE*</h6>
             <div class="col-12 mb-4">
               <app-file-upload
                 (filesAdded)="handleFileReady($event, 'licence', CompanyDocumentType.WasteCarrierLicense)"
@@ -146,25 +155,27 @@
                 [expiryDateMode]="'optional'"
                 [fileList]="wasteCarrierLicenseDocuments"
               ></app-file-upload>
+              <p class="small">Accepted file types: jpg, png, jpeg, pdf, doc, xls, docx, Max. file size: 25 MB, Max. files: 1</p>
             </div>
           }
-          <hr />
+          <hr style="opacity: 1" />
           <div class="col-12 mb-4">
-            <mat-label class="mb-0 fw-bold" i18n> BOX CLEANING AGENT* </mat-label>
+            <mat-label class="mb-0 fw-bold" i18n> BOX CLEANING AGENT ?* </mat-label>
             <mat-radio-group formControlName="boxClearingAgent" class="d-flex justify-content-between col-6" name="boxClearingAgent">
-              <mat-radio-button [value]="true" i18n> Yes </mat-radio-button>
-              <mat-radio-button [value]="false" i18n> No </mat-radio-button>
+              <mat-radio-button [value]="true" class="bold-label" i18n> Yes </mat-radio-button>
+              <mat-radio-button [value]="false" class="bold-label" i18n> No </mat-radio-button>
             </mat-radio-group>
             @if (formGroup.get('boxClearingAgent')?.hasError('required') && formGroup.get('boxClearingAgent')?.touched) {
               <mat-error class="mt-0 mat-error" i18n> This field is required </mat-error>
             }
           </div>
         </div>
-        <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-between">
-          <div class="col-5">
+        <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-between align-items-center">
+          <div class="col-3">
             <button mat-stroked-button type="button" class="w-100" [routerLink]="['/company-information']" i18n>BACK</button>
           </div>
-          <div class="col-5">
+          <div class="col-5 fw-bold text-decoration-underline cursor-pointer text-center" (click)="send('/buy')">SAVE AND RESUME LATER</div>
+          <div class="col-3">
             <button
               [disabled]="isSubmitDisabled"
               type="submit"
@@ -173,7 +184,7 @@
               [class.overlay-spinner]="submitting()"
               mat-flat-button
               class="w-100 p-2 fw-bold"
-              (click)="send()"
+              (click)="send('/site-location')"
               i18n
             >
               NEXT

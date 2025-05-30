@@ -1,0 +1,6 @@
+@import 'variables';
+
+.error-message {
+  border: 2px solid $error !important;
+  background-color: rgba($error, 0.2) !important;
+}
