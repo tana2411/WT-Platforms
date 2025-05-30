@@ -6,7 +6,7 @@
     </div>
     <div class="border border-radius border-1 border-dark p-4 bg-white">
       <div class="mb-4 fw-bold fs-48" i18n>Register</div>
-      <h6 class="mb-4 mt-5 primary fw-bold" i18n>BASIC INFORMATION</h6>
+      <h6 class="mb-4 mt-5 primary fw-bold" i18n>BASIC DETAILS</h6>
       <form [formGroup]="formGroup">
         <div class="row g-3 mb-4">
           <div class="col-md-2">
@@ -112,25 +112,8 @@
           }
         </div>
 
-        <h6 class="mb-4 mt-5 primary fw-bold" i18n>COMPANY INFORMATION</h6>
-        <div class="col-12 mb-4">
-          <mat-label class="fw-bold mb-1" i18n>WHERE DID YOU HEAR ABOUT US*</mat-label>
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-select placeholder="Please select" formControlName="whereDidYouHearAboutUs">
-              <mat-option value="google_search" i18n>Google Search</mat-option>
-              <mat-option value="prse_trade_show" i18n>PRSE Trade Show</mat-option>
-              <mat-option value="plastics_live_trade_show" i18n>Plastics Live Trade Show</mat-option>
-              <mat-option value="sustainability_show" i18n>Sustainability show</mat-option>
-              <mat-option value="k_show" i18n> K-Show</mat-option>
-              <mat-option value="interpack" i18n>Interpack</mat-option>
-              <mat-option value="plast_2023" i18n>Plast 2023</mat-option>
-              <mat-option value="word_of_mouth" i18n>Word of mouth</mat-option>
-            </mat-select>
-            @if (formGroup.get('whereDidYouHearAboutUs')?.hasError('required')) {
-              <mat-error i18n>This field is required </mat-error>
-            }
-          </mat-form-field>
-        </div>
+        <h6 class="mb-4 mt-5 primary fw-bold" i18n>COMPANY DETAILS</h6>
+
         <div class="col-12 mb-4">
           <mat-label class="fw-bold mb-1" i18n>COMPANY NAME*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
@@ -156,36 +139,55 @@
             <mat-error class="mt-0 mat-error" i18n>This field is required</mat-error>
           }
         </div>
-        <h6 class="mb-4 mt-5 primary fw-bold" i18n>MATERIALS SELECTION</h6>
+        <h6 class="mb-4 mt-5 primary" i18n><span class="fw-bold">MATERIALS ACCEPTED</span> (MULTIPLE SELECTION)</h6>
         <div class="col-12 mb-3">
-          <mat-checkbox class="tri-state-checkbox" color="primary" (change)="selectAllMaterial.set(!selectAllMaterial())">{{
+          <mat-checkbox class="tri-state-checkbox bold-label" color="primary" (change)="selectAllMaterial.set(!selectAllMaterial())">{{
             selectAllMaterial() ? 'Deselect All' : 'Select All'
           }}</mat-checkbox>
         </div>
         @for (material of materialsAccept; track $index) {
           @if (material.materials.length > 0) {
-            <div class="col-12 mb-4" style="margin-left: 10px">
-              <div class="mb-2 fw-bold" i18n>{{ material.name | uppercase }}</div>
-              <div class="row px-3">
-                @for (item of material.materials; track $index; let i = $index) {
-                  <div class="col-12 col-sm-4 mb-2 pe-4" [class.col-sm-4]="item.name.length < 20">
-                    <div class="d-flex">
-                      <mat-checkbox
-                        color="primary"
-                        (change)="onSelectedMaterial($event, item.code)"
-                        [checked]="materials.value.includes(item.code)"
-                      >
-                        <span class="text-wrap">{{ item.name }}</span>
-                      </mat-checkbox>
+            <div class="mb-3">
+              <mat-expansion-panel [expanded]="selectAllMaterial()">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <div class="fw-bold" i18n>{{ material.name | uppercase }}</div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="row px-3">
+                  @for (item of material.materials; track $index; let i = $index) {
+                    <div
+                      class="col-12 mb-2 pe-4"
+                      [class.col-md-5]="item.name.length <= 15"
+                      [class.col-md-6]="item.name.length >= 15 && item.name.length <= 20"
+                      [class.col-md-7]="item.name.length > 20 && item.name.length <= 30"
+                      [class.col-md-10]="item.name.length > 30 && item.name.length <= 40"
+                      [class.col-md-12]="item.name.length > 40"
+                    >
+                      <div class="d-flex">
+                        <mat-checkbox
+                          class="bold-label"
+                          color="primary"
+                          (change)="onSelectedMaterial($event, item.code)"
+                          [checked]="materials.value.includes(item.code)"
+                        >
+                          <span class="text-wrap">{{ item.name }}</span>
+                        </mat-checkbox>
+                      </div>
                     </div>
-                  </div>
-                }
-              </div>
+                  }
+                </div>
+              </mat-expansion-panel>
             </div>
           }
         }
         <div class="col-auto mb-2">
-          <mat-checkbox color="primary" (change)="showOtherMaterial.set(!showOtherMaterial())" [checked]="selectAllMaterial()">
+          <mat-checkbox
+            class="bold-label"
+            color="primary"
+            (change)="showOtherMaterial.set(!showOtherMaterial())"
+            [checked]="selectAllMaterial()"
+          >
             Other
           </mat-checkbox>
         </div>
@@ -208,12 +210,30 @@
         }
         <hr />
         <!-- <h6 class="mb-4 mt-5 primary" i18n>DECLARATION</h6> -->
+        <div class="col-12 mb-4">
+          <mat-label class="fw-bold mb-1" i18n>WHERE DID YOU HEAR ABOUT US ?*</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select placeholder="Please select" formControlName="whereDidYouHearAboutUs">
+              <mat-option value="google_search" i18n>Google Search</mat-option>
+              <mat-option value="prse_trade_show" i18n>PRSE Trade Show</mat-option>
+              <mat-option value="plastics_live_trade_show" i18n>Plastics Live Trade Show</mat-option>
+              <mat-option value="sustainability_show" i18n>Sustainability show</mat-option>
+              <mat-option value="k_show" i18n> K-Show</mat-option>
+              <mat-option value="interpack" i18n>Interpack</mat-option>
+              <mat-option value="plast_2023" i18n>Plast 2023</mat-option>
+              <mat-option value="word_of_mouth" i18n>Word of mouth</mat-option>
+            </mat-select>
+            @if (formGroup.get('whereDidYouHearAboutUs')?.hasError('required')) {
+              <mat-error i18n>This field is required </mat-error>
+            }
+          </mat-form-field>
+        </div>
         <div class="col-12 mt-3">
           <mat-checkbox color="primary" formControlName="acceptTerm" i18n
             >I accept the
-            <a class="fw-bold text-dark text-decoration-none" href="/termsandconditions" target="_blank">Terms & Condition</a>
+            <a class="fw-bold text-dark text-underline" href="/termsandconditions" target="_blank">Terms & Condition</a>
             and
-            <a class="fw-bold text-dark text-decoration-none" href="/privacy-policy" target="_blank">Privacy Policy </a>
+            <a class="fw-bold text-dark text-underline" href="/privacy-policy" target="_blank">Privacy Policy </a>
             by joining WasteTrade. *
           </mat-checkbox>
           @if (formGroup.get('acceptTerm')?.invalid && formGroup.get('acceptTerm')?.touched) {
@@ -225,7 +245,7 @@
             type="submit"
             color="primary"
             mat-flat-button
-            class="w-100 big-btn"
+            class="w-100 big-btn fw-bold"
             [class.overlay-spinner]="submitting()"
             [disabled]="formGroup.invalid"
             (click)="send()"

@@ -5,6 +5,7 @@ import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } fr
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -43,6 +44,7 @@ import { countries } from './../../../statics/country-data';
     MatTimepickerModule,
     MatCheckboxModule,
     UpperCasePipe,
+    MatExpansionModule,
   ],
 })
 export class SiteLocationSectionComponent implements OnInit {
@@ -52,6 +54,7 @@ export class SiteLocationSectionComponent implements OnInit {
 
   formGroup = new FormGroup({
     locationName: new FormControl<string | null>(null, [Validators.required]),
+    prefix: new FormControl<string | null>('mr', [Validators.required]),
     firstName: new FormControl<string | null>(null, [Validators.required]),
     lastName: new FormControl<string | null>(null, [Validators.required]),
     positionInCompany: new FormControl<string | null>(null, [Validators.required]),
@@ -63,10 +66,6 @@ export class SiteLocationSectionComponent implements OnInit {
     stateProvince: new FormControl<string | null>(null, [Validators.required]),
     officeOpenTime: new FormControl<Date | null>(null, [Validators.required]),
     officeCloseTime: new FormControl<Date | null>(null, [Validators.required]),
-    // favoriteMaterials: new FormArray([], [Validators.required]),
-    // otherMaterial: new FormControl<string | null>(null, [
-    //   Validators.maxLength(100),
-    // ]),
     loadingRamp: new FormControl<boolean | null>(null, [Validators.required]),
     weighbridge: new FormControl<boolean | null>(null, [Validators.required]),
     containerType: new FormArray([], [Validators.required]),
@@ -141,6 +140,7 @@ export class SiteLocationSectionComponent implements OnInit {
           control.enable();
           control.setValidators(Validators.required);
           control.updateValueAndValidity();
+          control.reset();
         });
       }
 
@@ -208,7 +208,7 @@ export class SiteLocationSectionComponent implements OnInit {
     this.formGroup.updateValueAndValidity();
   }
 
-  send() {
+  send(navigateTo: string) {
     if (this.formGroup.invalid) return;
 
     const { ...value } = this.formGroup.value;
@@ -217,7 +217,7 @@ export class SiteLocationSectionComponent implements OnInit {
       companyId: this.user()?.companyId,
       accessRestrictions: value.accessRestrictions ?? 'N/a',
     };
-    this.submitting.set(true);
+    navigateTo === '/account-complete-result' ? this.submitting.set(true) : this.submitting.set(false);
     this.registrationService
       .updateCompanyLocation(payload)
       .pipe(
@@ -238,5 +238,9 @@ export class SiteLocationSectionComponent implements OnInit {
           this.router.navigate(['/account-complete-result']);
         }
       });
+  }
+
+  isOpenGroup(materials: any[]) {
+    return materials.some((m) => this.materialsAccept().includes(m.code));
   }
 }

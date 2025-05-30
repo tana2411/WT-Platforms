@@ -9,7 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
 import { countries } from '@app/statics';
-import { AccountOnboardingStatusComponent } from '@app/ui';
+import { AccountOnboardingStatusComponent, TelephoneFormControlComponent } from '@app/ui';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { AuthService } from 'app/services/auth.service';
 import { RegistrationsService } from 'app/services/registrations.service';
@@ -30,6 +30,7 @@ import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
     RouterModule,
     ReactiveFormsModule,
     UnAuthLayoutComponent,
+    TelephoneFormControlComponent,
   ],
 })
 export class CompanyInformationSectionComponent implements OnInit {
@@ -44,6 +45,8 @@ export class CompanyInformationSectionComponent implements OnInit {
     city: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
     country: new FormControl<string | null>(null, [Validators.required]),
     stateProvince: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
+    phoneNumberCompany: new FormControl<string | null>(null, [Validators.required]),
+    mobileNumberCompany: new FormControl<string | null>(null, [Validators.maxLength(15)]),
   });
   authService = inject(AuthService);
   submitting = signal(false);
@@ -87,7 +90,7 @@ export class CompanyInformationSectionComponent implements OnInit {
       });
   }
 
-  submit() {
+  submit(navigateTo: string) {
     if (this.formGroup.invalid || !this.companyId) {
       return;
     }
@@ -95,7 +98,7 @@ export class CompanyInformationSectionComponent implements OnInit {
     this.formGroup.markAllAsTouched();
     const { ...payload }: any = this.formGroup.value;
 
-    this.submitting.set(true);
+    navigateTo === '/company-document' ? this.submitting.set(true) : this.submitting.set(false);
 
     this.service
       .updateCompanyInfo(this.companyId, payload)
@@ -121,7 +124,7 @@ export class CompanyInformationSectionComponent implements OnInit {
       )
       .subscribe((result) => {
         if (result) {
-          this.router.navigate(['/company-document']);
+          this.router.navigate([navigateTo]);
         }
       });
   }

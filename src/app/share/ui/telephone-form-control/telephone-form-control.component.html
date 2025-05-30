@@ -1,6 +1,6 @@
 <div class="d-flex gap-2">
   <div class="col-md-3">
-    <mat-label class="fw-bold">TELEPHONE*</mat-label>
+    <mat-label class="fw-bold">{{ label }}{{ isRequired ? '*' : '' }}</mat-label>
     <mat-form-field appearance="outline" class="w-100" subscriptSizing="fixed">
       <mat-select [formControl]="countryCodeControl">
         <mat-select-trigger>

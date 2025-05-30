@@ -33,5 +33,9 @@
 }
 
 .border-thin {
-  border: 0.25px solid $primary !important;
+  box-shadow: inset 0 0 0 0.25px $primary !important;
+}
+
+.border-1px {
+  box-shadow: inset 0 0 0 0.75px $primary !important;
 }

@@ -228,7 +228,7 @@ export class CompanyDocumentComponent implements OnInit {
     this.selectedWasteLicenceFile.set([]);
   }
 
-  send() {
+  send(navigateTo: string) {
     this.formGroup.markAllAsTouched();
     const { boxClearingAgent, wasteLicence } = this.formGroup.value;
 
@@ -246,7 +246,7 @@ export class CompanyDocumentComponent implements OnInit {
     const files = [...documentFiles, ...licenceFiles];
 
     if (isUploadLater && !hasWasteLicence) {
-      this.submitWithNoFile({ companyId: this.companyId, boxClearingAgent, documents: [] });
+      this.submitWithNoFile({ companyId: this.companyId, boxClearingAgent, documents: [] }, navigateTo);
       return;
     }
 
@@ -268,7 +268,7 @@ export class CompanyDocumentComponent implements OnInit {
         };
       });
 
-    this.submitting.set(true);
+    navigateTo === '/site-location' ? this.submitting.set(true) : this.submitting.set(false);
 
     if (fileUpload.length > 0) {
       this.uploadService
@@ -305,13 +305,13 @@ export class CompanyDocumentComponent implements OnInit {
         )
         .subscribe((result) => {
           if (result) {
-            this.router.navigate(['/site-location']);
+            this.router.navigate([navigateTo]);
           }
         });
     } else {
       this.submitWithDocument(alreadyUpload, boxClearingAgent).subscribe((result) => {
         if (result) {
-          this.router.navigate(['/site-location']);
+          this.router.navigate([navigateTo]);
         }
       });
     }
@@ -337,7 +337,7 @@ export class CompanyDocumentComponent implements OnInit {
       );
   }
 
-  private submitWithNoFile(payload: any) {
+  private submitWithNoFile(payload: any, navigateTo: string) {
     this.submitting.set(true);
     this.registrationService
       .updateCompanyDocuments(payload)
@@ -352,7 +352,7 @@ export class CompanyDocumentComponent implements OnInit {
       )
       .subscribe((result) => {
         if (result) {
-          this.router.navigate(['/site-location']);
+          this.router.navigate([navigateTo]);
         }
       });
   }

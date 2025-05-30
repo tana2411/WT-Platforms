@@ -1,4 +1,4 @@
-@import "../variables";
+@import '../variables';
 
 .primary {
   color: $primary !important;
@@ -14,4 +14,8 @@
 
 .text-dark {
   color: $black !important;
+}
+
+.text-empty {
+  color: $empty-state !important;
 }

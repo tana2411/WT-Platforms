@@ -3,6 +3,7 @@ import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } fr
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogClose, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { materialTypes } from '@app/statics';
@@ -23,6 +24,7 @@ import { catchError, EMPTY, finalize } from 'rxjs';
     MatDialogModule,
     MatCheckboxModule,
     IconComponent,
+    MatExpansionModule,
   ],
 })
 export class EditMaterialFormComponent implements OnInit, AfterViewInit {
@@ -130,5 +132,9 @@ export class EditMaterialFormComponent implements OnInit, AfterViewInit {
         this.snackBar.open('Your material preferences have been updated successfully.', 'OK', { duration: 3000 });
         this.dialogRef.close(true);
       });
+  }
+
+  isOpenGroup(materials: any[]) {
+    return materials.some((m) => this.data.materials.includes(m.code));
   }
 }

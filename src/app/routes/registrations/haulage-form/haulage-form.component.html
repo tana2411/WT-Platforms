@@ -213,6 +213,18 @@
 
         <div class="row g-3 mb-4">
           <div class="col-md-6">
+            <mat-label class="fw-bold mb-1" i18n>COUNTRY / STATE / REGION</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+              <input matInput placeholder="Type here" type="text" formControlName="stateProvince" />
+              @if (formGroup.get('stateProvince')?.hasError('required')) {
+                <mat-error i18n>This field is required </mat-error>
+              }
+              @if (formGroup.get('stateProvince')?.hasError('maxlength')) {
+                <mat-error i18n>Country / State / Region cannot exceed 50 characters</mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
             <mat-label class="fw-bold mb-1" i18n>COUNTRY*</mat-label>
             <mat-form-field appearance="outline" class="w-100">
               <mat-select formControlName="country" placeholder="Please Select">
@@ -222,18 +234,6 @@
               </mat-select>
               @if (formGroup.get('country')?.hasError('required')) {
                 <mat-error i18n>This field is required </mat-error>
-              }
-            </mat-form-field>
-          </div>
-          <div class="col-md-6">
-            <mat-label class="fw-bold mb-1" i18n>COUNTRY / STATE / REGION</mat-label>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="Type here" type="text" formControlName="stateProvince" />
-              @if (formGroup.get('stateProvince')?.hasError('required')) {
-                <mat-error i18n>This field is required </mat-error>
-              }
-              @if (formGroup.get('stateProvince')?.hasError('maxlength')) {
-                <mat-error i18n>Country / State / Region cannot exceed 50 characters</mat-error>
               }
             </mat-form-field>
           </div>
