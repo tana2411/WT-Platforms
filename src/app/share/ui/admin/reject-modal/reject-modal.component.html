@@ -1,0 +1,32 @@
+<div class="p-5">
+  <h2 class="fw-bold mb-4">Reason for rejection</h2>
+
+  <form [formGroup]="rejectForm">
+    <mat-radio-group class="d-flex flex-column gap-2" formControlName="rejectionReason" name="rejectionReason">
+      @for (reason of rejectionReasons; track reason) {
+        <mat-radio-button class="fw-bold" [value]="reason.value">{{ reason.label }}</mat-radio-button>
+      }
+    </mat-radio-group>
+
+    @if (rejectForm?.get('rejectionReason')?.value == RejectionReason.Other) {
+      <mat-label class="fw-bold text-uppercase d-block mb-2 mt-3" i18n>Input custom reason</mat-label>
+      <mat-form-field appearance="outline" class="w-100">
+        <textarea
+          matInput
+          rows="2"
+          style="resize: none"
+          class="w-100 px-3"
+          placeholder="Type here"
+          formControlName="message"
+          name="message"
+        ></textarea>
+
+        @if (rejectForm.get('message')?.hasError('required')) {
+          <mat-error class="mt-0" i18n> This is a required field. </mat-error>
+        }
+      </mat-form-field>
+    }
+
+    <button class="mt-4 w-100 submit-button" mat-flat-button (click)="confirm()" [disabled]="!rejectForm.valid">Confirm</button>
+  </form>
+</div>

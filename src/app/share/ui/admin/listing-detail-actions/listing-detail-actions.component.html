@@ -1,7 +1,14 @@
+<!-- @if (canAction()) { -->
 <div class="d-flex flex-wrap gap-2">
-  <button mat-flat-button class="custom-button">Approve</button>
-  <button mat-flat-button class="custom-button background-error">Reject</button>
-  <button matButton="outlined" class="custom-button rounded primary border border-primary" style="border-width: 3px">
+  <button mat-flat-button class="custom-button" (click)="onApprove()">Approve</button>
+  <button mat-flat-button class="custom-button background-error" (click)="onReject()">Reject</button>
+  <button
+    matButton="outlined"
+    class="custom-button rounded primary border border-primary"
+    style="border-width: 3px"
+    (click)="onRequestMoreInformation()"
+  >
     Request more information
   </button>
 </div>
+<!-- } -->

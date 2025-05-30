@@ -63,3 +63,14 @@ export interface GetListingDetailResponse {
   };
   message: string;
 }
+
+export enum ListingRequestActionEnum {
+  ACCEPT = 'accept',
+  REJECT = 'reject',
+  REQUEST_INFORMATION = 'request_information',
+}
+
+export interface ListingActionParams {
+  rejectionReason?: string;
+  message?: string;
+}

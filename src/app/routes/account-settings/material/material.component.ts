@@ -1,4 +1,5 @@
 import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -11,7 +12,7 @@ import { EditMaterialFormComponent } from './edit-material-form/edit-material-fo
   selector: 'app-material',
   templateUrl: './material.component.html',
   styleUrls: ['./material.component.scss'],
-  imports: [MatIconModule, MatButtonModule, MatCheckboxModule],
+  imports: [MatIconModule, MatButtonModule, MatCheckboxModule, FormsModule],
 })
 export class MaterialComponent implements OnInit, OnChanges {
   @Input() favoriteMaterials: string[] | undefined = [];
