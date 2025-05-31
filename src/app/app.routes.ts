@@ -185,6 +185,17 @@ export const routes: Routes = [
       ),
   },
   {
+    path: `${ROUTES.adminWantedListingDetail}/:listingId`,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [GuardRequireRole.SuperAdmin],
+    },
+    loadComponent: () =>
+      import('./routes/admin/detail-wanted-listing/detail-wanted-listing.component').then(
+        (m) => m.DetailWantedListingComponent,
+      ),
+  },
+  {
     path: ROUTES.settings,
     canActivate: [CanActivateAuthPage],
     loadComponent: () =>

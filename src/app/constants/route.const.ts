@@ -15,6 +15,7 @@ export const ROUTES = {
   liveActiveTable: 'live-activity',
   commercialManagement: 'commercial-management',
   adminSaleListingDetail: 'admin/listing',
+  adminWantedListingDetail: 'admin/wanted-listing',
 };
 
 export const ROUTES_WITH_SLASH = {

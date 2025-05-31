@@ -12,12 +12,12 @@
         <span i18n>go back</span>
       </div>
 
-      <h2 class="fw-bold sub-title" i18n>Seller information</h2>
+      <h2 class="fw-bold sub-title" i18n>Buyer Information</h2>
 
-      <div class="rounded border border-primary p-3 p-lg-5 mb-4 seller-information">
+      <div class="rounded border border-primary p-3 p-lg-5 mb-4 buyer-information">
         <div class="row align-items-center">
           <div class="col-4" i18n>
-            <h2 class="primary fw-bold mb-0">Seller</h2>
+            <h2 class="primary fw-bold mb-0">Buyer</h2>
           </div>
           <div class="col-4">
             <p class="text-uppercase fw-bold mb-2" i18n>Full name</p>
@@ -34,52 +34,54 @@
 
       <div class="rounded border border-primary p-3 pb-0 p-lg-5 pb-lg-4 mb-4 mb-lg-5">
         <div class="d-flex flex-wrap">
-          <!-- <div class="row align-items-center row-item"> -->
           <div class="col-6 col-md-4 material-item mb-4">
-            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>material</p>
-            <p class="mb-0 fw-500" i18n>{{ listingDetail.materialInformation.materialName }}</p>
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>date listed</p>
+            <p class="mb-0 fw-500" i18n>{{ listingDetail.listing.createdAt | dateFormat }}</p>
           </div>
 
           <div class="col-6 col-md-4 material-item mb-4">
-            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>Packaging</p>
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>Material required</p>
+            <p class="mb-0 fw-500" i18n>todo</p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>Storage</p>
+            <p class="mb-0 fw-500" i18n>{{ listingDetail.listing.wasteStoration }}</p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>Date required from</p>
+            <p class="mb-0 fw-500" i18n>{{ listingDetail.listing.startDate | dateFormat }}</p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>quantity required</p>
+            <p class="mb-0 primary fw-bold" i18n>
+              {{ listingDetail.materialInformation.quantity }}
+            </p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>status</p>
+            <p class="mb-0 primary fw-bold" i18n>
+              {{ listingDetail.bidStatus.status }}
+            </p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>Location</p>
+            <p class="mb-0 fw-bold" i18n>{{ mapCountryCodeToName[listingDetail.materialInformation.country] }}</p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>packaging</p>
             <p class="mb-0 fw-500" i18n>{{ listingDetail.materialInformation.packaging }}</p>
           </div>
 
           <div class="col-6 col-md-4 material-item mb-4">
-            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>Bid status</p>
-            <p class="mb-0 fw-500" i18n>{{ listingDetail.bidStatus.status }}</p>
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>State</p>
+            <p class="mb-0 fw-500" i18n>todo</p>
           </div>
-          <!-- </div> -->
-
-          <!-- <div class="row align-items-center row-item"> -->
-          <div class="col-6 col-md-4 material-item mb-4">
-            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>Location/warehouse</p>
-            <p class="mb-0 fw-500" i18n>{{ mapCountryCodeToName[listingDetail.materialInformation.country] }}</p>
-          </div>
-
-          <div class="col-6 col-md-4 material-item mb-4">
-            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>number of loads</p>
-            <p class="mb-0 primary fw-bold" i18n>
-              {{ listingDetail.materialInformation.quantity }}/{{
-                listingDetail.materialInformation.quantity + (listingDetail.materialInformation.remainingQuantity ?? 0)
-              }}
-            </p>
-          </div>
-
-          <div class="col-6 col-md-4 material-item mb-4"></div>
-          <!-- </div> -->
-
-          <!-- <div class="row align-items-center"> -->
-          <div class="col-6 col-md-4 material-item mb-4">
-            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>currency</p>
-            <p class="mb-0 fw-bold" i18n>{{ listingDetail.materialInformation.currency }}</p>
-          </div>
-
-          <div class="col-6 col-md-4 material-item mb-4">
-            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>weight per load</p>
-            <p class="mb-0 fw-500" i18n>{{ listingDetail.materialInformation.materialWeightPerUnit }}</p>
-          </div>
-          <!-- </div> -->
         </div>
       </div>
 
