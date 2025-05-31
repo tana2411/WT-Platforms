@@ -1,37 +1,41 @@
-<div class="d-flex gap-2">
-  <div class="col-md-3">
-    <mat-label class="fw-bold">{{ label }}{{ isRequired ? '*' : '' }}</mat-label>
-    <mat-form-field appearance="outline" class="w-100" subscriptSizing="fixed">
-      <mat-select [formControl]="countryCodeControl">
-        <mat-select-trigger>
-          @if (countryCodeControl.value; as selected) {
-            <div class="d-flex align-items-center">
-              <i class="fi {{ selected.flagClass }}"></i>
-              <span class="ms-1">{{ selected.code }}</span>
-            </div>
-          }
-        </mat-select-trigger>
-        @for (item of countryList; track $index) {
-          <mat-option [value]="item">
-            <i class="fi {{ item.flagClass }}"></i>
-            {{ item.code }}
-          </mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-  </div>
+<div class="d-flex flex-column">
+  <mat-label class="fw-bold">{{ label }}{{ isRequired ? '*' : '' }}</mat-label>
+  <div class="d-flex flex-column phone-input">
+    <div class="d-flex rounded">
+      <div class="col-md-3">
+        <mat-form-field appearance="fill" class="w-100 no-outline left-side">
+          <mat-select [formControl]="countryCodeControl">
+            <mat-select-trigger>
+              @if (countryCodeControl.value; as selected) {
+                <div class="d-flex align-items-center">
+                  <i class="fi {{ selected.flagClass }}"></i>
+                  <span class="ms-1">{{ selected.code }}</span>
+                </div>
+              }
+            </mat-select-trigger>
+            @for (item of countryList; track $index) {
+              <mat-option [value]="item">
+                <i class="fi {{ item.flagClass }}"></i>
+                {{ item.code }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-  <div class="col-md-9">
-    <mat-label class="fw-bold">&nbsp;</mat-label>
-    <mat-form-field appearance="outline" class="w-100" subscriptSizing="fixed">
-      <input matInput placeholder="ex. 741234480" type="text" [formControl]="telephoneControl" />
-
-      @if (telephoneControl.hasError('required')) {
+      <div class="col-md-9">
+        <mat-form-field appearance="fill" class="w-100 no-outline bg-white right-side">
+          <input matInput placeholder="ex. 741234480" type="text" [formControl]="telephoneControl" />
+        </mat-form-field>
+      </div>
+    </div>
+    <div>
+      @if (telephoneControl.hasError('required') && telephoneControl.touched) {
         <mat-error>This field is required</mat-error>
       }
       @if (telephoneControl.hasError('maxlength') || telephoneControl.hasError('pattern')) {
         <mat-error i18n>Invalid telephone number. Please enter a valid number</mat-error>
       }
-    </mat-form-field>
+    </div>
   </div>
 </div>
