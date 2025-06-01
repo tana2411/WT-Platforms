@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { FULL_PAGINATION_LIMIT } from 'app/constants/common';
 import { ROUTES } from 'app/constants/route.const';
 import { getDefaultRouteByRole } from 'app/guards/auth/utils';
 import { ACCESS_TOKEN_KEY } from 'app/interceptors/auth.interceptor';
@@ -13,6 +14,7 @@ import {
   ResponseGetCompanyLocation,
   ResponseLogin,
   ResponseMe,
+  ResquestGetCompanyLocationParams,
 } from '../types/requests/auth';
 
 export const NOT_INITIAL_USER = null;
@@ -47,7 +49,9 @@ export class AuthService {
   get companyLocations$() {
     return this.user$.pipe(
       filter((user) => !!user),
-      switchMap((user) => this.getCompanyLocation(user?.companyId)),
+      switchMap((user) =>
+        this.getCompanyLocation({ companyId: user?.companyId, limit: FULL_PAGINATION_LIMIT, page: 1 }),
+      ),
     );
   }
 
@@ -137,8 +141,13 @@ export class AuthService {
     );
   }
 
-  getCompanyLocation(companyId: number) {
+  getCompanyLocation({ companyId, page, limit }: ResquestGetCompanyLocationParams) {
+    const safeLimit = limit ?? 10;
+    const skip = (page - 1) * safeLimit;
+
     const encodedFilter = JSON.stringify({
+      skip,
+      limit: safeLimit,
       where: {
         companyId,
       },

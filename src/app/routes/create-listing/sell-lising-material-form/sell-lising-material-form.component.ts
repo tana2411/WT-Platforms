@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,10 +13,12 @@ import { Router } from '@angular/router';
 import { colour, countries, finishing, materialTypes, packing } from '@app/statics';
 import { FileInfo, FileUploadComponent } from '@app/ui';
 import { noForbiddenPatternsValidator, pastDateValidator } from '@app/validators';
+import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
+import { CompanyDocumentType } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
 import { ListingService } from 'app/services/listing.service';
 import { UploadService } from 'app/share/services/upload.service';
-import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
+import { catchError, combineLatest, filter, finalize, forkJoin, map, of, switchMap } from 'rxjs';
 
 const OTHER_LOCATION = '__OTHER_LOCATION';
 
@@ -42,7 +44,6 @@ export class SellLisingMaterialFormComponent {
   colourOption = colour;
   finishingOption = finishing;
   packingOption = packing;
-  companyId: number | undefined;
   today = new Date();
   OTHER_LOCATION = OTHER_LOCATION;
 
@@ -60,13 +61,24 @@ export class SellLisingMaterialFormComponent {
   itemOption = signal<{ code: string; name: string }[]>([]);
   formOption = signal<{ code: string; name: string }[]>([]);
   gradingOption = signal<{ code: string; name: string }[]>([]);
-  selectedFile = signal<FileInfo[]>([]);
+
+  featureImageFile = signal<FileInfo[]>([]);
+  specialDataFile = signal<FileInfo[]>([]);
+  galleryImageFile = signal<FileInfo[]>([]);
+
   additionalInformationLength = signal<number>(0);
   submitting = signal<boolean>(false);
-  locations = toSignal(this.authService.companyLocations$, { initialValue: [] });
+  locations = toSignal(this.authService.companyLocations$.pipe(map((res) => res.results)), { initialValue: [] });
+  companyId = toSignal(
+    this.authService.user$.pipe(
+      filter((user) => !!user),
+      map((user) => user.companyId),
+    ),
+  );
 
   formGroup = new FormGroup({
-    country: new FormControl<string | null>(null, [Validators.required]),
+    locationId: new FormControl<string | null>(null, [Validators.required]),
+    locationOther: new FormControl<string | null>(null),
 
     hasSpecialData: new FormControl<string | null>('false', [Validators.required]),
 
@@ -77,33 +89,44 @@ export class SellLisingMaterialFormComponent {
     materialColor: new FormControl<string | null>(null, [Validators.required]),
     materialFinishing: new FormControl<string | null>(null, [Validators.required]),
     materialPacking: new FormControl<string | null>(null, [Validators.required]),
-    remainInCountry: new FormControl<string | null>('false', [Validators.required]),
-    // capacityPerMonth: new FormControl<string | null>(null, [Validators.required, Validators.min(1)]),
-    // materialFlowIndex: new FormControl<string | null>(null, [Validators.required]),
+    materialRemainInCountry: new FormControl<string | null>('false', [Validators.required]),
     wasteStoration: new FormControl<string | null>(null, [Validators.required]),
     weightUnit: new FormControl<string | null>(null, [Validators.required]),
     materialWeight: new FormControl<number | null>(null, [Validators.required]),
     quantity: new FormControl<number | null>(null, [Validators.required]),
 
     currency: new FormControl<string | null>(null, [Validators.required]),
-    pricePerMetric: new FormControl<string | null>(null, [Validators.required]),
+    pricePerMetricTonne: new FormControl<string | null>(null, [Validators.required]),
 
     startDate: new FormControl<Date | null>(null, [Validators.required, pastDateValidator()]),
 
     ongoingListing: new FormControl<string | null>('false', [Validators.required]),
-    listingRenewalPeriod: new FormControl<string | null>(null, [Validators.required]),
-    listingDuration: new FormControl<Date | null>(null),
+    listingRenewalPeriod: new FormControl<string | null>(null),
+    endDate: new FormControl<Date | null>(null, [Validators.required]),
 
-    additionalNotes: new FormControl<string | null>(null, [
-      Validators.maxLength(32000),
-      noForbiddenPatternsValidator(),
-    ]),
+    description: new FormControl<string | null>(null, [Validators.maxLength(32000), noForbiddenPatternsValidator()]),
   });
+
+  hasSpecialData = toSignal(this.formGroup.controls.hasSpecialData.valueChanges.pipe(map((v) => v === 'true')));
+  hasLocation = toSignal(
+    combineLatest([
+      this.formGroup.controls.locationId.valueChanges,
+      this.formGroup.controls.locationOther.valueChanges,
+    ]).pipe(
+      map(
+        ([locationId, locationOther]) =>
+          (!!locationId && locationId !== OTHER_LOCATION) || (locationId === OTHER_LOCATION && !!locationOther),
+      ),
+    ),
+    {
+      initialValue: false,
+    },
+  );
 
   constructor() {
     this.today.setDate(this.today.getDate() - 0);
     this.formGroup.valueChanges.pipe(takeUntilDestroyed()).subscribe((value) => {
-      const { materialType, additionalNotes } = value;
+      const { materialType, description } = value;
       if (materialType) {
         const selectedMateriaType = materialTypes.find((m) => m.code == materialType);
         if (selectedMateriaType) {
@@ -112,8 +135,8 @@ export class SellLisingMaterialFormComponent {
           this.gradingOption.set(selectedMateriaType?.grading);
         }
       }
-      if (additionalNotes) {
-        this.additionalInformationLength.set(additionalNotes?.length);
+      if (description) {
+        this.additionalInformationLength.set(description?.length);
       }
     });
 
@@ -121,33 +144,37 @@ export class SellLisingMaterialFormComponent {
     const futureDate = new Date(currentDate);
     futureDate.setDate(currentDate.getDate() + 30);
 
-    this.formGroup.patchValue({ listingDuration: futureDate }, { emitEvent: false });
+    this.formGroup.patchValue({ endDate: futureDate }, { emitEvent: false });
 
-    // this.formGroup.controls.country.valueChanges
-    //   .pipe(
-    //     filter((v) => !v),
-    //     takeUntilDestroyed(),
-    //     tap(() => {
-    //       const disableControlNames = Object.keys(this.formGroup.controls);
-    //       console.log({ disableControlNames });
-    //     }),
-    //   )
-    //   .subscribe();
+    // Control disable / enable form according has location or not
+    effect(() => {
+      const disableControlNames = Object.keys(this.formGroup.controls).filter(
+        (i) => !['locationId', 'locationOther'].includes(i),
+      );
 
-    const disableControlNames = Object.keys(this.formGroup.controls).filter((i) => i !== 'country');
-    console.log({ disableControlNames });
-    disableControlNames.forEach((key) => {
-      ((this.formGroup.controls as any)[key] as FormControl).disable();
+      disableControlNames.forEach((key) => {
+        if (this.hasLocation()) {
+          ((this.formGroup.controls as any)[key] as FormControl).enable();
+        } else {
+          ((this.formGroup.controls as any)[key] as FormControl).disable();
+        }
+      });
     });
 
+    // Effect add, remove fields
     effect(() => {
-      const { materialForm, materialGrading, materialItem, country } = this.formGroup.controls;
-
+      const { materialForm, materialGrading, materialItem, locationId, locationOther } = this.formGroup.controls;
       if (this.formOption().length > 0) {
         materialForm.setValidators(Validators.required);
       } else {
         materialForm.clearValidators();
         materialForm.setValue('N/A', { emitEvent: false });
+      }
+
+      if (locationId.value === OTHER_LOCATION) {
+        locationOther.setValidators(Validators.required);
+      } else {
+        locationOther.clearValidators();
       }
 
       if (this.gradingOption().length > 0) {
@@ -170,60 +197,102 @@ export class SellLisingMaterialFormComponent {
     });
   }
 
-  ngOnInit() {
-    this.authService.user$
-      .pipe(
-        filter((user) => !!user),
-        take(1),
-        catchError((err) => {
-          if (err) {
-            this.snackBar.open(
-              'An error occurred while retrieving your information. Please refresh the page or contact support if the problem persists.',
-              'Ok',
-              { duration: 3000 },
-            );
-          }
-          return of(null);
-        }),
-      )
-      .subscribe((user) => {
-        if (user) {
-          this.companyId = user.company?.id;
-        }
-      });
-  }
+  // ngOnInit() {
+  //   this.authService.user$
+  //     .pipe(
+  //       filter((user) => !!user),
+  //       take(1),
+  //       catchError((err) => {
+  //         if (err) {
+  //           this.snackBar.open(
+  //             'An error occurred while retrieving your information. Please refresh the page or contact support if the problem persists.',
+  //             'Ok',
+  //             { duration: 3000 },
+  //           );
+  //         }
+  //         return of(null);
+  //       }),
+  //     )
+  //     .subscribe((user) => {
+  //       if (user) {
+  //         this.companyId = user.company?.id;
+  //       }
+  //     });
+  // }
 
-  handleFileReady(file: FileInfo[]) {
+  fileValid = computed(() => {
+    return (
+      !!this.featureImageFile().length &&
+      this.galleryImageFile().length &&
+      (!this.hasSpecialData() || (this.hasSpecialData() && !!this.specialDataFile().length))
+    );
+  });
+
+  handleFileReady(file: FileInfo[], type: 'featureImage' | 'specialFile' | 'galleryImage') {
     if (file) {
-      this.selectedFile.set(file);
+      if (type === 'featureImage') {
+        this.featureImageFile.set(file);
+      }
+
+      if (type === 'specialFile') {
+        this.specialDataFile.set(file);
+      }
+
+      if (type === 'galleryImage') {
+        this.galleryImageFile.set(file);
+      }
     }
   }
 
   ongoingListingChange(event: MatRadioChange) {
-    const { listingDuration, listingRenewalPeriod } = this.formGroup.controls;
-    listingDuration.markAsUntouched();
+    const { endDate, listingRenewalPeriod } = this.formGroup.controls;
+    endDate.markAsUntouched();
     listingRenewalPeriod.markAsUntouched();
     if (event.value == 'true') {
-      listingDuration.clearValidators();
+      endDate.clearValidators();
       listingRenewalPeriod.setValidators(Validators.required);
     } else {
-      listingDuration.setValidators([Validators.required, pastDateValidator()]);
+      endDate.setValidators([Validators.required, pastDateValidator()]);
       listingRenewalPeriod.clearValidators();
     }
 
-    listingDuration.updateValueAndValidity();
+    endDate.updateValueAndValidity();
     listingRenewalPeriod.updateValueAndValidity();
   }
 
+  private convertToTon() {
+    const { weightUnit, materialWeight } = this.formGroup.value;
+    if (!weightUnit || !materialWeight) return 0;
+
+    return weightUnit === 'lbs'
+      ? materialWeight / 2204.62263
+      : weightUnit === 'kg'
+        ? materialWeight / 1000
+        : materialWeight;
+  }
+
   send() {
+    debugger;
     if (this.formGroup.invalid) return;
-    let { weightUnit, ongoingListing, ...value } = this.formGroup.value;
+    let {
+      weightUnit,
+      materialWeight,
+      quantity,
+      ongoingListing,
+      hasSpecialData,
+      locationId,
+      materialRemainInCountry,
+      ...value
+    } = this.formGroup.value;
 
     const payload: any = {
       ...value,
-      listingType: 'wanted',
-      companyId: this.companyId,
-      startDate: value.startDate?.toISOString(),
+      locationId: Number(locationId),
+      materialRemainInCountry: materialRemainInCountry === 'true',
+      quantity,
+      listingType: 'sell',
+      companyId: this.companyId(),
+      materialWeightPerUnit: this.convertToTon() / quantity!,
     };
 
     if (!this.itemOption().length) {
@@ -238,48 +307,56 @@ export class SellLisingMaterialFormComponent {
       delete payload.materialGrading;
     }
 
-    ongoingListing == 'true' ? delete payload.listingDuration : delete payload.listingRenewalPeriod;
+    ongoingListing == 'true' ? delete payload.endDate : delete payload.listingRenewalPeriod;
 
+    debugger;
     this.submitting.set(true);
 
-    this.uploadService
-      .uploadMultiFile(this.selectedFile().map((f) => f.file))
+    const filesSources = [this.featureImageFile(), this.specialDataFile() ?? [], this.galleryImageFile()].map(
+      (source) => (source.length ? this.uploadService.uploadMultiFile(source.map((f) => f.file)) : of([])),
+    );
+
+    forkJoin(filesSources)
       .pipe(
-        finalize(() => this.submitting.set(false)),
         catchError((err) => {
-          this.snackBar.open('An error occurred while uploading the file. Please try again.', 'Ok', {
-            duration: 3000,
-          });
-          return of(null);
+          this.snackBar.open('An error occurred while uploading the file. Please try again.');
+          throw err;
         }),
-        concatMap((documentUrls) => {
-          if (!documentUrls) return of(null);
+        map(([featureImages, specialFiles, galleryImages]) => {
+          const featureDocuments = (featureImages ?? []).map((url) => ({
+            documentType: CompanyDocumentType.FeatureImage,
+            documentUrl: url,
+          }));
 
-          const documents = documentUrls.map((url) => {
-            return {
-              documentType: 'feature_image',
-              documentUrl: url,
-            };
-          });
+          const specialDocuments = (specialFiles ?? []).map((url) => ({
+            documentType: CompanyDocumentType.MaterialSpecialData,
+            documentUrl: url,
+          }));
 
+          const galleryDocuments = (galleryImages ?? []).map((url) => ({
+            documentType: CompanyDocumentType.GalleryImage,
+            documentUrl: url,
+          }));
+
+          return [...featureDocuments, ...specialDocuments, ...galleryDocuments];
+        }),
+        switchMap((documents) => {
+          debugger;
           return this.listingService.createListing({ ...payload, documents }).pipe(
-            finalize(() => this.submitting.set(false)),
             catchError((err) => {
-              this.snackBar.open(`${err.error?.error?.message ?? 'Unknown error'}`, 'Ok', {
-                duration: 3000,
-              });
-              return of(null);
+              this.snackBar.open(
+                `${err.error?.error?.message ?? 'Failed to submit your listing. Please try again. If the problem persists, contact support.'}`,
+              );
+              throw err;
             }),
           );
         }),
+        finalize(() => this.submitting.set(false)),
       )
       .subscribe((result) => {
-        if (result) {
-          this.snackBar.open('Your listing is under review', 'Ok', {
-            duration: 3000,
-          });
-          this.router.navigate(['/wanted']);
-        }
+        debugger;
+        this.snackBar.open('Your listing is under review');
+        this.router.navigateByUrl(ROUTES_WITH_SLASH.buy);
       });
   }
 }
