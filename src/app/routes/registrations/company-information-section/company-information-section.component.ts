@@ -45,8 +45,8 @@ export class CompanyInformationSectionComponent implements OnInit {
     city: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
     country: new FormControl<string | null>(null, [Validators.required]),
     stateProvince: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
-    phoneNumberCompany: new FormControl<string | null>(null, [Validators.required]),
-    mobileNumberCompany: new FormControl<string | null>(null, [Validators.maxLength(15)]),
+    phoneNumber: new FormControl<string | null>(null, [Validators.required]),
+    mobileNumber: new FormControl<string | null>(null, [Validators.maxLength(15)]),
   });
   authService = inject(AuthService);
   submitting = signal(false);
@@ -83,6 +83,8 @@ export class CompanyInformationSectionComponent implements OnInit {
             city: user.company?.city ?? '',
             country: user.company?.country ?? '',
             stateProvince: user.company?.stateProvince ?? '',
+            phoneNumber: user.company.phoneNumber,
+            mobileNumber: user.company.mobileNumber,
           });
 
           this.companyId = user.company?.id;

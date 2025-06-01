@@ -128,6 +128,13 @@
   text-transform: uppercase;
 }
 
+.filter-select-item-label {
+  color: #1d1d1b99;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 6px !important;
+}
+
 @media screen and (min-width: 992px) {
   .sold_listings {
     align-items: center !important;
@@ -181,7 +188,7 @@
       }
 
       mat-select {
-        height: 5px;
+        height: 50px;
       }
     }
   }
