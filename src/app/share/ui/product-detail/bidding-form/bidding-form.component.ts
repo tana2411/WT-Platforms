@@ -15,12 +15,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { FULL_PAGINATION_LIMIT } from 'app/constants/common';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { CompanyLocation } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
 import { OfferService } from 'app/services/offer.service';
 import { RequestCreateBidParams } from 'app/types/requests/offer';
-import { catchError, finalize, tap } from 'rxjs';
+import { catchError, finalize, map, tap } from 'rxjs';
 
 export type BiddingFormProps = {
   listingId: number;
@@ -98,9 +99,12 @@ export class BiddingFormComponent implements OnInit {
 
   ngOnInit() {
     const user = this.authService.user!;
-    this.authService.getCompanyLocation(user.companyId).subscribe((locations) => {
-      this.locations.set(locations);
-    });
+    this.authService
+      .getCompanyLocation({ companyId: user.companyId, limit: FULL_PAGINATION_LIMIT, page: 1 })
+      .pipe(map((res) => res.results))
+      .subscribe((locations) => {
+        this.locations.set(locations);
+      });
   }
 
   submit() {

@@ -35,11 +35,17 @@
         <p class="content fw-bold primary">{{ item.bidAmount }}</p>
       </div>
 
-      <a routerLink="/offer-detail/{{ item.id }}">
-        <button mat-stroked-button type="button" class="view-detail-btn primary border-primary">View details</button>
-      </a>
+      <div class="column-item d-flex align-items-center">
+        <a routerLink="/offer-detail/{{ item.id }}">
+          <button mat-stroked-button type="button" class="view-detail-btn primary border-primary">View details</button>
+        </a>
+      </div>
     </div>
   </div>
+} @empty {
+  <h5 class="text-center">No offers yet!</h5>
 }
 
-<app-pagination class="mt-5" [pageNumber]="page" [totalCount]="totalItems" (pageChange)="onPageChange($event)"></app-pagination>
+@if (items.length) {
+  <app-pagination class="mt-5" [pageNumber]="page" [totalCount]="totalItems" (pageChange)="onPageChange($event)"></app-pagination>
+}

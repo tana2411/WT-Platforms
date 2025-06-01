@@ -56,6 +56,7 @@ export class FileUploadComponent implements OnInit, OnChanges {
   @Input() acceptable: string[] | undefined = undefined; // ex: ['.jpg', '.jpeg']
   @Input() fileList: DocumentFileInfo[] = [];
   @Input() maxFileSize: number = 25 * 1024 * 1024;
+  @Input() disabled = false;
 
   @Output() filesAdded = new EventEmitter<FileInfo[]>();
   @Output() uploadValid = new EventEmitter<boolean>();

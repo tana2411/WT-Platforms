@@ -1,0 +1,1 @@
+export const FULL_PAGINATION_LIMIT = 9999;

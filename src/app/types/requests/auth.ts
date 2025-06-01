@@ -38,4 +38,13 @@ export type ResponseMe = {
   };
 };
 
-export type ResponseGetCompanyLocation = CompanyLocation[];
+export type ResquestGetCompanyLocationParams = {
+  companyId: number;
+  page: number;
+  limit?: number;
+};
+
+export type ResponseGetCompanyLocation = {
+  results: CompanyLocation[];
+  totalCount: number;
+};
