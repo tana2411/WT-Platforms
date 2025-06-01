@@ -183,6 +183,13 @@ export class SiteLocationSectionComponent implements OnInit {
       .subscribe((user) => {
         if (user) {
           this.user.set(user);
+
+          this.formGroup.patchValue({
+            prefix: user.user.prefix,
+            firstName: user.user.firstName,
+            lastName: user.user.lastName,
+            phoneNumber: user.user.phoneNumber,
+          });
         }
       });
   }

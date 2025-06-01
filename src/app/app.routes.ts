@@ -2,7 +2,9 @@ import { Routes } from '@angular/router';
 import { ROUTES } from './constants/route.const';
 import { CanActivateAuthPage } from './guards/auth/auth.guard';
 import {} from './guards/auth/utils';
+import { AccountSettingComponent } from './routes/account-setting/account-setting.component';
 import { LiveActiveTableComponent } from './routes/admin/live-active-table/live-active-table.component';
+import { CreateListingComponent } from './routes/create-listing/create-listing.component';
 import { LogoutComponent } from './routes/logout/logout.component';
 import { PrivacyComponent } from './routes/privacy/privacy.component';
 import { CompanyDocumentComponent } from './routes/registrations/company-document/company-document.component';
@@ -93,8 +95,23 @@ export const routes: Routes = [
     data: {
       requireAuthParams: [GuardRequireRole.SuperAdmin, GuardRequireRole.Trading],
     },
-    loadComponent: () =>
-      import('./routes/create-listing/create-listing.component').then((m) => m.CreateListingComponent),
+    component: CreateListingComponent,
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./routes/create-listing/sell-lising-material-form/sell-lising-material-form.component').then(
+            (m) => m.SellLisingMaterialFormComponent,
+          ),
+      },
+      {
+        path: 'wanted',
+        loadComponent: () =>
+          import('./routes/create-listing/list-wanted-material-form/list-wanted-material-form.component').then(
+            (m) => m.ListWantedMaterialFormComponent,
+          ),
+      },
+    ],
   },
   {
     path: ROUTES.haulier,
@@ -215,8 +232,43 @@ export const routes: Routes = [
   {
     path: ROUTES.settings,
     canActivate: [CanActivateAuthPage],
-    loadComponent: () =>
-      import('./routes/account-setting/account-setting.component').then((m) => m.AccountSettingComponent),
+    component: AccountSettingComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'profile',
+        pathMatch: 'full',
+      },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./routes/account-settings/my-profile/my-profile.component').then((m) => m.MyProfileComponent),
+      },
+      {
+        path: 'company-information',
+        loadComponent: () => import('./routes/account-settings/info/info.component').then((m) => m.InfoComponent),
+      },
+      {
+        path: 'materials',
+        loadComponent: () =>
+          import('./routes/account-settings/material/material.component').then((m) => m.MaterialComponent),
+      },
+      {
+        path: 'notifications',
+        loadComponent: () =>
+          import('./routes/account-settings/notification/notification.component').then((m) => m.NotificationComponent),
+      },
+      {
+        path: 'documents',
+        loadComponent: () =>
+          import('./routes/account-settings/document/document.component').then((m) => m.DocumentComponent),
+      },
+      {
+        path: 'locations',
+        loadComponent: () =>
+          import('./routes/account-settings/location/location.component').then((m) => m.LocationComponent),
+      },
+    ],
   },
   { path: '**', pathMatch: 'full', redirectTo: 'login' },
 ];

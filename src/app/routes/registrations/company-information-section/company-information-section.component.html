@@ -44,15 +44,6 @@
               }
             </mat-form-field>
           </div>
-          <div class="col-12 mb-4">
-            <mat-label class="fw-bold mb-1" i18n>COMPANY REGISTRATION NUMBER*</mat-label>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="Type here" type="text" formControlName="registrationNumber" />
-              @if (formGroup.get('registrationNumber')?.hasError('required')) {
-                <mat-error i18n>This field is required </mat-error>
-              }
-            </mat-form-field>
-          </div>
           <div class="col-md-12 mb-4">
             <mat-label class="mb-0 fw-bold" i18n> VAT COUNTRY LOCATION* </mat-label>
             <mat-radio-group
@@ -76,6 +67,15 @@
             <mat-form-field appearance="outline" class="w-100">
               <input matInput placeholder="Type here" type="text" formControlName="vatNumber" />
               @if (formGroup.get('vatNumber')?.hasError('required')) {
+                <mat-error i18n>This field is required </mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="col-12 mb-4">
+            <mat-label class="fw-bold mb-1" i18n>COMPANY REGISTRATION NUMBER*</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+              <input matInput placeholder="Type here" type="text" formControlName="registrationNumber" />
+              @if (formGroup.get('registrationNumber')?.hasError('required')) {
                 <mat-error i18n>This field is required </mat-error>
               }
             </mat-form-field>
@@ -149,16 +149,12 @@
           <div class="mb-3">
             <app-telephone-form-control
               [isRequired]="true"
-              formControlName="phoneNumberCompany"
+              formControlName="phoneNumber"
               [label]="'PHONE NUMBER'"
             ></app-telephone-form-control>
           </div>
           <div class="mb-4">
-            <app-telephone-form-control
-              [isRequired]="true"
-              formControlName="mobileNumberCompany"
-              [label]="'MOBILE'"
-            ></app-telephone-form-control>
+            <app-telephone-form-control [isRequired]="true" formControlName="mobileNumber" [label]="'MOBILE'"></app-telephone-form-control>
           </div>
         </div>
         <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-between align-items-center">

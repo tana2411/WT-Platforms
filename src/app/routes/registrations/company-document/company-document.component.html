@@ -138,7 +138,6 @@
               (change)="onLicenceChange($event)"
             >
               <mat-radio-button class="bold-label" [value]="true" i18n> Yes </mat-radio-button>
-              <mat-radio-button class="bold-label" [value]="false" i18n> No </mat-radio-button>
               <mat-radio-button class="bold-label" [value]="false" i18n> Not Applicable </mat-radio-button>
             </mat-radio-group>
             @if (formGroup.get('wasteLicence')?.hasError('required') && formGroup.get('wasteLicence')?.touched) {
