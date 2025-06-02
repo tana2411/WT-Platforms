@@ -1,10 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, effect, inject, Signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
-import { CompanyDocumentType } from 'app/models';
+import { CompanyDocumentType, User } from 'app/models';
 import { IDocument } from 'app/models/listing-material-detail.model';
+import { AuthService } from 'app/services/auth.service';
+import { EditDocumentFormComponent } from './edit-document-form/edit-document-form.component';
 
 @Component({
   selector: 'app-document',
@@ -12,8 +16,10 @@ import { IDocument } from 'app/models/listing-material-detail.model';
   styleUrl: './document.component.scss',
   imports: [MatIconModule, MatButtonModule, MatRadioModule, ReactiveFormsModule, FormsModule],
 })
-export class DocumentComponent implements OnInit {
-  @Input() documents: IDocument[] | undefined = undefined;
+export class DocumentComponent {
+  user: Signal<User | null | undefined>;
+
+  documents: IDocument[] | undefined = undefined;
   CompanyDocumentType = CompanyDocumentType;
   documentType: CompanyDocumentType = CompanyDocumentType.EnvironmentalPermit;
   selectedType: string = '';
@@ -23,7 +29,21 @@ export class DocumentComponent implements OnInit {
   wasteCarrierLicenseDocuments: IDocument[] = [];
   otherDocuments: IDocument[] = [];
 
-  ngOnInit(): void {
+  authService = inject(AuthService);
+  dialog = inject(MatDialog);
+
+  constructor() {
+    this.user = toSignal(this.authService.user$);
+
+    effect(() => {
+      if (this.user()) {
+        this.documents = this.user()?.company.companyDocuments;
+        this.showDocuments();
+      }
+    });
+  }
+
+  private showDocuments() {
     if (this.documents) {
       this.documents.forEach((document) => {
         switch (document.documentType) {
@@ -40,6 +60,7 @@ export class DocumentComponent implements OnInit {
             this.otherDocuments.push(document);
         }
       });
+
       this.chooseSelectedType();
     }
   }
@@ -58,5 +79,24 @@ export class DocumentComponent implements OnInit {
 
   extractFileName(url: string): string {
     return url.split('/').pop() || '';
+  }
+
+  openEditDocuments() {
+    const dataConfig: MatDialogConfig = {
+      data: { documents: this.documents },
+      width: '100%',
+      maxWidth: '960px',
+    };
+    const dialogRef = this.dialog.open(EditDocumentFormComponent, dataConfig);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.authService.checkToken().subscribe((value) => {
+          if (value) {
+            this.showDocuments();
+          }
+        });
+      }
+    });
   }
 }

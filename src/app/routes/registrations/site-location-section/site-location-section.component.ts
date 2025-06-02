@@ -14,7 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTimepickerModule } from '@angular/material/timepicker';
 import { Router, RouterModule } from '@angular/router';
-import { materialTypes } from '@app/statics';
+import { countries, materialTypes } from '@app/statics';
 import { TelephoneFormControlComponent } from '@app/ui';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { User } from 'app/models/auth.model';
@@ -22,7 +22,6 @@ import { AuthService } from 'app/services/auth.service';
 import { RegistrationsService } from 'app/services/registrations.service';
 import { AccountOnboardingStatusComponent } from 'app/share/ui/account-onboarding-status/account-onboarding-status.component';
 import { catchError, filter, finalize, of, take } from 'rxjs';
-import { countries } from './../../../statics/country-data';
 
 @Component({
   selector: 'app-site-location-section',

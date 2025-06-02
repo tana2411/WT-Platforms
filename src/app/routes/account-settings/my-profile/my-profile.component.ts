@@ -1,5 +1,6 @@
 import { TitleCasePipe } from '@angular/common';
-import { Component, computed, inject, Input } from '@angular/core';
+import { Component, computed, inject, Signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,16 +16,21 @@ import { EditProfileFormComponent } from './edit-profile-form/edit-profile-form.
   imports: [MatButtonModule, MatIconModule, TitleCasePipe],
 })
 export class MyProfileComponent {
-  @Input() user: User | undefined | null;
+  user: Signal<User | undefined | null>;
 
   dialog = inject(MatDialog);
   snackBar = inject(MatSnackBar);
   authService = inject(AuthService);
 
+  constructor() {
+    this.user = toSignal(this.authService.user$);
+  }
+
   userInitials = computed(() => {
-    if (this.user) {
-      const firstName = this.user?.user.firstName || '';
-      const lastName = this.user?.user.lastName || '';
+    const userValue = this.user();
+    if (userValue) {
+      const firstName = userValue.user.firstName || '';
+      const lastName = userValue.user.lastName || '';
       return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
     }
     return '';
@@ -32,7 +38,7 @@ export class MyProfileComponent {
 
   onEditProfile() {
     const dataConfig: MatDialogConfig = {
-      data: { userInfo: this.user },
+      data: { userInfo: this.user() },
       width: '100%',
       maxWidth: '980px',
     };
