@@ -20,7 +20,7 @@
       @for (material of materialType; track $index) {
         @if (material.materials.length > 0) {
           <div class="mb-3">
-            <mat-expansion-panel [expanded]="isOpenGroup(material.materials)">
+            <mat-expansion-panel [expanded]="isOpenGroup(material.materials) || selectAllMaterial()">
               <mat-expansion-panel-header>
                 <mat-panel-title>
                   <div class="fw-bold text-uppercase" i18n>{{ material.name }}</div>

@@ -1,10 +1,12 @@
-import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, effect, inject, Signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { materialTypes } from '@app/statics';
+import { User } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
 import { EditMaterialFormComponent } from './edit-material-form/edit-material-form.component';
 
@@ -14,27 +16,26 @@ import { EditMaterialFormComponent } from './edit-material-form/edit-material-fo
   styleUrls: ['./material.component.scss'],
   imports: [MatIconModule, MatButtonModule, MatCheckboxModule, FormsModule],
 })
-export class MaterialComponent implements OnInit, OnChanges {
-  @Input() favoriteMaterials: string[] | undefined = [];
-  @Input() companyId: number | undefined;
+export class MaterialComponent {
+  favoriteMaterials: string[] | undefined = [];
+  companyId: number | undefined;
+
   materialType = materialTypes;
   materials: any[] = [];
+  user: Signal<User | null | undefined>;
 
   dialog = inject(MatDialog);
   authService = inject(AuthService);
 
-  constructor() {}
+  constructor() {
+    this.user = toSignal(this.authService.user$);
 
-  ngOnInit() {
-    if (this.favoriteMaterials) {
-      this.showMaterial();
-    }
-  }
+    effect(() => {
+      this.favoriteMaterials = this.user()?.company.favoriteMaterials;
+      this.companyId = this.user()?.company.id;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['favoriteMaterials'] && changes['favoriteMaterials'].currentValue) {
       this.showMaterial();
-    }
+    });
   }
 
   showMaterial() {
@@ -64,7 +65,9 @@ export class MaterialComponent implements OnInit, OnChanges {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.authService.checkToken().subscribe();
+        this.authService.checkToken().subscribe(() => {
+          this.showMaterial();
+        });
       }
     });
   }

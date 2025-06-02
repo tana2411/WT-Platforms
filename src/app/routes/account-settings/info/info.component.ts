@@ -1,11 +1,12 @@
 import { TitleCasePipe } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
+import { Component, effect, inject, Signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { mapCountryCodeToName } from '@app/statics';
-import { Company } from 'app/models';
+import { Company, User } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
 import { EditCompanyInformationFormComponent } from './edit-company-information-form/edit-company-information-form.component';
 import { EditSocialUrlFormComponent } from './edit-social-url-form/edit-social-url-form.component';
@@ -17,12 +18,26 @@ import { EditSocialUrlFormComponent } from './edit-social-url-form/edit-social-u
 })
 export class InfoComponent {
   mapCountryCodeToName = mapCountryCodeToName;
+  user: Signal<User | null | undefined>;
 
-  @Input() company: Company | undefined;
+  company: Company | undefined = undefined;
 
   dialog = inject(MatDialog);
   snackBar = inject(MatSnackBar);
   authService = inject(AuthService);
+
+  constructor() {
+    this.user = toSignal(this.authService.user$);
+    if (this.user()) {
+      this.company = this.user()?.company;
+    }
+
+    effect(() => {
+      if (this.user()) {
+        this.company = this.user()?.company;
+      }
+    });
+  }
 
   openEditCompanyInfo() {
     const dataConfig: MatDialogConfig = {

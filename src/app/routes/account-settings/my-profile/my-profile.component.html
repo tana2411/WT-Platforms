@@ -17,37 +17,37 @@
           </div>
         </div>
 
-        <div class="text-center text-md-start">Account ID: {{ user?.user?.id }}</div>
+        <div class="text-center text-md-start">Account ID: {{ user()?.id }}</div>
       </div>
 
       <div class="col-12 col-md-8 col-lg-9 d-flex flex-column justify-content-between overflow-hidden flex-grow-1 min-w-0">
         <div class="row g-3 mb-4 mx-0">
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold text-uppercase small mb-1 text-truncate" i18n>PREFIX</div>
-            <div class="text-truncate">{{ user?.user?.prefix | titlecase }}</div>
+            <div class="text-truncate">{{ user()?.user?.prefix | titlecase }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold text-uppercase small mb-1 text-truncate" i18n>FIRST NAME</div>
-            <div class="text-truncate">{{ user?.user?.firstName }}</div>
+            <div class="text-truncate">{{ user()?.user?.firstName }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold text-uppercase small mb-1 text-truncate" i18n>LAST NAME</div>
-            <div class="text-truncate">{{ user?.user?.lastName }}</div>
+            <div class="text-truncate">{{ user()?.user?.lastName }}</div>
           </div>
         </div>
 
         <div class="row g-3 mx-0">
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold text-uppercase small mb-1 text-truncate" i18n>JOB TITLE</div>
-            <div class="text-truncate">{{ user?.user?.jobTitle }}</div>
+            <div class="text-truncate">{{ user()?.user?.jobTitle }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold text-uppercase small mb-1 text-truncate" i18n>EMAIL ADDRESS</div>
-            <div class="text-truncate" title="john.smith@example.com">{{ user?.user?.email }}</div>
+            <div class="text-truncate" title="john.smith@example.com">{{ user()?.user?.email }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold text-uppercase small mb-1 text-truncate" i18n>TELEPHONE</div>
-            <div class="text-truncate">{{ user?.user?.phoneNumber }}</div>
+            <div class="text-truncate">{{ user()?.user?.phoneNumber }}</div>
           </div>
         </div>
       </div>
