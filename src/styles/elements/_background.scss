@@ -1,15 +1,15 @@
 @import '../variables';
 
 .background-primary {
-  background-color: $primary;
+  background-color: $primary !important;
 }
 
 .background-secondary {
-  background-color: $secondary;
+  background-color: $secondary !important;
 }
 
 .background-on-primary {
-  background-color: $on-primary;
+  background-color: $on-primary !important;
 }
 
 .background-error {
