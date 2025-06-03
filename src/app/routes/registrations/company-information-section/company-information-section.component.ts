@@ -37,9 +37,9 @@ export class CompanyInformationSectionComponent implements OnInit {
   countryList = countries;
   formGroup = new FormGroup({
     companyType: new FormControl<string | null>(null, [Validators.required]),
-    registrationNumber: new FormControl<string | null>(null, [Validators.required]),
+    registrationNumber: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
     vatRegistrationCountry: new FormControl<string | null>(null, [Validators.required]),
-    vatNumber: new FormControl<string | null>(null, [Validators.required]),
+    vatNumber: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
     addressLine1: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(100)]),
     postalCode: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
     city: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),

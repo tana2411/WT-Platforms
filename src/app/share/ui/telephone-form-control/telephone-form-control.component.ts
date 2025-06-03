@@ -87,8 +87,8 @@ export class TelephoneFormControlComponent implements OnInit, ControlValueAccess
         countryObject = null;
       }
     } else {
-      const defaultCountryCodeValue = '+44';
-      countryObject = this.countryList.find((i) => i.code.trim() == defaultCountryCodeValue);
+      const defaultCountryCodeValue = 'United Kingdom';
+      countryObject = this.countryList.find((i) => i.name.trim() == defaultCountryCodeValue);
       if (!countryObject) {
         countryObject = null;
       }

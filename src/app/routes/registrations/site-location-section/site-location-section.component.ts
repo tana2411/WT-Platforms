@@ -47,7 +47,7 @@ import { catchError, filter, finalize, of, take } from 'rxjs';
   ],
 })
 export class SiteLocationSectionComponent implements OnInit {
-  countryList = countries;
+  countryList = countries.slice().sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
   materialTypes = materialTypes;
 

@@ -8,6 +8,7 @@ import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.co
 import { User } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
 import { ItemOf } from 'app/types/utils';
+import { TabContainerComponent } from '../account-settings/tab-container/tab-container.component';
 
 const ListTab = [
   {
@@ -46,7 +47,7 @@ type TabKey = ItemOf<typeof ListTab>['title'];
 
 @Component({
   selector: 'app-account-setting',
-  imports: [CommonLayoutComponent, MatIconModule, MatTabsModule, RouterModule],
+  imports: [CommonLayoutComponent, MatIconModule, MatTabsModule, RouterModule, TabContainerComponent],
   templateUrl: './account-setting.component.html',
   styleUrl: './account-setting.component.scss',
 })

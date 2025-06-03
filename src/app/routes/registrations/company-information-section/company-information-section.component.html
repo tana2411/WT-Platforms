@@ -69,6 +69,9 @@
               @if (formGroup.get('vatNumber')?.hasError('required')) {
                 <mat-error i18n>This field is required </mat-error>
               }
+              @if (formGroup.get('vatNumber')?.hasError('maxlength')) {
+                <mat-error i18n>Company Vat Number cannot exceed 20 characters</mat-error>
+              }
             </mat-form-field>
           </div>
           <div class="col-12 mb-4">
@@ -77,6 +80,9 @@
               <input matInput placeholder="Type here" type="text" formControlName="registrationNumber" />
               @if (formGroup.get('registrationNumber')?.hasError('required')) {
                 <mat-error i18n>This field is required </mat-error>
+              }
+              @if (formGroup.get('registrationNumber')?.hasError('maxlength')) {
+                <mat-error i18n>Company Registration Number cannot exceed 20 characters</mat-error>
               }
             </mat-form-field>
           </div>

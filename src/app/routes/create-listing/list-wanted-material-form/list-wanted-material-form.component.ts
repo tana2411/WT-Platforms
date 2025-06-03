@@ -35,7 +35,7 @@ import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
   ],
 })
 export class ListWantedMaterialFormComponent implements OnInit {
-  countryOption = countries;
+  countryOption = countries.slice().sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
   materialTypes = materialTypes;
   colourOption = colour;
   finishingOption = finishing;
@@ -67,10 +67,10 @@ export class ListWantedMaterialFormComponent implements OnInit {
     materialColor: new FormControl<string | null>(null, [Validators.required]),
     materialFinishing: new FormControl<string | null>(null, [Validators.required]),
     materialPacking: new FormControl<string | null>(null, [Validators.required]),
-    capacityPerMonth: new FormControl<string | null>(null, [Validators.required, Validators.min(1)]),
+    capacityPerMonth: new FormControl<string | null>(null, [Validators.required, Validators.min(0)]),
     materialFlowIndex: new FormControl<string | null>(null, [Validators.required]),
     wasteStoration: new FormControl<string | null>(null, [Validators.required]),
-    materialWeightWanted: new FormControl<number | null>(null, [Validators.required, Validators.min(3)]),
+    materialWeightWanted: new FormControl<number | null>(null, [Validators.required, Validators.min(0)]),
     weightUnit: new FormControl<string | null>(null, [Validators.required]),
     startDate: new FormControl<Date | null>(null, [Validators.required, pastDateValidator()]),
 
