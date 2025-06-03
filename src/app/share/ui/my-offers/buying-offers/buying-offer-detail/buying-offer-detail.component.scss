@@ -1,0 +1,15 @@
+@import 'variables';
+
+.product-image-wrapper {
+  width: 600px;
+  max-width: 100%;
+}
+
+.button-back {
+  width: 119px;
+  border: none;
+}
+
+.remove-button {
+  background-color: $error !important;
+}

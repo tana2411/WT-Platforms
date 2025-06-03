@@ -1,3 +1,4 @@
+import { ListingDocument } from 'app/models';
 import { CompanyStatus } from 'app/models/auth.model';
 import { OfferStatus } from 'app/models/offer';
 
@@ -45,6 +46,7 @@ interface Listing {
   materialType: string;
   numberOfOffers?: number;
   bestOffer?: number;
+  documents?: ListingDocument[];
 }
 
 export interface OfferLocation {

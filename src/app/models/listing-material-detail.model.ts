@@ -1,4 +1,5 @@
 import { CompanyDocumentType } from './document.model';
+import { ListingDocument } from './listing-material.model';
 
 // Document model
 export interface IDocument {
@@ -56,7 +57,7 @@ export interface Listing {
   listingRenewalPeriod: string | null;
   listingDuration: string;
   viewCount: number | null;
-  documents: IDocument[];
+  documents: ListingDocument[];
 }
 
 // Company model

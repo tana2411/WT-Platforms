@@ -14,7 +14,7 @@ import { colour, countries, finishing, materialTypes, packing } from '@app/stati
 import { FileInfo, FileUploadComponent } from '@app/ui';
 import { noForbiddenPatternsValidator, pastDateValidator } from '@app/validators';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
-import { CompanyDocumentType } from 'app/models';
+import { ListingImageType } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
 import { ListingService } from 'app/services/listing.service';
 import { UploadService } from 'app/share/services/upload.service';
@@ -324,17 +324,17 @@ export class SellLisingMaterialFormComponent {
         }),
         map(([featureImages, specialFiles, galleryImages]) => {
           const featureDocuments = (featureImages ?? []).map((url) => ({
-            documentType: CompanyDocumentType.FeatureImage,
+            documentType: ListingImageType.FEATURE_IMAGE,
             documentUrl: url,
           }));
 
           const specialDocuments = (specialFiles ?? []).map((url) => ({
-            documentType: CompanyDocumentType.MaterialSpecialData,
+            documentType: ListingImageType.MATERIAL_SPECIFICATION_DATA,
             documentUrl: url,
           }));
 
           const galleryDocuments = (galleryImages ?? []).map((url) => ({
-            documentType: CompanyDocumentType.GalleryImage,
+            documentType: ListingImageType.GALLERY_IMAGE,
             documentUrl: url,
           }));
 

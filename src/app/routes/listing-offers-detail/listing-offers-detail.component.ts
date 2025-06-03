@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { mapCountryCodeToName } from '@app/statics';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
-import { ListingMaterial, ListingType } from 'app/models';
+import { ListingImageType, ListingMaterial, ListingType } from 'app/models';
 import { ListingMaterialDetail } from 'app/models/listing-material-detail.model';
 import { ListingService } from 'app/services/listing.service';
 import { MaterialActionComponent } from 'app/share/ui/product-detail/material-action/material-action.component';
@@ -127,7 +127,10 @@ export class ListingOffersDetailComponent {
 
         tap((res) => {
           this.listingDetail.set(res.data);
-          this.images = res.data.listing?.documents.map((d) => d.documentUrl) ?? [];
+          this.images =
+            res.data.listing?.documents
+              .filter((i) => i.documentType === ListingImageType.GALLERY_IMAGE)
+              .map((d) => d.documentUrl) ?? [];
         }),
 
         switchMap(() =>
@@ -159,5 +162,15 @@ export class ListingOffersDetailComponent {
 
   onSelect(item: ListingMaterial) {
     this.router.navigateByUrl(`${ROUTES_WITH_SLASH.listingOfferDetail}/${item.id}`);
+  }
+
+  onBack() {
+    const type = this.listingDetail()?.listing.listingType;
+
+    if (type === 'sell') {
+      this.router.navigateByUrl(ROUTES_WITH_SLASH.buy);
+    } else if (type === 'wanted') {
+      this.router.navigateByUrl(ROUTES_WITH_SLASH.wanted);
+    }
   }
 }

@@ -1,11 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-
-enum ReviewStatus {
-  Pending = 'pending',
-  Approve = 'approve',
-  Reject = 'reject',
-}
+import { ListingState } from 'app/models';
 
 @Component({
   selector: 'app-review-status',
@@ -13,10 +8,7 @@ enum ReviewStatus {
   styleUrls: ['./review-status.component.scss'],
   imports: [MatIconModule],
 })
-export class ReviewStatusComponent implements OnInit {
-  @Input() status: string = '';
-  ReviewStatus = ReviewStatus;
-  constructor() {}
-
-  ngOnInit() {}
+export class ReviewStatusComponent {
+  @Input() state: string = '';
+  ListingState = ListingState;
 }
