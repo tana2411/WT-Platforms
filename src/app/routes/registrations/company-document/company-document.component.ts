@@ -104,12 +104,12 @@ export class CompanyDocumentComponent implements OnInit {
       .subscribe((user) => {
         if (!user) return;
         this.companyId = user.company?.id;
-        this.companyDocuments = user.company.companyDocuments;
+        this.companyDocuments = user.company?.companyDocuments ?? [];
 
         this.formGroup.patchValue(
           {
-            boxClearingAgent: user.company.boxClearingAgent,
-            companyType: user.company.companyType,
+            boxClearingAgent: user.company?.boxClearingAgent,
+            companyType: user.company?.companyType,
           },
           { emitEvent: false },
         );

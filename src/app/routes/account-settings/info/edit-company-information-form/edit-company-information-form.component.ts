@@ -70,21 +70,21 @@ export class EditCompanyInformationFormComponent implements OnInit {
     if (this.data.companyInfo) {
       const { companyInfo } = this.data;
       this.formGroup.patchValue({
-        name: companyInfo.name,
-        registrationNumber: companyInfo.registrationNumber,
-        vatRegistrationCountry: companyInfo.vatRegistrationCountry,
-        vatNumber: companyInfo.vatNumber,
-        website: companyInfo.website,
-        companyType: companyInfo.companyType,
-        companyInterest: companyInfo.companyInterest || 'both',
-        description: companyInfo.description,
-        email: companyInfo.email,
-        addressLine1: companyInfo.addressLine1,
-        postalCode: companyInfo.postalCode,
-        city: companyInfo.city,
-        country: companyInfo.country,
-        stateProvince: companyInfo.stateProvince,
-        phoneNumber: companyInfo.phoneNumber,
+        name: companyInfo?.name,
+        registrationNumber: companyInfo?.registrationNumber,
+        vatRegistrationCountry: companyInfo?.vatRegistrationCountry,
+        vatNumber: companyInfo?.vatNumber,
+        website: companyInfo?.website,
+        companyType: companyInfo?.companyType,
+        companyInterest: companyInfo?.companyInterest || 'both',
+        description: companyInfo?.description,
+        email: companyInfo?.email,
+        addressLine1: companyInfo?.addressLine1,
+        postalCode: companyInfo?.postalCode,
+        city: companyInfo?.city,
+        country: companyInfo?.country,
+        stateProvince: companyInfo?.stateProvince,
+        phoneNumber: companyInfo?.phoneNumber,
       });
 
       this.formGroup.updateValueAndValidity();
