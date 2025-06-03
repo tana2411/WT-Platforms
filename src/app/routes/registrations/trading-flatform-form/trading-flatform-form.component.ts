@@ -11,7 +11,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { countries, materialTypes } from '@app/statics';
+import { materialTypes } from '@app/statics';
 import { InputWithConfirmControlComponent, TelephoneFormControlComponent } from '@app/ui';
 import { checkPasswordStrength, pwdStrengthValidator } from '@app/validators';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
@@ -39,7 +39,6 @@ import { catchError, concatMap, finalize, of } from 'rxjs';
   ],
 })
 export class TradingFlatformFormComponent implements OnInit {
-  countryList = countries;
   materialsAccept = materialTypes;
 
   formGroup = new FormGroup({

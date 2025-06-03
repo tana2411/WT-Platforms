@@ -40,7 +40,7 @@ export class FilterComponent implements OnInit {
   @Output() filterChanged = new EventEmitter<any>();
   @Output() searchTerm = new EventEmitter<string | null>();
 
-  countryList = countries;
+  countryList = countries.slice().sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
   allFilters = allFilters;
   activeFilter: any[] = [];
 

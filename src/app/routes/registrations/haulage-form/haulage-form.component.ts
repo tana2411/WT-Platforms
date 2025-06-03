@@ -43,7 +43,7 @@ import { countries } from './../../../statics/country-data';
   ],
 })
 export class HaulageFormComponent {
-  countryList = countries;
+  countryList = countries.slice().sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
   euCountries = [
     { value: 'austria', name: 'Austria' },
     { value: 'belgium', name: 'Belgium' },

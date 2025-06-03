@@ -53,9 +53,7 @@ export class ListContainerComponent implements OnInit {
 
   onFilterChange(filterParams: any) {
     const cleanedParams = Object.fromEntries(
-      Object.entries(filterParams).filter(
-        ([_, value]) => value != null && value != '' && value != 'All' && value != 'createAtDesc',
-      ),
+      Object.entries(filterParams).filter(([_, value]) => value != null && value != '' && value != 'createAtDesc'),
     );
 
     if ('country' in cleanedParams) {
@@ -94,6 +92,10 @@ export class ListContainerComponent implements OnInit {
 
   private refresh() {
     this.loading.set(true);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
     this.fetchFn(this.filter())
       .pipe(
         finalize(() => this.loading.set(false)),
