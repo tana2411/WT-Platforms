@@ -87,7 +87,7 @@ export class SiteLocationSectionComponent implements OnInit {
   router = inject(Router);
 
   materialsAccept = computed(() => {
-    const userMaterial = this.user()?.company.favoriteMaterials || [];
+    const userMaterial = this.user()?.company?.favoriteMaterials || [];
     return this.materialTypes
       .flatMap((type) => type.materials)
       .filter((material) => userMaterial.includes(material.code))
@@ -184,10 +184,10 @@ export class SiteLocationSectionComponent implements OnInit {
           this.user.set(user);
 
           this.formGroup.patchValue({
-            prefix: user.user.prefix,
-            firstName: user.user.firstName,
-            lastName: user.user.lastName,
-            phoneNumber: user.user.phoneNumber,
+            prefix: user.user.prefix ?? '',
+            firstName: user.user.firstName ?? '',
+            lastName: user.user.lastName ?? '',
+            phoneNumber: user.user.phoneNumber ?? '',
           });
         }
       });

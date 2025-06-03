@@ -34,7 +34,7 @@ import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
   ],
 })
 export class CompanyInformationSectionComponent implements OnInit {
-  countryList = countries;
+  countryList = countries.slice().sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
   formGroup = new FormGroup({
     companyType: new FormControl<string | null>(null, [Validators.required]),
     registrationNumber: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
@@ -72,7 +72,7 @@ export class CompanyInformationSectionComponent implements OnInit {
         }),
       )
       .subscribe((user) => {
-        if (user) {
+        if (user?.company) {
           this.formGroup.patchValue({
             companyType: user.company?.companyType ?? '',
             registrationNumber: user.company?.registrationNumber ?? '',
@@ -83,8 +83,8 @@ export class CompanyInformationSectionComponent implements OnInit {
             city: user.company?.city ?? '',
             country: user.company?.country ?? '',
             stateProvince: user.company?.stateProvince ?? '',
-            phoneNumber: user.company.phoneNumber,
-            mobileNumber: user.company.mobileNumber,
+            phoneNumber: user.company.phoneNumber ?? '',
+            mobileNumber: user.company.mobileNumber ?? '',
           });
 
           this.companyId = user.company?.id;
