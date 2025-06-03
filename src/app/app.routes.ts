@@ -20,7 +20,6 @@ import { GuardRequireRole } from './types/auth';
 export const routes: Routes = [
   {
     path: ROUTES.login,
-    // canActivate: [CanActivateUnAuthPage],
     loadComponent: () =>
       import('./routes/login-pages/login-page/login-page.component').then((m) => m.LoginPageComponent),
   },

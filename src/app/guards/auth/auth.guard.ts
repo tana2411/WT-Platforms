@@ -37,9 +37,9 @@ export class CanActivateAuthPage implements CanActivate {
         if (user && requireAuthParams) {
           const isValid = checkAllowAccessAuthPage(user, requireAuthParams);
           if (!isValid) {
-            const targetRoute = getDefaultRouteByRole(user as User);
-            this.router.navigateByUrl(targetRoute);
             this.snackbar.open('You do not have access to this platform.');
+            // invalid allowed access => redirect to login
+            this.router.navigateByUrl(ROUTES.login);
           }
         }
       }),

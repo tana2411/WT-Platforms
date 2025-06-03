@@ -7,7 +7,7 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { routes } from './app.routes';
-import { CanActivateAuthPage, CanActivateUnAuthPage } from './guards/auth/auth.guard';
+import { CanActivateAuthPage } from './guards/auth/auth.guard';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { apiBaseUrlInterceptor } from './interceptors/base-url.interceptor';
 
@@ -45,6 +45,6 @@ export const appConfig: ApplicationConfig = {
     },
     { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
     CanActivateAuthPage,
-    CanActivateUnAuthPage,
+    // CanActivateUnAuthPage,
   ],
 };
