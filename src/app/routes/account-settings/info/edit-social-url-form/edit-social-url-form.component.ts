@@ -58,7 +58,7 @@ export class EditSocialUrlFormComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    if (this.data) {
+    if (this.data.urlInfo) {
       const { urlInfo } = this.data;
       Object.keys(urlInfo).map((key) => {
         const urlGroup = new FormGroup({

@@ -28,12 +28,8 @@ export class InfoComponent {
 
   constructor() {
     this.user = toSignal(this.authService.user$);
-    if (this.user()) {
-      this.company = this.user()?.company;
-    }
-
     effect(() => {
-      if (this.user()) {
+      if (this.user()?.company) {
         this.company = this.user()?.company;
       }
     });

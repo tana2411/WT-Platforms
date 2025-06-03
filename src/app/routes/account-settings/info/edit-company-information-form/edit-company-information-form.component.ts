@@ -67,7 +67,7 @@ export class EditCompanyInformationFormComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    if (this.data) {
+    if (this.data.companyInfo) {
       const { companyInfo } = this.data;
       this.formGroup.patchValue({
         name: companyInfo.name,

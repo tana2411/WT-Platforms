@@ -36,7 +36,7 @@ export class DocumentComponent {
     this.user = toSignal(this.authService.user$);
 
     effect(() => {
-      if (this.user()) {
+      if (this.user()?.company.companyDocuments) {
         this.documents = this.user()?.company.companyDocuments;
         this.showDocuments();
       }

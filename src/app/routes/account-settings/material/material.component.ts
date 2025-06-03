@@ -31,10 +31,12 @@ export class MaterialComponent {
     this.user = toSignal(this.authService.user$);
 
     effect(() => {
-      this.favoriteMaterials = this.user()?.company.favoriteMaterials;
-      this.companyId = this.user()?.company.id;
+      if (this.user()?.company) {
+        this.favoriteMaterials = this.user()?.company.favoriteMaterials;
+        this.companyId = this.user()?.company.id;
 
-      this.showMaterial();
+        this.showMaterial();
+      }
     });
   }
 

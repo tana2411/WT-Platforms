@@ -34,7 +34,9 @@
               <div class="col-12 d-flex justify-content-between mb-2">
                 <div class="d-flex align-items-center me-3 text-break w-75">
                   <mat-icon class="me-1">file_copy</mat-icon>
-                  <span class="fw-500">{{ fileInfo?.value?.file?.name || fileInfo?.value?.fileName }}</span>
+                  <span class="d-flex align-items-center p-2 fw-500 col-10 text-break">{{
+                    fileInfo?.value?.file?.name || fileInfo?.value?.fileName
+                  }}</span>
                 </div>
                 @if (fileInfo?.value?.documentUrl) {
                   <a [href]="fileInfo?.value?.documentUrl" target="_blank" class="text-decoration-none me-1">
@@ -47,7 +49,7 @@
               </div>
 
               @if (expiryDateMode !== 'hidden') {
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                   <mat-form-field appearance="outline" floatLabel="auto" class="w-100">
                     <mat-label i18n>Expiry Date</mat-label>
                     <input

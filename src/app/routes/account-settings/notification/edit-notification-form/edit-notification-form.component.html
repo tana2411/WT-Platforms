@@ -1,36 +1,36 @@
 <div class="container-fluid p-3 p-md-4 p-lg-4">
-  <div class="position-relative">
-    <div class="close-button position-absolute top-0 end-0" [mat-dialog-close]="false">
+  <div class="d-flex justify-content-between align-items-center w-100" mat-dialog-title>
+    <h2 class="fw-bold flex-grow-1">Notifications</h2>
+    <div mat-dialog-close>
       <app-icon iconName="close"></app-icon>
     </div>
-
-    <h2 class="mb-5">Notifications</h2>
   </div>
 
-  <form [formGroup]="formGroup">
-    <div class="row g-3 mb-4">
-      <mat-label class="fw-bold">EMAIL ME NEW LISTINGS THAT MATCH MY INTERESTS</mat-label>
-      <mat-radio-group class="col-md-4 d-flex justify-content-between col-7" formControlName="notificationEmailEnabled">
-        <mat-radio-button class="bold-label" [value]="true">Yes</mat-radio-button>
-        <mat-radio-button class="bold-label" [value]="false">No</mat-radio-button>
-      </mat-radio-group>
-    </div>
+  <mat-dialog-content>
+    <form [formGroup]="formGroup">
+      <div class="row g-3 mb-4">
+        <mat-label class="fw-bold">EMAIL ME NEW LISTINGS THAT MATCH MY INTERESTS</mat-label>
+        <mat-radio-group class="col-md-4 d-flex justify-content-between col-7" formControlName="notificationEmailEnabled">
+          <mat-radio-button class="bold-label" [value]="true">Yes</mat-radio-button>
+          <mat-radio-button class="bold-label" [value]="false">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
 
-    <div class="row g-3 mb-4">
-      <mat-label class="fw-bold">EMAIL ME OFFERS ON MY LISTINGS</mat-label>
-      <mat-radio-group class="col-md-4 d-flex justify-content-between col-7" formControlName="notificationPushEnabled">
-        <mat-radio-button class="bold-label" [value]="true">Yes</mat-radio-button>
-        <mat-radio-button class="bold-label" [value]="false">No</mat-radio-button>
-      </mat-radio-group>
-    </div>
-
-    <div class="d-flex justify-content-between align-items-center gap-3">
-      <button mat-stroked-button class="text-uppercase fw-bold primary border-primary w-100 mt-4" [mat-dialog-close]="false" i18n>
-        Discard Changes
-      </button>
+      <div class="row g-3 mb-4">
+        <mat-label class="fw-bold">EMAIL ME OFFERS ON MY LISTINGS</mat-label>
+        <mat-radio-group class="col-md-4 d-flex justify-content-between col-7" formControlName="notificationPushEnabled">
+          <mat-radio-button class="bold-label" [value]="true">Yes</mat-radio-button>
+          <mat-radio-button class="bold-label" [value]="false">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="d-flex justify-content-between align-items-center gap-3 col-md-12 col-12">
+      <button mat-stroked-button class="text-uppercase outline-primary-btn w-100" [mat-dialog-close]="false" i18n>Discard Changes</button>
       <button
         mat-flat-button
-        class="text-uppercase fw-bold text-white background-primary w-100 mt-4"
+        class="text-uppercase primary-btn w-100 fw-bold"
         [disabled]="formGroup.invalid || formGroup.pristine"
         [class.overlay-spinner]="submitting()"
         (click)="submit()"
@@ -39,5 +39,5 @@
         Save Changes
       </button>
     </div>
-  </form>
+  </mat-dialog-actions>
 </div>
