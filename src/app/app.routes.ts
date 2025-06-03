@@ -152,6 +152,18 @@ export const routes: Routes = [
   },
 
   {
+    path: `${ROUTES.myOffersBuyingDetail}/:offerId`,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [GuardRequireRole.Trading, GuardRequireRole.SuperAdmin],
+    },
+    loadComponent: () =>
+      import('./routes/my-offer-buying-detail/my-offer-buying-detail.component').then(
+        (m) => m.MyOfferBuyingDetailComponent,
+      ),
+  },
+
+  {
     path: `${ROUTES.listingOfferDetail}/:offerId`,
     canActivate: [CanActivateAuthPage],
     data: {

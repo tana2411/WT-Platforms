@@ -11,7 +11,7 @@
           <app-icon [iconName]="'star_border'" [backgroundColor]="'#E2E2E2'" iconClassName="text-dark"></app-icon>
         </div>
         <div class="mb-3 d-flex gap-2">
-          <a class="primary fw-bold text-decoration-none cursor-pointer" [routerLink]="['/wanted']" i18n>Back to the materials</a>
+          <a class="primary fw-bold text-decoration-none cursor-pointer" (click)="onBack()" i18n>Back to the materials</a>
           <mat-icon class="primary">chevron_left</mat-icon>
           <span class="fw-bold">{{ listingDetail.listing.title }}</span>
         </div>
@@ -34,7 +34,7 @@
         </div>
 
         <div class="d-flex flex-column gap-4 col-12 col-md-6 col-lg-3 flex-fill mb-3">
-          <app-review-status [status]="listingDetail.listing.status"></app-review-status>
+          <app-review-status [state]="listingDetail.listing.state"></app-review-status>
           <!-- <app-product-status [product]="listingDetail()"></app-product-status> -->
           <app-material-owner [listingDetail]="listingDetail" />
 

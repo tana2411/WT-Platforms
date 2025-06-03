@@ -8,6 +8,7 @@ export enum ListingStatus {
 }
 
 export enum ListingState {
+  APPROVED = 'approved',
   ACTIVE = 'active',
   PROCESSING = 'processing',
   PENDING = 'pending',

@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
+import { ListingImageType } from 'app/models';
 import { OfferListingItem } from 'app/models/offer';
 import { OfferService } from 'app/services/offer.service';
 import { OfferDetail } from 'app/types/requests/offer';
@@ -34,6 +35,13 @@ export class ReceivedOfferDetailComponent implements OnInit {
   totalItems = signal(0);
   listingItems = signal<OfferListingItem[] | null>(null);
   updator = new Subject<void>();
+
+  galleryImages = computed(
+    () =>
+      this.offer()
+        ?.listing.documents?.filter((d) => d.documentType === ListingImageType.GALLERY_IMAGE)
+        .map((d) => d.documentUrl) ?? [],
+  );
 
   offerDescription = computed(() => {
     const offer = this.offer();
