@@ -26,6 +26,9 @@ const getUserGuardRoles = (user: User): GuardRequireRole[] => {
     } else {
       userGuardRoles.push(GuardRequireRole.Trading);
     }
+  } else {
+    // default role to Trading if no company is associated
+    userGuardRoles.push(GuardRequireRole.Trading);
   }
 
   return userGuardRoles;

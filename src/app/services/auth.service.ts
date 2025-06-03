@@ -42,7 +42,6 @@ export class AuthService {
   }
 
   get isTradingUser(): boolean {
-    // TODO: check this logic again
     return !this.isHaulierUser;
   }
 
@@ -78,7 +77,8 @@ export class AuthService {
           // get the user data
           return this.getMe();
         }),
-        tap(async (user) => {
+        tap((user) => {
+          console.log('User data after login:', user);
           this._user$.next(user);
         }),
       );
