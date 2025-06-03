@@ -1,14 +1,13 @@
-<mat-dialog-content class="p-0" class="dialog-scrollable p-2">
-  <div class="container-fluid p-3 p-md-4 p-lg-4">
-    <div class="position-relative">
-      <div class="close-button position-absolute top-0 end-0" [mat-dialog-close]="false">
-        <app-icon iconName="close"></app-icon>
-      </div>
+<div class="container-fluid p-3 p-md-4 p-lg-4">
+  <div class="d-flex justify-content-between align-items-center w-100" mat-dialog-title>
+    <h2 class="fw-bold flex-grow-1">Social</h2>
+    <div class="close-button position-absolute top-0 end-0" [mat-dialog-close]="false">
+      <app-icon iconName="close"></app-icon>
     </div>
+  </div>
 
+  <mat-dialog-content class="overflow-x-hidden">
     <form [formGroup]="formGroup">
-      <h2 class="mb-5">Social</h2>
-
       <div formArrayName="urls" class="d-flex flex-column gap-4 mb-4">
         @for (url of urls.controls; track $index; let i = $index) {
           <div [formGroupName]="i" class="d-flex align-items-center gap-2">
@@ -66,22 +65,21 @@
           </div>
         </div>
       </div>
-
-      <div class="d-flex justify-content-between align-items-center gap-3">
-        <button mat-stroked-button class="text-uppercase fw-bold primary border-primary w-100 mt-4" [mat-dialog-close]="false" i18n>
-          Discard Changes
-        </button>
-        <button
-          mat-flat-button
-          [disabled]="urls.invalid || urls.pristine"
-          class="text-uppercase fw-bold text-white background-primary w-100 mt-4"
-          [class.overlay-spinner]="submitting()"
-          (click)="submit()"
-          i18n
-        >
-          Save Changes
-        </button>
-      </div>
     </form>
-  </div>
-</mat-dialog-content>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="d-flex justify-content-between align-items-center gap-3 col-md-12 col-12">
+      <button mat-stroked-button class="text-uppercase outline-primary-btn w-100" [mat-dialog-close]="false" i18n>Discard Changes</button>
+      <button
+        mat-flat-button
+        [disabled]="urls.invalid || urls.pristine"
+        class="text-uppercase primary-btn w-100 fw-bold"
+        [class.overlay-spinner]="submitting()"
+        (click)="submit()"
+        i18n
+      >
+        Save Changes
+      </button>
+    </div>
+  </mat-dialog-actions>
+</div>

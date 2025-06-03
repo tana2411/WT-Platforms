@@ -65,7 +65,7 @@ export class EditProfileFormComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    if (this.data) {
+    if (this.data.userInfo) {
       const { userInfo } = this.data;
       this.formGroup.patchValue({
         prefix: userInfo.user.prefix || 'mr',

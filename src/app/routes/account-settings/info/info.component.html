@@ -8,37 +8,37 @@
         <div class="row g-3 mb-4 mx-0">
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1" i18n>COMPANY NAME</div>
-            <div class="">{{ company?.name }}</div>
+            <div class="">{{ company?.name || '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1" i18n>WEBSITE</div>
-            <div class="">{{ company?.website || '' }}</div>
+            <div class="">{{ company?.website || '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1" i18n>COMPANY INTEREST</div>
-            <div class="">{{ company?.companyInterest | titlecase }}</div>
+            <div class="">{{ company?.companyInterest || '-' | titlecase }}</div>
           </div>
         </div>
 
         <div class="row g-3 mx-0 mb-4">
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1" i18n>COMPANY TYPE</div>
-            <div class="">{{ company?.companyType | titlecase }}</div>
+            <div class="">{{ company?.companyType || '-' | titlecase }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold d-flex align-items-center gap-2 mb-1" i18n><mat-icon class="error">info_rounded</mat-icon> VAT</div>
-            <div class="">{{ company?.vatNumber }}</div>
+            <div class="">{{ company?.vatNumber || '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1" i18n>COMPANY REGISTRATION NUMBER</div>
-            <div class="">{{ company?.registrationNumber }}</div>
+            <div class="">{{ company?.registrationNumber || '-' }}</div>
           </div>
         </div>
 
         <div class="w-100">
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1" i18n>COMPANY DESCRIPTION</div>
-            <div class="">{{ company?.description || '' }}</div>
+            <div class="">{{ company?.description || '-' || '' }}</div>
           </div>
         </div>
       </div>
@@ -67,22 +67,22 @@
         <div class="row g-3 mb-4 mx-0">
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1" i18n>STREET ADDRESS</div>
-            <div class="">{{ company?.addressLine1 }}</div>
+            <div class="">{{ company?.addressLine1 || '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1" i18n>ZIP / PORTAL CODE</div>
-            <div class="">{{ company?.postalCode }}</div>
+            <div class="">{{ company?.postalCode || '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1" i18n>CITY</div>
-            <div class="">{{ company?.city }}</div>
+            <div class="">{{ company?.city || '-' }}</div>
           </div>
         </div>
 
         <div class="row g-3 mx-0 mb-4">
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1" i18n>COUNTRY / STATE / PROVINCE</div>
-            <div class="">{{ company?.stateProvince }}</div>
+            <div class="">{{ company?.stateProvince || '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1" i18n>COUNTRY</div>
@@ -90,14 +90,14 @@
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1" i18n>EMAIL ADDRESS</div>
-            <div class="">{{ company?.email }}</div>
+            <div class="">{{ company?.email || '-' }}</div>
           </div>
         </div>
 
         <div class="row g-3 mx-0 mb-4">
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1" i18n>TELEPHONE</div>
-            <div class="">{{ company?.phoneNumber }}</div>
+            <div class="">{{ company?.phoneNumber || '-' }}</div>
           </div>
         </div>
       </div>
@@ -128,19 +128,19 @@
             <div class="fw-bold mb-1 d-flex align-items-center gap-2" i18n>
               <mat-icon class="error">info_rounded</mat-icon> FACEBOOK PROFILE URL
             </div>
-            <div class="pl-2">- {{ company?.facebookUrl }}</div>
+            <div class="pl-2">{{ company?.facebookUrl || '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1 d-flex align-items-center gap-2" i18n>
               <mat-icon class="error">info_rounded</mat-icon>INSTAGRAM PROFILE URL
             </div>
-            <div class="pl-2">- {{ company?.instagramUrl }}</div>
+            <div class="pl-2">{{ company?.instagramUrl || '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1 d-flex align-items-center gap-2" i18n>
               <mat-icon class="error">info_rounded</mat-icon> LINKED PROFILE URL
             </div>
-            <div class="pl-5">- {{ company?.linkedinUrl }}</div>
+            <div class="pl-5">{{ company?.linkedinUrl || '-' }}</div>
           </div>
         </div>
 
@@ -149,7 +149,7 @@
             <div class="fw-bold mb-1 d-flex align-items-center gap-2" i18n>
               <mat-icon class="error">info_rounded</mat-icon>X USERNAME (WITHOUT &#64;)
             </div>
-            <div class="pl-2">- {{ company?.xUrl }}</div>
+            <div class="pl-2">{{ company?.xUrl || '-' }}</div>
           </div>
         </div>
       </div>
