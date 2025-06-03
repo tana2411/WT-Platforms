@@ -1,20 +1,13 @@
 <div class="create-account-modal container-fluid p-0">
   <!-- Close button -->
-  <div
-    class="close-button position-absolute top-0 end-0 m-3"
-    [mat-dialog-close]="false"
-  >
+  <div class="close-button position-absolute top-0 end-0 m-3" [mat-dialog-close]="false">
     <app-icon iconName="close"></app-icon>
   </div>
 
   <div class="row g-0">
     <!-- Left side with image - Hidden on mobile, visible from md up -->
     <div class="col-md-6 d-none d-md-block">
-      <img
-        src="assets/images/create-account-bg.jpg"
-        alt="Workers using tablet"
-        class="img-fluid h-100 w-100 object-fit-cover"
-      />
+      <img src="assets/images/create-account-bg.jpg" alt="Workers using tablet" class="img-fluid h-100 w-100 object-fit-cover" />
     </div>
 
     <!-- Right side with content -->
@@ -23,33 +16,19 @@
         <div>
           <h1 class="fw-bold mb-3" i18n>Create an Account</h1>
 
-          <p class="text-success mb-5 fw-bold" i18n>
-            Discover a more sustainable future with our recycling platform.
-          </p>
+          <p class="primary mb-5 fw-bold" i18n>Discover a more sustainable future with our recycling platform.</p>
 
-          <p class="text-body mb-4" i18n>
-            Whether you're a seller, buyer, or haulier, join us to connect,
-            trade, and transport recyclable materials efficiently.
+          <p class="text-body fw-500 mb-4" i18n>
+            Whether you're a seller, buyer, or haulier, join us to connect, trade, and transport recyclable materials efficiently.
           </p>
         </div>
 
         <div class="d-grid gap-3 mt-auto">
-          <button
-            mat-flat-button
-            color="primary"
-            class="w-100 py-4 fw-bold custom-button"
-            (click)="registerAsBuyerSeller()"
-            i18n
-          >
-            REGISTER AS A BUY & SELL
+          <button mat-flat-button class="w-100 py-4 fw-bold background-primary custom-button" (click)="registerAsBuyerSeller()" i18n>
+            REGISTER AS A BUYER & SELLER
           </button>
 
-          <button
-            mat-stroked-button
-            class="w-100 py-2 fw-bold custom-button"
-            (click)="registerAsHaulier()"
-            i18n
-          >
+          <button mat-stroked-button class="w-100 py-2 fw-bold custom-button border-primary primary" (click)="registerAsHaulier()" i18n>
             REGISTER AS A HAULIER
           </button>
         </div>
