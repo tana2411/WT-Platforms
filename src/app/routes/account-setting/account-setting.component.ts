@@ -36,11 +36,6 @@ const ListTab = [
     title: 'Company documents',
     path: 'documents',
   },
-  {
-    icon: 'location_on',
-    title: 'My locations',
-    path: 'locations',
-  },
 ] as const;
 
 type TabKey = ItemOf<typeof ListTab>['title'];

@@ -1,0 +1,23 @@
+<ng-content select="mat-label"></ng-content>
+
+<div class="d-flex col-md-3 col-6 gap-3 align-items-end">
+  <div class="col-md-6 col-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <input matInput type="number" />
+      @if (formGroup.get('hour')?.hasError('required')) {
+        <mat-error i18n>This field is required</mat-error>
+      }
+      <mat-hint class="fw-bold text-start p-0">Hour</mat-hint>
+    </mat-form-field>
+  </div>
+  <span class="d-flex align-items-center" style="height: 56px">:</span>
+  <div class="col-md-6 col-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <input matInput type="number" />
+      @if (formGroup.get('minute')?.hasError('required')) {
+        <mat-error i18n>This field is required</mat-error>
+      }
+      <mat-hint class="fw-bold text-start p-0">Minute</mat-hint>
+    </mat-form-field>
+  </div>
+</div>
