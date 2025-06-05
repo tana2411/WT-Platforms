@@ -4,6 +4,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 export type ConfirmModalProps = {
   title: string;
+  cancelLabel?: string;
+  confirmLabel?: string;
 };
 
 @Component({

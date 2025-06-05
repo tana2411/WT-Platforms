@@ -1,8 +1,9 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
-import { MAT_DIALOG_DATA, MatDialogClose, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogClose, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -13,6 +14,7 @@ import { strictEmailValidator } from '@app/validators';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { Company } from 'app/models';
 import { SettingsService } from 'app/services/settings.service';
+import { ConfirmModalComponent } from 'app/share/ui/confirm-modal/confirm-modal.component';
 import { catchError, EMPTY, finalize } from 'rxjs';
 
 @Component({
@@ -47,7 +49,7 @@ export class EditCompanyInformationFormComponent implements OnInit {
     vatRegistrationCountry: new FormControl<string | null>(null, [Validators.required]),
     vatNumber: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
     companyType: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
-    companyInterest: new FormControl<string | null>('both', [Validators.required]),
+    companyInterest: new FormControl<string | null>(null, [Validators.required]),
     description: new FormControl<string | null>(null, [Validators.maxLength(500)]),
     email: new FormControl<string | null>(null, [Validators.required, strictEmailValidator()]),
     addressLine1: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(200)]),
@@ -63,6 +65,8 @@ export class EditCompanyInformationFormComponent implements OnInit {
   snackBar = inject(MatSnackBar);
   settingsService = inject(SettingsService);
   submitting = signal(false);
+  dialog = inject(MatDialog);
+  destroyRef = inject(DestroyRef);
 
   constructor() {}
 
@@ -76,7 +80,7 @@ export class EditCompanyInformationFormComponent implements OnInit {
         vatNumber: companyInfo?.vatNumber,
         website: companyInfo?.website,
         companyType: companyInfo?.companyType,
-        companyInterest: companyInfo?.companyInterest || 'both',
+        companyInterest: companyInfo?.companyInterest,
         description: companyInfo?.description,
         email: companyInfo?.email,
         addressLine1: companyInfo?.addressLine1,
@@ -89,6 +93,32 @@ export class EditCompanyInformationFormComponent implements OnInit {
 
       this.formGroup.updateValueAndValidity();
     }
+  }
+
+  close() {
+    if (this.formGroup.pristine) {
+      this.dialogRef.close(false);
+      return;
+    }
+
+    this.dialog
+      .open(ConfirmModalComponent, {
+        maxWidth: '500px',
+        width: '100%',
+        panelClass: 'px-3',
+        data: {
+          title: 'You have unsaved changes. Are you sure you want to close without saving?',
+          confirmLabel: 'Confirm',
+          cancelLabel: 'Cancel',
+        },
+      })
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((close) => {
+        if (!close) return;
+
+        this.dialogRef.close(false);
+      });
   }
 
   submit() {
@@ -105,23 +135,42 @@ export class EditCompanyInformationFormComponent implements OnInit {
       return;
     }
 
-    this.submitting.set(true);
     const payload: any = this.formGroup.value;
 
-    this.settingsService
-      .updateCompany(this.data.companyInfo.id, payload)
-      .pipe(
-        catchError((err) => {
-          this.snackBar.open('Company Information update failed. Please try again later.', 'OK', { duration: 3000 });
-          return EMPTY;
-        }),
-        finalize(() => {
-          this.submitting.set(false);
-        }),
-      )
-      .subscribe((res) => {
-        this.snackBar.open('Your Company Information has been updated successfully.', 'OK', { duration: 3000 });
-        this.dialogRef.close(true);
+    this.dialog
+      .open(ConfirmModalComponent, {
+        maxWidth: '500px',
+        width: '100%',
+        panelClass: 'px-3',
+        data: {
+          title: 'Are you sure you want to save these changes?',
+          confirmLabel: 'Confirm',
+          cancelLabel: 'Cancel',
+        },
+      })
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((shouldSaveChange) => {
+        if (!shouldSaveChange) return;
+
+        this.submitting.set(true);
+        this.settingsService
+          .updateCompany(this.data.companyInfo.id, payload)
+          .pipe(
+            catchError((err) => {
+              this.snackBar.open('Company Information update failed. Please try again later.', 'OK', {
+                duration: 3000,
+              });
+              return EMPTY;
+            }),
+            finalize(() => {
+              this.submitting.set(false);
+            }),
+          )
+          .subscribe((res) => {
+            this.snackBar.open('Your Company Information has been updated successfully.', 'OK', { duration: 3000 });
+            this.dialogRef.close(true);
+          });
       });
   }
 }

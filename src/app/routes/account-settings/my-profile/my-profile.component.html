@@ -17,7 +17,7 @@
           </div>
         </div>
 
-        <div class="text-center text-md-start">Account ID: {{ user()?.id }}</div>
+        <div class="text-center text-md-start">Account ID: {{ user()?.userId }}</div>
       </div>
 
       <div class="col-12 col-md-8 col-lg-9 d-flex flex-column justify-content-between overflow-hidden flex-grow-1 min-w-0">
@@ -56,13 +56,19 @@
     <div class="d-flex justify-content-center justify-content-lg-start align-items-start">
       <button
         mat-stroked-button
-        class="btn btn-outline-primary d-flex align-items-center gap-2 px-4 py-2 rounded-3 w-100 w-sm-auto"
+        class="d-flex align-items-center justify-content-center"
         style="max-width: 200px"
         (click)="onEditProfile()"
         i18n
       >
-        <mat-icon>edit</mat-icon>
-        <span>Edit</span>
+        <img
+          src="assets/images/edit_24px.svg"
+          appFallbackImage
+          loading="lazy"
+          alt="Edit icon"
+          style="height: 1em; width: auto; vertical-align: baseline; margin-right: 5px"
+        />
+        <span class="fw-bold fs-16">EDIT</span>
       </button>
     </div>
   </div>
@@ -71,7 +77,7 @@
   <div class="row">
     <div class="col-12 col-md-6 col-lg-4">
       <a href="/login?lost_pass=1" target="_blank">
-        <button mat-flat-button class="background-primary text-white w-100 py-4 rounded-3 fw-medium border-0">CHANGE PASSWORD</button>
+        <button mat-flat-button class="background-primary text-white w-100 py-4 rounded-3 fw-medium border-0 fs-16">CHANGE PASSWORD</button>
       </a>
     </div>
   </div>

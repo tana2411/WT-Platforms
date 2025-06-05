@@ -178,9 +178,21 @@
 
     <!-- Edit Button -->
     <div class="d-flex justify-content-center justify-content-lg-start align-items-start">
-      <button mat-stroked-button class="col-12 col-md-auto" (click)="openEditLocation()" i18n>
-        <mat-icon>edit</mat-icon>
-        <span>Edit</span>
+      <button
+        mat-stroked-button
+        class="d-flex align-items-center justify-content-center"
+        style="max-width: 200px"
+        (click)="openEditLocation()"
+        i18n
+      >
+        <img
+          src="assets/images/edit_24px.svg"
+          appFallbackImage
+          loading="lazy"
+          alt="Edit icon"
+          style="height: 1em; width: auto; vertical-align: baseline; margin-right: 5px"
+        />
+        <span class="fw-bold fs-16">EDIT</span>
       </button>
     </div>
   </div>

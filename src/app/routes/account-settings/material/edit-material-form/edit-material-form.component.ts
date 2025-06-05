@@ -1,14 +1,16 @@
-import { AfterViewInit, Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { AfterViewInit, Component, computed, DestroyRef, effect, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
-import { MAT_DIALOG_DATA, MatDialogClose, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogClose, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { materialTypes } from '@app/statics';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { SettingsService } from 'app/services/settings.service';
+import { ConfirmModalComponent } from 'app/share/ui/confirm-modal/confirm-modal.component';
 import { catchError, EMPTY, finalize } from 'rxjs';
 
 @Component({
@@ -40,6 +42,8 @@ export class EditMaterialFormComponent implements OnInit, AfterViewInit {
   readonly data = inject<{ materials: string[]; companyId: number }>(MAT_DIALOG_DATA);
   snackBar = inject(MatSnackBar);
   settingsService = inject(SettingsService);
+  dialog = inject(MatDialog);
+  destroyRef = inject(DestroyRef);
 
   get favoriteMaterials(): FormArray {
     return this.formGroup.get('favoriteMaterials') as FormArray;
@@ -107,6 +111,32 @@ export class EditMaterialFormComponent implements OnInit, AfterViewInit {
     this.formGroup.updateValueAndValidity();
   }
 
+  close() {
+    if (this.formGroup.pristine) {
+      this.dialogRef.close(false);
+      return;
+    }
+
+    this.dialog
+      .open(ConfirmModalComponent, {
+        maxWidth: '500px',
+        width: '100%',
+        panelClass: 'px-3',
+        data: {
+          title: 'You have unsaved changes. Are you sure you want to close without saving?',
+          confirmLabel: 'Confirm',
+          cancelLabel: 'Cancel',
+        },
+      })
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((close) => {
+        if (!close) return;
+
+        this.dialogRef.close(false);
+      });
+  }
+
   submit() {
     this.formGroup.markAllAsTouched();
 
@@ -114,23 +144,41 @@ export class EditMaterialFormComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    this.submitting.set(true);
     const payload: string[] = this.favoriteMaterials.value;
 
-    this.settingsService
-      .updateMaterialPreferences(this.data.companyId, payload)
-      .pipe(
-        catchError((err) => {
-          this.snackBar.open('Failed to save changes. Please try again.', 'OK', { duration: 3000 });
-          return EMPTY;
-        }),
-        finalize(() => {
-          this.submitting.set(false);
-        }),
-      )
-      .subscribe((res) => {
-        this.snackBar.open('Your material preferences have been updated successfully.', 'OK', { duration: 3000 });
-        this.dialogRef.close(true);
+    this.dialog
+      .open(ConfirmModalComponent, {
+        maxWidth: '500px',
+        width: '100%',
+        panelClass: 'px-3',
+        data: {
+          title: 'Are you sure you want to save these changes?',
+          confirmLabel: 'Confirm',
+          cancelLabel: 'Cancel',
+        },
+      })
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((shouldSaveChange) => {
+        if (!shouldSaveChange) return;
+
+        this.submitting.set(true);
+
+        this.settingsService
+          .updateMaterialPreferences(this.data.companyId, payload)
+          .pipe(
+            catchError((err) => {
+              this.snackBar.open('Failed to save changes. Please try again.', 'OK', { duration: 3000 });
+              return EMPTY;
+            }),
+            finalize(() => {
+              this.submitting.set(false);
+            }),
+          )
+          .subscribe((res) => {
+            this.snackBar.open('Your material preferences have been updated successfully.', 'OK', { duration: 3000 });
+            this.dialogRef.close(true);
+          });
       });
   }
 
