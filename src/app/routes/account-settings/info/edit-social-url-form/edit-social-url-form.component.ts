@@ -1,14 +1,16 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
-import { MAT_DIALOG_DATA, MatDialogClose, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogClose, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { SettingsService } from 'app/services/settings.service';
+import { ConfirmModalComponent } from 'app/share/ui/confirm-modal/confirm-modal.component';
 import { catchError, EMPTY, finalize } from 'rxjs';
 
 @Component({
@@ -46,6 +48,8 @@ export class EditSocialUrlFormComponent implements OnInit {
   snackBar = inject(MatSnackBar);
   settingsService = inject(SettingsService);
   submitting = signal(false);
+  dialog = inject(MatDialog);
+  destroyRef = inject(DestroyRef);
 
   get urls() {
     return this.formGroup.get('urls') as FormArray;
@@ -122,6 +126,32 @@ export class EditSocialUrlFormComponent implements OnInit {
     this.newUrl.updateValueAndValidity();
   }
 
+  close() {
+    if (this.formGroup.pristine) {
+      this.dialogRef.close(false);
+      return;
+    }
+
+    this.dialog
+      .open(ConfirmModalComponent, {
+        maxWidth: '500px',
+        width: '100%',
+        panelClass: 'px-3',
+        data: {
+          title: 'You have unsaved changes. Are you sure you want to close without saving?',
+          confirmLabel: 'Confirm',
+          cancelLabel: 'Cancel',
+        },
+      })
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((close) => {
+        if (!close) return;
+
+        this.dialogRef.close(false);
+      });
+  }
+
   submit() {
     if (this.urls.pristine) {
       this.snackBar.open('No changes detected. Please modify your profile details before saving.', 'OK', {
@@ -136,7 +166,6 @@ export class EditSocialUrlFormComponent implements OnInit {
       return;
     }
 
-    this.submitting.set(true);
     const payload = this.urls.value
       .filter((item: any) => item.value !== null)
       .reduce((acc: Record<string, any>, group: any) => {
@@ -144,20 +173,38 @@ export class EditSocialUrlFormComponent implements OnInit {
         return acc;
       }, {});
 
-    this.settingsService
-      .updateCompany(this.data.companyId, payload)
-      .pipe(
-        catchError((err) => {
-          this.snackBar.open('Social Url update failed. Please try again later.', 'OK', { duration: 3000 });
-          return EMPTY;
-        }),
-        finalize(() => {
-          this.submitting.set(false);
-        }),
-      )
-      .subscribe((res) => {
-        this.snackBar.open('Your Social Url has been updated successfully.', 'OK', { duration: 3000 });
-        this.dialogRef.close(true);
+    this.dialog
+      .open(ConfirmModalComponent, {
+        maxWidth: '500px',
+        width: '100%',
+        panelClass: 'px-3',
+        data: {
+          title: 'Are you sure you want to save these changes?',
+          confirmLabel: 'Confirm',
+          cancelLabel: 'Cancel',
+        },
+      })
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((shouldSaveChange) => {
+        if (!shouldSaveChange) return;
+
+        this.submitting.set(true);
+        this.settingsService
+          .updateCompany(this.data.companyId, payload)
+          .pipe(
+            catchError((err) => {
+              this.snackBar.open('Social Url update failed. Please try again later.', 'OK', { duration: 3000 });
+              return EMPTY;
+            }),
+            finalize(() => {
+              this.submitting.set(false);
+            }),
+          )
+          .subscribe((res) => {
+            this.snackBar.open('Your Social Url has been updated successfully.', 'OK', { duration: 3000 });
+            this.dialogRef.close(true);
+          });
       });
   }
 }

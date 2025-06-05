@@ -52,7 +52,7 @@ export class TradingFlatformFormComponent implements OnInit {
     whereDidYouHearAboutUs: new FormControl<string | null>(null, [Validators.required]),
     otherMaterial: new FormControl<string | null>(null, [Validators.maxLength(100)]),
     companyName: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(100)]),
-    companyInterest: new FormControl<string | null>('both', [Validators.required]),
+    companyInterest: new FormControl<string | null>(null, [Validators.required]),
     favoriteMaterials: new FormArray([], [Validators.required]),
     acceptTerm: new FormControl<boolean | null>(null, [Validators.requiredTrue]),
   });

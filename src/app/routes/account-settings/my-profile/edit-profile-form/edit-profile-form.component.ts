@@ -1,8 +1,9 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
-import { MAT_DIALOG_DATA, MatDialogClose, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogClose, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -12,6 +13,7 @@ import { strictEmailValidator } from '@app/validators';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { User } from 'app/models';
 import { SettingsService } from 'app/services/settings.service';
+import { ConfirmModalComponent } from 'app/share/ui/confirm-modal/confirm-modal.component';
 import { catchError, EMPTY, finalize } from 'rxjs';
 
 @Component({
@@ -39,17 +41,17 @@ export class EditProfileFormComponent implements OnInit {
     firstName: new FormControl<string | null>(null, [
       Validators.required,
       Validators.maxLength(50),
-      Validators.pattern(/^[A-Za-z\s]+$/),
+      Validators.pattern(/^[\p{L}\s]+$/u),
     ]),
     lastName: new FormControl<string | null>(null, [
       Validators.required,
       Validators.maxLength(50),
-      Validators.pattern(/^[A-Za-z\s]+$/),
+      Validators.pattern(/^[\p{L}\s]+$/u),
     ]),
     jobTitle: new FormControl<string | null>(null, [
       Validators.required,
       Validators.maxLength(50),
-      Validators.pattern(/^[A-Za-z\s]+$/),
+      Validators.pattern(/^[\p{L}\s]+$/u),
     ]),
     phoneNumber: new FormControl<string | null>(null, [Validators.required]),
     email: new FormControl<string | null>(null, [Validators.required, strictEmailValidator()]),
@@ -61,6 +63,8 @@ export class EditProfileFormComponent implements OnInit {
   readonly data = inject<{ userInfo: User }>(MAT_DIALOG_DATA);
   settingsService = inject(SettingsService);
   snackBar = inject(MatSnackBar);
+  dialog = inject(MatDialog);
+  destroyRef = inject(DestroyRef);
 
   constructor() {}
 
@@ -68,16 +72,42 @@ export class EditProfileFormComponent implements OnInit {
     if (this.data.userInfo) {
       const { userInfo } = this.data;
       this.formGroup.patchValue({
-        prefix: userInfo.user.prefix || 'mr',
-        firstName: userInfo.user.firstName,
-        lastName: userInfo.user.lastName,
-        jobTitle: userInfo.user.jobTitle,
-        phoneNumber: userInfo.user.phoneNumber,
+        prefix: userInfo?.user?.prefix || 'mr',
+        firstName: userInfo?.user?.firstName,
+        lastName: userInfo?.user?.lastName,
+        jobTitle: userInfo?.user?.jobTitle,
+        phoneNumber: userInfo?.user?.phoneNumber,
         email: userInfo.user.email,
       });
 
       this.formGroup.updateValueAndValidity();
     }
+  }
+
+  close() {
+    if (this.formGroup.pristine) {
+      this.dialogRef.close(false);
+      return;
+    }
+
+    this.dialog
+      .open(ConfirmModalComponent, {
+        maxWidth: '500px',
+        width: '100%',
+        panelClass: 'px-3',
+        data: {
+          title: 'You have unsaved changes. Are you sure you want to close without saving?',
+          confirmLabel: 'Confirm',
+          cancelLabel: 'Cancel',
+        },
+      })
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((close) => {
+        if (!close) return;
+
+        this.dialogRef.close(false);
+      });
   }
 
   submit() {
@@ -94,23 +124,42 @@ export class EditProfileFormComponent implements OnInit {
       return;
     }
 
-    this.submitting.set(true);
     const payload = this.formGroup.value;
 
-    this.settingsService
-      .updateProfile(payload)
-      .pipe(
-        catchError((err) => {
-          this.snackBar.open('Profile update failed. Please try again later.', 'OK', { duration: 3000 });
-          return EMPTY;
-        }),
-        finalize(() => {
-          this.submitting.set(false);
-        }),
-      )
-      .subscribe((res) => {
-        this.snackBar.open('Your profile has been updated successfully.', 'OK', { duration: 3000 });
-        this.dialogRef.close(true);
+    this.dialog
+      .open(ConfirmModalComponent, {
+        maxWidth: '500px',
+        width: '100%',
+        panelClass: 'px-3',
+        data: {
+          title: 'Are you sure you want to save these changes?',
+          confirmLabel: 'Confirm',
+          cancelLabel: 'Cancel',
+        },
+      })
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((shouldSaveChange) => {
+        if (!shouldSaveChange) {
+          return;
+        }
+        this.submitting.set(true);
+
+        this.settingsService
+          .updateProfile(payload)
+          .pipe(
+            catchError((err) => {
+              this.snackBar.open('Profile update failed. Please try again later.', 'OK', { duration: 3000 });
+              return EMPTY;
+            }),
+            finalize(() => {
+              this.submitting.set(false);
+            }),
+          )
+          .subscribe((res) => {
+            this.snackBar.open('Your profile has been updated successfully.', 'OK', { duration: 3000 });
+            this.dialogRef.close(true);
+          });
       });
   }
 }
