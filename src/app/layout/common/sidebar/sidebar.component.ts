@@ -64,7 +64,7 @@ export class SidebarComponent {
 
     {
       title: 'My Sites',
-      link: '//todo/my-site',
+      link: ROUTES_WITH_SLASH.sites,
       icon: 'location_on',
     },
 

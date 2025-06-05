@@ -6,6 +6,7 @@ import { AccountSettingComponent } from './routes/account-setting/account-settin
 import { LiveActiveTableComponent } from './routes/admin/live-active-table/live-active-table.component';
 import { CreateListingComponent } from './routes/create-listing/create-listing.component';
 import { LogoutComponent } from './routes/logout/logout.component';
+import { MySitesComponent } from './routes/my-sites/my-sites.component';
 import { PrivacyComponent } from './routes/privacy/privacy.component';
 import { CompanyDocumentComponent } from './routes/registrations/company-document/company-document.component';
 import { CompanyInformationSectionComponent } from './routes/registrations/company-information-section/company-information-section.component';
@@ -174,6 +175,46 @@ export const routes: Routes = [
       ),
   },
   {
+    path: `${ROUTES.sites}`,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [GuardRequireRole.Trading, GuardRequireRole.SuperAdmin],
+    },
+    component: MySitesComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'list',
+        pathMatch: 'full',
+      },
+      {
+        path: 'list',
+        loadComponent: () => import('./routes/my-sites/site-list/site-list.component').then((m) => m.SiteListComponent),
+      },
+
+      {
+        path: 'add',
+        data: {
+          title: 'Add My Site',
+        },
+        loadComponent: () => import('./routes/my-sites/edit-site/edit-site.component').then((m) => m.EditSiteComponent),
+      },
+      {
+        path: 'edit/:id',
+        data: {
+          title: 'Edit My Site',
+        },
+        loadComponent: () => import('./routes/my-sites/edit-site/edit-site.component').then((m) => m.EditSiteComponent),
+      },
+
+      {
+        path: ':id',
+        loadComponent: () =>
+          import('./routes/my-sites/site-detail/site-detail.component').then((m) => m.SiteDetailComponent),
+      },
+    ],
+  },
+  {
     path: ROUTES.admin,
     canActivate: [CanActivateAuthPage],
     data: {
@@ -273,11 +314,6 @@ export const routes: Routes = [
         path: 'documents',
         loadComponent: () =>
           import('./routes/account-settings/document/document.component').then((m) => m.DocumentComponent),
-      },
-      {
-        path: 'locations',
-        loadComponent: () =>
-          import('./routes/account-settings/location/location.component').then((m) => m.LocationComponent),
       },
     ],
   },
