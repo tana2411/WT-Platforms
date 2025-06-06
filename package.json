@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
-    "i18n": "ng extract-i18n watse-trade --output-path=src/app/locale && xliffmerge --profile=src/app/xliffmerge.json en fr",
+    "i18n:init": "ngx-translate-extract --input ./src --output ./src/assets/i18n/{template,en}.json --key-as-default-value --replace --format json",
+    "i18n:extract": "ngx-translate-extract --input ./src --output ./src/assets/i18n/{en,fr}.json --clean --format json",
     "test": "ng test"
   },
   "private": true,
@@ -22,6 +23,8 @@
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
     "@ngrx/signals": "~19.0.1",
+    "@ngx-translate/core": "^16.0.4",
+    "@ngx-translate/http-loader": "^16.0.1",
     "angular-animations": "^0.11.0",
     "bootstrap": "^5.2.3",
     "lodash": "^4.17.21",
@@ -35,11 +38,15 @@
     "@angular-devkit/build-angular": "^19.2.7",
     "@angular/cli": "^19.2.7",
     "@angular/compiler-cli": "^19.2.0",
+    "@biesbjerg/ngx-translate-extract": "^7.0.4",
+    "@biesbjerg/ngx-translate-extract-marker": "^1.0.0",
+    "@colsen1991/ngx-translate-extract-marker": "^3.0.1",
     "@types/jasmine": "~5.1.0",
     "@types/lodash": "^4.17.16",
     "@types/node": "18.16.9",
     "@types/swiper": "^5.4.3",
     "@typescript-eslint/utils": "^8.19.0",
+    "@vendure/ngx-translate-extract": "^9.4.0",
     "angular-eslint": "^19.0.2",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^9.0.0",
@@ -53,6 +60,5 @@
     "prettier": "3.3.3",
     "ts-node": "10.9.1",
     "typescript": "~5.7.2"
-  },
-  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
+  }
 }

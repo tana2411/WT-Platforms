@@ -10,18 +10,6 @@
           "style": "scss"
         }
       },
-      "i18n": {
-        "locales": {
-          "en": {
-            "translation": "src/app/locale/messages.en.xlf",
-            "baseHref": "en/"
-          },
-          "fr": {
-            "translation": "src/app/locale/messages.fr.xlf",
-            "baseHref": "fr/"
-          }
-        }
-      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",

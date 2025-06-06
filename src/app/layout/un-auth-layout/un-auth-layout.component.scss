@@ -1,6 +1,7 @@
 :host {
-    display: block;
-    width: 100%;
+  display: block;
+  width: 100%;
+  position: relative;
 }
 
 .header-container {
@@ -8,5 +9,17 @@
 
   @media screen and (min-width: 768px) {
     padding: 40px 0 60px;
+  }
+}
+
+.language-selector {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+
+  @media screen and (max-width: 768px) {
+    top: 8px;
+    right: 8px;
   }
 }
