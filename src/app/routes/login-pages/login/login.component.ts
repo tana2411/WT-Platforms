@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router, RouterLink } from '@angular/router';
 import { strictEmailValidator } from '@app/validators';
+import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../../services/auth.service';
 import { CreateAccountModalComponent } from '../create-account-modal/create-account-modal.component';
 
@@ -22,7 +23,7 @@ export const EMAIL_PATTERN = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     ReactiveFormsModule,
     MatSnackBarModule,
     MatDialogModule,
-    CreateAccountModalComponent,
+    TranslateModule,
   ],
 })
 export class LoginComponent {
