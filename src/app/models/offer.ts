@@ -9,10 +9,11 @@ export enum OfferStatus {
 
 export enum OfferState {
   ACTIVE = 'active',
-  PROCESSING = 'processing',
+  APPROVED = 'approved',
+  // PROCESSING = 'processing',
   PENDING = 'pending',
   REJECTED = 'rejected',
-  SHIPPED = 'shipped',
+  // SHIPPED = 'shipped',
 }
 
 export enum OfferRequestActionEnum {

@@ -9,7 +9,7 @@ import { AdminLayoutComponent } from 'app/layout/admin-layout/admin-layout.compo
 import { AdminListingService } from 'app/services/admin/admin-listing.service';
 import { ListingDetailActionsComponent } from 'app/share/ui/admin/listing-detail-actions/listing-detail-actions.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
-import { catchError, EMPTY, finalize, map } from 'rxjs';
+import { catchError, EMPTY, map, startWith, Subject, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-detail-sale-listing',
@@ -31,22 +31,30 @@ export class DetailSaleListingComponent {
   snackBar = inject(MatSnackBar);
   listingId = this.activeRoute.snapshot.params['listingId'] as string;
   loadingListing = signal(true);
+  listingDetailUpdator$ = new Subject<void>();
 
   mapCountryCodeToName = mapCountryCodeToName;
 
   listingDetail = toSignal(
-    this.adminListingService.getDetail(this.listingId).pipe(
+    this.listingDetailUpdator$.pipe(
+      startWith(0),
+      tap(() => this.loadingListing.set(true)),
+      switchMap(() => this.adminListingService.getDetail(this.listingId)),
       map((res) => res.data),
       catchError((err) => {
         this.snackBar.open('Something went wrong.');
         return EMPTY;
       }),
-      finalize(() => {
+      tap(() => {
         this.loadingListing.set(false);
       }),
       takeUntilDestroyed(),
     ),
   );
+
+  reloadListingDetail() {
+    this.listingDetailUpdator$.next();
+  }
 
   onBack() {
     console.log(this.listingId);

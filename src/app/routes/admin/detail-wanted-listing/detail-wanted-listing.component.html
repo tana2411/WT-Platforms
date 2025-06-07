@@ -85,7 +85,7 @@
         </div>
       </div>
 
-      <app-listing-detail-actions [listingId]="listingId" [listing]="listingDetail" />
+      <app-listing-detail-actions [listingId]="listingId" [listing]="listingDetail" (refresh)="reloadListingDetail()" />
     }
   }
 </app-admin-layout>

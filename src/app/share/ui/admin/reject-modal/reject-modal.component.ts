@@ -62,7 +62,6 @@ export class RejectModalComponent {
   readonly dialogData = inject<{ listingId: string }>(MAT_DIALOG_DATA);
 
   constructor(private dialogRef: MatDialogRef<RejectModalComponent>) {
-    debugger;
     this.rejectForm.valueChanges
       .pipe(
         tap((v) => {
