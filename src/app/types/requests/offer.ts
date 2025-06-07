@@ -13,7 +13,7 @@ interface Offer {
   expiresAt: string | null;
   earliestDeliveryDate: string | null;
   latestDeliveryDate: string | null;
-  currency: string | null;
+  currency: string;
   message: string | null;
   rejectionReason: string | null;
   incoterms: string | null;

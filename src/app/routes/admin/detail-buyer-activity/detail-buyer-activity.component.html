@@ -1,0 +1,124 @@
+<app-admin-layout [title]="'Sale Listings > Details'">
+  @if (loadingOffer()) {
+    <app-spinner></app-spinner>
+  } @else {
+    @if (offerDetail(); as offerDetail) {
+      <div
+        mat-button
+        class="d-inline-flex mb-5 align-items-center py-1 rounded px-2 background-primary text-white text-uppercase fw-bold button-wrapper"
+        (click)="onBack()"
+      >
+        <mat-icon class="icon">west</mat-icon>
+        <span i18n>go back</span>
+      </div>
+
+      <h2 class="fw-bold sub-title" i18n>Information</h2>
+
+      <div class="rounded border border-primary p-3 p-lg-5 mb-4 seller-information">
+        <div class="row align-items-center">
+          <div class="col-4" i18n>
+            <h2 class="primary fw-bold mb-0">Seller</h2>
+          </div>
+          <div class="col-4">
+            <p class="text-uppercase fw-bold mb-2" i18n>Full name</p>
+            <p class="mb-0">Seller name</p>
+          </div>
+          <div class="col-4">
+            <p class="text-uppercase fw-bold mb-2" i18n>Company</p>
+            <p class="mb-0">Seller company</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded border border-primary p-3 p-lg-5 mb-4 buyer-information">
+        <div class="row align-items-center">
+          <div class="col-4" i18n>
+            <h2 class="primary fw-bold mb-0">Buyer</h2>
+          </div>
+          <div class="col-4">
+            <p class="text-uppercase fw-bold mb-2" i18n>Full name</p>
+            <p class="mb-0">Buyer name</p>
+          </div>
+          <div class="col-4">
+            <p class="text-uppercase fw-bold mb-2" i18n>Company</p>
+            <p class="mb-0" i18n>Buyer Company</p>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="fw-bold sub-title" i18n>Bid Details</h2>
+
+      <div class="rounded border border-primary p-3 pb-0 p-lg-5 pb-lg-4 mb-4 mb-lg-5">
+        <div class="d-flex flex-wrap">
+          <!-- <div class="row align-items-center row-item"> -->
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>material</p>
+            <p class="mb-0 fw-500" i18n>material</p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>number of loads</p>
+            <p class="mb-0 primary fw-bold" i18n>
+              {{ offerDetail.listing.quantity }}/{{ offerDetail.listing.quantity + (offerDetail.listing.remainingQuantity ?? 0) }}
+            </p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>incoterms</p>
+            <p class="mb-0 fw-500" i18n>incoterms</p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>pick-up location</p>
+            <p class="mb-0 fw-500" i18n>
+              {{ mapCountryCodeToName[offerDetail.seller.company.country ?? ''] }}
+            </p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>weight per load</p>
+            <p class="mb-0 fw-500" i18n>{{ weightPerUnit() }}</p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>Bid status</p>
+            <p class="mb-0 fw-500" [style.color]="getStatusColor(offerDetail.offer.status)">
+              {{ offerDetail.offer.status }}
+            </p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>destination</p>
+            <p class="mb-0 fw-500">
+              {{ mapCountryCodeToName[offerDetail.buyer.company.country ?? ''] }}
+            </p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>Bid currency</p>
+            <p class="mb-0 fw-500">{{ getCurrencyLabel(offerDetail.offer.currency) }}</p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>Total Price Shared</p>
+            <h3 class="mb-0 fw-bold primary" i18n>{{ getCurrencySignal(offerDetail.offer.currency) }}{{ offerDetail.offer.totalPrice }}</h3>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>Packaging</p>
+            <p class="mb-0 fw-500" i18n>{{ offerDetail.listing.materialPacking }}</p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>Price per tonne</p>
+            <p class="mb-0 fw-bold primary" i18n>
+              {{ getCurrencySignal(offerDetail.offer.currency) }}{{ offerDetail.offer.offeredPricePerUnit }}/MT
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <app-offer-detail-actions [offerId]="offerId" [offer]="offerDetail" (refresh)="reloadOfferDetail()" />
+    }
+  }
+</app-admin-layout>

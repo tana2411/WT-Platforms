@@ -100,9 +100,9 @@
       <mat-form-field appearance="outline" class="w-100">
         <mat-select formControlName="currency" placeholder="Please Select">
           <!-- Todo: mapping the list currency according BE -->
-          <mat-option value="GBP" i18n>£/GBP</mat-option>
-          <mat-option value="USD" i18n>$/USD</mat-option>
-          <mat-option value="EURO" i18n>€/EURO</mat-option>
+          <mat-option value="gbp" i18n>£/GBP</mat-option>
+          <mat-option value="usd" i18n>$/USD</mat-option>
+          <mat-option value="euro" i18n>€/EURO</mat-option>
         </mat-select>
         @if (formGroup.get('currency')?.hasError('required')) {
           <mat-error i18n>This is a required field.</mat-error>

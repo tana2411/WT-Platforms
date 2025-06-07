@@ -16,7 +16,7 @@ import { AdminListingDetail } from 'app/models/admin/listing.model';
 import { OfferState } from 'app/models/offer';
 import { AdminListingService } from 'app/services/admin/admin-listing.service';
 import { ListingRequestActionEnum } from 'app/types/requests/admin';
-import { catchError, EMPTY, tap } from 'rxjs';
+import { catchError, EMPTY, switchMap, tap } from 'rxjs';
 import { RejectModalComponent } from '../reject-modal/reject-modal.component';
 
 @Component({
@@ -68,17 +68,34 @@ export class ListingDetailActionsComponent {
     }
 
     const dataConfig: MatDialogConfig = {
-      data: {
-        listingId: this.listingId(),
-      },
       width: '100%',
       maxWidth: '960px',
     };
     const dialogRef = this.dialogService.open(RejectModalComponent, dataConfig);
-    dialogRef
-      .afterClosed()
-      .pipe(tap(() => this.refresh.emit()))
-      .subscribe();
+
+    runInInjectionContext(this.injector, () => {
+      dialogRef
+        .afterClosed()
+        .pipe(
+          switchMap((params) => {
+            if (!params) {
+              return EMPTY;
+            }
+
+            return this.adminListingService.callAction(listingId, ListingRequestActionEnum.REJECT, params);
+          }),
+          tap(() => {
+            this.refresh.emit();
+            this.snackbar.open('The rejection action was sent successfully.');
+          }),
+          catchError(() => {
+            this.snackbar.open('Unable to process the rejection action. Please try again.');
+            return EMPTY;
+          }),
+          takeUntilDestroyed(),
+        )
+        .subscribe();
+    });
   };
 
   onRequestMoreInformation = () => {

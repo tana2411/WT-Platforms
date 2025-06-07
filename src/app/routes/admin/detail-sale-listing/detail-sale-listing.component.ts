@@ -3,9 +3,11 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { mapCountryCodeToName } from '@app/statics';
+import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { AdminLayoutComponent } from 'app/layout/admin-layout/admin-layout.component';
+import { ListingType } from 'app/models';
 import { AdminListingService } from 'app/services/admin/admin-listing.service';
 import { ListingDetailActionsComponent } from 'app/share/ui/admin/listing-detail-actions/listing-detail-actions.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
@@ -27,6 +29,7 @@ import { catchError, EMPTY, map, startWith, Subject, switchMap, tap } from 'rxjs
 })
 export class DetailSaleListingComponent {
   activeRoute = inject(ActivatedRoute);
+  router = inject(Router);
   adminListingService = inject(AdminListingService);
   snackBar = inject(MatSnackBar);
   listingId = this.activeRoute.snapshot.params['listingId'] as string;
@@ -45,7 +48,10 @@ export class DetailSaleListingComponent {
         this.snackBar.open('Something went wrong.');
         return EMPTY;
       }),
-      tap(() => {
+      tap((value) => {
+        if (value && value.listing.listingType !== ListingType.SELL) {
+          this.router.navigateByUrl(ROUTES_WITH_SLASH.admin);
+        }
         this.loadingListing.set(false);
       }),
       takeUntilDestroyed(),
