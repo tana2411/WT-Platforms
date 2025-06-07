@@ -282,6 +282,17 @@ export const routes: Routes = [
       ),
   },
   {
+    path: `${ROUTES.adminBuyerActivityDetail}/:offerId`,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [GuardRequireRole.SuperAdmin],
+    },
+    loadComponent: () =>
+      import('./routes/admin/detail-buyer-activity/detail-buyer-activity.component').then(
+        (m) => m.DetailBuyerActivityComponent,
+      ),
+  },
+  {
     path: ROUTES.settings,
     canActivate: [CanActivateAuthPage],
     component: AccountSettingComponent,

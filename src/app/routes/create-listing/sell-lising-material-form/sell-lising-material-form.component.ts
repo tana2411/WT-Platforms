@@ -272,7 +272,6 @@ export class SellLisingMaterialFormComponent {
   }
 
   send() {
-    debugger;
     if (this.formGroup.invalid) return;
     let {
       weightUnit,
@@ -309,7 +308,6 @@ export class SellLisingMaterialFormComponent {
 
     ongoingListing == 'true' ? delete payload.endDate : delete payload.listingRenewalPeriod;
 
-    debugger;
     this.submitting.set(true);
 
     const filesSources = [this.featureImageFile(), this.specialDataFile() ?? [], this.galleryImageFile()].map(
@@ -341,7 +339,6 @@ export class SellLisingMaterialFormComponent {
           return [...featureDocuments, ...specialDocuments, ...galleryDocuments];
         }),
         switchMap((documents) => {
-          debugger;
           return this.listingService.createListing({ ...payload, documents }).pipe(
             catchError((err) => {
               this.snackBar.open(
@@ -354,7 +351,6 @@ export class SellLisingMaterialFormComponent {
         finalize(() => this.submitting.set(false)),
       )
       .subscribe((result) => {
-        debugger;
         this.snackBar.open('Your listing is under review');
         this.router.navigateByUrl(ROUTES_WITH_SLASH.buy);
       });

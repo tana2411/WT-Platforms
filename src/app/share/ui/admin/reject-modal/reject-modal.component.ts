@@ -1,15 +1,14 @@
-import { Component, inject, Injector, Input, runInInjectionContext } from '@angular/core';
+import { Component, inject, Injector } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AdminListingService } from 'app/services/admin/admin-listing.service';
-import { ListingRequestActionEnum } from 'app/types/requests/admin';
-import { catchError, EMPTY, tap } from 'rxjs';
+import { tap } from 'rxjs';
 
 interface RejectionReasonOpt {
   label: string;
@@ -40,8 +39,6 @@ enum RejectionReason {
   styleUrl: './reject-modal.component.scss',
 })
 export class RejectModalComponent {
-  @Input() listingId: string = '';
-
   RejectionReason = RejectionReason;
   rejectionReasons: RejectionReasonOpt[] = [
     { label: 'Incomplete documentation', value: RejectionReason.IncompleteDocument },
@@ -59,10 +56,8 @@ export class RejectModalComponent {
   adminListingService = inject(AdminListingService);
   injector = inject(Injector);
   snackbar = inject(MatSnackBar);
-  readonly dialogData = inject<{ listingId: string }>(MAT_DIALOG_DATA);
 
   constructor(private dialogRef: MatDialogRef<RejectModalComponent>) {
-    debugger;
     this.rejectForm.valueChanges
       .pipe(
         tap((v) => {
@@ -86,22 +81,7 @@ export class RejectModalComponent {
       message: message ?? '',
     };
 
-    runInInjectionContext(this.injector, () => {
-      this.adminListingService
-        .callAction(this.dialogData.listingId, ListingRequestActionEnum.REJECT, params)
-        .pipe(
-          tap(() => {
-            this.snackbar.open('The rejection action was sent successfully.');
-            this.dialogRef.close();
-          }),
-          catchError(() => {
-            this.snackbar.open('Unable to process the rejection action. Please try again.');
-            return EMPTY;
-          }),
-          takeUntilDestroyed(),
-        )
-        .subscribe();
-    });
+    this.dialogRef.close(params);
   }
 
   close(): void {
