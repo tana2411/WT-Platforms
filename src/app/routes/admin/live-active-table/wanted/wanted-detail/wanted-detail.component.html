@@ -1,0 +1,80 @@
+<div class="w-100">
+  <div class="border border-primary rounded-4 p-3 p-md-4 mt-4 mb-3">
+    <div class="row gy-4">
+      <!-- SELLER Section -->
+      <div class="col-12 col-md-6 col-lg-2">
+        <div class="fw-bold mb-3">BUYER</div>
+        <p class="mb-1">ID: {{ wanted?.seller?.user?.id || '1' }}</p>
+        <p class="mb-1">Full name: Json {{ wanted?.seller?.user?.firstName }} {{ wanted?.buyer?.user?.lastName }}</p>
+        <p class="mb-1">Company: United Kingdom {{ wanted?.seller?.company?.name }}</p>
+        <p class="mb-1">Buyer location: United Kingdom {{ countryCodeToName(wanted?.seller?.country) }}</p>
+      </div>
+
+      <div class="col-12 d-md-none">
+        <hr class="my-2" />
+      </div>
+
+      <div class="col-12 col-md-10 d-md-flex flex-md-row flex-column">
+        <div class="d-md-flex col-md-10 justify-content-between">
+          <div class="col-md-3 flex-md-column d-flex col-12">
+            <div class="flex-column mb-5 col-md-auto col-6">
+              <div class="fw-bold mb-3 w-100">DATE LISTED</div>
+              <div class="mb-1 w-100">dd/mm/yyyy{{ wanted?.offer?.createdAt | date: 'dd/MM/YYYY' }}</div>
+            </div>
+            <div class="flex-column col-md-auto col-6">
+              <div class="fw-bold mb-3 w-100">MATERIAL</div>
+              <p class="mb-1 w-100">Plastic{{ getMaterialName(wanted?.listing?.materialType) }}</p>
+            </div>
+          </div>
+
+          <div class="col-md-3 flex-md-column d-flex col-12">
+            <div class="flex-column mb-5 col-md-auto col-6">
+              <div class="fw-bold mb-3 w-100">DATE REQUIRED FROM</div>
+              <div class="mb-1 w-100">dd/mm/yyyy{{ wanted?.offer?.createdAt | date: 'dd/MM/YYYY' }}</div>
+            </div>
+            <div class="flex-column col-md-auto col-6">
+              <div class="fw-bold mb-3 w-100">QUANTITY REQUIRED</div>
+              <p class="mb-1 w-100">{{ '{number}' }}</p>
+            </div>
+          </div>
+
+          <div class="col-md-3 flex-md-column d-flex col-12">
+            <div class="flex-column mb-5 col-md-auto col-6">
+              <div class="fw-bold mb-3 w-100">PACKAGING</div>
+              <div class="mb-1 w-100">Lumps{{ getPackingName(wanted?.listing?.materialPacking) }}</div>
+            </div>
+            <div class="flex-column col-md-auto col-6">
+              <div class="fw-bold mb-3 w-100">STORAGE</div>
+              <div class="mb-1 w-100">{{ '{condition}' }}</div>
+            </div>
+          </div>
+
+          <div class="col-md-3 flex-md-column d-flex col-12">
+            <div class="flex-column mb-5 col-md-auto col-6">
+              <div class="fw-bold mb-3 w-100">STATUS</div>
+              <div class="mb-1 w-100">Pending{{ wanted?.offer?.status | titlecase }}</div>
+            </div>
+
+            <div class="flex-column col-md-auto col-6">
+              <div class="fw-bold mb-3 w-100">STATE</div>
+              @if (wanted?.offer?.state === 'active') {
+                <div class="d-flex align-items-center gap-1">
+                  <mat-icon class="primary">fiber_manual_record</mat-icon>
+                  <span class="primary">Active</span>
+                </div>
+              } @else {
+                <div class="d-flex align-items-center gap-1">
+                  <mat-icon class="error">fiber_manual_record</mat-icon>
+                  <span class="error">Pending</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-2 d-flex align-items-center justify-content-center justify-content-lg-end">
+          <button mat-stroked-button class="border-primary primary">VIEW DETAIL</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

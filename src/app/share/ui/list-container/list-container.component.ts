@@ -7,7 +7,7 @@ import { FilterComponent, PageType } from '../listing/filter/filter.component';
 import { PaginationComponent } from '../listing/pagination/pagination.component';
 import { SpinnerComponent } from '../spinner/spinner.component';
 
-interface PageResult {
+export interface PageResult {
   results: any;
   totalCount: number | string;
 }
