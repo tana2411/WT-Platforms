@@ -35,7 +35,7 @@ export class OfferDetailActionsComponent {
   snackbar = inject(MatSnackBar);
   injector = inject(Injector);
 
-  canAction = computed(() => this.offer()?.offer.state === OfferState.ACTIVE);
+  canAction = computed(() => this.offer()?.offer.state === OfferState.PENDING);
 
   onApprove = () => {
     const offerId = this.offerId();

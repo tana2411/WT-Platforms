@@ -35,7 +35,7 @@ export class ListingDetailActionsComponent {
   snackbar = inject(MatSnackBar);
   injector = inject(Injector);
 
-  canAction = computed(() => this.listing()?.bidStatus.state === OfferState.ACTIVE);
+  canAction = computed(() => this.listing()?.bidStatus.state === OfferState.PENDING);
 
   onApprove = () => {
     const listingId = this.listingId();

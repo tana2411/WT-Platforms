@@ -16,7 +16,6 @@ export const getMaterialTypeLabel = (type: string) => {
 
 export const getStateColor = (state: OfferState) => {
   switch (state) {
-    case OfferState.ACTIVE:
     case OfferState.APPROVED:
       return '#03985C';
     case OfferState.REJECTED:
