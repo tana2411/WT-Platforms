@@ -80,10 +80,8 @@ export class TradingFlatformFormComponent implements OnInit {
               });
             }
           });
-        this.showOtherMaterial.set(true);
         this.materials.markAsTouched();
       } else {
-        this.showOtherMaterial.set(false);
         this.materials.clear();
       }
       this.materials.updateValueAndValidity();
