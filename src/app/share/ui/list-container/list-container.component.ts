@@ -27,6 +27,7 @@ export class ListContainerComponent implements OnInit {
   @Input() pageType: PageType = 'default';
   @Input() emptyMessage: string = '';
   @Input() isCountryFilter: boolean = false;
+  @Input() listingType: 'sell' | 'wanted' = 'sell';
 
   @ContentChild(TemplateRef) itemTemplate!: TemplateRef<any>;
 
@@ -47,7 +48,12 @@ export class ListContainerComponent implements OnInit {
 
   onPageChange(p: number) {
     this.page.set(p);
-    this.updateFilter({ skip: (p - 1) * this.pageSize });
+    this.updateFilter({
+      skip: (p - 1) * this.pageSize,
+      where: {
+        ...this.filter().where,
+      },
+    });
     this.refresh();
   }
 
@@ -70,6 +76,20 @@ export class ListContainerComponent implements OnInit {
         ? cleanedParams['sortBy'][0]
         : cleanedParams['sortBy'];
     }
+
+    if (this.pageType == 'wanted') {
+      if ('wantedCompany' in cleanedParams) {
+        cleanedParams['company'] = cleanedParams['wantedCompany'];
+        delete cleanedParams['wantedCompany'];
+      }
+
+      if ('sellerCompanyName' in cleanedParams) {
+        cleanedParams['name'] = cleanedParams['sellerCompanyName'];
+        delete cleanedParams['sellerCompanyName'];
+      }
+    }
+
+    this.page.set(1);
 
     this.updateFilter({ skip: 0, where: { ...cleanedParams } });
     this.refresh();

@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FilterParams, ListingMaterialPayload, ListingResponse, SellListingResponse } from 'app/models';
 import { ListingMaterialDetailResponse } from 'app/models/listing-material-detail.model';
+import { WantedListingResponse } from 'app/models/wanted.model';
 import { catchError, Observable, throwError } from 'rxjs';
 
 @Injectable({
@@ -55,6 +56,20 @@ export class ListingService {
       params = params.set('filter', encodedFilter);
     }
     return this.httpClient.get<SellListingResponse>('/listings/sell', { params }).pipe(
+      catchError(() => {
+        return throwError(() => new Error('Failed to load listings. Please refresh the page to try again.'));
+      }),
+    );
+  }
+
+  getListingsWanted(filter?: any) {
+    let params = new HttpParams();
+
+    if (filter) {
+      const encodedFilter = JSON.stringify(filter);
+      params = params.set('filter', encodedFilter);
+    }
+    return this.httpClient.get<WantedListingResponse>('/listings/wanted', { params }).pipe(
       catchError(() => {
         return throwError(() => new Error('Failed to load listings. Please refresh the page to try again.'));
       }),

@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SellerCompaniesResponse } from 'app/models';
 import { Companies, CompaniesResponse } from 'app/models/purchases.model';
+import { WantedCompanies, WantedCompaniesResponse } from 'app/models/wanted.model';
 import { Observable, of } from 'rxjs';
 import { catchError, map, shareReplay } from 'rxjs/operators';
 
@@ -10,6 +11,7 @@ import { catchError, map, shareReplay } from 'rxjs/operators';
 export class CompaniesService {
   companies$?: Observable<{ buyer: Companies[]; seller: Companies[] }>;
   sellerCompanies$?: Observable<Companies[]>;
+  wantedCompanies$?: Observable<WantedCompanies[]>;
   http = inject(HttpClient);
   snackBar = inject(MatSnackBar);
 
@@ -52,6 +54,27 @@ export class CompaniesService {
         );
     }
     return this.sellerCompanies$;
+  }
+
+  getWantedCompanies(filter: string): Observable<WantedCompanies[]> {
+    if (!this.wantedCompanies$) {
+      this.wantedCompanies$ = this.http
+        .get<WantedCompaniesResponse>(`/listings/admin/companies?listingType=${filter}`)
+        .pipe(
+          map((res) => {
+            return res.data.companies;
+          }),
+          shareReplay({ bufferSize: 1, refCount: true }),
+          catchError((err) => {
+            this.wantedCompanies$ = undefined;
+            this.snackBar.open('Failed to load companies. Please try again.', 'OK', {
+              duration: 3000,
+            });
+            return of([]);
+          }),
+        );
+    }
+    return this.wantedCompanies$;
   }
 
   clearCache(): void {

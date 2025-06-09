@@ -10,15 +10,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
+import { WantedCompanies } from 'app/models/wanted.model';
 import { CompaniesService } from 'app/share/services/companies.service';
 import { countries, materialTypes } from 'app/statics';
 import { ItemOf } from 'app/types/utils';
 import { isEqual, omit } from 'lodash';
-import { debounceTime, distinctUntilChanged, from, switchMap } from 'rxjs';
-import { allFilters, ListingSortBy, listingSortOption } from './constant';
+import { debounceTime, distinctUntilChanged, EMPTY, from, switchMap } from 'rxjs';
+import { allFilters, ListingSortBy, listingSortOption, wantedSortOption } from './constant';
 
 const searchKey = 'searchTerm';
-export type PageType = 'default' | 'sellListing';
+export type PageType = 'default' | 'sellListing' | 'wanted';
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
@@ -46,6 +47,8 @@ export class FilterComponent implements OnInit {
   allFilters = allFilters;
   activeFilter: any[] = [];
 
+  wantedCompany: WantedCompanies[] = [];
+
   filterForm = new FormGroup({
     [searchKey]: new FormControl<string | null>(null),
   });
@@ -65,17 +68,27 @@ export class FilterComponent implements OnInit {
   sortByMappings: Record<PageType, { code: string; name: string }[]> = {
     default: [{ code: 'availableListings', name: 'Available Listings' }],
     sellListing: listingSortOption,
+    wanted: wantedSortOption,
   };
 
   constructor() {
     this.filterForm.valueChanges
       .pipe(
         debounceTime(500),
-        switchMap((value) => {
+        switchMap((value: any) => {
+          const hasDateRange = this.displayFilter.includes('dateRange');
+          const fromCtrl = this.filterForm.get('dateRequireFrom');
+          const toCtrl = this.filterForm.get('dateRequireTo');
+
+          if (hasDateRange && fromCtrl?.dirty && value.dateRequireTo == null) {
+            return EMPTY;
+          }
+
           if (value[searchKey] == '') {
             const filter = this.normalizeFilterParams(value);
             return from(Promise.resolve({ ...filter, searchTerm: null }));
           }
+
           const filter = this.normalizeFilterParams(value);
 
           return from(Promise.resolve(filter));
@@ -95,10 +108,24 @@ export class FilterComponent implements OnInit {
       // const needsBuyer = this.displayFilter.includes('buyerCompanyName');
       // const needsSeller = this.displayFilter.includes('sellerCompanyName');
       const needsCompany = this.displayFilter.includes('company');
+      const needsWantedCompany = this.displayFilter.includes('wantedCompany');
       const needsSortBy = this.displayFilter.includes('sortBy');
 
       if (needsSortBy) {
         this.allFilters = this.allFilters.map((f) => (f.value == 'sortBy' ? { ...f, options: sortOption } : f));
+      }
+
+      if (needsWantedCompany) {
+        this.companiesService
+          .getWantedCompanies('wanted')
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe((list) => {
+            this.wantedCompany = list;
+            const wantedBuyerCompany = list.map((c) => ({ code: c.name, name: c.name }));
+
+            this.assignFilterOptions([{ key: 'wantedCompany', items: wantedBuyerCompany }]);
+            this.initializeFilters();
+          });
       }
 
       // if (needsBuyer || needsSeller) {
@@ -235,8 +262,8 @@ export class FilterComponent implements OnInit {
   }
 
   private addDateRangeControl(filter: any): void {
-    const from = 'start';
-    const to = 'end';
+    const from = 'dateRequireFrom';
+    const to = 'dateRequireTo';
     if (!this.filterForm.get(from)) {
       this.filterForm.addControl(from as any, new FormControl<Date | null>(null));
       this.formDefaultValue.set({
@@ -266,6 +293,11 @@ export class FilterComponent implements OnInit {
 
       if (selectFilters.includes(key)) {
         result[key] = Array.isArray(value) ? value : [value];
+
+        if (key == 'wantedBuyer') {
+          result['name'] = rawValue[key];
+          delete result[key];
+        }
         continue;
       }
 
@@ -273,13 +305,22 @@ export class FilterComponent implements OnInit {
         result[key] = value;
       }
 
-      if (key == 'start' || key == 'end') {
-        result[key] = Array.isArray(value) ? value : [value];
+      if (inputTextFilters.includes(key)) {
+        result[key] = value;
       }
+
+      result[key] = Array.isArray(value) ? value : [value];
     }
+
+    delete result['searchTerm'];
 
     const checkboxResult = this.normalizeCheckboxFilter(rawValue);
     Object.assign(result, checkboxResult);
+    const to = result['dateRequireTo'];
+
+    if (to == null) {
+      delete result['dateRequireFrom'];
+    }
     return result;
   }
 
@@ -379,6 +420,7 @@ export class FilterComponent implements OnInit {
     }
 
     this.filterForm.patchValue(patchValue);
+    this.filterForm.markAsPristine();
     this.closeFilterMobile();
   }
 
