@@ -83,10 +83,12 @@ export class FilterComponent implements OnInit {
           if (hasDateRange && fromCtrl?.dirty && value.dateRequireTo == null) {
             return EMPTY;
           }
+
           if (value[searchKey] == '') {
             const filter = this.normalizeFilterParams(value);
             return from(Promise.resolve({ ...filter, searchTerm: null }));
           }
+
           const filter = this.normalizeFilterParams(value);
 
           return from(Promise.resolve(filter));
@@ -309,6 +311,8 @@ export class FilterComponent implements OnInit {
 
       result[key] = Array.isArray(value) ? value : [value];
     }
+
+    delete result['searchTerm'];
 
     const checkboxResult = this.normalizeCheckboxFilter(rawValue);
     Object.assign(result, checkboxResult);
