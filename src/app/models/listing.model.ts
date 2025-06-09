@@ -1,3 +1,4 @@
+import { OfferState, OfferStatus } from './offer';
 import { Companies } from './purchases.model';
 
 export interface CreatedBy {
@@ -27,7 +28,7 @@ export interface SellListingDetail {
   quantity: number;
   currency: string | null;
   additional_notes: string | null;
-  status: 'pending' | 'active' | 'rejected';
+  status: OfferStatus;
   is_featured: boolean;
   is_urgent: boolean;
   view_count: number | null;
@@ -54,7 +55,7 @@ export interface SellListingDetail {
   renewal_period: string;
   listing_duration: number | null;
   location_id: number;
-  state: 'active' | 'inactive' | 'archived';
+  state: OfferState;
   rejection_reason: string | null;
   message: string | null;
   user_id: number;

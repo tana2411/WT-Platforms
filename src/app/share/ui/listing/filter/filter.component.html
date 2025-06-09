@@ -34,8 +34,8 @@
         ></app-icon>
       </div>
 
-      <div class="filter-scrollable">
-        <div class="d-flex flex-wrap justify-content-between align-items-lg-end gap-1 w-100 flex-column flex-md-row">
+      <div class="filter-scrollable w-100">
+        <div class="d-flex flex-wrap align-items-lg-end gap-3 w-100 flex-column flex-md-row">
           @for (item of activeFilter; track item.value) {
             @if (item.type == 'dateRange') {
               <div class="{{ item.value }}-wrapper dateRange-wrapper">
@@ -55,7 +55,7 @@
 
             @if (item.type == 'select') {
               <div class="{{ item.value }}-wrapper select-wrapper">
-                <div class="small-mat-form-field d-flex flex-column align-items-start {{ item.value }}">
+                <div class="small-mat-form-field select-item d-flex flex-column align-items-start {{ item.value }}">
                   <div class="filter-select-item-label d-flex align-items-start">{{ item.name }}</div>
                   <mat-form-field appearance="outline" class="w-100 bg-white">
                     <mat-select
@@ -94,6 +94,17 @@
                       </mat-checkbox>
                     }
                   }
+                </div>
+              </div>
+            }
+
+            @if (item.type == 'input') {
+              <div class="{{ item.value }}-wrapper text-input-wrapper">
+                <div class="small-mat-form-field input-item d-flex flex-column align-items-start {{ item.value }}">
+                  <div class="filter-select-item-label d-flex align-items-start">{{ item.name }}</div>
+                  <mat-form-field appearance="outline" class="w-100 bg-white">
+                    <input matInput [formControlName]="item.value" placeholder="Type here" />
+                  </mat-form-field>
                 </div>
               </div>
             }

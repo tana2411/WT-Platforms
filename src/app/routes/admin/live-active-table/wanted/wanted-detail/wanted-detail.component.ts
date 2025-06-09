@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { mapCountryCodeToName, materialTypes } from '@app/statics';
 import { WantedListingDetail } from 'app/models/wanted.model';
+import { getStateColor, getStatusColor } from 'app/share/utils/offer';
 
 @Component({
   selector: 'app-wanted-detail',
@@ -15,6 +16,8 @@ export class WantedDetailComponent implements OnInit {
   @Input() wanted: WantedListingDetail | undefined = undefined;
   mapCountryCodeToName = mapCountryCodeToName;
   materialTypes = materialTypes;
+  getStatusColor = getStatusColor;
+  getStateColor = getStateColor;
 
   constructor() {}
 

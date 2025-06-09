@@ -1,4 +1,4 @@
-import { OfferStatus } from './offer';
+import { OfferState, OfferStatus } from './offer';
 
 export interface PurchaseFilterParams {
   skip: number;
@@ -34,7 +34,7 @@ interface Offer {
   offeredPricePerUnit: number;
   totalPrice: number;
   status: OfferStatus;
-  state: 'active' | 'inactive';
+  state: OfferState;
   expiresAt: string | null;
   earliestDeliveryDate: string | null;
   latestDeliveryDate: string | null;
@@ -63,7 +63,7 @@ interface Listing {
   id: number;
   title: string;
   status: OfferStatus;
-  state: 'active' | 'inactive';
+  state: OfferState;
   materialWeightPerUnit: number | null;
   materialWanted: number | null;
   quantity: number | null;

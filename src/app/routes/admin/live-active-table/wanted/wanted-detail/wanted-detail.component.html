@@ -51,23 +51,16 @@
 
           <div class="col-md-3 flex-md-column d-flex col-12">
             <div class="flex-column mb-5 col-md-auto col-6">
-              <div class="fw-bold mb-3 w-100">STATUS</div>
-              <div class="mb-1 w-100">{{ wanted?.status | titlecase }}</div>
+              <div class="fw-bold mb-2 mb-md-3 text-uppercase">STATUS</div>
+              <p class="mb-1 small fw-500" [style.color]="getStatusColor(wanted!.status)">{{ wanted?.status | titlecase }}</p>
             </div>
 
             <div class="flex-column col-md-auto col-6">
-              <div class="fw-bold mb-3 w-100">STATE</div>
-              @if (wanted?.state === 'active') {
-                <div class="d-flex align-items-center gap-1">
-                  <mat-icon class="primary">fiber_manual_record</mat-icon>
-                  <span class="primary">Active</span>
-                </div>
-              } @else {
-                <div class="d-flex align-items-center gap-1">
-                  <mat-icon class="error">fiber_manual_record</mat-icon>
-                  <span class="error">Pending</span>
-                </div>
-              }
+              <div class="fw-bold mb-2 mb-md-3 text-uppercase">STATE</div>
+              <div class="d-flex align-items-center gap-1">
+                <mat-icon [style.color]="getStateColor(wanted!.state)">fiber_manual_record</mat-icon>
+                <span class="small" [style.color]="getStateColor(wanted!.state)">{{ wanted?.state | titlecase }}</span>
+              </div>
             </div>
           </div>
         </div>

@@ -77,6 +77,11 @@ export class ListContainerComponent implements OnInit {
         cleanedParams['company'] = cleanedParams['wantedCompany'];
         delete cleanedParams['wantedCompany'];
       }
+
+      if ('sellerCompanyName' in cleanedParams) {
+        cleanedParams['name'] = cleanedParams['sellerCompanyName'];
+        delete cleanedParams['sellerCompanyName'];
+      }
     }
 
     this.updateFilter({ skip: 0, where: { ...cleanedParams } });

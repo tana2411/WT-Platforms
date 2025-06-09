@@ -38,7 +38,9 @@
           </div>
           <div class="col-4">
             <div class="fw-bold mb-3">STATUS</div>
-            <p class="mb-1">{{ purchase?.offer?.status | titlecase }}</p>
+            @if (purchase?.offer; as offer) {
+              <p class="mb-1" [style.color]="getStatusColor(offer.status)">{{ offer.status | titlecase }}</p>
+            }
           </div>
         </div>
 
@@ -54,15 +56,11 @@
           </div>
           <div class="col-4">
             <div class="fw-bold mb-3">STATE</div>
-            @if (purchase?.offer?.state === 'active') {
+
+            @if (purchase?.offer; as offer) {
               <div class="d-flex align-items-center gap-1">
-                <mat-icon class="primary">fiber_manual_record</mat-icon>
-                <span class="primary">Active</span>
-              </div>
-            } @else {
-              <div class="d-flex align-items-center gap-1">
-                <mat-icon class="error">fiber_manual_record</mat-icon>
-                <span class="error">Pending</span>
+                <mat-icon [style.color]="getStateColor(offer.state)">fiber_manual_record</mat-icon>
+                <span class="small" [style.color]="getStateColor(offer.state)">{{ offer.state | titlecase }}</span>
               </div>
             }
           </div>
@@ -76,7 +74,7 @@
 
       <!-- Button Section -->
       <div class="col-12 col-lg-2 d-flex align-items-center justify-content-center justify-content-lg-end">
-        <button mat-stroked-button class="border-primary primary">VIEW DETAIL</button>
+        <button mat-stroked-button class="border-primary primary" (click)="onViewDetail()">VIEW DETAIL</button>
       </div>
     </div>
   </div>

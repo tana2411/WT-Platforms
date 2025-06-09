@@ -38,7 +38,7 @@ export type PageType = 'default' | 'sellListing' | 'wanted';
   ],
 })
 export class FilterComponent implements OnInit {
-  @Input() displayFilter: Array<ItemOf<typeof this.allFilters>['value']> = [];
+  @Input() displayFilter: Array<ItemOf<typeof allFilters>['value']> = [];
   @Input() pageType: PageType = 'default';
   @Output() filterChanged = new EventEmitter<any>();
   @Output() searchTerm = new EventEmitter<string | null>();
@@ -103,8 +103,8 @@ export class FilterComponent implements OnInit {
     const sortOption = this.sortByMappings[this.pageType] || [];
 
     if (this.displayFilter) {
-      const needsBuyer = this.displayFilter.includes('buyerCompanyName');
-      const needsSeller = this.displayFilter.includes('sellerCompanyName');
+      // const needsBuyer = this.displayFilter.includes('buyerCompanyName');
+      // const needsSeller = this.displayFilter.includes('sellerCompanyName');
       const needsCompany = this.displayFilter.includes('company');
       const needsWantedCompany = this.displayFilter.includes('wantedCompany');
       const needsSortBy = this.displayFilter.includes('sortBy');
@@ -120,28 +120,25 @@ export class FilterComponent implements OnInit {
           .subscribe((list) => {
             this.wantedCompany = list;
             const wantedBuyerCompany = list.map((c) => ({ code: c.name, name: c.name }));
-            const wantedBuyer = list.map((c) => ({ code: c.id, name: `${c.first_name} ${c.last_name}` }));
 
-            this.assignFilterOptions([
-              { key: 'wantedCompany', items: wantedBuyerCompany },
-              { key: 'wantedBuyer', items: wantedBuyer },
-            ]);
+            this.assignFilterOptions([{ key: 'wantedCompany', items: wantedBuyerCompany }]);
             this.initializeFilters();
           });
       }
 
-      if (needsBuyer || needsSeller) {
-        this.companiesService
-          .getOfferCompanies()
-          .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe(({ buyer, seller }) => {
-            this.assignFilterOptions([
-              { key: 'buyerCompanyName', items: buyer },
-              { key: 'sellerCompanyName', items: seller },
-            ]);
-            this.initializeFilters();
-          });
-      } else if (needsCompany) {
+      // if (needsBuyer || needsSeller) {
+      //   this.companiesService
+      //     .getOfferCompanies()
+      //     .pipe(takeUntilDestroyed(this.destroyRef))
+      //     .subscribe(({ buyer, seller }) => {
+      //       this.assignFilterOptions([
+      //         { key: 'buyerCompanyName', items: buyer },
+      //         { key: 'sellerCompanyName', items: seller },
+      //       ]);
+      //       this.initializeFilters();
+      //     });
+      // }
+      if (needsCompany) {
         this.companiesService
           .getCompanies('sell')
           .pipe(takeUntilDestroyed(this.destroyRef))
@@ -219,6 +216,9 @@ export class FilterComponent implements OnInit {
         case 'checkbox':
           this.addCheckboxControls(filter);
           break;
+        case 'input':
+          this.addInputControl(filter);
+          break;
         case 'dateRange':
           this.addDateRangeControl(filter);
           break;
@@ -249,6 +249,16 @@ export class FilterComponent implements OnInit {
     }
   }
 
+  private addInputControl(filter: any): void {
+    if (!this.filterForm.get(filter.value)) {
+      this.filterForm.addControl(filter.value, new FormControl<string | null>(this.getDefaultValueForFilter(filter)));
+      this.formDefaultValue.set({
+        ...this.formDefaultValue(),
+        [filter.value]: this.getDefaultValueForFilter(filter),
+      });
+    }
+  }
+
   private addDateRangeControl(filter: any): void {
     const from = 'dateRequireFrom';
     const to = 'dateRequireTo';
@@ -272,6 +282,7 @@ export class FilterComponent implements OnInit {
     const result: Record<string, any> = {};
 
     const selectFilters = this.allFilters.filter((f) => f.type === 'select').map((f) => f.value);
+    const inputTextFilters = this.allFilters.filter((f) => f.type === 'input').map((f) => f.value);
 
     for (const key in rawValue) {
       const value = rawValue[key];
@@ -286,6 +297,14 @@ export class FilterComponent implements OnInit {
           delete result[key];
         }
         continue;
+      }
+
+      if (inputTextFilters.includes(key)) {
+        result[key] = value;
+      }
+
+      if (inputTextFilters.includes(key)) {
+        result[key] = value;
       }
 
       result[key] = Array.isArray(value) ? value : [value];
@@ -309,17 +328,18 @@ export class FilterComponent implements OnInit {
 
     checkboxFilters.forEach((filter) => {
       const selected: string[] = [];
+      const options = filter.options ?? [];
 
-      filter.options.forEach((option: any) => {
+      options.forEach((option: any) => {
         const key = option.value;
         if (rawValue[key]) {
           selected.push(key);
         }
       });
 
-      const totalOptions = filter.options.length;
+      const totalOptions = options.length;
       if (totalOptions === 1) {
-        const key = filter.options[0].value;
+        const key = options[0].value;
         if (rawValue[key]) {
           result[filter.value] = rawValue[key] === true;
         }
@@ -344,6 +364,10 @@ export class FilterComponent implements OnInit {
 
   private getDefaultValueForFilter(filter: any): string | null {
     if (filter.value !== 'sortBy') {
+      return null;
+    }
+
+    if (filter.type === 'input') {
       return null;
     }
 

@@ -3,8 +3,8 @@ import { countries, materialTypes, packing } from '@app/statics';
 export interface Filter {
   name: string;
   value: string;
-  type: 'select' | 'checkbox' | 'dateRange';
-  options: any[];
+  type: 'select' | 'checkbox' | 'input' | 'dateRange';
+  options?: any[];
   placeholder?: string;
   defaultValue?: string;
 }
@@ -43,14 +43,12 @@ export const allFilters: Filter[] = [
   {
     name: 'BUYER',
     value: 'buyerCompanyName',
-    type: 'select',
-    options: [],
+    type: 'input',
   },
   {
     name: 'SELLER',
     value: 'sellerCompanyName',
-    type: 'select',
-    options: [],
+    type: 'input',
   },
   {
     name: 'SELLER',
@@ -68,6 +66,9 @@ export const allFilters: Filter[] = [
         name: 'Active',
         code: 'active',
       },
+      { code: 'rejected', name: 'Rejected' },
+      { code: 'accepted', name: 'Accepted' },
+      { code: 'shipped', name: 'Shipped' },
     ],
   },
   {
@@ -76,10 +77,12 @@ export const allFilters: Filter[] = [
     type: 'select',
     options: [
       {
-        name: 'Active',
-        code: 'active',
+        name: 'Approve',
+        code: 'approve',
       },
       { code: 'pending', name: 'Pending' },
+      { code: 'rejected', name: 'Rejected' },
+      { code: 'active', name: 'Active' },
     ],
   },
   {
@@ -132,12 +135,6 @@ export const allFilters: Filter[] = [
   {
     name: 'COMPANY',
     value: 'wantedCompany',
-    type: 'select',
-    options: [],
-  },
-  {
-    name: 'BUYER',
-    value: 'wantedBuyer',
     type: 'select',
     options: [],
   },

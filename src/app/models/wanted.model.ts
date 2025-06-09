@@ -1,4 +1,5 @@
 import { SellListingDetail } from './listing.model';
+import { OfferState } from './offer';
 import { Companies } from './purchases.model';
 
 export enum WantedListingSortBy {
@@ -50,7 +51,7 @@ export interface WantedListingDetail
   listing_type: 'wanted';
   title: string | null;
   location_id: number | null;
-  state: 'pending' | 'active' | 'inactive' | 'archived';
+  state: OfferState;
   location_name: string | null;
   price_per_metric_tonne?: number | null;
   location_other?: string | null;

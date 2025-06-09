@@ -1,9 +1,12 @@
 import { DatePipe, DecimalPipe, TitleCasePipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 import { mapCountryCodeToName, materialTypes } from '@app/statics';
+import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { SellListingDetail } from 'app/models';
+import { getStateColor, getStatusColor } from 'app/share/utils/offer';
 
 @Component({
   selector: 'app-listing-detail',
@@ -14,6 +17,9 @@ import { SellListingDetail } from 'app/models';
 export class ListingDetailComponent implements OnInit {
   mapCountryCodeToName = mapCountryCodeToName;
   materialTypes = materialTypes;
+  getStatusColor = getStatusColor;
+  getStateColor = getStateColor;
+  router = inject(Router);
 
   @Input() listing: SellListingDetail | undefined = undefined;
 
@@ -38,5 +44,9 @@ export class ListingDetailComponent implements OnInit {
       return weight * 1000;
     }
     return '';
+  }
+
+  onViewDetail() {
+    this.router.navigateByUrl(`${ROUTES_WITH_SLASH.adminSaleListingDetail}/${this.listing!.id}`);
   }
 }
