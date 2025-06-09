@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
+import { PurchasesComponent } from 'app/routes/admin/live-active-table/purchases/purchases.component';
 
 @Component({
   selector: 'app-admin-buyer-activity',
-  imports: [],
+  imports: [PurchasesComponent],
   templateUrl: './admin-buyer-activity.component.html',
-  styleUrl: './admin-buyer-activity.component.scss'
+  styleUrl: './admin-buyer-activity.component.scss',
 })
-export class AdminBuyerActivityComponent {
-
-}
+export class AdminBuyerActivityComponent {}
