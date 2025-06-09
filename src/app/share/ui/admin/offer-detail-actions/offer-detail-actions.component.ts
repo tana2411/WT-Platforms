@@ -12,40 +12,40 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { AdminListingDetail } from 'app/models/admin/listing.model';
-import { OfferState } from 'app/models/offer';
-import { AdminListingService } from 'app/services/admin/admin-listing.service';
-import { ListingRequestActionEnum } from 'app/types/requests/admin';
+import { OfferRequestActionEnum, OfferState } from 'app/models/offer';
+import { AdminOfferService } from 'app/services/admin/admin-offer.service';
+import { OfferDetail } from 'app/types/requests/offer';
 import { catchError, EMPTY, switchMap, tap } from 'rxjs';
 import { RejectModalComponent } from '../reject-modal/reject-modal.component';
 
 @Component({
-  selector: 'app-listing-detail-actions',
+  selector: 'app-offer-detail-actions',
   imports: [MatButtonModule, MatSnackBarModule],
-  templateUrl: './listing-detail-actions.component.html',
-  styleUrl: './listing-detail-actions.component.scss',
+  templateUrl: './offer-detail-actions.component.html',
+  styleUrl: './offer-detail-actions.component.scss',
 })
-export class ListingDetailActionsComponent {
-  listingId = input<string | undefined>(undefined);
-  listing = input<AdminListingDetail | undefined>(undefined);
+export class OfferDetailActionsComponent {
+  offerId = input<string | undefined>(undefined);
+  // todo: refactor
+  offer = input<OfferDetail | undefined>(undefined);
   @Output() refresh = new EventEmitter<void>();
 
-  adminListingService = inject(AdminListingService);
+  adminOfferService = inject(AdminOfferService);
   dialogService = inject(MatDialog);
   snackbar = inject(MatSnackBar);
   injector = inject(Injector);
 
-  canAction = computed(() => this.listing()?.bidStatus.state === OfferState.PENDING);
+  canAction = computed(() => this.offer()?.offer.state === OfferState.PENDING);
 
   onApprove = () => {
-    const listingId = this.listingId();
-    if (!listingId) {
+    const offerId = this.offerId();
+    if (!offerId) {
       return;
     }
 
     runInInjectionContext(this.injector, () => {
-      this.adminListingService
-        .callAction(listingId, ListingRequestActionEnum.ACCEPT, {})
+      this.adminOfferService
+        .callAction(offerId, OfferRequestActionEnum.ACCEPT, {})
         .pipe(
           tap(() => {
             this.snackbar.open('The approval action was sent successfully.');
@@ -62,8 +62,8 @@ export class ListingDetailActionsComponent {
   };
 
   onReject = () => {
-    const listingId = this.listingId();
-    if (!listingId) {
+    const offerId = this.offerId();
+    if (!offerId) {
       return;
     }
 
@@ -82,7 +82,7 @@ export class ListingDetailActionsComponent {
               return EMPTY;
             }
 
-            return this.adminListingService.callAction(listingId, ListingRequestActionEnum.REJECT, params);
+            return this.adminOfferService.callAction(offerId, OfferRequestActionEnum.REJECT, params);
           }),
           tap(() => {
             this.refresh.emit();
@@ -90,30 +90,6 @@ export class ListingDetailActionsComponent {
           }),
           catchError(() => {
             this.snackbar.open('Unable to process the rejection action. Please try again.');
-            return EMPTY;
-          }),
-          takeUntilDestroyed(),
-        )
-        .subscribe();
-    });
-  };
-
-  onRequestMoreInformation = () => {
-    const listingId = this.listingId();
-    if (!listingId) {
-      return;
-    }
-
-    runInInjectionContext(this.injector, () => {
-      this.adminListingService
-        .callAction(listingId, ListingRequestActionEnum.REQUEST_INFORMATION, {})
-        .pipe(
-          tap(() => {
-            this.snackbar.open('The request information action was sent successfully.');
-            this.refresh.emit();
-          }),
-          catchError(() => {
-            this.snackbar.open('Unable to send the message. Please try again.');
             return EMPTY;
           }),
           takeUntilDestroyed(),
