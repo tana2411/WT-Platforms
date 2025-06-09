@@ -47,7 +47,9 @@
 
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>Bid status</p>
-            <p class="mb-0 fw-500" i18n>{{ listingDetail.bidStatus.status }}</p>
+            <p class="mb-0 fw-500" [style.color]="getStatusColor(listingDetail.bidStatus.status)">
+              {{ listingDetail.bidStatus.status | titlecase }}
+            </p>
           </div>
           <!-- </div> -->
 

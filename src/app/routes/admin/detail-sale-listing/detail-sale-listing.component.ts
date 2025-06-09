@@ -1,3 +1,4 @@
+import { TitleCasePipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,6 +12,7 @@ import { ListingType } from 'app/models';
 import { AdminListingService } from 'app/services/admin/admin-listing.service';
 import { ListingDetailActionsComponent } from 'app/share/ui/admin/listing-detail-actions/listing-detail-actions.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
+import { getStatusColor } from 'app/share/utils/offer';
 import { catchError, EMPTY, map, startWith, Subject, switchMap, tap } from 'rxjs';
 
 @Component({
@@ -22,6 +24,7 @@ import { catchError, EMPTY, map, startWith, Subject, switchMap, tap } from 'rxjs
     MatSnackBarModule,
     SpinnerComponent,
     ListingDetailActionsComponent,
+    TitleCasePipe,
   ],
   templateUrl: './detail-sale-listing.component.html',
   styleUrl: './detail-sale-listing.component.scss',
@@ -35,6 +38,8 @@ export class DetailSaleListingComponent {
   listingId = this.activeRoute.snapshot.params['listingId'] as string;
   loadingListing = signal(true);
   listingDetailUpdator$ = new Subject<void>();
+
+  getStatusColor = getStatusColor;
 
   mapCountryCodeToName = mapCountryCodeToName;
 

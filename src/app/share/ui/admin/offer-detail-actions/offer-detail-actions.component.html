@@ -1,7 +1,23 @@
 @if (canAction()) {
   <div class="d-flex flex-wrap gap-2">
-    <button mat-flat-button class="custom-button" (click)="onApprove()">Approve</button>
-    <button mat-flat-button class="custom-button background-error" (click)="onReject()">Reject</button>
+    <button
+      mat-flat-button
+      class="custom-button"
+      (click)="onApprove()"
+      [disabled]="submitting()"
+      [class.overlay-spinner]="submitting() == 'accept'"
+    >
+      Approve
+    </button>
+    <button
+      mat-flat-button
+      class="custom-button background-error"
+      (click)="onReject()"
+      [disabled]="submitting()"
+      [class.overlay-spinner]="submitting() == 'reject'"
+    >
+      Reject
+    </button>
     <!-- <button
       matButton="outlined"
       class="custom-button rounded primary border border-primary"

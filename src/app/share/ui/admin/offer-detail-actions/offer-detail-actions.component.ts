@@ -7,6 +7,7 @@ import {
   input,
   Output,
   runInInjectionContext,
+  signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,7 +16,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { OfferRequestActionEnum, OfferState } from 'app/models/offer';
 import { AdminOfferService } from 'app/services/admin/admin-offer.service';
 import { OfferDetail } from 'app/types/requests/offer';
-import { catchError, EMPTY, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, finalize, switchMap, tap } from 'rxjs';
 import { RejectModalComponent } from '../reject-modal/reject-modal.component';
 
 @Component({
@@ -29,6 +30,7 @@ export class OfferDetailActionsComponent {
   // todo: refactor
   offer = input<OfferDetail | undefined>(undefined);
   @Output() refresh = new EventEmitter<void>();
+  submitting = signal<'accept' | 'reject' | undefined>(undefined);
 
   adminOfferService = inject(AdminOfferService);
   dialogService = inject(MatDialog);
@@ -39,10 +41,11 @@ export class OfferDetailActionsComponent {
 
   onApprove = () => {
     const offerId = this.offerId();
-    if (!offerId) {
+    if (!offerId || this.submitting()) {
       return;
     }
 
+    this.submitting.set('accept');
     runInInjectionContext(this.injector, () => {
       this.adminOfferService
         .callAction(offerId, OfferRequestActionEnum.ACCEPT, {})
@@ -56,6 +59,9 @@ export class OfferDetailActionsComponent {
             return EMPTY;
           }),
           takeUntilDestroyed(),
+          finalize(() => {
+            this.submitting.set(undefined);
+          }),
         )
         .subscribe();
     });
@@ -63,10 +69,11 @@ export class OfferDetailActionsComponent {
 
   onReject = () => {
     const offerId = this.offerId();
-    if (!offerId) {
+    if (!offerId || this.submitting()) {
       return;
     }
 
+    this.submitting.set('reject');
     const dataConfig: MatDialogConfig = {
       width: '100%',
       maxWidth: '960px',
@@ -93,6 +100,9 @@ export class OfferDetailActionsComponent {
             return EMPTY;
           }),
           takeUntilDestroyed(),
+          finalize(() => {
+            this.submitting.set(undefined);
+          }),
         )
         .subscribe();
     });

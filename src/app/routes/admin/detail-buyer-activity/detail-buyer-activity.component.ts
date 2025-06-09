@@ -1,3 +1,4 @@
+import { TitleCasePipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,6 +22,7 @@ import { catchError, EMPTY, map, startWith, Subject, switchMap, tap } from 'rxjs
     MatSnackBarModule,
     SpinnerComponent,
     OfferDetailActionsComponent,
+    TitleCasePipe,
   ],
   providers: [AdminOfferService],
   templateUrl: './detail-buyer-activity.component.html',
