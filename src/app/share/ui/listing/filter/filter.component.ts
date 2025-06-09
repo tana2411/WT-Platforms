@@ -3,6 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -32,6 +33,7 @@ export type PageType = 'default' | 'sellListing';
     MatCheckboxModule,
     ReactiveFormsModule,
     IconComponent,
+    MatDatepickerModule,
   ],
 })
 export class FilterComponent implements OnInit {
@@ -74,7 +76,6 @@ export class FilterComponent implements OnInit {
             const filter = this.normalizeFilterParams(value);
             return from(Promise.resolve({ ...filter, searchTerm: null }));
           }
-
           const filter = this.normalizeFilterParams(value);
 
           return from(Promise.resolve(filter));
@@ -193,6 +194,9 @@ export class FilterComponent implements OnInit {
         case 'input':
           this.addInputControl(filter);
           break;
+        case 'dateRange':
+          this.addDateRangeControl(filter);
+          break;
       }
     });
   }
@@ -230,6 +234,25 @@ export class FilterComponent implements OnInit {
     }
   }
 
+  private addDateRangeControl(filter: any): void {
+    const from = 'start';
+    const to = 'end';
+    if (!this.filterForm.get(from)) {
+      this.filterForm.addControl(from as any, new FormControl<Date | null>(null));
+      this.formDefaultValue.set({
+        ...this.formDefaultValue(),
+        [from]: null,
+      });
+    }
+    if (!this.filterForm.get(to)) {
+      this.filterForm.addControl(to as any, new FormControl<Date | null>(null));
+      this.formDefaultValue.set({
+        ...this.formDefaultValue(),
+        [to]: null,
+      });
+    }
+  }
+
   private normalizeFilterParams(rawValue: any) {
     const result: Record<string, any> = {};
 
@@ -248,6 +271,10 @@ export class FilterComponent implements OnInit {
 
       if (inputTextFilters.includes(key)) {
         result[key] = value;
+      }
+
+      if (key == 'start' || key == 'end') {
+        result[key] = Array.isArray(value) ? value : [value];
       }
     }
 

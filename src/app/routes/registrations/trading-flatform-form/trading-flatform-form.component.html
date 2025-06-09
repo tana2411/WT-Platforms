@@ -182,14 +182,7 @@
           }
         }
         <div class="col-auto mb-2">
-          <mat-checkbox
-            class="bold-label"
-            color="primary"
-            (change)="showOtherMaterial.set(!showOtherMaterial())"
-            [checked]="selectAllMaterial()"
-          >
-            Other
-          </mat-checkbox>
+          <mat-checkbox class="bold-label" color="primary" (change)="showOtherMaterial.set(!showOtherMaterial())"> Other </mat-checkbox>
         </div>
         @if (showOtherMaterial()) {
           <div class="col-12">

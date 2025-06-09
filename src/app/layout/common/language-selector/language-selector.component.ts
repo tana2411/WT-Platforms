@@ -27,6 +27,7 @@ export class LanguageSelectorComponent {
   setLanguage(code: string) {
     this.translate.use(code);
     localStorage.setItem('language', code);
+    this.currentLanguageFlag = this.languages.find((lang) => lang.code === code)?.flag ?? this.languages[0].flag;
   }
 
   get currentLang() {

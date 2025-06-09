@@ -3,7 +3,7 @@ import { countries, materialTypes, packing } from '@app/statics';
 export interface Filter {
   name: string;
   value: string;
-  type: 'select' | 'checkbox' | 'input';
+  type: 'select' | 'checkbox' | 'input' | 'dateRange';
   options?: any[];
   placeholder?: string;
   defaultValue?: string;
@@ -52,7 +52,7 @@ export const allFilters: Filter[] = [
   },
   {
     name: 'SELLER',
-    value: 'company', //for live activity table -> listing
+    value: 'company',
     type: 'select',
     options: [],
   },
@@ -117,6 +117,13 @@ export const allFilters: Filter[] = [
         name: 'Outdoors',
       },
     ],
+  },
+
+  {
+    name: 'DATE REQUIRED FROM',
+    value: 'dateRequiredForm',
+    type: 'dateRange',
+    options: [],
   },
 ];
 

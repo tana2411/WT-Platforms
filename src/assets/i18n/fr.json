@@ -11,5 +11,19 @@
   "******": "******",
   "Invalid email address and/or password.": "Adresse e-mail et/ou mot de passe invalide.",
   "LOGIN": "CONNEXION",
-  "LOST YOUR PASSWORD?": "MOT DE PASSE OUBLIÉ ?"
+  "LOST YOUR PASSWORD?": "MOT DE PASSE OUBLIÉ ?",
+  "Hi": "Bonjour",
+  "Dashboard": "Tableau de bord",
+  "PLATFORM": "PLATEFORME",
+  "More": "Plus",
+  "ADMIN PLATFORM": "PLATEFORME ADMIN",
+  "Buy Materials": "Acheter des matériaux",
+  "Wanted Materials": "Matériaux recherchés",
+  "Create Listing": "Créer une annonce",
+  "My Listings": "Mes annonces",
+  "My Offers Selling": "Mes offres de vente",
+  "My Offers Buying": "Mes offres d'achat",
+  "My Sites": "Mes sites",
+  "Live Activity": "Activité en direct",
+  "Commercial Management": "Gestion commerciale"
 }

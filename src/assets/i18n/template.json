@@ -11,5 +11,19 @@
 	"******": "******",
 	"Invalid email address and/or password.": "Invalid email address and/or password.",
 	"LOGIN": "LOGIN",
-	"LOST YOUR PASSWORD?": "LOST YOUR PASSWORD?"
+	"LOST YOUR PASSWORD?": "LOST YOUR PASSWORD?",
+	"Hi": "Hi",
+	"Dashboard": "Dashboard",
+	"PLATFORM": "PLATFORM",
+	"More": "More",
+	"ADMIN PLATFORM": "ADMIN PLATFORM",
+	"Buy Materials": "Buy Materials",
+	"Wanted Materials": "Wanted Materials",
+	"Create Listing": "Create Listing",
+	"My Listings": "My Listings",
+	"My Offers Selling": "My Offers Selling",
+	"My Offers Buying": "My Offers Buying",
+	"My Sites": "My Sites",
+	"Live Activity": "Live Activity",
+	"Commercial Management": "Commercial Management"
 }
