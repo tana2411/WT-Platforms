@@ -7,6 +7,7 @@ import {
   input,
   Output,
   runInInjectionContext,
+  signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
@@ -36,13 +37,15 @@ export class ListingDetailActionsComponent {
   injector = inject(Injector);
 
   canAction = computed(() => this.listing()?.bidStatus.state === OfferState.PENDING);
+  submitting = signal<'accept' | 'reject' | 'request' | undefined>(undefined);
 
   onApprove = () => {
     const listingId = this.listingId();
-    if (!listingId) {
+    if (!listingId || this.submitting()) {
       return;
     }
 
+    this.submitting.set('accept');
     runInInjectionContext(this.injector, () => {
       this.adminListingService
         .callAction(listingId, ListingRequestActionEnum.ACCEPT, {})
@@ -63,10 +66,11 @@ export class ListingDetailActionsComponent {
 
   onReject = () => {
     const listingId = this.listingId();
-    if (!listingId) {
+    if (!listingId || this.submitting()) {
       return;
     }
 
+    this.submitting.set('reject');
     const dataConfig: MatDialogConfig = {
       width: '100%',
       maxWidth: '960px',
@@ -100,10 +104,11 @@ export class ListingDetailActionsComponent {
 
   onRequestMoreInformation = () => {
     const listingId = this.listingId();
-    if (!listingId) {
+    if (!listingId || this.submitting()) {
       return;
     }
 
+    this.submitting.set('request');
     runInInjectionContext(this.injector, () => {
       this.adminListingService
         .callAction(listingId, ListingRequestActionEnum.REQUEST_INFORMATION, {})

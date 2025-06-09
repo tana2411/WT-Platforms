@@ -158,6 +158,10 @@
   .filter-wrapper mat-form-field {
     height: 34px;
   }
+
+  .text-input-wrapper .mat-mdc-form-field-infix {
+    min-height: unset;
+  }
 }
 
 .filter-wrapper {
@@ -188,6 +192,12 @@
       }
 
       mat-select {
+        height: 5px;
+      }
+    }
+
+    .text-input-wrapper {
+      mat-form-field {
         height: 50px;
       }
     }
@@ -196,8 +206,22 @@
   @media screen and (min-width: 768px) {
     position: relative;
 
-    .select-wrapper {
-      width: 150px;
+    .select-item {
+      max-width: 120px;
+    }
+
+    .input-item {
+      max-width: 150px;
+    }
+
+    .sortBy-wrapper {
+      flex: 1;
+      display: flex;
+      justify-content: end;
+
+      .select-item {
+        max-width: 200px !important;
+      }
     }
   }
 }

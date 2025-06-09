@@ -3,8 +3,8 @@ import { countries, materialTypes, packing } from '@app/statics';
 export interface Filter {
   name: string;
   value: string;
-  type: 'select' | 'checkbox';
-  options: any[];
+  type: 'select' | 'checkbox' | 'input';
+  options?: any[];
   placeholder?: string;
   defaultValue?: string;
 }
@@ -43,14 +43,12 @@ export const allFilters: Filter[] = [
   {
     name: 'BUYER',
     value: 'buyerCompanyName',
-    type: 'select',
-    options: [],
+    type: 'input',
   },
   {
     name: 'SELLER',
     value: 'sellerCompanyName',
-    type: 'select',
-    options: [],
+    type: 'input',
   },
   {
     name: 'SELLER',

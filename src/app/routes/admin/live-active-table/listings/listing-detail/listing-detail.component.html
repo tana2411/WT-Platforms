@@ -39,7 +39,7 @@
           </div>
           <div class="col-6 col-md-3">
             <div class="fw-bold mb-2 mb-md-3 text-uppercase">STATUS</div>
-            <p class="mb-1 small">{{ listing?.status | titlecase }}</p>
+            <p class="mb-1 small fw-500" [style.color]="getStatusColor(listing!.status)">{{ listing?.status | titlecase }}</p>
           </div>
 
           <!-- Second Row -->
@@ -57,17 +57,10 @@
           </div>
           <div class="col-6 col-md-3">
             <div class="fw-bold mb-2 mb-md-3 text-uppercase">STATE</div>
-            @if (listing?.state === 'active') {
-              <div class="d-flex align-items-center gap-1">
-                <mat-icon class="primary">fiber_manual_record</mat-icon>
-                <span class="primary small">Active</span>
-              </div>
-            } @else {
-              <div class="d-flex align-items-center gap-1">
-                <mat-icon class="error">fiber_manual_record</mat-icon>
-                <span class="error small">Pending</span>
-              </div>
-            }
+            <div class="d-flex align-items-center gap-1">
+              <mat-icon [style.color]="getStateColor(listing!.state)">fiber_manual_record</mat-icon>
+              <span class="small" [style.color]="getStateColor(listing!.state)">{{ listing?.state | titlecase }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -79,7 +72,7 @@
 
       <!-- Button Section -->
       <div class="col-12 col-lg-2 d-flex align-items-center justify-content-center justify-content-lg-end">
-        <button mat-stroked-button class="border-primary primary">VIEW DETAIL</button>
+        <button mat-stroked-button class="border-primary primary" (click)="onViewDetail()">VIEW DETAIL</button>
       </div>
     </div>
   </div>
