@@ -416,6 +416,7 @@ export class FilterComponent implements OnInit {
     }
 
     this.filterForm.patchValue(patchValue);
+    this.filterForm.markAsPristine();
     this.closeFilterMobile();
   }
 

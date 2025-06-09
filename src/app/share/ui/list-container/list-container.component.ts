@@ -48,7 +48,12 @@ export class ListContainerComponent implements OnInit {
 
   onPageChange(p: number) {
     this.page.set(p);
-    this.updateFilter({ skip: (p - 1) * this.pageSize });
+    this.updateFilter({
+      skip: (p - 1) * this.pageSize,
+      where: {
+        ...this.filter().where,
+      },
+    });
     this.refresh();
   }
 
@@ -83,6 +88,8 @@ export class ListContainerComponent implements OnInit {
         delete cleanedParams['sellerCompanyName'];
       }
     }
+
+    this.page.set(1);
 
     this.updateFilter({ skip: 0, where: { ...cleanedParams } });
     this.refresh();
