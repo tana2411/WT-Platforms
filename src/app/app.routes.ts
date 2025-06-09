@@ -246,6 +246,7 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./routes/admin/live-active-table/wanted/wanted.component').then((m) => m.WantedComponent),
       },
+      { path: '', pathMatch: 'full', redirectTo: 'purchases' },
     ],
   },
   {
