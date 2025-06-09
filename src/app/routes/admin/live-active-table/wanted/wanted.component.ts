@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { ListingService } from 'app/services/listing.service';
 import { ListContainerComponent, PageResult } from 'app/share/ui/list-container/list-container.component';
 import { Observable, of } from 'rxjs';
 import { WantedDetailComponent } from './wanted-detail/wanted-detail.component';
@@ -10,6 +11,7 @@ import { WantedDetailComponent } from './wanted-detail/wanted-detail.component';
   imports: [ListContainerComponent, WantedDetailComponent],
 })
 export class WantedComponent implements OnInit {
+  listingsService = inject(ListingService);
   constructor() {}
 
   ngOnInit() {}

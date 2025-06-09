@@ -12,8 +12,8 @@ export interface CreatedBy {
     name: string;
   };
   location: {
-    id: number;
-    locationName: string;
+    id?: number;
+    locationName?: string;
     country: string;
   };
 }
@@ -21,7 +21,7 @@ export interface CreatedBy {
 export interface SellListingDetail {
   id: number;
   created_by_user_id: number;
-  listing_type: 'sell' | 'buy';
+  listing_type: 'sell' | 'buy' | 'wanted';
   title: string;
   description: string | null;
   quantity: number;

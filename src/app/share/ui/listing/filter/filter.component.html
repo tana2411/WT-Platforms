@@ -43,8 +43,8 @@
                   <div class="filter-select-item-label d-flex align-items-start">{{ item.name }}</div>
                   <mat-form-field appearance="outline" class="w-100 bg-white">
                     <mat-date-range-input [rangePicker]="picker">
-                      <input matStartDate placeholder="Start" formControlName="start" name="start" class="fw-bold" />
-                      <input matEndDate placeholder="End" formControlName="end" name="end" class="fw-bold" />
+                      <input matStartDate placeholder="Start" formControlName="dateRequireFrom" name="start" class="fw-bold" />
+                      <input matEndDate placeholder="End" formControlName="dateRequireTo" name="end" class="fw-bold" />
                     </mat-date-range-input>
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>

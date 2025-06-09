@@ -123,8 +123,22 @@ export const allFilters: Filter[] = [
 
   {
     name: 'DATE REQUIRED FROM',
-    value: 'dateRequiredForm',
+    value: 'dateRange',
     type: 'dateRange',
+    options: [],
+  },
+
+  // for admin wanted listing filter
+  {
+    name: 'COMPANY',
+    value: 'wantedCompany',
+    type: 'select',
+    options: [],
+  },
+  {
+    name: 'BUYER',
+    value: 'wantedBuyer',
+    type: 'select',
     options: [],
   },
 ];
@@ -155,4 +169,22 @@ export const listingSortOption = [
   { name: 'Status Desc', code: ListingSortBy.STATUS_DESC },
   { name: 'State Asc', code: ListingSortBy.STATE_ASC },
   { name: 'State Desc', code: ListingSortBy.STATE_DESC },
+];
+
+export enum WantedListingSortBy {
+  COMPANY_NAME_ASC = 'companyNameAsc',
+  COMPANY_NAME_DESC = 'companyNameDesc',
+  MATERIAL_TYPE_ASC = 'materialTypeAsc',
+  MATERIAL_TYPE_DESC = 'materialTypeDesc',
+  COUNTRY_ASC = 'countryAsc',
+  COUNTRY_DESC = 'countryDesc',
+}
+
+export const wantedSortOption = [
+  { name: 'Company Name Asc', code: WantedListingSortBy.COMPANY_NAME_ASC },
+  { name: 'Company Name Desc', code: WantedListingSortBy.COMPANY_NAME_DESC },
+  { name: 'Material Type Asc', code: WantedListingSortBy.MATERIAL_TYPE_ASC },
+  { name: 'Material Type Desc', code: WantedListingSortBy.MATERIAL_TYPE_DESC },
+  { name: 'Country Asc', code: WantedListingSortBy.COUNTRY_ASC },
+  { name: 'Country Desc', code: WantedListingSortBy.COUNTRY_DESC },
 ];

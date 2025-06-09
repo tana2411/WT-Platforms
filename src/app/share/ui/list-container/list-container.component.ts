@@ -27,6 +27,7 @@ export class ListContainerComponent implements OnInit {
   @Input() pageType: PageType = 'default';
   @Input() emptyMessage: string = '';
   @Input() isCountryFilter: boolean = false;
+  @Input() listingType: 'sell' | 'wanted' = 'sell';
 
   @ContentChild(TemplateRef) itemTemplate!: TemplateRef<any>;
 
@@ -69,6 +70,13 @@ export class ListContainerComponent implements OnInit {
       cleanedParams['sortBy'] = Array.isArray(cleanedParams['sortBy'])
         ? cleanedParams['sortBy'][0]
         : cleanedParams['sortBy'];
+    }
+
+    if (this.pageType == 'wanted') {
+      if ('wantedCompany' in cleanedParams) {
+        cleanedParams['company'] = cleanedParams['wantedCompany'];
+        delete cleanedParams['wantedCompany'];
+      }
     }
 
     this.updateFilter({ skip: 0, where: { ...cleanedParams } });
