@@ -1,10 +1,32 @@
-.mat-date-range-input-container {
+@import 'variables';
+
+.small-mat-form-field .mat-datepicker-input {
   display: flex;
   align-items: center;
   position: absolute !important;
-  bottom: 27px !important;
+  bottom: 30px !important;
+
+  &::placeholder {
+    font-weight: bold !important;
+    color: black !important;
+  }
+
+  &::-webkit-input-placeholder {
+    font-weight: 700 !important;
+    color: $black !important;
+  }
+
+  &::-moz-placeholder {
+    font-weight: 700 !important;
+    color: $black !important;
+  }
+
+  &:-ms-input-placeholder {
+    font-weight: 700 !important;
+    color: $black !important;
+  }
 }
 
-.mat-date-range-input-wrapper {
+.small-mat-form-field .mat-date-input-wrapper {
   max-width: none !important;
 }

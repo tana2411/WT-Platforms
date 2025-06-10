@@ -61,14 +61,14 @@ export class EditDocumentFormComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    if (this.data.documents.length > 0) {
+    if (this.data?.documents?.length > 0) {
       this.companyDocuments = this.data.documents;
       this.showDocument(this.companyDocuments);
     }
   }
 
   ngAfterViewInit() {
-    if (this.data.documents?.length > 0) {
+    if (this.data?.documents?.length > 0) {
       this.chooseDocumentType(this.data.documents);
       this.cd.detectChanges();
     }
@@ -154,6 +154,19 @@ export class EditDocumentFormComponent implements OnInit {
       this.selectedWasteLicenceFile.set(file ?? []);
     }
     this.formGroup.updateValueAndValidity();
+  }
+
+  get isSubmitDisabled() {
+    if (this.formGroup.invalid || this.formGroup.pristine) {
+      return true;
+    } else {
+      const exitsFile = this.selectedDocumentFile().filter((f) => f.documentType == this.documentType.value);
+      const { documentType, wasteLicence } = this.formGroup.value;
+      const validDocument = documentType !== 'uploadLater' ? exitsFile.length > 0 : true;
+      const validLicence = wasteLicence ? this.selectedWasteLicenceFile().length > 0 : true;
+
+      return !(validDocument && validLicence);
+    }
   }
 
   submit() {}

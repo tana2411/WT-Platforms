@@ -212,7 +212,11 @@
     }
 
     .input-item {
-      max-width: 150px;
+      max-width: 120px;
+    }
+
+    .date-item {
+      max-width: 130px;
     }
 
     .sortBy-wrapper {
@@ -226,7 +230,29 @@
     }
 
     .dateRange-wrapper {
-      width: 255px;
+      width: 270px;
+    }
+  }
+
+  .input-item {
+    input[matInput] {
+      &::placeholder {
+        font-weight: 700 !important;
+        color: $black !important;
+      }
+      &::-webkit-input-placeholder {
+        font-weight: 700 !important;
+        color: $black !important;
+      }
+      &::-moz-placeholder {
+        font-weight: 700 !important;
+        color: $black !important;
+        opacity: 1 !important;
+      }
+      &:-ms-input-placeholder {
+        font-weight: 700 !important;
+        color: $black !important;
+      }
     }
   }
 }

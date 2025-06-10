@@ -4,10 +4,10 @@
       <!-- SELLER Section -->
       <div class="col-12 col-md-6 col-lg-3 col-xl-2">
         <div class="fw-bold mb-2 mb-md-3 text-uppercase">SELLER</div>
-        <p class="mb-1 small">ID: {{ listing?.createdBy?.user?.id }}</p>
-        <p class="mb-1 small">Full name: {{ listing?.createdBy?.user?.firstName }} {{ listing?.createdBy?.user?.lastName }}</p>
-        <p class="mb-1 small">Company: {{ listing?.createdBy?.company?.name }}</p>
-        <p class="mb-1 small">Buyer location: {{ countryCodeToName(listing?.createdBy?.location?.country) }}</p>
+        <p class="mb-1 small">{{ listing?.createdBy?.user?.id }}</p>
+        <p class="mb-1 small">{{ listing?.createdBy?.user?.firstName }} {{ listing?.createdBy?.user?.lastName }}</p>
+        <p class="mb-1 small">{{ listing?.createdBy?.company?.name }}</p>
+        <p class="mb-1 small">{{ countryCodeToName(listing?.createdBy?.location?.country) }}</p>
       </div>
 
       <!-- MATERIAL Section -->
@@ -25,19 +25,19 @@
       <div class="col-12 col-lg-6 col-xl-6">
         <div class="row gy-2 gy-md-3">
           <!-- First Row -->
-          <div class="col-6 col-md-3">
+          <div class="col-6 col-md-3 mb-4">
             <div class="fw-bold mb-2 mb-md-3 text-uppercase">DATE</div>
             <p class="mb-1 small">{{ listing?.created_at | date: 'dd/MM/YYYY' }}</p>
           </div>
-          <div class="col-6 col-md-3">
+          <div class="col-6 col-md-3 mb-4">
             <div class="fw-bold mb-2 mb-md-3 text-uppercase">DATE AVAILABLE</div>
             <p class="mb-1 small">{{ listing?.start_date | date: 'dd/MM/YYYY' }}</p>
           </div>
-          <div class="col-6 col-md-3">
+          <div class="col-6 col-md-3 mb-4">
             <div class="fw-bold mb-2 mb-md-3 text-uppercase">NO. OF OFFER</div>
             <p class="mb-1 small">{{ listing?.numberOfOffers }}</p>
           </div>
-          <div class="col-6 col-md-3">
+          <div class="col-6 col-md-3 mb-4">
             <div class="fw-bold mb-2 mb-md-3 text-uppercase">STATUS</div>
             <p class="mb-1 small fw-500" [style.color]="getStatusColor(listing!.status)">{{ listing?.status | titlecase }}</p>
           </div>

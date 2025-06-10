@@ -51,7 +51,7 @@ export const allFilters: Filter[] = [
     type: 'input',
   },
   {
-    name: 'SELLER',
+    name: 'COMPANY',
     value: 'company',
     type: 'select',
     options: [],
@@ -128,14 +128,6 @@ export const allFilters: Filter[] = [
     name: 'DATE REQUIRED FROM',
     value: 'dateRange',
     type: 'dateRange',
-    options: [],
-  },
-
-  // for admin wanted listing filter
-  {
-    name: 'COMPANY',
-    value: 'wantedCompany',
-    type: 'select',
     options: [],
   },
 ];

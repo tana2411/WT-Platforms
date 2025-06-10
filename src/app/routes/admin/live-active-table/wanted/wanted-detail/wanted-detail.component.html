@@ -1,13 +1,13 @@
 <div class="w-100">
   <div class="border border-primary rounded-4 p-3 p-md-4 mt-4 mb-3">
-    <div class="row gy-4">
+    <div class="row gy-2">
       <!-- SELLER Section -->
       <div class="col-12 col-md-6 col-lg-2">
         <div class="fw-bold mb-3">BUYER</div>
-        <p class="mb-1">ID: {{ wanted?.createdBy?.user?.id }}</p>
-        <p class="mb-1">Full name: {{ wanted?.createdBy?.user?.firstName }} {{ wanted?.createdBy?.user?.lastName }}</p>
-        <p class="mb-1">Company: {{ wanted?.createdBy?.company?.name }}</p>
-        <p class="mb-1">Buyer location: {{ countryCodeToName(wanted?.createdBy?.location?.country) }}</p>
+        <p class="mb-1">{{ wanted?.createdBy?.user?.id || '-' }}</p>
+        <p class="mb-1">{{ wanted?.createdBy?.user?.firstName || '-' }} {{ wanted?.createdBy?.user?.lastName || '-' }}</p>
+        <p class="mb-1">{{ wanted?.createdBy?.company?.name || '-' }}</p>
+        <p class="mb-1">{{ countryCodeToName(wanted?.createdBy?.location?.country) || '-' }}</p>
       </div>
 
       <div class="col-12 d-md-none">
@@ -18,48 +18,48 @@
         <div class="d-md-flex col-md-10 justify-content-between">
           <div class="col-md-3 flex-md-column d-flex col-12">
             <div class="flex-column mb-5 col-md-auto col-6">
-              <div class="fw-bold mb-3 w-100">DATE LISTED</div>
-              <div class="mb-1 w-100">{{ wanted?.created_at | date: 'dd/MM/YYYY' }}</div>
+              <div class="fw-bold mb-3 w-100">DATE REQUIRED FROM</div>
+              <div class="mb-1 w-100">{{ (wanted?.start_date | date: 'dd/MM/YYYY') || '-' }}</div>
             </div>
             <div class="flex-column col-md-auto col-6">
-              <div class="fw-bold mb-3 w-100">MATERIAL</div>
-              <p class="mb-1 w-100">{{ getMaterialName(wanted?.material_type) }}</p>
+              <div class="fw-bold mb-3 w-100">DATE LISTED</div>
+              <div class="mb-1 w-100">{{ (wanted?.created_at | date: 'dd/MM/YYYY') || '-' }}</div>
             </div>
           </div>
 
           <div class="col-md-3 flex-md-column d-flex col-12">
-            <div class="flex-column mb-5 col-md-auto col-6">
-              <div class="fw-bold mb-3 w-100">DATE REQUIRED FROM</div>
-              <div class="mb-1 w-100">{{ wanted?.start_date | date: 'dd/MM/YYYY' }}</div>
+            <div class="flex-column col-md-auto col-6 mb-5">
+              <div class="fw-bold mb-3 w-100">QUANTITY REQUIRED</div>
+              <div class="mb-1 w-100">{{ wanted?.quantity || '-' }}</div>
             </div>
             <div class="flex-column col-md-auto col-6">
-              <div class="fw-bold mb-3 w-100">QUANTITY REQUIRED</div>
-              <p class="mb-1 w-100">{{ wanted?.quantity }}</p>
+              <div class="fw-bold mb-3 w-100">MATERIAL</div>
+              <div class="mb-1 w-100">{{ getMaterialName(wanted?.material_type) || '-' }}</div>
             </div>
           </div>
 
           <div class="col-md-3 flex-md-column d-flex col-12">
             <div class="flex-column mb-5 col-md-auto col-6">
               <div class="fw-bold mb-3 w-100">PACKAGING</div>
-              <div class="mb-1 w-100">{{ getPackingName(wanted?.material_packing) }}</div>
+              <div class="mb-1 w-100">{{ getPackingName(wanted?.material_packing) || '-' }}</div>
             </div>
             <div class="flex-column col-md-auto col-6">
               <div class="fw-bold mb-3 w-100">STORAGE</div>
-              <div class="mb-1 w-100">{{ wanted?.waste_storation | titlecase }}</div>
+              <div class="mb-1 w-100">{{ (wanted?.waste_storation | titlecase) || '-' }}</div>
             </div>
           </div>
 
           <div class="col-md-3 flex-md-column d-flex col-12">
             <div class="flex-column mb-5 col-md-auto col-6">
               <div class="fw-bold mb-2 mb-md-3 text-uppercase">STATUS</div>
-              <p class="mb-1 small fw-500" [style.color]="getStatusColor(wanted!.status)">{{ wanted?.status | titlecase }}</p>
+              <p class="mb-1 small fw-500" [style.color]="getStatusColor(wanted!.status)">{{ (wanted?.status | titlecase) || '-' }}</p>
             </div>
 
             <div class="flex-column col-md-auto col-6">
               <div class="fw-bold mb-2 mb-md-3 text-uppercase">STATE</div>
               <div class="d-flex align-items-center gap-1">
                 <mat-icon [style.color]="getStateColor(wanted!.state)">fiber_manual_record</mat-icon>
-                <span class="small" [style.color]="getStateColor(wanted!.state)">{{ wanted?.state | titlecase }}</span>
+                <span class="small" [style.color]="getStateColor(wanted!.state)">{{ (wanted?.state | titlecase) || '-' }}</span>
               </div>
             </div>
           </div>
