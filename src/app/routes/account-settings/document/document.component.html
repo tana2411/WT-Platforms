@@ -52,53 +52,58 @@
               <div>{{ documentTypeUploaded }}</div>
             </div>
           </div>
-          <ng-container
-            *ngTemplateOutlet="
-              document;
-              context: {
-                items: environmentPermitDocuments,
-                type: 'ENVIRONMENTAL PERMIT',
-              }
-            "
-          ></ng-container>
-          <ng-container
-            *ngTemplateOutlet="
-              document;
-              context: {
-                items: wasteExemptionDocuments,
-                type: 'WASTE EXEMPTION',
-              }
-            "
-          ></ng-container>
-          <ng-container
-            *ngTemplateOutlet="
-              document;
-              context: {
-                items: otherDocuments,
-                type: 'OTHER DOCUMENT DESCRIPTION',
-              }
-            "
-          ></ng-container>
-          <div class="mb-1">
-            <span class="fw-bold" i18n> DO YOU HAVE A WASTE CARRIER LICENCE ? </span>
-            <div class="d-flex justify-content-between col-12 col-md-6" name="wasteLicence" style="pointer-events: none">
-              <mat-radio-button class="bold-label col-6" [value]="true" [checked]="wasteCarrierLicenseDocuments.length > 0" i18n>
-                Yes
-              </mat-radio-button>
-              <mat-radio-button class="bold-label col-6" [value]="false" [checked]="wasteCarrierLicenseDocuments.length == 0" i18n>
-                Not Applicable
-              </mat-radio-button>
+          @if (environmentPermitDocuments.length > 0) {
+            <ng-container
+              *ngTemplateOutlet="
+                document;
+                context: {
+                  items: environmentPermitDocuments,
+                  type: 'ENVIRONMENTAL PERMIT',
+                }
+              "
+            ></ng-container>
+          }
+
+          @if (wasteExemptionDocuments.length > 0) {
+            <ng-container
+              *ngTemplateOutlet="
+                document;
+                context: {
+                  items: wasteExemptionDocuments,
+                  type: 'WASTE EXEMPTION',
+                }
+              "
+            ></ng-container>
+          }
+
+          @if (otherDocuments.length > 0) {
+            <ng-container
+              *ngTemplateOutlet="
+                document;
+                context: {
+                  items: otherDocuments,
+                  type: 'OTHER DOCUMENT DESCRIPTION',
+                }
+              "
+            ></ng-container>
+          }
+          <div class="mb-1 mt-5">
+            <span class="fw-bold" i18n> DO YOU HAVE A WASTE CARRIER LICENCE? </span>
+            <div class="d-flex justify-content-between col-12 col-md-6" name="wasteLicence" style="pointer-events: none" i18n>
+              {{ wasteCarrierLicenseDocuments.length > 0 ? 'Yes' : 'Not Applicable' }}
             </div>
           </div>
-          <ng-container
-            *ngTemplateOutlet="
-              document;
-              context: {
-                items: wasteCarrierLicenseDocuments,
-                type: 'WASTE CARRIER LICENCE UPLOAD',
-              }
-            "
-          ></ng-container>
+          @if (wasteCarrierLicenseDocuments.length > 0) {
+            <ng-container
+              *ngTemplateOutlet="
+                document;
+                context: {
+                  items: wasteCarrierLicenseDocuments,
+                  type: 'WASTE CARRIER LICENCE UPLOAD',
+                }
+              "
+            ></ng-container>
+          }
         </div>
       </div>
     </div>

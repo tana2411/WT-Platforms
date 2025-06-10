@@ -52,12 +52,14 @@ export class DocumentComponent {
         this.documents = this.user()?.company?.companyDocuments || [];
         this.documentTypeUploaded = [
           ...new Set(
-            this.documents.map((d) =>
-              d.documentType
-                .split('_')
-                .map((token) => token.at(0)?.toUpperCase() + token.slice(1))
-                .join(' '),
-            ),
+            this.documents
+              .filter((d) => d.documentType != 'waste_carrier_license')
+              .map((d) =>
+                d.documentType
+                  .split('_')
+                  .map((token) => token.at(0)?.toUpperCase() + token.slice(1))
+                  .join(' '),
+              ),
           ),
         ].join(', ');
         this.showDocuments();

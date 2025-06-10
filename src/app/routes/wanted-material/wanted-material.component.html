@@ -1,4 +1,4 @@
-<app-common-layout title="Wanted Material" class="d-flex flex-column min-vh-100">
+<app-common-layout [title]="'Wanted Material'" class="d-flex flex-column min-vh-100">
   <app-filter
     [displayFilter]="['country', 'materialType', 'materialItem', 'materialPacking', 'wasteStoration', 'showFullfilledListing', 'sortBy']"
     (filterChanged)="onFilterChange($event)"
