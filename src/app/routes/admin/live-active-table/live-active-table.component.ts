@@ -1,7 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { AdminLayoutComponent } from 'app/layout/admin-layout/admin-layout.component';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-live-active-table',
@@ -14,6 +16,7 @@ export class LiveActiveTableComponent implements OnInit {
 
   router = inject(Router);
   activatedRoute = inject(ActivatedRoute);
+  destroyRef = inject(DestroyRef);
 
   tabPaths: Record<string, string> = {
     PURCHASES: 'purchases',
@@ -24,17 +27,26 @@ export class LiveActiveTableComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
+    this.selectedIndex = this.indexOfTab;
+    this.router.events
+      .pipe(
+        filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(() => {
+        this.selectedIndex = this.indexOfTab;
+      });
+  }
+
+  get indexOfTab(): number {
+    const routes = Object.values(this.tabPaths);
     const child = this.activatedRoute.firstChild;
     const tabName = child?.snapshot.url[0]?.path;
-    const routes = Object.values(this.tabPaths);
 
     if (tabName) {
-      const index = routes.indexOf(tabName);
-      this.selectedIndex = index > -1 ? index : 0;
-    } else {
-      this.selectedIndex = 0;
-      this.router.navigate([this.tabPaths['PURCHASES']], { relativeTo: this.activatedRoute });
+      return routes.indexOf(tabName);
     }
+    return 0;
   }
 
   onTabChange(event: MatTabChangeEvent) {

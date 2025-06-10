@@ -1,3 +1,4 @@
+import { NgTemplateOutlet, TitleCasePipe } from '@angular/common';
 import { Component, effect, inject, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -5,24 +6,35 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { CompanyDocumentType, User } from 'app/models';
 import { IDocument } from 'app/models/listing-material-detail.model';
 import { AuthService } from 'app/services/auth.service';
+import { getStatusColor } from 'app/share/utils/offer';
 import { EditDocumentFormComponent } from './edit-document-form/edit-document-form.component';
 
 @Component({
   selector: 'app-document',
   templateUrl: './document.component.html',
   styleUrl: './document.component.scss',
-  imports: [MatIconModule, MatButtonModule, MatRadioModule, ReactiveFormsModule, FormsModule],
+  imports: [
+    MatIconModule,
+    MatButtonModule,
+    MatRadioModule,
+    ReactiveFormsModule,
+    FormsModule,
+    NgTemplateOutlet,
+    TitleCasePipe,
+    MatTooltipModule,
+  ],
 })
 export class DocumentComponent {
   user: Signal<User | null | undefined>;
-
+  getStatusColor = getStatusColor;
+  documentTypeUploaded: string = '';
   documents: IDocument[] | undefined = undefined;
   CompanyDocumentType = CompanyDocumentType;
   documentType: CompanyDocumentType = CompanyDocumentType.EnvironmentalPermit;
-  selectedType: string = '';
 
   environmentPermitDocuments: IDocument[] = [];
   wasteExemptionDocuments: IDocument[] = [];
@@ -36,8 +48,18 @@ export class DocumentComponent {
     this.user = toSignal(this.authService.user$);
 
     effect(() => {
-      if (this.user()?.company.companyDocuments) {
-        this.documents = this.user()?.company.companyDocuments;
+      if (this.user()?.company?.companyDocuments) {
+        this.documents = this.user()?.company?.companyDocuments || [];
+        this.documentTypeUploaded = [
+          ...new Set(
+            this.documents.map((d) =>
+              d.documentType
+                .split('_')
+                .map((token) => token.at(0)?.toUpperCase() + token.slice(1))
+                .join(' '),
+            ),
+          ),
+        ].join(', ');
         this.showDocuments();
       }
     });
@@ -60,20 +82,6 @@ export class DocumentComponent {
             this.otherDocuments.push(document);
         }
       });
-
-      this.chooseSelectedType();
-    }
-  }
-
-  private chooseSelectedType() {
-    if (this.environmentPermitDocuments.length > 0) {
-      this.selectedType = CompanyDocumentType.EnvironmentalPermit;
-    } else if (this.wasteCarrierLicenseDocuments.length > 0) {
-      this.selectedType = CompanyDocumentType.WasteCarrierLicense;
-    } else if (this.otherDocuments.length > 0) {
-      this.selectedType = 'other';
-    } else {
-      this.selectedType = '';
     }
   }
 
@@ -98,5 +106,9 @@ export class DocumentComponent {
         });
       }
     });
+  }
+
+  viewDocument(item: IDocument) {
+    window.open(item.documentUrl, '_blank');
   }
 }

@@ -78,15 +78,16 @@ export class ListContainerComponent implements OnInit {
     }
 
     if (this.pageType == 'wanted') {
-      if ('wantedCompany' in cleanedParams) {
-        cleanedParams['company'] = cleanedParams['wantedCompany'];
-        delete cleanedParams['wantedCompany'];
+      if ('buyerCompanyName' in cleanedParams) {
+        cleanedParams['name'] = cleanedParams['buyerCompanyName'];
+        delete cleanedParams['buyerCompanyName'];
       }
-
-      if ('sellerCompanyName' in cleanedParams) {
-        cleanedParams['name'] = cleanedParams['sellerCompanyName'];
-        delete cleanedParams['sellerCompanyName'];
-      }
+      Object.keys(cleanedParams).forEach((key) => {
+        const val = cleanedParams[key];
+        if (Array.isArray(val)) {
+          cleanedParams[key] = val[0];
+        }
+      });
     }
 
     this.page.set(1);

@@ -10,7 +10,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
-import { WantedCompanies } from 'app/models/wanted.model';
 import { CompaniesService } from 'app/share/services/companies.service';
 import { countries, materialTypes } from 'app/statics';
 import { ItemOf } from 'app/types/utils';
@@ -47,8 +46,6 @@ export class FilterComponent implements OnInit {
   allFilters = allFilters;
   activeFilter: any[] = [];
 
-  wantedCompany: WantedCompanies[] = [];
-
   filterForm = new FormGroup({
     [searchKey]: new FormControl<string | null>(null),
   });
@@ -71,6 +68,14 @@ export class FilterComponent implements OnInit {
     wanted: wantedSortOption,
   };
 
+  get minEndDate(): Date | null {
+    return this.filterForm.get('dateRequireFrom')?.value ?? null;
+  }
+
+  get maxStartDate(): Date | null {
+    return this.filterForm.get('dateRequireTo')?.value ?? null;
+  }
+
   constructor() {
     this.filterForm.valueChanges
       .pipe(
@@ -81,6 +86,10 @@ export class FilterComponent implements OnInit {
           const toCtrl = this.filterForm.get('dateRequireTo');
 
           if (hasDateRange && fromCtrl?.dirty && value.dateRequireTo == null) {
+            return EMPTY;
+          }
+
+          if (hasDateRange && toCtrl?.dirty && value.dateRequireFrom == null) {
             return EMPTY;
           }
 
@@ -97,6 +106,7 @@ export class FilterComponent implements OnInit {
         takeUntilDestroyed(),
       )
       .subscribe((value) => {
+        if (this.filterForm.invalid) return;
         this.filterChanged.emit({ ...value, searchTerm: this.filterForm.value[searchKey] });
       });
   }
@@ -105,52 +115,29 @@ export class FilterComponent implements OnInit {
     const sortOption = this.sortByMappings[this.pageType] || [];
 
     if (this.displayFilter) {
-      // const needsBuyer = this.displayFilter.includes('buyerCompanyName');
-      // const needsSeller = this.displayFilter.includes('sellerCompanyName');
       const needsCompany = this.displayFilter.includes('company');
-      const needsWantedCompany = this.displayFilter.includes('wantedCompany');
       const needsSortBy = this.displayFilter.includes('sortBy');
 
       if (needsSortBy) {
         this.allFilters = this.allFilters.map((f) => (f.value == 'sortBy' ? { ...f, options: sortOption } : f));
       }
 
-      if (needsWantedCompany) {
+      if (needsCompany) {
         this.companiesService
           .getWantedCompanies('wanted')
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe((list) => {
-            this.wantedCompany = list;
+            if (!list || list.length === 0) {
+              return;
+            }
+
             const wantedBuyerCompany = list.map((c) => ({ code: c.name, name: c.name }));
-
-            this.assignFilterOptions([{ key: 'wantedCompany', items: wantedBuyerCompany }]);
+            this.assignFilterOptions([{ key: 'company', items: wantedBuyerCompany }]);
             this.initializeFilters();
           });
       }
 
-      // if (needsBuyer || needsSeller) {
-      //   this.companiesService
-      //     .getOfferCompanies()
-      //     .pipe(takeUntilDestroyed(this.destroyRef))
-      //     .subscribe(({ buyer, seller }) => {
-      //       this.assignFilterOptions([
-      //         { key: 'buyerCompanyName', items: buyer },
-      //         { key: 'sellerCompanyName', items: seller },
-      //       ]);
-      //       this.initializeFilters();
-      //     });
-      // }
-      if (needsCompany) {
-        this.companiesService
-          .getCompanies('sell')
-          .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe((list) => {
-            this.assignFilterOptions([{ key: 'company', items: list }]);
-            this.initializeFilters();
-          });
-      } else {
-        this.initializeFilters();
-      }
+      this.initializeFilters();
     }
 
     // Update the item options according the material_type value
@@ -293,11 +280,6 @@ export class FilterComponent implements OnInit {
 
       if (selectFilters.includes(key)) {
         result[key] = Array.isArray(value) ? value : [value];
-
-        if (key == 'wantedBuyer') {
-          result['name'] = rawValue[key];
-          delete result[key];
-        }
         continue;
       }
 

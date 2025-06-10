@@ -32,7 +32,7 @@ export class MaterialComponent {
 
     effect(() => {
       if (this.user()?.company) {
-        this.favoriteMaterials = this.user()?.company.favoriteMaterials;
+        this.favoriteMaterials = this.user()?.company?.favoriteMaterials;
         this.companyId = this.user()?.company.id;
 
         this.showMaterial();
@@ -72,5 +72,9 @@ export class MaterialComponent {
         });
       }
     });
+  }
+
+  getMaterials(type: any): string {
+    return type.materials.map((m: any) => m.name).join(', ');
   }
 }

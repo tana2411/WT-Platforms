@@ -38,17 +38,44 @@
         <div class="d-flex flex-wrap align-items-lg-end gap-3 w-100 flex-column flex-md-row">
           @for (item of activeFilter; track item.value) {
             @if (item.type == 'dateRange') {
-              <div class="{{ item.value }}-wrapper dateRange-wrapper">
+              <div class="{{ item.value }}-wrapper">
                 <div class="small-mat-form-field d-flex flex-column align-items-start {{ item.value }}">
                   <div class="filter-select-item-label d-flex align-items-start">{{ item.name }}</div>
-                  <mat-form-field appearance="outline" class="w-100 bg-white">
-                    <mat-date-range-input [rangePicker]="picker">
-                      <input matStartDate placeholder="Start" formControlName="dateRequireFrom" name="start" class="fw-bold" />
-                      <input matEndDate placeholder="End" formControlName="dateRequireTo" name="end" class="fw-bold" />
-                    </mat-date-range-input>
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
-                  </mat-form-field>
+                  <div class="row g-1 align-items-center">
+                    <!-- Start Date -->
+                    <div class="date-item {{ item.value }}">
+                      <mat-form-field appearance="outline" class="w-100 bg-white">
+                        <input
+                          matInput
+                          placeholder="dd/MM/yyyy"
+                          formControlName="dateRequireFrom"
+                          [matDatepicker]="startPicker"
+                          name="start"
+                          class="fw-bold w-100"
+                          (click)="startPicker.open()"
+                          [max]="maxStartDate"
+                        />
+                        <mat-datepicker #startPicker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                    <span class="col-md-auto"> - </span>
+                    <!-- End Date -->
+                    <div class="date-item {{ item.value }}">
+                      <mat-form-field appearance="outline" class="w-100 bg-white">
+                        <input
+                          matInput
+                          placeholder="dd/MM/yyyy"
+                          formControlName="dateRequireTo"
+                          [matDatepicker]="endPicker"
+                          name="end"
+                          class="fw-bold w-100"
+                          (click)="endPicker.open()"
+                          [min]="minEndDate"
+                        />
+                        <mat-datepicker #endPicker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </div>
                 </div>
               </div>
             }

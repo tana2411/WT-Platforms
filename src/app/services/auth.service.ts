@@ -78,7 +78,6 @@ export class AuthService {
           return this.getMe();
         }),
         tap((user) => {
-          console.log('User data after login:', user);
           this._user$.next(user);
         }),
       );
