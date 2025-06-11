@@ -69,6 +69,7 @@ export class DocumentComponent {
 
   private showDocuments() {
     if (this.documents) {
+      this.resetDocument();
       this.documents.forEach((document) => {
         switch (document.documentType) {
           case CompanyDocumentType.EnvironmentalPermit:
@@ -87,6 +88,13 @@ export class DocumentComponent {
     }
   }
 
+  resetDocument() {
+    this.environmentPermitDocuments = [];
+    this.wasteCarrierLicenseDocuments = [];
+    this.wasteExemptionDocuments = [];
+    this.otherDocuments = [];
+  }
+
   extractFileName(url: string): string {
     return url.split('/').pop() || '';
   }
@@ -101,11 +109,7 @@ export class DocumentComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.authService.checkToken().subscribe((value) => {
-          if (value) {
-            this.showDocuments();
-          }
-        });
+        this.showDocuments();
       }
     });
   }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UpdateCompanyPayload, UpdateProfilePayload } from 'app/models';
+import { UpdateCompanyPayload, UpdateDocumentPayload, UpdateDocumentResponse, UpdateProfilePayload } from 'app/models';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -19,5 +19,9 @@ export class SettingsService {
 
   updateMaterialPreferences(id: number, favoriteMaterials: string[]): Observable<any> {
     return this.httpClient.patch(`/companies/${id}`, { favoriteMaterials });
+  }
+
+  updateCompanyDocument(payload: Partial<UpdateDocumentPayload>[]): Observable<UpdateDocumentResponse> {
+    return this.httpClient.post<UpdateDocumentResponse>('/company-documents/me', payload);
   }
 }

@@ -1,16 +1,23 @@
-import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, effect, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
-import { MAT_DIALOG_DATA, MatDialogClose, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { DocumentFileInfo, FileInfo, FileUploadComponent } from '@app/ui';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { CompanyDocument, CompanyDocumentType } from 'app/models';
+import { AuthService } from 'app/services/auth.service';
+import { SettingsService } from 'app/services/settings.service';
+import { UploadService } from 'app/share/services/upload.service';
+import { ConfirmModalComponent } from 'app/share/ui/confirm-modal/confirm-modal.component';
+import moment from 'moment';
+import { catchError, concatMap, finalize, of } from 'rxjs';
 
 @Component({
   selector: 'app-edit-document-form',
@@ -20,7 +27,6 @@ import { CompanyDocument, CompanyDocumentType } from 'app/models';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatDialogClose,
     IconComponent,
     MatButtonModule,
     MatSnackBarModule,
@@ -53,12 +59,33 @@ export class EditDocumentFormComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<{ [key: string]: string }>);
   readonly data = inject<{ documents: CompanyDocument[] }>(MAT_DIALOG_DATA);
   cd = inject(ChangeDetectorRef);
+  uploadService = inject(UploadService);
+  settingsService = inject(SettingsService);
+  snackBar = inject(MatSnackBar);
+  authService = inject(AuthService);
+  dialog = inject(MatDialog);
+  destroyRef = inject(DestroyRef);
 
   get documentType() {
     return this.formGroup.get('documentType') as FormControl;
   }
 
-  constructor() {}
+  get otherDocumentType() {
+    return this.formGroup.get('otherDocumentType') as FormControl;
+  }
+
+  constructor() {
+    effect(() => {
+      const otherFile = this.selectedDocumentFile().find((f) => f.documentType == 'other');
+      if (otherFile) {
+        this.formGroup.get('otherDocumentType')?.setValidators(Validators.required);
+      } else {
+        this.formGroup.get('otherDocumentType')?.clearValidators();
+      }
+      this.formGroup.get('otherDocumentType')?.updateValueAndValidity();
+      this.formGroup.updateValueAndValidity();
+    });
+  }
 
   ngOnInit() {
     if (this.data?.documents?.length > 0) {
@@ -71,6 +98,17 @@ export class EditDocumentFormComponent implements OnInit {
     if (this.data?.documents?.length > 0) {
       this.chooseDocumentType(this.data.documents);
       this.cd.detectChanges();
+    }
+  }
+
+  onLicenceChange(event: MatRadioChange) {
+    if (!event.value) {
+      this.wasteCarrierLicenseDocuments = [];
+    } else {
+      this.wasteCarrierLicenseDocuments = this.getDocumentList(
+        this.companyDocuments,
+        CompanyDocumentType.WasteCarrierLicense,
+      );
     }
   }
 
@@ -93,18 +131,24 @@ export class EditDocumentFormComponent implements OnInit {
             d.documentType !== CompanyDocumentType.WasteCarrierLicense,
         )
         .map((d) => ({
+          id: d.id,
+          documentType: d.documentType,
+          documentName: d.documentName,
           documentUrl: d.documentUrl,
           expiryDate: d.expiryDate,
-          documentType: d.documentType,
+          status: d.status,
         }));
     }
 
     return documents
       .filter((d) => d.documentType === type)
       .map((d) => ({
+        id: d.id,
+        documentType: d.documentType,
+        documentName: d.documentName,
         documentUrl: d.documentUrl,
         expiryDate: d.expiryDate,
-        documentType: d.documentType,
+        status: d.status,
       }));
   }
 
@@ -154,20 +198,231 @@ export class EditDocumentFormComponent implements OnInit {
       this.selectedWasteLicenceFile.set(file ?? []);
     }
     this.formGroup.updateValueAndValidity();
+    this.cd.detectChanges();
+  }
+
+  private isDocumentsChanged(originalDocs: CompanyDocument[], selectedFiles: any[]): boolean {
+    const originalMap = new Map(originalDocs.map((d) => [d.id, d]));
+    const { wasteLicence } = this.formGroup.value;
+
+    for (const file of selectedFiles) {
+      const orig = originalMap.get(file.fileId ?? file.id);
+
+      if (!orig) return true;
+      const expiryOrig = orig.expiryDate
+        ? moment(orig.expiryDate, ['YYYY-MM-DD', 'DD/MM/YYYY', moment.ISO_8601]).format('YYYY-MM-DD')
+        : null;
+
+      let expirySel: string | null = null;
+      if (file.expiryDate) {
+        expirySel = moment.isMoment(file.expiryDate)
+          ? file.expiryDate.format('YYYY-MM-DD')
+          : moment(file.expiryDate).format('YYYY-MM-DD');
+      }
+
+      if (expiryOrig !== expirySel) {
+        return true;
+      }
+    }
+
+    if (!wasteLicence) {
+      return true;
+    }
+
+    if (originalDocs.length !== selectedFiles.length) return true;
+
+    return false;
   }
 
   get isSubmitDisabled() {
-    if (this.formGroup.invalid || this.formGroup.pristine) {
+    if (this.formGroup.invalid) {
       return true;
     } else {
       const exitsFile = this.selectedDocumentFile().filter((f) => f.documentType == this.documentType.value);
-      const { documentType, wasteLicence } = this.formGroup.value;
-      const validDocument = documentType !== 'uploadLater' ? exitsFile.length > 0 : true;
+      const { wasteLicence } = this.formGroup.value;
+      const validDocument = exitsFile.length > 0;
       const validLicence = wasteLicence ? this.selectedWasteLicenceFile().length > 0 : true;
-
-      return !(validDocument && validLicence);
+      return !(
+        validDocument &&
+        validLicence &&
+        this.isDocumentsChanged(this.companyDocuments, [
+          ...this.selectedDocumentFile(),
+          ...this.selectedWasteLicenceFile(),
+        ])
+      );
     }
   }
 
-  submit() {}
+  close() {
+    if (this.formGroup.pristine) {
+      this.dialogRef.close(false);
+      return;
+    }
+
+    this.dialog
+      .open(ConfirmModalComponent, {
+        maxWidth: '500px',
+        width: '100%',
+        panelClass: 'px-3',
+        data: {
+          title: 'You have unsaved changes. Are you sure you want to close without saving?',
+          confirmLabel: 'Confirm',
+          cancelLabel: 'Cancel',
+        },
+      })
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((close) => {
+        if (!close) return;
+
+        this.dialogRef.close(false);
+      });
+  }
+
+  submit() {
+    this.formGroup.markAllAsTouched();
+
+    if (this.formGroup.invalid) {
+      return;
+    }
+
+    this.dialog
+      .open(ConfirmModalComponent, {
+        maxWidth: '500px',
+        width: '100%',
+        panelClass: 'px-3',
+        data: {
+          title: 'Are you sure you want to save these changes?',
+          confirmLabel: 'Confirm',
+          cancelLabel: 'Cancel',
+        },
+      })
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((shouldSaveChange) => {
+        if (!shouldSaveChange) return;
+
+        this.submitting.set(true);
+
+        const documentFiles = this.selectedDocumentFile().map((f) =>
+          f.documentType == 'other' ? { ...f, documentType: this.otherDocumentType.value } : f,
+        );
+        const licenceFiles = this.selectedWasteLicenceFile().map((f) => ({
+          ...f,
+          documentType: CompanyDocumentType.WasteCarrierLicense,
+        }));
+
+        const files = [...documentFiles, ...licenceFiles];
+        const fileUpload = files.filter((f) => f.file instanceof File);
+
+        let alreadyUpload = [
+          ...this.wasteCarrierLicenseDocuments.filter((doc) =>
+            this.selectedWasteLicenceFile()
+              .filter((f) => !(f.file instanceof File))
+              .some((f) => f.documentType === CompanyDocumentType.WasteCarrierLicense && f.fileId === doc.id),
+          ),
+          ...this.environmentPermitDocuments.filter((doc) =>
+            this.selectedDocumentFile()
+              .filter((f) => !(f.file instanceof File))
+              .some((f) => f.documentType === CompanyDocumentType.EnvironmentalPermit && f.fileId === doc.id),
+          ),
+          ...this.wasteExemptionDocuments.filter((doc) =>
+            this.selectedDocumentFile()
+              .filter((f) => !(f.file instanceof File))
+              .some((f) => f.documentType === CompanyDocumentType.WasteExemption && f.fileId === doc.id),
+          ),
+          ...this.otherDocuments.filter((doc) =>
+            this.selectedDocumentFile()
+              .filter((f) => !(f.file instanceof File))
+              .some(
+                (f) =>
+                  f.documentType !== CompanyDocumentType.EnvironmentalPermit &&
+                  f.documentType !== CompanyDocumentType.WasteExemption &&
+                  f.documentType !== CompanyDocumentType.WasteCarrierLicense &&
+                  f.fileId === doc.id,
+              ),
+          ),
+        ].map((doc) => {
+          const selectedFile =
+            doc.documentType === CompanyDocumentType.WasteCarrierLicense
+              ? this.selectedWasteLicenceFile().find((f) => f.fileId === doc.id)
+              : this.selectedDocumentFile().find((f) => f.fileId === doc.id);
+          if (selectedFile && selectedFile.expiryDate) {
+            return {
+              ...doc,
+              expiryDate: moment(selectedFile.expiryDate).format('DD/MM/YYYY'),
+            };
+          }
+          if (!doc.expiryDate) delete doc.expiryDate;
+          return doc;
+        });
+
+        if (fileUpload.length > 0) {
+          this.uploadService
+            .uploadMultiFile(fileUpload.map((f) => f.file))
+            .pipe(
+              finalize(() => this.submitting.set(false)),
+              catchError((err) => {
+                this.snackBar.open(
+                  'Document upload failed. Please check the file size and format and try again.',
+                  'Ok',
+                  {
+                    duration: 3000,
+                  },
+                );
+                return of(null);
+              }),
+              concatMap((documentUrls) => {
+                if (!documentUrls) return of(null);
+
+                const documents = documentUrls.map((url, index) => {
+                  const file = fileUpload[index];
+                  if (file.expiryDate) {
+                    return {
+                      documentType: file.documentType,
+                      documentUrl: url,
+                      documentName: file.file.name,
+                      expiryDate: moment(file.expiryDate).format('DD/MM/YYYY'),
+                    };
+                  }
+
+                  return {
+                    documentType: file.documentType,
+                    documentUrl: url,
+                    documentName: file.file.name,
+                  };
+                });
+                return this.submitWithDocument([...documents, ...alreadyUpload]);
+              }),
+            )
+            .subscribe((result) => {
+              if (result) {
+                this.snackBar.open('Your Company Document has been updated successfully.', 'OK', { duration: 3000 });
+                this.dialogRef.close(true);
+              }
+            });
+        } else {
+          this.submitWithDocument([...alreadyUpload]).subscribe((result) => {
+            if (result) {
+              this.snackBar.open('Your Company Document has been updated successfully.', 'OK', { duration: 3000 });
+              this.dialogRef.close(true);
+            }
+          });
+        }
+      });
+  }
+
+  private submitWithDocument(documents: any[]) {
+    return this.settingsService.updateCompanyDocument(documents).pipe(
+      finalize(() => this.submitting.set(false)),
+      catchError((err) => {
+        this.snackBar.open(`Company Document update failed. Please try again later.'`, 'Ok', { duration: 3000 });
+        return of(null);
+      }),
+      concatMap((result: any) => {
+        if (result) return this.authService.checkToken();
+        return of(null);
+      }),
+    );
+  }
 }

@@ -8,7 +8,7 @@
     } @else {
       @for (item of items; track $index) {
         <div
-          class="d-flex flex-column flex-md-row gap-3 align-items-stretch align-items-md-center w-100 cursor-pointer"
+          class="d-flex flex-column flex-md-row gap-3 align-items-stretch align-items-md-center w-100 cursor-pointer mb-3"
           (click)="viewDocument(item)"
           matTooltip="View document"
         >
@@ -19,7 +19,7 @@
             <div class="d-md-flex flex-md-row flex-column align-items-center px-3 py-2 right-side w-100 text-break">
               <div class="flex-column col-md-10">
                 <div class="fw-bold">
-                  {{ extractFileName(item.documentUrl) }}
+                  {{ item.documentName }}
                 </div>
                 <div>
                   <span class="fw-bold">Expiry Date: </span>
@@ -49,7 +49,13 @@
           <div class="col-12 px-2">
             <div class="mb-1">
               <div class="fw-bold" i18n>WHICH PERMIT / LICENCE DO YOU HAVE?*</div>
-              <div>{{ documentTypeUploaded }}</div>
+              @if (documentTypeUploaded.length > 0) {
+                <div>{{ documentTypeUploaded }}</div>
+              } @else {
+                <div class="d-flex justify-content-center align-items-center fs-24 mt-3">
+                  <p class="text-muted">No document found.</p>
+                </div>
+              }
             </div>
           </div>
           @if (environmentPermitDocuments.length > 0) {
