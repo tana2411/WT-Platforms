@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { mapCountryCodeToName } from '@app/statics';
+import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { AdminLayoutComponent } from 'app/layout/admin-layout/admin-layout.component';
 import { AdminOfferService } from 'app/services/admin/admin-offer.service';
 import { OfferDetailActionsComponent } from 'app/share/ui/admin/offer-detail-actions/offer-detail-actions.component';
@@ -75,7 +76,6 @@ export class DetailBuyerActivityComponent {
   }
 
   onBack() {
-    console.log(this.offerId);
-    console.log('todo: implement');
+    this.router.navigateByUrl(`${ROUTES_WITH_SLASH.commercialManagement}?tab=2`);
   }
 }

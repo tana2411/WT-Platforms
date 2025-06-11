@@ -66,7 +66,6 @@ export class DetailWantedListingComponent {
   }
 
   onBack() {
-    console.log(this.listingId);
-    console.log('todo: implement');
+    this.router.navigateByUrl(`${ROUTES_WITH_SLASH.commercialManagement}?tab=3`);
   }
 }
