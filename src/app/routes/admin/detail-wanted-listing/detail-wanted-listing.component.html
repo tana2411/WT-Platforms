@@ -1,4 +1,4 @@
-<app-admin-layout [title]="'Sale Listings > Details'">
+<app-admin-layout [title]="'Wanted Listings > Details'">
   @if (loadingListing()) {
     <app-spinner></app-spinner>
   } @else {
@@ -63,8 +63,8 @@
 
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>status</p>
-            <p class="mb-0 primary fw-bold" i18n>
-              {{ listingDetail.bidStatus.status }}
+            <p class="mb-0 fw-500" [style.color]="getStatusColor(listingDetail.bidStatus.status)">
+              {{ listingDetail.bidStatus.status | titlecase }}
             </p>
           </div>
 
@@ -80,7 +80,9 @@
 
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>State</p>
-            <p class="mb-0 fw-500" i18n>todo</p>
+            <p class="mb-0 fw-500" [style.color]="getStateColor(listingDetail.bidStatus.state)">
+              {{ listingDetail.bidStatus.state | titlecase }}
+            </p>
           </div>
         </div>
       </div>
