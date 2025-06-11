@@ -22,7 +22,7 @@
           [maxFile]="6"
           (filesAdded)="handleFileReady($event, 'document', CompanyDocumentType.EnvironmentalPermit)"
           (uploadValid)="documentValid.set($event)"
-          [notAcceptable]="['.doc', '.docx', '.xls', '.xlsx']"
+          [notAcceptable]="['.doc', '.xls', '.xlsx']"
           [expiryDateMode]="'optional'"
           [fileList]="environmentPermitDocuments"
         ></app-file-upload>
@@ -35,7 +35,7 @@
           [maxFile]="6"
           (filesAdded)="handleFileReady($event, 'document', CompanyDocumentType.WasteExemption)"
           (uploadValid)="documentValid.set($event)"
-          [notAcceptable]="['.doc', '.docx', '.xls', '.xlsx']"
+          [notAcceptable]="['.doc', '.xls', '.xlsx']"
           [expiryDateMode]="'optional'"
           [fileList]="wasteExemptionDocuments"
         ></app-file-upload>
@@ -59,7 +59,7 @@
           [maxFile]="6"
           (filesAdded)="handleFileReady($event, 'document', 'other')"
           (uploadValid)="documentValid.set($event)"
-          [notAcceptable]="['.doc', '.docx', '.xls', '.xlsx']"
+          [notAcceptable]="['.doc', '.xls', '.xlsx']"
           [expiryDateMode]="'optional'"
           [fileList]="otherDocuments"
         ></app-file-upload>
@@ -89,6 +89,7 @@
             [maxFile]="1"
             (uploadValid)="wasteLicenceValid.set($event)"
             [expiryDateMode]="'optional'"
+            [notAcceptable]="['.doc', '.xls', '.xlsx']"
             [fileList]="wasteCarrierLicenseDocuments"
           ></app-file-upload>
           <p>Accepted file types: pdf, docx, png, jpeg, Max. file size: 25 MB, Max. files: 6</p>
