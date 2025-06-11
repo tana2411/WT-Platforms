@@ -17,7 +17,7 @@ import { AdminListingDetail } from 'app/models/admin/listing.model';
 import { OfferState } from 'app/models/offer';
 import { AdminListingService } from 'app/services/admin/admin-listing.service';
 import { ListingRequestActionEnum } from 'app/types/requests/admin';
-import { catchError, EMPTY, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, finalize, switchMap, tap } from 'rxjs';
 import { RejectModalComponent } from '../reject-modal/reject-modal.component';
 
 @Component({
@@ -59,6 +59,9 @@ export class ListingDetailActionsComponent {
             return EMPTY;
           }),
           takeUntilDestroyed(),
+          finalize(() => {
+            this.submitting.set(undefined);
+          }),
         )
         .subscribe();
     });
@@ -97,6 +100,9 @@ export class ListingDetailActionsComponent {
             return EMPTY;
           }),
           takeUntilDestroyed(),
+          finalize(() => {
+            this.submitting.set(undefined);
+          }),
         )
         .subscribe();
     });
@@ -122,6 +128,9 @@ export class ListingDetailActionsComponent {
             return EMPTY;
           }),
           takeUntilDestroyed(),
+          finalize(() => {
+            this.submitting.set(undefined);
+          }),
         )
         .subscribe();
     });

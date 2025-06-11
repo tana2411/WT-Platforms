@@ -1,3 +1,4 @@
+import { TitleCasePipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,6 +13,7 @@ import { DateFormatPipe } from 'app/pipes/date.pipe';
 import { AdminListingService } from 'app/services/admin/admin-listing.service';
 import { ListingDetailActionsComponent } from 'app/share/ui/admin/listing-detail-actions/listing-detail-actions.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
+import { getStateColor, getStatusColor } from 'app/share/utils/offer';
 import { catchError, EMPTY, map, startWith, Subject, switchMap, tap } from 'rxjs';
 
 @Component({
@@ -24,6 +26,7 @@ import { catchError, EMPTY, map, startWith, Subject, switchMap, tap } from 'rxjs
     SpinnerComponent,
     ListingDetailActionsComponent,
     DateFormatPipe,
+    TitleCasePipe,
   ],
   templateUrl: './detail-wanted-listing.component.html',
   styleUrl: './detail-wanted-listing.component.scss',
@@ -39,6 +42,8 @@ export class DetailWantedListingComponent {
   listingDetailUpdator$ = new Subject<void>();
 
   mapCountryCodeToName = mapCountryCodeToName;
+  getStatusColor = getStatusColor;
+  getStateColor = getStateColor;
 
   listingDetail = toSignal(
     this.listingDetailUpdator$.pipe(

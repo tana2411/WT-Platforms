@@ -42,4 +42,5 @@ export const ROUTES_WITH_SLASH = {
 
   adminSaleListingDetail: '/admin/listing',
   adminBuyerActivityDetail: '/admin/buyer-activity',
+  adminWantedListingDetail: '/admin/wanted-listing',
 };
