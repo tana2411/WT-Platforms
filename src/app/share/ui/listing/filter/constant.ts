@@ -47,7 +47,7 @@ export const allFilters: Filter[] = [
   },
   {
     name: 'SELLER',
-    value: 'sellerCompanyName',
+    value: 'name',
     type: 'input',
   },
   {

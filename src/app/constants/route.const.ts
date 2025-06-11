@@ -18,9 +18,6 @@ export const ROUTES = {
   commercialManagement: 'commercial-management',
   adminSaleListingDetail: 'admin/listing',
   adminWantedListingDetail: 'admin/wanted-listing',
-  adminBuyerActivityList: 'admin/list-buyer-activity',
-  adminSellerActivityList: 'admin/list-seller-activity',
-  adminWantedActivityList: 'admin/list-wanted-activity',
   adminBuyerActivityDetail: 'admin/buyer-activity',
 };
 
@@ -42,9 +39,7 @@ export const ROUTES_WITH_SLASH = {
   listingOfferDetail: '/wt_waste_listing',
   liveActiveTable: '/live-activity',
   commercialManagement: '/commercial-management',
+
   adminSaleListingDetail: '/admin/listing',
-  adminBuyerActivityList: '/admin/list-buyer-activity',
-  adminSellerActivityList: '/admin/list-seller-activity',
-  adminWantedActivityList: '/admin/list-wanted-activity',
   adminBuyerActivityDetail: '/admin/buyer-activity',
 };

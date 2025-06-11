@@ -1,7 +1,7 @@
 <app-admin-layout [title]="'Commercial Management'">
   <div
     mat-button
-    class="d-inline-flex align-items-center py-1 rounded px-2 background-primary text-white text-uppercase fw-bold button-wrapper"
+    class="d-inline-flex align-items-center py-1 rounded px-2 background-primary text-white text-uppercase fw-bold cursor-pointer button-wrapper"
     (click)="onBack()"
     i18n
   >
@@ -9,7 +9,7 @@
     <span>go back</span>
   </div>
 
-  <mat-tab-group class="common-tab" [selectedIndex]="0" (selectedTabChange)="onTabChange($event)" animationDuration="0ms">
+  <mat-tab-group class="common-tab" [selectedIndex]="initTab" (selectedTabChange)="onTabChange($event)" animationDuration="0ms">
     <mat-tab label="Members">
       <app-admin-member />
     </mat-tab>

@@ -1,7 +1,8 @@
+import { Location } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { AdminBuyerActivityComponent } from 'app/share/ui/admin/commercial/admin-buyer-activity/admin-buyer-activity.component';
 import { AdminMemberComponent } from 'app/share/ui/admin/commercial/admin-member/admin-member.component';
@@ -27,6 +28,10 @@ export class CommercialManagementComponent {
   router = inject(Router);
   activeTab = signal(0);
 
+  activeRoute = inject(ActivatedRoute);
+  initTab = Number(this.activeRoute.snapshot.queryParams['tab'] ?? 0);
+  location = inject(Location);
+
   onBack() {
     this.router.navigateByUrl(ROUTES_WITH_SLASH.admin);
   }
@@ -34,5 +39,6 @@ export class CommercialManagementComponent {
   onTabChange(event: MatTabChangeEvent) {
     const index = event.index;
     this.activeTab.set(index);
+    this.location.replaceState(this.router.url.split('?')[0], `?tab=${index}`);
   }
 }
