@@ -3,7 +3,7 @@ import { OfferState, OfferStatus } from 'app/models/offer';
 import { OfferLocation } from 'app/types/requests/offer';
 
 export const getLocationAddress = (location: OfferLocation) => {
-  return `${location.addressLine1} ${location.city} ${location.country}`;
+  return `${location.addressLine1}, ${location.city}, ${location.country}`;
 };
 
 export const formatDecimalNumber = (number: number): string => {

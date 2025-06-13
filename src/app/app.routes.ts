@@ -280,6 +280,15 @@ export const routes: Routes = [
       ),
   },
   {
+    path: `${ROUTES.adminMemberDetail}/:userId`,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [GuardRequireRole.SuperAdmin],
+    },
+    loadComponent: () =>
+      import('./routes/admin/member-detail/member-detail.component').then((m) => m.MemberDetailComponent),
+  },
+  {
     path: `${ROUTES.adminWantedListingDetail}/:listingId`,
     canActivate: [CanActivateAuthPage],
     data: {
