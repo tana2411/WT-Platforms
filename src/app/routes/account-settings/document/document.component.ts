@@ -1,5 +1,5 @@
 import { NgTemplateOutlet, TitleCasePipe } from '@angular/common';
-import { Component, effect, inject, Signal } from '@angular/core';
+import { Component, effect, inject, Input, OnChanges, Signal, SimpleChanges } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -28,7 +28,9 @@ import { EditDocumentFormComponent } from './edit-document-form/edit-document-fo
     MatTooltipModule,
   ],
 })
-export class DocumentComponent {
+export class DocumentComponent implements OnChanges {
+  @Input() isReusable: boolean = false;
+  @Input() externalDocument: IDocument[] = [];
   user: Signal<User | null | undefined>;
   getStatusColor = getStatusColor;
   documentTypeUploaded: string = '';
@@ -48,23 +50,37 @@ export class DocumentComponent {
     this.user = toSignal(this.authService.user$);
 
     effect(() => {
-      if (this.user()?.company?.companyDocuments) {
-        this.documents = this.user()?.company?.companyDocuments || [];
-        this.documentTypeUploaded = [
-          ...new Set(
-            this.documents
-              .filter((d) => d.documentType != 'waste_carrier_license')
-              .map((d) =>
-                d.documentType
-                  .split('_')
-                  .map((token) => token.at(0)?.toUpperCase() + token.slice(1))
-                  .join(' '),
-              ),
-          ),
-        ].join(', ');
-        this.showDocuments();
-      }
+      const companyDocs = this.user()?.company?.companyDocuments ?? [];
+      this.showAllTypeDocument(companyDocs);
+      this.showDocuments();
     });
+  }
+
+  showAllTypeDocument(companyDocs: IDocument[]) {
+    const extDocs = Array.isArray(this.externalDocument) ? this.externalDocument : [];
+
+    const docs = this.isReusable ? extDocs : companyDocs;
+
+    this.documents = docs;
+    this.documentTypeUploaded = [
+      ...new Set(
+        docs
+          .filter((d) => d.documentType !== CompanyDocumentType.WasteCarrierLicense)
+          .map((d) =>
+            d.documentType
+              .split('_')
+              .map((token) => token[0]?.toUpperCase() + token.slice(1))
+              .join(' '),
+          ),
+      ),
+    ].join(', ');
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['externalDocument'] && this.externalDocument.length) {
+      this.showAllTypeDocument(this.user()?.company?.companyDocuments ?? []);
+      this.showDocuments();
+    }
   }
 
   private showDocuments() {

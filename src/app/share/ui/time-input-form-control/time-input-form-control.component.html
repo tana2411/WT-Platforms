@@ -1,23 +1,36 @@
 <ng-content select="mat-label"></ng-content>
 
-<div class="d-flex col-md-3 col-6 gap-3 align-items-end">
-  <div class="col-md-6 col-6">
-    <mat-form-field appearance="outline" class="w-100">
-      <input matInput type="number" />
-      @if (formGroup.get('hour')?.hasError('required')) {
-        <mat-error i18n>This field is required</mat-error>
-      }
-      <mat-hint class="fw-bold text-start p-0">Hour</mat-hint>
-    </mat-form-field>
+<div class="flex-column">
+  <div class="d-flex col-md-3 col-6 align-items-center" [formGroup]="formGroup">
+    <div class="col-md-6 col-6">
+      <mat-form-field appearance="outline" class="w-100">
+        <input matInput type="number" formControlName="hour" [max]="maxHour" min="0" />
+        <mat-hint class="fw-bold text-start p-0">Hour</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="d-flex align-items-start justify-content-center px-2 fs-4 fw-bold">
+      <div class="" style="height: 65px">:</div>
+    </div>
+    <div class="col-md-6 col-6">
+      <mat-form-field appearance="outline" class="w-100">
+        <input matInput type="number" formControlName="minute" [max]="maxMinute" min="0" />
+        <mat-hint class="fw-bold text-start p-0">Minute</mat-hint>
+      </mat-form-field>
+    </div>
   </div>
-  <span class="d-flex align-items-center" style="height: 56px">:</span>
-  <div class="col-md-6 col-6">
-    <mat-form-field appearance="outline" class="w-100">
-      <input matInput type="number" />
-      @if (formGroup.get('minute')?.hasError('required')) {
-        <mat-error i18n>This field is required</mat-error>
-      }
-      <mat-hint class="fw-bold text-start p-0">Minute</mat-hint>
-    </mat-form-field>
-  </div>
+  @if (
+    (formGroup.get('hour')?.hasError('required') && formGroup.touched) ||
+    (formGroup.get('minute')?.hasError('required') && formGroup.touched)
+  ) {
+    <div class="error">This field is required</div>
+  }
+  @if (formGroup.get('hour')?.hasError('min') || formGroup.get('minute')?.hasError('min')) {
+    <div class="error">This field cannot be a negative number.</div>
+  }
+  @if (formGroup.get('hour')?.hasError('max')) {
+    <div class="error">Hour cannot be greater than 23.</div>
+  }
+  @if (formGroup.get('minute')?.hasError('max')) {
+    <div class="error">Minute cannot be greater than 59.</div>
+  }
 </div>

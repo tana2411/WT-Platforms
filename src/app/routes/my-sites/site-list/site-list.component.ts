@@ -1,68 +1,37 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, Signal, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
-import { Location } from 'app/models';
+import { CompanyLocationDetail } from 'app/models';
+import { LocationService } from 'app/services/location.service';
 import { ConfirmDeleteLocationModalComponent } from 'app/share/ui/confirm-delete-location-modal/confirm-delete-location-modal.component';
+import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
+import { catchError, finalize, of } from 'rxjs';
 
 @Component({
   selector: 'app-site-list',
   templateUrl: './site-list.component.html',
   styleUrls: ['./site-list.component.scss'],
-  imports: [MatIconModule, MatButtonModule],
+  imports: [MatIconModule, MatButtonModule, SpinnerComponent],
 })
 export class SiteListComponent implements OnInit {
-  locations: Location[] = [
-    {
-      id: 1,
-      addressLine1: '10 Downing Street',
-      addressLine2: '',
-      city: 'London',
-      stateProvince: 'Greater London',
-      postalCode: 'SW1A 2AA',
-      country: 'GB',
-    },
-    {
-      id: 2,
-      addressLine1: '1600 Amphitheatre Parkway',
-      city: 'Reading',
-      stateProvince: 'Berkshire',
-      postalCode: 'RG1 1AA',
-      country: 'GB',
-    },
-    {
-      id: 3,
-      addressLine1: '1 High Street',
-      addressLine2: 'Suite 5',
-      city: 'Manchester',
-      stateProvince: 'Greater Manchester',
-      postalCode: 'M1 1AE',
-      country: 'GB',
-    },
-    {
-      id: 4,
-      addressLine1: '50 Oxford Road',
-      city: 'Cambridge',
-      stateProvince: 'Cambridgeshire',
-      postalCode: 'CB2 1PT',
-      country: 'GB',
-    },
-    {
-      id: 5,
-      addressLine1: '25 Botolph Lane',
-      city: 'London',
-      stateProvince: 'Greater London',
-      postalCode: 'EC3R 8AJ',
-      country: 'GB',
-    },
-  ];
+  loading = signal(false);
+  locations: Signal<CompanyLocationDetail[] | undefined | null>;
 
   dialog = inject(MatDialog);
   router = inject(Router);
+  locationService = inject(LocationService);
+  snackBar = inject(MatSnackBar);
 
-  constructor() {}
+  constructor() {
+    this.refresh();
+
+    this.locations = toSignal(this.locationService.location$);
+  }
 
   ngOnInit() {}
 
@@ -78,11 +47,27 @@ export class SiteListComponent implements OnInit {
     });
   }
 
-  onViewDetail(location: Location) {
+  onViewDetail(location: CompanyLocationDetail) {
     this.router.navigate([ROUTES_WITH_SLASH.sites, location.id]);
   }
 
   addNewLocation(): void {
     this.router.navigate([ROUTES_WITH_SLASH.sites, 'add']);
+  }
+
+  refresh() {
+    this.loading.set(true);
+    this.locationService
+      .getLocations()
+      .pipe(
+        finalize(() => this.loading.set(false)),
+        catchError((err) => {
+          if (err) {
+            this.snackBar.open('Unable to load locations. Please try again later.', 'Ok', { duration: 3000 });
+          }
+          return of([]);
+        }),
+      )
+      .subscribe();
   }
 }

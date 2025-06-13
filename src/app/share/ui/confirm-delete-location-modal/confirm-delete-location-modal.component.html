@@ -9,12 +9,7 @@
     <div class="fw-bold mb-2">ADDRESS {{ data.index || '' }}</div>
     <div class="d-flex justify-content-between align-items-center">
       <div class="flex-grow-1">
-        {{ data.location?.addressLine1 }}
-
-        @if (data.location?.addressLine2) {
-          <span>, </span>
-        }
-        {{ data.location?.addressLine2 }}
+        {{ data.location.addressLine }}
       </div>
     </div>
   </div>
