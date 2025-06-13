@@ -14,7 +14,7 @@
       </div>
     </div> -->
   <!-- } -->
-  @if (location || mode == 'add') {
+  @if (location || mode == 'add' || mode == 'edit') {
     <form [formGroup]="formGroup">
       <p class="my-4 fw-bold fs-24">Site Point Of Contact</p>
       <div class="border-thin py-3 rounded rounded-4 d-flex flex-column justify-content-center">
@@ -312,7 +312,7 @@
                   class="col-12 col-md-4 bold-label"
                   color="primary"
                   (change)="onSelectedItem($event, item.value)"
-                  [checked]="containerType.value.includes(item.value)"
+                  [checked]="selectAllContainerTypes()"
                 >
                   {{ item.name }}
                 </mat-checkbox>

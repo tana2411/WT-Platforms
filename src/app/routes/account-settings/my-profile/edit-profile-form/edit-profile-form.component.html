@@ -10,7 +10,7 @@
     <form [formGroup]="formGroup">
       <div class="row g-3 mb-4">
         <div class="col-md-2">
-          <mat-label class="fw-bold mb-1" i18n>PREFIX*</mat-label>
+          <mat-label class="fw-bold mb-1 fs-16" i18n>PREFIX*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <mat-select formControlName="prefix" placeholder="Please Select">
               <mat-option value="dr" i18n> Dr.</mat-option>
@@ -28,7 +28,7 @@
           </mat-form-field>
         </div>
         <div class="col-md-5">
-          <mat-label class="fw-bold mb-1" i18n>FIRST NAME*</mat-label>
+          <mat-label class="fw-bold mb-1 fs-16" i18n>FIRST NAME*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="e.g. Mark" type="text" formControlName="firstName" />
             @if (formGroup.get('firstName')?.hasError('required')) {
@@ -40,7 +40,7 @@
           </mat-form-field>
         </div>
         <div class="col-md-5">
-          <label class="fw-bold" i18n>LAST NAME*</label>
+          <label class="fw-bold fs-16" i18n>LAST NAME*</label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="e.g. Smith" type="text" formControlName="lastName" />
             @if (formGroup.get('lastName')?.hasError('required')) {
@@ -54,7 +54,7 @@
       </div>
 
       <div class="col-12 mb-4">
-        <mat-label class="fw-bold mb-1" i18n>JOB TITLE*</mat-label>
+        <mat-label class="fw-bold mb-1 fs-16" i18n>JOB TITLE*</mat-label>
         <mat-form-field appearance="outline" class="w-100">
           <input matInput placeholder="Type here" type="text" formControlName="jobTitle" />
           @if (formGroup.get('jobTitle')?.hasError('required')) {
@@ -66,7 +66,7 @@
         </mat-form-field>
       </div>
       <div class="row mb-4">
-        <mat-label class="fw-bold mb-1" i18n>EMAIL ADDRESS*</mat-label>
+        <mat-label class="fw-bold mb-1 fs-16" i18n>EMAIL ADDRESS*</mat-label>
         <mat-form-field appearance="outline" class="w-100">
           <input matInput placeholder="Type here" type="text" formControlName="email" />
           @if (formGroup.get('email')?.hasError('required')) {
@@ -84,11 +84,11 @@
   </mat-dialog-content>
   <mat-dialog-actions>
     <div class="d-flex justify-content-between align-items-center gap-3 col-md-12 col-12">
-      <button mat-stroked-button class="text-uppercase outline-primary-btn w-100" (click)="close()" i18n>Discard Changes</button>
+      <button mat-stroked-button class="text-uppercase outline-primary-btn w-100 fs-16" (click)="close()" i18n>Discard Changes</button>
       <button
         mat-flat-button
         [disabled]="formGroup.invalid || formGroup.pristine"
-        class="text-uppercase primary-btn w-100 fw-bold"
+        class="text-uppercase primary-btn w-100 fw-bold fs-16"
         [class.overlay-spinner]="submitting()"
         (click)="submit()"
         i18n

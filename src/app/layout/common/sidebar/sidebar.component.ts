@@ -72,7 +72,7 @@ export class SidebarComponent {
 
     {
       title: 'Add Locations',
-      link: '//todo/add-location',
+      link: `${ROUTES_WITH_SLASH.sites}/add`,
       icon: 'add_location',
     },
   ];
