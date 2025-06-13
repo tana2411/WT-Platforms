@@ -21,27 +21,27 @@
       <div class="col-12 mb-4" [hidden]="!(documentType.value == CompanyDocumentType.EnvironmentalPermit)">
         <h6 class="mt-5 mb-4 fw-bold" i18n>UPLOAD AS ENVIRONMENTAL PERMIT*</h6>
         <app-file-upload
-          [maxFile]="6"
+          [maxFile]="1"
           (filesAdded)="handleFileReady($event, 'document', CompanyDocumentType.EnvironmentalPermit)"
           (uploadValid)="documentValid.set($event)"
           [notAcceptable]="['.doc', '.xls', '.xlsx']"
           [expiryDateMode]="'optional'"
           [fileList]="environmentPermitDocuments"
         ></app-file-upload>
-        <p>Accepted file types: pdf, docx, png, jpeg, Max. file size: 25 MB, Max. files: 6</p>
+        <p>Accepted file types: pdf, docx, png, jpeg, Max. file size: 5 MB, Max. files: 1</p>
       </div>
 
       <div class="col-12 mb-4" [hidden]="!(documentType.value == CompanyDocumentType.WasteExemption)">
         <h6 class="mt-5 mb-4 fw-bold" i18n>UPLOAD AS WASTE EXEMPTIONS*</h6>
         <app-file-upload
-          [maxFile]="6"
+          [maxFile]="1"
           (filesAdded)="handleFileReady($event, 'document', CompanyDocumentType.WasteExemption)"
           (uploadValid)="documentValid.set($event)"
           [notAcceptable]="['.doc', '.xls', '.xlsx']"
           [expiryDateMode]="'optional'"
           [fileList]="wasteExemptionDocuments"
         ></app-file-upload>
-        <p>Accepted file types: pdf, docx, png, jpeg, Max. file size: 25 MB, Max. files: 6</p>
+        <p>Accepted file types: pdf, docx, png, jpeg, Max. file size: 5 MB, Max. files: 1</p>
       </div>
 
       @if (documentType.value == 'other') {
@@ -58,14 +58,14 @@
       <div class="col-12 mb-4" [hidden]="!(documentType.value == 'other')">
         <h6 class="mt-5 mb-3 fw-bold text-uppercase" i18n>Other Document Upload*</h6>
         <app-file-upload
-          [maxFile]="6"
+          [maxFile]="1"
           (filesAdded)="handleFileReady($event, 'document', 'other')"
           (uploadValid)="documentValid.set($event)"
           [notAcceptable]="['.doc', '.xls', '.xlsx']"
           [expiryDateMode]="'optional'"
           [fileList]="otherDocuments"
         ></app-file-upload>
-        <p>Accepted file types: pdf, docx, png, jpeg, Max. file size: 25 MB, Max. files: 6</p>
+        <p>Accepted file types: pdf, docx, png, jpeg, Max. file size: 5 MB, Max. files: 1</p>
       </div>
 
       <div class="col-md-7 col-12 mb-4">
@@ -94,7 +94,7 @@
             [notAcceptable]="['.doc', '.xls', '.xlsx']"
             [fileList]="wasteCarrierLicenseDocuments"
           ></app-file-upload>
-          <p>Accepted file types: pdf, docx, png, jpeg, Max. file size: 25 MB, Max. files: 6</p>
+          <p>Accepted file types: pdf, docx, png, jpeg, Max. file size: 5 MB, Max. files: 1</p>
         </div>
       }
     </form>
