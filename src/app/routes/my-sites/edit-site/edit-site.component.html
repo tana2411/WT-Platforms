@@ -14,7 +14,7 @@
       </div>
     </div> -->
   <!-- } -->
-  @if (location) {
+  @if (location || mode == 'add') {
     <form [formGroup]="formGroup">
       <p class="my-4 fw-bold fs-24">Site Point Of Contact</p>
       <div class="border-thin py-3 rounded rounded-4 d-flex flex-column justify-content-center">
