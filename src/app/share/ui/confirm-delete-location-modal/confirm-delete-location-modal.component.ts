@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
-import { Location } from 'app/models';
+import { CompanyLocationDetail } from 'app/models';
 
 @Component({
   selector: 'app-confirm-delete-location-modal',
@@ -12,7 +12,7 @@ import { Location } from 'app/models';
 })
 export class ConfirmDeleteLocationModalComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<ConfirmDeleteLocationModalComponent>);
-  readonly data = inject<{ location: Location; index: number | null }>(MAT_DIALOG_DATA);
+  readonly data = inject<{ location: CompanyLocationDetail; index: number | null }>(MAT_DIALOG_DATA);
 
   ngOnInit(): void {}
 

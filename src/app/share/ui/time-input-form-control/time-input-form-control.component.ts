@@ -1,19 +1,21 @@
 import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormControl,
+  FormGroup,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
-interface TimeValue {
-  hour: number | null;
-  minute: number | null;
-}
 
 @Component({
   selector: 'app-time-input-form-control',
   templateUrl: './time-input-form-control.component.html',
   styleUrls: ['./time-input-form-control.component.scss'],
-  imports: [MatFormFieldModule, MatInputModule],
+  imports: [MatFormFieldModule, MatInputModule, ReactiveFormsModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -30,27 +32,28 @@ export class TimeInputFormControlComponent implements OnInit, ControlValueAccess
   @Input() required: boolean = false;
 
   private onTouched: () => void = () => {};
-  private onChanged: (value: TimeValue | null) => void = () => {};
+  private onChanged: (value: string | null) => void = () => {};
 
   formGroup = new FormGroup({
     hour: new FormControl<number | null>(null, [Validators.min(this.minHour), Validators.max(this.maxHour)]),
-    minute: new FormControl<number | null>(null, [Validators.min(this.minMinute), Validators.max(this.minMinute)]),
+    minute: new FormControl<number | null>(null, [Validators.min(this.minMinute), Validators.max(this.maxMinute)]),
   });
 
   constructor() {
     this.formGroup.valueChanges.pipe(takeUntilDestroyed()).subscribe((value: any) => {
+      const timeString = [value?.hour, value?.minute, '00'].join(':');
       if (this.formGroup.invalid) {
         this.onChanged(null);
       } else {
-        this.onChanged(value);
+        this.onChanged(timeString);
       }
     });
   }
 
   ngOnInit() {
     if (this.required) {
-      this.formGroup.get('hour')?.setValidators(Validators.required);
-      this.formGroup.get('minute')?.setValidators(Validators.required);
+      this.formGroup.get('hour')?.addValidators(Validators.required);
+      this.formGroup.get('minute')?.addValidators(Validators.required);
     } else {
       this.formGroup.get('hour')?.clearValidators();
       this.formGroup.get('minute')?.clearValidators();
@@ -59,11 +62,24 @@ export class TimeInputFormControlComponent implements OnInit, ControlValueAccess
     this.formGroup.updateValueAndValidity();
   }
 
-  writeValue(obj: TimeValue | null): void {
-    if (obj) {
-      this.formGroup.setValue({ hour: obj.hour, minute: obj.minute }, { emitEvent: false });
+  writeValue(value: string | null): void {
+    if (value) {
+      const parts = value.split(':');
+      if (parts.length >= 2) {
+        const hour = parseInt(parts[0], 10);
+        const minute = parseInt(parts[1], 10);
+        this.formGroup.setValue(
+          {
+            hour: isNaN(hour) ? null : hour,
+            minute: isNaN(minute) ? null : minute,
+          },
+          { emitEvent: false },
+        );
+      } else {
+        this.formGroup.setValue({ hour: null, minute: null }, { emitEvent: false });
+      }
     } else {
-      this.formGroup.reset({ hour: null, minute: null }, { emitEvent: false });
+      this.formGroup.setValue({ hour: null, minute: null }, { emitEvent: false });
     }
   }
 

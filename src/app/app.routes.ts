@@ -200,6 +200,14 @@ export const routes: Routes = [
         loadComponent: () => import('./routes/my-sites/edit-site/edit-site.component').then((m) => m.EditSiteComponent),
       },
       {
+        path: 'add/success',
+        data: {
+          title: 'Add Location',
+        },
+        loadComponent: () =>
+          import('./routes/my-sites/add-success/add-success.component').then((m) => m.AddSuccessComponent),
+      },
+      {
         path: 'edit/:id',
         data: {
           title: 'Edit My Site',
