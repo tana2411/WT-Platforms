@@ -5,14 +5,16 @@
   </div>
   <div class="d-flex flex-column align-items-center">
     <button mat-flat-button class="text-uppercase w-100 py-4 mb-4 background-dark text-white fw-bold">Fulfil</button>
-    <button
-      mat-flat-button
-      class="text-uppercase w-100 py-4 mb-4 background-error text-white fw-bold"
-      (click)="onDeleteListing()"
-      [class.overlay-spinner]="deleting()"
-    >
-      Remove listing
-    </button>
+    @if (isOwnListing()) {
+      <button
+        mat-flat-button
+        class="text-uppercase w-100 py-4 mb-4 background-error text-white fw-bold"
+        (click)="onDeleteListing()"
+        [class.overlay-spinner]="deleting()"
+      >
+        Remove listing
+      </button>
+    }
   </div>
 } @else {
   <div class="d-flex flex-column align-items-center border border-light background-on-primary rounded rounded-4 gap-3 p-4">

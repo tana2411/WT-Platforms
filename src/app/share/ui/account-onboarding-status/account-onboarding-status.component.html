@@ -1,5 +1,5 @@
 <div class="col-md-12 mt-5 mx-auto">
-  <div class="border border-2 border-radius bg-white border-dark rounded py-3 px-5">
+  <div class="border border-2 border-radius bg-white border-dark rounded py-md-3 px-md-5 px-1 py-1">
     <div class="d-flex justify-content-between position-relative">
       <div class="d-flex flex-column align-items-center" style="z-index: 1">
         <div class="rounded-circle badge success-badge d-flex justify-content-center align-items-center">1</div>
@@ -64,17 +64,17 @@
       @if (type == 'pending') {
         <div class="d-flex justify-content-center mt-4">
           @if (isHaulier) {
-            <div class="d-flex align-items-center justify-content-center col-10 py-3 px-4 rounded background-on-error" style="width: 640px">
-              <div class="col-1 d-flex justify-content-center me-3">
+            <div class="d-flex align-items-center justify-content-center col-10 py-3 px-4 rounded background-on-error">
+              <div class="col-md-1 col-2 d-flex justify-content-center me-3">
                 <mat-icon class="error" style="font-size: 40px; height: 40px; width: 40px">error</mat-icon>
               </div>
-              <div class="text-dark fw-500 fs-16" i18n>
+              <div class="text-dark fw-500 fs-16 col-md-10 col-10" i18n>
                 You can browse the portal, but bids will not be approved until your documents have been verified
               </div>
             </div>
           } @else {
             <div
-              class="d-flex align-items-center justify-content-center col-10 border border-2 border-error py-3 px-4 rounded background-on-error rounded rounded-4"
+              class="d-flex align-items-center justify-content-center col-md-10 col-12 border border-2 border-error py-3 px-4 rounded background-on-error rounded rounded-4"
             >
               <div class="text-center error fs-16 fw-bold" i18n>
                 You can start buying and selling materials now, but please note that all transactions will be pending until you upload your
@@ -86,24 +86,24 @@
 
         @if (isHaulier) {
           <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-center">
-            <div class="col-6">
+            <div class="col-md-4 col-8">
               <button class="w-100 dark-btn fw-bold" mat-flat-button [routerLink]="['/haulier-dashboard']" i18n>HAULIER DASHBOARD</button>
             </div>
           </div>
         } @else {
-          <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-center">
-            <div class="col-4">
+          <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-center flex-column flex-md-row align-items-center">
+            <div class="col-md-4 col-8">
               <button class="w-100 primary white-btn fw-bold" mat-flat-button [routerLink]="['/company-information']" i18n>
                 COMPLETE ACCOUNT
               </button>
             </div>
-            <div class="col-4">
+            <div class="col-md-4 col-8">
               <button class="w-100 dark-btn fw-bold" mat-flat-button (click)="goToPlatform()" i18n>GO TO THE PLATFORM</button>
             </div>
           </div>
         }
       } @else {
-        <div class="text-white col-8 mx-auto text-center fw-bold" i18n>
+        <div class="text-white col-md-8 col-12 mx-auto text-center fw-bold" i18n>
           You can now begin bidding and selling. Meanwhile, our admin team is in the process of verifying your account details. We will send
           you an email once the account is verified.
         </div>
@@ -113,13 +113,13 @@
         </div>
 
         <div class="d-flex flex-column align-items-center mt-4">
-          <div class="mb-3" style="width: 576px">
+          <div class="mb-3 resp-width-576">
             <button class="w-100 primary white-btn fw-bold" mat-flat-button i18n [routerLink]="['/buy']">BUY MATERIAL</button>
           </div>
-          <div class="mb-3" style="width: 576px">
+          <div class="mb-3 resp-width-576">
             <button class="w-100 stroked-white-btn fw-bold" mat-stroked-button i18n [routerLink]="['/sell']">SELL MATERIAL</button>
           </div>
-          <div class="" style="width: 576px">
+          <div class="resp-width-576">
             <button class="w-100 dark-btn fw-bold" mat-flat-button i18n [routerLink]="['/wanted']">LIST WANTED MATERIAL</button>
           </div>
         </div>
