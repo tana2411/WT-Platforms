@@ -10,7 +10,7 @@ export interface IDocument {
   documentUrl: string;
   listingId: number;
   uploadedByUserId: number;
-  reviewedByUserId: number;
+  reviewedByUserId: number | null;
   documentName: string;
   status: string;
   rejectionReason?: string;

@@ -1,0 +1,25 @@
+<app-admin-layout [title]="'Members Account'">
+  @if (loadingUser()) {
+    <app-spinner></app-spinner>
+  } @else {
+    @if (user(); as user) {
+      <div class="d-flex justify-content-between align-items-center">
+        <div
+          mat-button
+          class="d-inline-flex mb-5 align-items-center py-1 rounded px-2 background-primary text-white text-uppercase cursor-pointer fw-bold button-wrapper"
+          (click)="onBack()"
+        >
+          <mat-icon class="icon">west</mat-icon>
+          <span i18n>go back</span>
+        </div>
+
+        <app-member-detail-actions />
+      </div>
+
+      <app-admin-personal-information />
+      <app-admin-company-information />
+      <app-admin-material-preference />
+      <app-admin-company-document />
+    }
+  }
+</app-admin-layout>
