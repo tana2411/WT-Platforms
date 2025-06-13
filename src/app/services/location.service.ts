@@ -20,7 +20,13 @@ export class LocationService {
     return this.http.get<CompanyLocationResponse>('/company-locations').pipe(
       map((res) => res.results),
       retry(3),
-      tap((list) => this._locations$.next(list)),
+      tap((list) => {
+        if (list.length) {
+          this._locations$.next(list);
+        } else {
+          this._locations$.next(undefined);
+        }
+      }),
       catchError((err) => {
         this.snackBar.open('Failed to load company locations. Please try again.', 'OK', { duration: 3000 });
         return of([]);
@@ -30,8 +36,7 @@ export class LocationService {
 
   getLocationDetail(id: number): Observable<CompanyLocationDetail | undefined> {
     const cached = this._locations$.value;
-
-    if (cached !== null) {
+    if (cached?.length) {
       return of(cached?.find((loc) => loc.id === id));
     }
 

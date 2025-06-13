@@ -9,11 +9,13 @@
   <mat-dialog-content>
     <form [formGroup]="formGroup">
       <div class="col-md-9 col-12 mb-4">
-        <mat-label class="fw-bold mb-1 d-block" i18n>WHICH PERMIT/LICENCE DO YOU HAVE?*</mat-label>
+        <mat-label class="fw-bold mb-1 d-block fs-16" i18n>WHICH PERMIT/LICENCE DO YOU HAVE?*</mat-label>
         <mat-radio-group class="d-flex justify-content-between flex-wrap" formControlName="documentType">
-          <mat-radio-button class="bold-label col-md-auto col-9" value="environmental_permit" i18n>Environmental Permit </mat-radio-button>
-          <mat-radio-button class="bold-label col-md-auto col-9" value="waste_exemption" i18n> Waste Exemptions </mat-radio-button>
-          <mat-radio-button class="bold-label col-md-auto col-9" value="other" i18n> Other </mat-radio-button>
+          <mat-radio-button class="bold-label col-md-auto col-9 fs-16" value="environmental_permit" i18n
+            >Environmental Permit
+          </mat-radio-button>
+          <mat-radio-button class="bold-label col-md-auto col-9 fs-16" value="waste_exemption" i18n> Waste Exemptions </mat-radio-button>
+          <mat-radio-button class="bold-label col-md-auto col-9 fs-16" value="other" i18n> Other </mat-radio-button>
         </mat-radio-group>
       </div>
       <div class="col-12 mb-4" [hidden]="!(documentType.value == CompanyDocumentType.EnvironmentalPermit)">
@@ -44,7 +46,7 @@
 
       @if (documentType.value == 'other') {
         <div class="col-md-12 mb-3">
-          <label class="fw-bold" i18n>OTHER DOCUMENT DESCRIPTION*</label>
+          <label class="fw-bold fs-16" i18n>OTHER DOCUMENT DESCRIPTION*</label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Type here" type="text" formControlName="otherDocumentType" />
             @if (formGroup.get('otherDocumentType')?.hasError('required')) {
@@ -67,15 +69,15 @@
       </div>
 
       <div class="col-md-7 col-12 mb-4">
-        <mat-label class="mb-0 fw-bold" i18n> DO YOU HAVE A WASTE CARRIER LICENCE?* </mat-label>
+        <mat-label class="mb-0 fw-bold fs-16" i18n> DO YOU HAVE A WASTE CARRIER LICENCE?* </mat-label>
         <mat-radio-group
           formControlName="wasteLicence"
           class="d-flex justify-content-between col-9"
           name="wasteLicence"
           (change)="onLicenceChange($event)"
         >
-          <mat-radio-button class="bold-label" [value]="true" i18n> Yes </mat-radio-button>
-          <mat-radio-button class="bold-label" [value]="false" i18n> Not Applicable </mat-radio-button>
+          <mat-radio-button class="bold-label fs-16" [value]="true" i18n> Yes </mat-radio-button>
+          <mat-radio-button class="bold-label fs-16" [value]="false" i18n> Not Applicable </mat-radio-button>
         </mat-radio-group>
         @if (formGroup.get('wasteLicence')?.hasError('required') && formGroup.get('wasteLicence')?.touched) {
           <mat-error class="mt-0 mat-error" i18n> This field is required </mat-error>

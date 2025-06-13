@@ -34,7 +34,7 @@ import { UploadService } from 'app/share/services/upload.service';
 import { ConfirmDeleteLocationModalComponent } from 'app/share/ui/confirm-delete-location-modal/confirm-delete-location-modal.component';
 import { ConfirmModalComponent } from 'app/share/ui/confirm-modal/confirm-modal.component';
 import moment from 'moment';
-import { catchError, EMPTY, finalize } from 'rxjs';
+import { catchError, EMPTY, finalize, retry } from 'rxjs';
 import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-control/telephone-form-control.component';
 import { TimeInputFormControlComponent } from '../../../share/ui/time-input-form-control/time-input-form-control.component';
 
@@ -129,6 +129,7 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
       } else {
         this.containerType.clear();
       }
+      this.formGroup.markAsDirty();
       this.containerType.updateValueAndValidity();
     });
 
@@ -174,6 +175,7 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
       } else {
         this.materials.clear();
       }
+      this.formGroup.markAsDirty();
       this.materials.updateValueAndValidity();
     });
 
@@ -286,6 +288,7 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
       .getLocationDetail(id)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
+        retry(3),
         finalize(() => {
           this.loading.set(false);
         }),
