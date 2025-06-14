@@ -1,1 +1,71 @@
-<p>admin-member-location works!</p>
+@if (locations(); as locations) {
+  <div class="col-12 overflow-hidden">
+    <h4 class="fw-bold mt-3 mb-4" i18n>Location</h4>
+    <mat-accordion class="mb-4">
+      @for (location of locations; track location.id) {
+        <mat-expansion-panel [expanded]="$index === 0" #panel>
+          <mat-expansion-panel-header>
+            <div class="">
+              <div class="d-flex align-items-center fw-bold gap-4 text-uppercase" [style]="{ marginBottom: '20px' }">
+                {{ location.locationName }}
+                @if ($index === 0) {
+                  <p class="d-flex align-items-center px-3 py-1 gap-2 background-on-primary primary text-uppercase fw-bold mb-0">
+                    <mat-icon>domain</mat-icon>
+                    Headquarters
+                  </p>
+                }
+              </div>
+
+              <p class="text-muted small mb-0">{{ getLocationAddress(location) }}</p>
+            </div>
+
+            <!-- Show/Hide text -->
+            <span
+              class="ms-3 text-uppercase text-decoration-underline fw-bold {{ panel.expanded ? 'error' : 'primary' }}"
+              style="font-size: 0.95em"
+            >
+              {{ panel.expanded ? 'Hide' : 'View' }}
+            </span>
+          </mat-expansion-panel-header>
+
+          <div class="body-wrapper rounded-3">
+            <div class="row g-3 mb-4">
+              <div class="col-12 col-sm-4 px-2">
+                <div class="fw-bold mb-1 text-uppercase" i18n>STREET ADDRESS</div>
+                <div>{{ location.street || '-' }}</div>
+              </div>
+              <div class="col-12 col-sm-4 px-2">
+                <div class="fw-bold mb-1 text-uppercase" i18n>ADDRESS LINE 2</div>
+                <div>{{ location.addressLine || '-' }}</div>
+              </div>
+              <div class="col-12 col-sm-4 px-2">
+                <div class="fw-bold mb-1 text-uppercase" i18n>ZIP / POSTAL CODE</div>
+                <div>{{ location.postcode || '-' }}</div>
+              </div>
+            </div>
+            <div class="row g-3 mb-4">
+              <div class="col-12 col-sm-4 px-2">
+                <div class="fw-bold mb-1 text-uppercase" i18n>CITY</div>
+                <div>{{ location.city || '-' }}</div>
+              </div>
+              <div class="col-12 col-sm-4 px-2">
+                <div class="fw-bold mb-1 text-uppercase" i18n>COUNTY / STATE / REGION</div>
+                <div>{{ location.stateProvince || '-' }}</div>
+              </div>
+              <div class="col-12 col-sm-4 px-2">
+                <div class="fw-bold mb-1 text-uppercase" i18n>COUNTRY</div>
+                <div>{{ location.country || '-' }}</div>
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-12 col-sm-4 px-2">
+                <div class="fw-bold mb-1 text-uppercase" i18n>TELEPHONE</div>
+                <div>{{ location.phoneNumber || '-' }}</div>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      }
+    </mat-accordion>
+  </div>
+}
