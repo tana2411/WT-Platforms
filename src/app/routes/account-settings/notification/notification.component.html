@@ -10,11 +10,27 @@
             <div class="fw-bold text-break small mb-1 d-flex align-items-center gap-2" i18n>
               EMAIL ME NEW LISTINGS THAT MATCH MY INTERESTS
             </div>
-            <div class="fw-bold">{{ user()?.user?.notificationEmailEnabled ? 'Yes' : 'No' }}</div>
+            <div class="fw-bold">
+              {{
+                user()?.user?.receiveEmailForNewMatchingListings === true
+                  ? 'Yes'
+                  : user()?.user?.receiveEmailForNewMatchingListings === false
+                    ? 'No'
+                    : 'Not set'
+              }}
+            </div>
           </div>
           <div class="col-11 col-md-5 px-2">
             <div class="fw-bold text-break small mb-1 d-flex align-items-center gap-2" i18n>EMAIL ME OFFERS ON MY LISTINGS</div>
-            <div class="fw-bold">{{ user()?.user?.notificationEmailEnabled ? 'Yes' : 'No' }}</div>
+            <div class="fw-bold">
+              {{
+                user()?.user?.receiveEmailForOffersOnMyListings === true
+                  ? 'Yes'
+                  : user()?.user?.receiveEmailForOffersOnMyListings === false
+                    ? 'No'
+                    : 'Not set'
+              }}
+            </div>
           </div>
         </div>
       </div>

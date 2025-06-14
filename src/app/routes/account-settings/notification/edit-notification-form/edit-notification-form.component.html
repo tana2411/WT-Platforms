@@ -10,7 +10,7 @@
     <form [formGroup]="formGroup">
       <div class="row g-3 mb-4">
         <mat-label class="fw-bold fs-16">EMAIL ME NEW LISTINGS THAT MATCH MY INTERESTS</mat-label>
-        <mat-radio-group class="col-md-4 d-flex justify-content-between col-7" formControlName="notificationEmailEnabled">
+        <mat-radio-group class="col-md-4 d-flex justify-content-between col-7" formControlName="receiveEmailForNewMatchingListings">
           <mat-radio-button class="bold-label fs-16" [value]="true">Yes</mat-radio-button>
           <mat-radio-button class="bold-label fs-16" [value]="false">No</mat-radio-button>
         </mat-radio-group>
@@ -18,7 +18,7 @@
 
       <div class="row g-3 mb-4">
         <mat-label class="fw-bold fs-16">EMAIL ME OFFERS ON MY LISTINGS</mat-label>
-        <mat-radio-group class="col-md-4 d-flex justify-content-between col-7" formControlName="notificationPushEnabled">
+        <mat-radio-group class="col-md-4 d-flex justify-content-between col-7" formControlName="receiveEmailForOffersOnMyListings">
           <mat-radio-button class="bold-label fs-16" [value]="true">Yes</mat-radio-button>
           <mat-radio-button class="bold-label fs-16" [value]="false">No</mat-radio-button>
         </mat-radio-group>

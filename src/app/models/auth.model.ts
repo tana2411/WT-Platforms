@@ -62,6 +62,8 @@ type UserInfor = {
   notificationEmailEnabled: boolean;
   notificationPushEnabled: boolean;
   notificationInAppEnabled: boolean;
+  receiveEmailForOffersOnMyListings: boolean | null;
+  receiveEmailForNewMatchingListings: boolean | null;
   favoriteMaterials: string | null;
   companyInterest: string | null;
   whereDidYouHearAboutUs: string;
