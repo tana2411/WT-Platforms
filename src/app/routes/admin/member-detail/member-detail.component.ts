@@ -7,6 +7,7 @@ import { AdminLayoutComponent } from '../../../layout/admin-layout/admin-layout.
 import { AdminCompanyDocumentComponent } from '../../../share/ui/admin/member-detail/admin-company-document/admin-company-document.component';
 import { AdminCompanyInformationComponent } from '../../../share/ui/admin/member-detail/admin-company-information/admin-company-information.component';
 import { AdminMaterialPreferenceComponent } from '../../../share/ui/admin/member-detail/admin-material-preference/admin-material-preference.component';
+import { AdminMemberLocationComponent } from '../../../share/ui/admin/member-detail/admin-member-location/admin-member-location.component';
 import { AdminPersonalInformationComponent } from '../../../share/ui/admin/member-detail/admin-personal-information/admin-personal-information.component';
 import { MemberDetailActionsComponent } from '../../../share/ui/admin/member-detail/member-detail-actions/member-detail-actions.component';
 import { SpinnerComponent } from '../../../share/ui/spinner/spinner.component';
@@ -24,6 +25,7 @@ import { SpinnerComponent } from '../../../share/ui/spinner/spinner.component';
     MatTabsModule,
     MemberDetailActionsComponent,
     AdminCompanyDocumentComponent,
+    AdminMemberLocationComponent,
   ],
   templateUrl: './member-detail.component.html',
   styleUrl: './member-detail.component.scss',
