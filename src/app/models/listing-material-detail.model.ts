@@ -102,3 +102,24 @@ export interface ListingMaterialDetailResponse {
 }
 
 export type ListingMaterialDetail = ListingMaterialDetailResponse['data'];
+
+export interface RequestInformationPayload {
+  listingId: number;
+  requestPictures: boolean | null;
+  requestSpecSheets: boolean | null;
+  requestDescription: boolean | null;
+  freeText: string | null;
+}
+
+export interface RequestInformationResponse {
+  id: number;
+  userId: number;
+  listingId: number;
+  requestPictures: boolean;
+  requestSpecSheets: boolean;
+  requestDescription: boolean;
+  freeText: string | null;
+  status: 'pending' | 'approved' | 'rejected';
+  createdAt: string;
+  updatedAt: string;
+}

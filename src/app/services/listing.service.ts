@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FilterParams, ListingMaterialPayload, ListingResponse, SellListingResponse } from 'app/models';
-import { ListingMaterialDetailResponse } from 'app/models/listing-material-detail.model';
+import { ListingMaterialDetailResponse, RequestInformationPayload } from 'app/models/listing-material-detail.model';
 import { WantedListingResponse } from 'app/models/wanted.model';
 import { catchError, Observable, throwError } from 'rxjs';
 
@@ -74,5 +74,9 @@ export class ListingService {
         return throwError(() => new Error('Failed to load listings. Please refresh the page to try again.'));
       }),
     );
+  }
+
+  requestInformation(payload: RequestInformationPayload) {
+    return this.httpClient.post('/listing-requests', payload);
   }
 }

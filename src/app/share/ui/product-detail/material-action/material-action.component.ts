@@ -13,6 +13,7 @@ import { ConfirmModalComponent, ConfirmModalProps } from 'app/share/ui/confirm-m
 import { isNil } from 'lodash';
 import { catchError, EMPTY, finalize, map } from 'rxjs';
 import { BiddingFormComponent, BiddingFormProps } from '../bidding-form/bidding-form.component';
+import { RequestInformationComponent } from '../request-information/request-information.component';
 
 @Component({
   selector: 'app-material-action',
@@ -46,6 +47,21 @@ export class MaterialActionComponent {
         availableQuantity: this.listingDetail()?.listing?.quantity,
       } as BiddingFormProps,
     });
+  }
+
+  onRequestInformation() {
+    this.dialog
+      .open(RequestInformationComponent, {
+        maxWidth: '750px',
+        width: '100%',
+        panelClass: 'px-3',
+        data: {
+          listingId: this.listingDetail()?.listing.id,
+        },
+      })
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
 
   onDeleteListing() {

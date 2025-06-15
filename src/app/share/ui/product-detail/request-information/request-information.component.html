@@ -1,0 +1,41 @@
+<div class="container-fluid p-3 p-md-4 p-lg-4">
+  <div class="d-flex justify-content-between align-items-center w-100">
+    <h2 class="fw-bold flex-grow-1">Request Information</h2>
+    <div mat-dialog-close="true" class="cursor-pointer">
+      <app-icon iconName="close"></app-icon>
+    </div>
+  </div>
+
+  <mat-dialog-content>
+    <form [formGroup]="formGroup">
+      <div class="col-12 mb-4 flex-column">
+        <mat-checkbox class="bold-label w-100 fs-16" formControlName="requestPictures">Request more picture</mat-checkbox>
+        <mat-checkbox class="bold-label w-100 fs-16" formControlName="requestSpecSheets">Request specification data sheets</mat-checkbox>
+        <mat-checkbox class="bold-label w-100 fs-16" formControlName="requestDescription">Request description</mat-checkbox>
+      </div>
+      <div class="col-12 mb-4">
+        <div class="fw-bold fs-16">MESSAGE</div>
+        <mat-form-field appearance="outline" class="w-100">
+          <textarea matInput rows="5" style="resize: none" formControlName="freeText"></textarea>
+          @if (formGroup.get('freeText')?.hasError('maxlength')) {
+            <mat-error>Your message is too long. Please limit it to 1000 characters.</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="d-flex justify-content-between align-items-center gap-3 col-md-12 col-12s">
+      <button
+        mat-flat-button
+        [disabled]="formGroup.invalid || formGroup.pristine"
+        class="text-uppercase primary-btn w-100 fw-bold py-3"
+        [class.overlay-spinner]="submitting()"
+        (click)="submit()"
+        i18n
+      >
+        SUBMIT
+      </button>
+    </div>
+  </mat-dialog-actions>
+</div>
