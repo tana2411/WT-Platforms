@@ -10,6 +10,7 @@ import { ListingFooterComponent } from 'app/share/ui/listing/listing-footer/list
 import { PaginationComponent } from 'app/share/ui/listing/pagination/pagination.component';
 import { ProductGridComponent } from 'app/share/ui/listing/product-grid/product-grid.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
+import { scrollTop } from 'app/share/utils/common';
 import { catchError, finalize, of } from 'rxjs';
 
 export const PAGE_SIZE = 10;
@@ -92,10 +93,9 @@ export class WantedMaterialComponent implements OnInit {
   refresh() {
     const currentFilter = this.filter();
     this.loading.set(true);
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
+
+    scrollTop();
+
     this.listingService
       .get(currentFilter)
       .pipe(

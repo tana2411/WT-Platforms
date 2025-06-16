@@ -8,6 +8,7 @@ import { FilterParams, ListingMaterial } from 'app/models';
 import { ListingService } from 'app/services/listing.service';
 import { BiddingFormComponent } from 'app/share/ui/product-detail/bidding-form/bidding-form.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
+import { scrollTop } from 'app/share/utils/common';
 import { catchError, finalize, of } from 'rxjs';
 import { FilterComponent } from '../../share/ui/listing/filter/filter.component';
 import { ListingFooterComponent } from '../../share/ui/listing/listing-footer/listing-footer.component';
@@ -95,10 +96,7 @@ export class MarketPlaceComponent {
     const currentFilter = this.filter();
     this.loading.set(true);
 
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
+    scrollTop();
 
     this.listingService
       .get(currentFilter)

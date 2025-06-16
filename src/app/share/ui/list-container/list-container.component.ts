@@ -2,6 +2,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { Component, ContentChild, inject, Input, OnInit, signal, TemplateRef } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { mapCountryCodeToName } from '@app/statics';
+import { scrollTop } from 'app/share/utils/common';
 import { catchError, finalize, of } from 'rxjs';
 import { FilterComponent, PageType } from '../listing/filter/filter.component';
 import { PaginationComponent } from '../listing/pagination/pagination.component';
@@ -115,10 +116,9 @@ export class ListContainerComponent implements OnInit {
 
   private refresh() {
     this.loading.set(true);
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
+
+    scrollTop();
+
     this.fetchFn(this.filter())
       .pipe(
         finalize(() => this.loading.set(false)),

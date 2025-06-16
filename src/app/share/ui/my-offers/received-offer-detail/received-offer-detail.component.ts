@@ -6,6 +6,7 @@ import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { ListingImageType } from 'app/models';
 import { OfferListingItem } from 'app/models/offer';
 import { OfferService } from 'app/services/offer.service';
+import { scrollTop } from 'app/share/utils/common';
 import { OfferDetail } from 'app/types/requests/offer';
 import moment from 'moment';
 import { startWith, Subject, switchMap } from 'rxjs';
@@ -128,10 +129,8 @@ export class ReceivedOfferDetailComponent implements OnInit {
 
   onRefresh() {
     this.updator.next();
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
+
+    scrollTop();
   }
 
   ngOnInit(): void {

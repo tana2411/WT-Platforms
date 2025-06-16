@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-share-listing',
@@ -8,7 +9,8 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [MatButtonModule],
 })
 export class ShareListingComponent {
-  @Input() url: string = window.location.href;
+  router = inject(Router);
+  @Input() url: string = this.router.url;
   @Input() title: string = 'Check out this listing';
 
   shareToFacebook() {

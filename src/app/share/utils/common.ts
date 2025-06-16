@@ -25,3 +25,14 @@ export const downloadFile = async (url: string) => {
     window.open(url, '_blank', 'noopener');
   }
 };
+
+export const scrollTop = () => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  window?.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+};
