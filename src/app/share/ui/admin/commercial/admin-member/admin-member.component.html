@@ -10,7 +10,7 @@
       </div>
     } @else {
       <div class="row g-3">
-        @for (item of memberData.data; track item.users.id) {
+        @for (item of memberData.data; track item.user.userId) {
           <app-member-listing-item [member]="item" />
         }
       </div>

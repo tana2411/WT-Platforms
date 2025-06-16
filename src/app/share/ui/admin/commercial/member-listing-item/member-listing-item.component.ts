@@ -21,7 +21,7 @@ export class MemberListingItemComponent {
   mapCountryCodeToName = mapCountryCodeToName;
 
   onViewDetail() {
-    const userId = this.member()?.users.id;
+    const userId = this.member()?.user.userId;
     if (isNil(userId)) {
       return;
     }

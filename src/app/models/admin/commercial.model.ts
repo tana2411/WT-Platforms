@@ -1,48 +1,18 @@
 export type ListingMemberItem = {
-  company: {
-    id: number;
-    country_code: string | null;
+  user: {
+    userId: number;
+    companyId: number;
     name: string;
-    registration_number: string | null;
-    vat_number: string | null;
-    vat_registration_country: string | null;
-    address_line_1: string;
-    address_line_2: string | null;
-    city: string;
-    country: string;
-    state_province: string;
-    postal_code: string;
-    website: string | null;
-    phone_number: string;
-    mobile_number: string;
-    company_type: string | null;
-    is_haulier: boolean;
-    fleet_type: string | null;
-    areas_covered: string | null;
-    container_types: string | null;
-    status: string;
-    verified_at: string | null;
-    created_at: string;
-    updated_at: string;
-    favorite_materials: string[] | null;
-    company_interest: string | null;
-    box_clearing_agent: boolean;
-    email: string | null;
-    facebook_url: string | null;
-    instagram_url: string | null;
-    linkedin_url: string | null;
-    x_url: string | null;
-    description: string | null;
-  };
-  users: {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phoneNumber: string;
+    companyType: string;
+    companyName: string;
+    companyCountry: string;
+    registrationDate: string;
   };
   documents: any[]; // Replace `any` with actual document type if known
   locations: any[]; // Replace `any` with actual location type if known
+  onboardingStatus: string;
+  registrationStatus: string;
+  overallStatus: string;
 };
 
 export type MemberDetail = {
