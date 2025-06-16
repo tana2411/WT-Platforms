@@ -11,14 +11,15 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { AdminCommercialService } from 'app/services/admin/admin-commercial.service';
 import { catchError, EMPTY, finalize, switchMap, tap } from 'rxjs';
 import { RejectModalComponent } from '../../reject-modal/reject-modal.component';
 
 @Component({
   selector: 'app-member-detail-actions',
-  imports: [MatButtonModule, MatSnackBarModule],
+  imports: [MatButtonModule, MatSnackBarModule, MatDialogModule],
   templateUrl: './member-detail-actions.component.html',
   styleUrl: './member-detail-actions.component.scss',
 })
@@ -28,11 +29,9 @@ export class MemberDetailActionsComponent {
   dialogService = inject(MatDialog);
   snackbar = inject(MatSnackBar);
   injector = inject(Injector);
+  adminCommercialService = inject(AdminCommercialService);
 
-  user = input<any>({
-    id: 22,
-    status: 'pending',
-  });
+  user = input<any>();
 
   submitting = signal<'accept' | 'reject' | 'request' | undefined>(undefined);
   canAction = computed(() => (this.user().state = 'pending'));
@@ -86,9 +85,11 @@ export class MemberDetailActionsComponent {
               return EMPTY;
             }
 
-            // todo: implement
-            return EMPTY;
-            // return this.adminOfferService.callAction(offerId, OfferRequestActionEnum.REJECT, params);
+            return this.adminCommercialService.callAction({
+              id: userId,
+              action: 'reject',
+              ...params,
+            });
           }),
           tap(() => {
             this.refresh.emit();

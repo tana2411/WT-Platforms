@@ -91,3 +91,14 @@ export type GetMemberDetailResponse = {
   message: string;
   data: MemberDetail;
 };
+
+export type MemberRequestActionEnum = {
+  ACCEPT: 'approve';
+  REJECT: 'reject';
+  REQUEST_INFORMATION: 'request_info';
+};
+
+export type MemberRequestActionParams = {
+  reject_reason?: string;
+  message?: string;
+};

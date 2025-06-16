@@ -4,6 +4,11 @@
 
     <div class="border rounded border-primary px-5 py-4">
       <mat-accordion class="mb-4" [multi]="true">
+        @if (locations.length == 0) {
+          <div class="d-flex justify-content-center align-items-center fs-24 mt-3">
+            <p class="text-muted">No location found.</p>
+          </div>
+        }
         @for (location of locations; track location.id) {
           <mat-expansion-panel [expanded]="$index === 0" #panel>
             <mat-expansion-panel-header>
