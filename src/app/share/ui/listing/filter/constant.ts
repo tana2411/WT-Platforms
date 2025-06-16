@@ -17,7 +17,7 @@ export const allFilters: Filter[] = [
     options: countries,
   },
   {
-    name: 'MATERIAL TYPE',
+    name: 'MATERIAL',
     value: 'materialType',
     type: 'select',
     options: materialTypes,
@@ -77,7 +77,7 @@ export const allFilters: Filter[] = [
     type: 'select',
     options: [
       {
-        name: 'Approve',
+        name: 'Approved',
         code: 'approve',
       },
       { code: 'pending', name: 'Pending' },

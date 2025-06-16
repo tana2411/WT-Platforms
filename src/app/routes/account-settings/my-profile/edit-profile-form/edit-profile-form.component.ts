@@ -42,16 +42,8 @@ export class EditProfileFormComponent implements OnInit {
       Validators.maxLength(50),
       Validators.pattern(/^[\p{L}\s]+$/u),
     ]),
-    lastName: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(50),
-      Validators.pattern(/^[\p{L}\s]+$/u),
-    ]),
-    jobTitle: new FormControl<string | null>(null, [
-      Validators.required,
-      Validators.maxLength(50),
-      Validators.pattern(/^[\p{L}\s]+$/u),
-    ]),
+    lastName: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
+    jobTitle: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
     phoneNumber: new FormControl<string | null>(null, [Validators.required]),
     email: new FormControl<string | null>(null, [Validators.required, strictEmailValidator()]),
   });
@@ -68,7 +60,7 @@ export class EditProfileFormComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    if (this.data.userInfo) {
+    if (this.data?.userInfo) {
       const { userInfo } = this.data;
       this.formGroup.patchValue({
         prefix: userInfo?.user?.prefix || 'mr',

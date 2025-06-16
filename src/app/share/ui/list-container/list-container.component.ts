@@ -37,6 +37,8 @@ export class ListContainerComponent implements OnInit {
   loading = signal(false);
   items = signal<any[]>([]);
   total = signal(0);
+  noResults = signal(false);
+  invalidPage = signal(false);
 
   snackBar = inject(MatSnackBar);
 
@@ -133,6 +135,9 @@ export class ListContainerComponent implements OnInit {
           typeof res.totalCount === 'string'
             ? this.total.set(parseInt(res.totalCount))
             : this.total.set(res.totalCount);
+
+          this.invalidPage.set(this.total() > 0 && res.results.length === 0);
+          this.noResults.set(this.total() === 0 && res.results.length === 0);
         }
       });
   }
