@@ -66,4 +66,8 @@ export class MemberDetailComponent {
   onBack() {
     this.router.navigateByUrl(`${ROUTES_WITH_SLASH.commercialManagement}?tab=0`);
   }
+
+  refresh() {
+    this.updator.next();
+  }
 }

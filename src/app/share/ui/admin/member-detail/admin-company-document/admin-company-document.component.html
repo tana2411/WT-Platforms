@@ -27,7 +27,7 @@
                   </div>
                 </div>
                 <div class="col-md-2 d-flex align-items-center justify-content-md-end justify-content-start mt-md-0 mt-3">
-                  <mat-icon [style.color]="getStatusColor(item.status)">fiber_manual_record</mat-icon>
+                  <mat-icon [style.color]="getStatusColor(item.status)" [style]="{ minWidth: '27px' }">fiber_manual_record</mat-icon>
                   <div class="fw-500 text-nowrap" [style.color]="getDocumentStatusColor(item.status)">
                     {{ getDocumentStatusText(item.status) || '-' }}
                   </div>

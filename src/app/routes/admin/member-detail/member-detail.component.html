@@ -13,7 +13,7 @@
           <span i18n>go back</span>
         </div>
 
-        <app-member-detail-actions [user]="user" />
+        <app-member-detail-actions [user]="user" (refresh)="refresh()" />
       </div>
 
       <app-admin-personal-information [userDetail]="user" />

@@ -138,7 +138,6 @@ export class MemberDetailActionsComponent {
               return EMPTY;
             }
 
-            debugger;
             return this.adminCommercialService.callAction({
               id: userId,
               action: MemberRequestActionEnum.REQUEST_INFORMATION,
