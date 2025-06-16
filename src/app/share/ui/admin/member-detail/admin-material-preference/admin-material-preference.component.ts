@@ -9,21 +9,7 @@ import { materialTypes } from '@app/statics';
   styleUrl: './admin-material-preference.component.scss',
 })
 export class AdminMaterialPreferenceComponent {
-  favoriteMaterials = input<string[]>([
-    'evoh',
-    'lldpe',
-    'pe_pet',
-    'pp_ps',
-    'tcans',
-    'acans',
-    'aluminium',
-    'multi_printing',
-    'unprinted_tissue_coloured_in_the_mass',
-    'unprinted_bleached_sulphate_board',
-    'rubber_conveyor_belts',
-    'rubber_hoses_and_tubing',
-    'rubber_playground_surfaces',
-  ]);
+  favoriteMaterials = input<string[] | null>();
   companyId = input<string>('');
   @Output() refresh = new EventEmitter<void>();
 
@@ -31,7 +17,7 @@ export class AdminMaterialPreferenceComponent {
 
   dialog = inject(MatDialog);
   materials = computed(() => {
-    const favoriteMaterials = this.favoriteMaterials();
+    const favoriteMaterials = this.favoriteMaterials() ?? [];
     return this.materialTypes
       .filter((type) => {
         return type.materials.some((material) => favoriteMaterials.includes(material.code));

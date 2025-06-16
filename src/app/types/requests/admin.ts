@@ -1,4 +1,5 @@
 import { ListingMaterial } from 'app/models';
+import { ListingMemberItem, MemberDetail } from 'app/models/admin/commercial.model';
 import { OfferState, OfferStatus } from 'app/models/offer';
 
 // interface Listing {
@@ -74,3 +75,19 @@ export interface ListingActionParams {
   rejectionReason?: string;
   message?: string;
 }
+
+export interface GetMembersParams {
+  page: number;
+  pageSize: number;
+}
+
+export type GetMembersResponse = {
+  data: ListingMemberItem[];
+  total: number;
+};
+
+export type GetMemberDetailResponse = {
+  status: string;
+  message: string;
+  data: MemberDetail;
+};

@@ -1,4 +1,4 @@
-import { NgTemplateOutlet, TitleCasePipe } from '@angular/common';
+import { DatePipe, NgTemplateOutlet, TitleCasePipe } from '@angular/common';
 import { Component, computed, effect, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,8 +7,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CompanyDocumentType } from 'app/models';
-import { IDocument } from 'app/models/listing-material-detail.model';
+import { CommercialDocument, CompanyDocumentStatus, MemberDetail } from 'app/models/admin/commercial.model';
+import { OfferStatus } from 'app/models/offer';
 import { AuthService } from 'app/services/auth.service';
+import { downloadFile } from 'app/share/utils/common';
 import { getStatusColor } from 'app/share/utils/offer';
 import { DocumentPreviewModalComponent } from '../admin-document-preview-modal/admin-document-preview-modal.component';
 
@@ -24,54 +26,15 @@ import { DocumentPreviewModalComponent } from '../admin-document-preview-modal/a
     TitleCasePipe,
     MatTooltipModule,
     MatDialogModule,
+    DatePipe,
   ],
   templateUrl: './admin-company-document.component.html',
   styleUrl: './admin-company-document.component.scss',
 })
 export class AdminCompanyDocumentComponent {
-  user = input<{
-    company: {
-      companyDocuments: IDocument[];
-    };
-  }>({
-    company: {
-      companyDocuments: [
-        {
-          id: 448,
-          uploadedByUserId: 3,
-          reviewedByUserId: null,
-          documentType: 'environmental_permit',
-          documentName: 'Screenshot 2025-06-12 at 17.30.31.png',
-          documentUrl:
-            'https://wastetrade-resources-dev.s3.eu-west-2.amazonaws.com/1749724243402_Screenshot-2025-06-12-at-17.30.31.png',
-          status: 'pending',
-          rejectionReason: null,
-          reviewedAt: null,
-          expiryDate: null,
-          createdAt: '2025-06-12T10:30:44.316Z',
-          updatedAt: '2025-06-13T03:13:27.085Z',
-          companyId: 2,
-        },
-        {
-          id: 450,
-          uploadedByUserId: 3,
-          reviewedByUserId: null,
-          documentType: 'environmental_permit',
-          documentName: 'sample-local-pdf.pdf',
-          documentUrl: 'https://wastetrade-resources-dev.s3.eu-west-2.amazonaws.com/1749784406382_sample-local-pdf.pdf',
-          status: 'pending',
-          rejectionReason: null,
-          reviewedAt: null,
-          expiryDate: null,
-          createdAt: '2025-06-13T03:13:27.082Z',
-          updatedAt: '2025-06-13T03:13:27.082Z',
-          companyId: 2,
-        },
-      ] as any,
-    },
-  });
+  user = input<MemberDetail>();
 
-  documents = computed(() => this.user()?.company.companyDocuments);
+  documents = computed(() => this.user()?.company.documents ?? []);
 
   getStatusColor = getStatusColor;
   documentTypeUploaded: string = '';
@@ -79,24 +42,55 @@ export class AdminCompanyDocumentComponent {
   CompanyDocumentType = CompanyDocumentType;
   documentType: CompanyDocumentType = CompanyDocumentType.EnvironmentalPermit;
 
-  environmentPermitDocuments: IDocument[] = [];
-  wasteExemptionDocuments: IDocument[] = [];
-  wasteCarrierLicenseDocuments: IDocument[] = [];
-  otherDocuments: IDocument[] = [];
+  environmentPermitDocuments: CommercialDocument[] = [];
+  wasteExemptionDocuments: CommercialDocument[] = [];
+  wasteCarrierLicenseDocuments: CommercialDocument[] = [];
+  otherDocuments: CommercialDocument[] = [];
 
   authService = inject(AuthService);
   dialog = inject(MatDialog);
+
+  getDocumentStatusColor = (status: CompanyDocumentStatus): string => {
+    switch (status) {
+      case CompanyDocumentStatus.ACTIVE:
+      case CompanyDocumentStatus.APPROVED:
+        return getStatusColor(OfferStatus.ACCEPTED);
+      case CompanyDocumentStatus.PENDING:
+      case CompanyDocumentStatus.REQUEST_INFORMATION:
+        return getStatusColor(OfferStatus.PENDING);
+      case CompanyDocumentStatus.REJECTED:
+        return getStatusColor(OfferStatus.REJECTED);
+    }
+  };
+
+  getDocumentStatusText = (status: CompanyDocumentStatus): string => {
+    switch (status) {
+      case CompanyDocumentStatus.ACTIVE:
+        return 'Active';
+      case CompanyDocumentStatus.APPROVED:
+        return 'Approved';
+      case CompanyDocumentStatus.PENDING:
+        return 'Pending';
+      case CompanyDocumentStatus.REQUEST_INFORMATION:
+        return 'Request Information';
+      case CompanyDocumentStatus.REJECTED:
+        return 'Rejected';
+      default:
+        return 'Unknown';
+    }
+  };
 
   constructor() {
     effect(() => {
       const document = this.documents();
       if (document.length > 0) {
+        debugger;
         this.documentTypeUploaded = [
           ...new Set(
             document
-              .filter((d) => d.documentType != 'waste_carrier_license')
+              .filter((d) => d.document_type != 'waste_carrier_license')
               .map((d) =>
-                d.documentType
+                (d.document_type ?? '')
                   .split('_')
                   .map((token) => token.at(0)?.toUpperCase() + token.slice(1))
                   .join(' '),
@@ -112,7 +106,7 @@ export class AdminCompanyDocumentComponent {
     if (this.documents()) {
       this.resetDocument();
       this.documents().forEach((document) => {
-        switch (document.documentType) {
+        switch (document.document_type) {
           case CompanyDocumentType.EnvironmentalPermit:
             this.environmentPermitDocuments.push(document);
             break;
@@ -140,11 +134,15 @@ export class AdminCompanyDocumentComponent {
     return url.split('/').pop() || '';
   }
 
-  viewDocument(item: IDocument) {
+  viewDocument(item: CommercialDocument) {
     this.dialog.open(DocumentPreviewModalComponent, {
-      data: { url: item.documentUrl },
+      data: { url: item.document_url },
       width: '960px',
       maxWidth: '95vw',
     });
+  }
+
+  download(url: string) {
+    downloadFile(url);
   }
 }

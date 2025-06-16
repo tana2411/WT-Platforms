@@ -280,7 +280,7 @@ export const routes: Routes = [
       ),
   },
   {
-    path: `${ROUTES.adminMemberDetail}/:userId`,
+    path: `${ROUTES.adminMemberDetail}/:id`,
     canActivate: [CanActivateAuthPage],
     data: {
       requireAuthParams: [GuardRequireRole.SuperAdmin],

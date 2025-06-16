@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
+import { AdminCommercialService } from 'app/services/admin/admin-commercial.service';
 import { AdminBuyerActivityComponent } from 'app/share/ui/admin/commercial/admin-buyer-activity/admin-buyer-activity.component';
 import { AdminMemberComponent } from 'app/share/ui/admin/commercial/admin-member/admin-member.component';
 import { AdminSellerActivityComponent } from 'app/share/ui/admin/commercial/admin-seller-activity/admin-seller-activity.component';
@@ -23,6 +24,7 @@ import { AdminLayoutComponent } from '../../../layout/admin-layout/admin-layout.
     AdminMemberComponent,
     MatIconModule,
   ],
+  providers: [AdminCommercialService],
 })
 export class CommercialManagementComponent {
   router = inject(Router);
