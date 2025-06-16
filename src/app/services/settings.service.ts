@@ -24,4 +24,8 @@ export class SettingsService {
   updateCompanyDocument(payload: Partial<UpdateDocumentPayload>[]): Observable<UpdateDocumentResponse> {
     return this.httpClient.post<UpdateDocumentResponse>('/company-documents/me', payload);
   }
+
+  updateNotification(payload: { [key: string]: boolean }): Observable<any> {
+    return this.httpClient.patch('/users/me', payload);
+  }
 }

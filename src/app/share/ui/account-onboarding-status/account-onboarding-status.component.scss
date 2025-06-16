@@ -1,30 +1,46 @@
-@import "variables";
+@import 'variables';
 
 .badge {
-    width: 30px; 
-    height: 30px;
-    font-weight: bold;
+  width: 30px;
+  height: 30px;
+  font-weight: bold;
 }
 
 .pending-badge {
-    background-color: $white;
-    border: 1px solid $black;
-    color: $black;
+  background-color: $white;
+  border: 1px solid $black;
+  color: $black;
 }
 
 .success-badge {
-    background-color: $primary;
-    color: $white;
+  background-color: $primary;
+  color: $white;
 }
 
 .success-outline-badge {
-    background-color: $white;
-    border: 1px solid $primary;
-    color: $primary;
+  background-color: $white;
+  border: 1px solid $primary;
+  color: $primary;
 }
 
 .error-badge {
-    background-color: $error;
-    color: $white;
+  background-color: $error;
+  color: $white;
 }
 
+.resp-width-576 {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .resp-width-576 {
+    width: 576px;
+  }
+  .res-width-640 {
+    width: 576px;
+  }
+}
+
+.res-width-640 {
+  width: 100%;
+}
