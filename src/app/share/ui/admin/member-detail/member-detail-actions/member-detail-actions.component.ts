@@ -14,7 +14,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AdminCommercialService } from 'app/services/admin/admin-commercial.service';
+import { MemberRequestActionEnum } from 'app/types/requests/admin';
 import { catchError, EMPTY, finalize, switchMap, tap } from 'rxjs';
+import { AdminMemberRequestInforComponent } from '../../commercial/admin-member-request-infor/admin-member-request-infor.component';
 import { RejectModalComponent } from '../../reject-modal/reject-modal.component';
 
 @Component({
@@ -37,30 +39,34 @@ export class MemberDetailActionsComponent {
   canAction = computed(() => (this.user().state = 'pending'));
 
   onApprove = () => {
-    // const offerId = this.offerId();
-    // if (!offerId || this.submitting()) {
-    //   return;
-    // }
-    // this.submitting.set('accept');
-    // runInInjectionContext(this.injector, () => {
-    //   this.adminOfferService
-    //     .callAction(offerId, OfferRequestActionEnum.ACCEPT, {})
-    //     .pipe(
-    //       tap(() => {
-    //         this.snackbar.open('The approval action was sent successfully.');
-    //         this.refresh.emit();
-    //       }),
-    //       catchError(() => {
-    //         this.snackbar.open('Unable to process the approval action. Please try again.');
-    //         return EMPTY;
-    //       }),
-    //       takeUntilDestroyed(),
-    //       finalize(() => {
-    //         this.submitting.set(undefined);
-    //       }),
-    //     )
-    //     .subscribe();
-    // });
+    const userId = this.user().id;
+    if (!userId || this.submitting()) {
+      return;
+    }
+    this.submitting.set('accept');
+
+    runInInjectionContext(this.injector, () => {
+      this.adminCommercialService
+        .callAction({
+          id: userId,
+          action: MemberRequestActionEnum.ACCEPT,
+        })
+        .pipe(
+          tap(() => {
+            this.snackbar.open('The approval action was sent successfully.');
+            this.refresh.emit();
+          }),
+          catchError(() => {
+            this.snackbar.open('Unable to process the approval action. Please try again.');
+            return EMPTY;
+          }),
+          takeUntilDestroyed(),
+          finalize(() => {
+            this.submitting.set(undefined);
+          }),
+        )
+        .subscribe();
+    });
   };
 
   onReject = () => {
@@ -87,7 +93,7 @@ export class MemberDetailActionsComponent {
 
             return this.adminCommercialService.callAction({
               id: userId,
-              action: 'reject',
+              action: MemberRequestActionEnum.REJECT,
               ...params,
             });
           }),
@@ -108,7 +114,51 @@ export class MemberDetailActionsComponent {
     });
   };
 
+  onRequestInfo = () => {};
+
   onRequestMoreInformation() {
-    // todo: implement
+    const userId = this.user().id;
+    if (!userId || this.submitting()) {
+      return;
+    }
+
+    this.submitting.set('request');
+    const dataConfig: MatDialogConfig = {
+      width: '100%',
+      maxWidth: '960px',
+    };
+    const dialogRef = this.dialogService.open(AdminMemberRequestInforComponent, dataConfig);
+
+    runInInjectionContext(this.injector, () => {
+      dialogRef
+        .afterClosed()
+        .pipe(
+          switchMap((params) => {
+            if (!params) {
+              return EMPTY;
+            }
+
+            debugger;
+            return this.adminCommercialService.callAction({
+              id: userId,
+              action: MemberRequestActionEnum.REQUEST_INFORMATION,
+              ...params,
+            });
+          }),
+          tap(() => {
+            this.refresh.emit();
+            this.snackbar.open('The request information action was sent successfully.');
+          }),
+          catchError(() => {
+            this.snackbar.open('Unable to request more information. Please try again.');
+            return EMPTY;
+          }),
+          takeUntilDestroyed(),
+          finalize(() => {
+            this.submitting.set(undefined);
+          }),
+        )
+        .subscribe();
+    });
   }
 }
