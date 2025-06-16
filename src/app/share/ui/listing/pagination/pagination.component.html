@@ -23,7 +23,12 @@
           }
         </div>
 
-        <button mat-flat-button class="col-3" [disabled]="pageNumber$() === totalPage() || totalPage() === 0" (click)="onNextPage()">
+        <button
+          mat-flat-button
+          class="col-3 d-flex flex-row-reverse justify-content-center align-items-center gap-3"
+          [disabled]="pageNumber$() === totalPage() || totalPage() === 0"
+          (click)="onNextPage()"
+        >
           <span i18n>NEXT</span>
           <mat-icon>arrow_forward</mat-icon>
         </button>

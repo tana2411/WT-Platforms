@@ -58,6 +58,8 @@ export interface SellListingDetail {
   state: OfferState;
   rejection_reason: string | null;
   message: string | null;
+  price_per_metric_tonne: string;
+  location_other: string;
   user_id: number;
   first_name: string;
   last_name: string;

@@ -45,7 +45,6 @@ export class EditCompanyInformationFormComponent implements OnInit {
       ),
     ]),
     registrationNumber: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
-    vatRegistrationCountry: new FormControl<string | null>(null, [Validators.required]),
     vatNumber: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
     companyType: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
     companyInterest: new FormControl<string | null>(null, [Validators.required]),
@@ -75,7 +74,6 @@ export class EditCompanyInformationFormComponent implements OnInit {
       this.formGroup.patchValue({
         name: companyInfo?.name,
         registrationNumber: companyInfo?.registrationNumber,
-        vatRegistrationCountry: companyInfo?.vatRegistrationCountry,
         vatNumber: companyInfo?.vatNumber,
         website: companyInfo?.website,
         companyType: companyInfo?.companyType,
@@ -154,10 +152,10 @@ export class EditCompanyInformationFormComponent implements OnInit {
 
         this.submitting.set(true);
         this.settingsService
-          .updateCompany(this.data.companyInfo.id, payload)
+          .updateCompany(this.data.companyInfo?.id, payload)
           .pipe(
             catchError((err) => {
-              this.snackBar.open('Company Information update failed. Please try again later.', 'OK', {
+              this.snackBar.open('Failed to save changes. Please check your inputs and try again.', 'OK', {
                 duration: 3000,
               });
               return EMPTY;
