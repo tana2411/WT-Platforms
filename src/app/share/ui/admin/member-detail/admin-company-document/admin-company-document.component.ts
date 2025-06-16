@@ -36,7 +36,19 @@ export class AdminCompanyDocumentComponent {
 
   documents = computed(() => this.user()?.company.documents ?? []);
 
-  getStatusColor = getStatusColor;
+  getStatusColor(status: CompanyDocumentStatus) {
+    switch (status) {
+      case CompanyDocumentStatus.APPROVED:
+        return '#03985C';
+      case CompanyDocumentStatus.REJECTED:
+        return '#D75A66';
+      case CompanyDocumentStatus.PENDING:
+      case CompanyDocumentStatus.REQUEST_INFORMATION:
+        return '#F9A52B';
+      default:
+        return '#03985C';
+    }
+  }
   documentTypeUploaded: string = '';
   // documents: IDocument[] | undefined = undefined;
   CompanyDocumentType = CompanyDocumentType;
@@ -84,7 +96,6 @@ export class AdminCompanyDocumentComponent {
     effect(() => {
       const document = this.documents();
       if (document.length > 0) {
-        debugger;
         this.documentTypeUploaded = [
           ...new Set(
             document

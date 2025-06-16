@@ -53,8 +53,6 @@ export class AdminMemberLocationComponent {
         });
     });
 
-    debugger;
-
     return result;
   });
 
