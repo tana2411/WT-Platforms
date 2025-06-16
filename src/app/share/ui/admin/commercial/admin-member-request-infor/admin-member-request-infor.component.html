@@ -1,0 +1,61 @@
+<div class="p-5">
+  <form [formGroup]="requestInfoForm">
+    <div class="mb-4">
+      <h2 class="fw-bold mb-4">Request Information</h2>
+      <mat-radio-group class="d-flex flex-column gap-2" formControlName="requestInfo" name="requestInfo">
+        @for (reason of requestInfo; track reason) {
+          <mat-radio-button class="fw-bold" [value]="reason.value">{{ reason.label }}</mat-radio-button>
+        }
+      </mat-radio-group>
+
+      @if (requestInfoForm?.get('requestInfo')?.value == RequestInfo.Other) {
+        <mat-label class="fw-bold text-uppercase d-block mb-2 mt-3" i18n>Input custom request</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+          <textarea
+            matInput
+            rows="2"
+            style="resize: none"
+            class="w-100 px-3"
+            placeholder="Type here"
+            formControlName="message"
+            name="message"
+          ></textarea>
+
+          @if (requestInfoForm.get('message')?.hasError('required')) {
+            <mat-error class="mt-0" i18n> This is a required field. </mat-error>
+          }
+        </mat-form-field>
+      }
+    </div>
+
+    <div class="mb-4">
+      <h2 class="fw-bold mb-4">Send Message</h2>
+      <mat-radio-group class="d-flex flex-column gap-2" formControlName="sendMessage" name="sendMessage">
+        @for (reason of requestInfo; track reason) {
+          <mat-radio-button class="fw-bold" [value]="reason.value">{{ reason.label }}</mat-radio-button>
+        }
+      </mat-radio-group>
+
+      @if (requestInfoForm?.get('sendMessage')?.value == SendMessage.Other) {
+        <mat-label class="fw-bold text-uppercase d-block mb-2 mt-3" i18n>Input custom message</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+          <textarea
+            matInput
+            rows="2"
+            style="resize: none"
+            class="w-100 px-3"
+            placeholder="Type here"
+            formControlName="otherMessage"
+            name="otherMessage"
+          ></textarea>
+
+          @if (requestInfoForm.get('otherMessage')?.hasError('required')) {
+            <mat-error class="mt-0" i18n> This is a required field. </mat-error>
+          }
+        </mat-form-field>
+      }
+    </div>
+
+    <button class="mt-4 w-100 submit-button" mat-flat-button (click)="confirm()" [disabled]="!requestInfoForm.valid">Confirm</button>
+  </form>
+</div>

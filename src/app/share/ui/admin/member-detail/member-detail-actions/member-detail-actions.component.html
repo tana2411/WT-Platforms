@@ -23,6 +23,8 @@
       class="custom-button rounded primary border border-primary"
       style="border-width: 3px"
       (click)="onRequestMoreInformation()"
+      [disabled]="submitting()"
+      [class.overlay-spinner]="submitting() == 'request'"
     >
       Request more information
     </button>

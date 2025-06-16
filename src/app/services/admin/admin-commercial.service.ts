@@ -29,17 +29,35 @@ export class AdminCommercialService {
   callAction({
     id,
     action,
-    reject_reason,
+    rejectionReason,
     message,
+    requestInfo,
+    sendMessage,
+    otherMessage,
   }: {
     id: number;
     action: MemberRequestActionEnum;
-    reject_reason?: string;
+    rejectionReason?: string;
     message?: string;
+
+    requestInfo?: string;
+    sendMessage?: string;
+    otherMessage?: string;
   }) {
-    return this.http.post(`/users/admin/${id}/${action}`, {
-      reject_reason,
-      message,
+    if (action === MemberRequestActionEnum.REJECT) {
+      return this.http.patch(`/users/admin/${id}/${action}`, {
+        reject_reason: rejectionReason,
+        message: !message?.trim() ? undefined : message,
+      });
+    }
+
+    if (action === MemberRequestActionEnum.ACCEPT) {
+      return this.http.patch(`/users/admin/${id}/${action}`, {});
+    }
+
+    return this.http.patch(`/users/admin/${id}/${action}`, {
+      infoRequestType: requestInfo ?? message,
+      message: sendMessage ?? otherMessage,
     });
   }
 }
