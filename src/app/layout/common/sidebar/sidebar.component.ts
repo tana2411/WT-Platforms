@@ -69,12 +69,6 @@ export class SidebarComponent {
       link: ROUTES_WITH_SLASH.sites,
       icon: 'location_on',
     },
-
-    {
-      title: 'Add Locations',
-      link: `${ROUTES_WITH_SLASH.sites}/add`,
-      icon: 'add_location',
-    },
   ];
 
   adminMenu = [

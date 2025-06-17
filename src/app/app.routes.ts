@@ -3,6 +3,7 @@ import { ROUTES } from './constants/route.const';
 import { CanActivateAuthPage } from './guards/auth/auth.guard';
 import {} from './guards/auth/utils';
 import { AccountSettingComponent } from './routes/account-setting/account-setting.component';
+import { CommercialManagementComponent } from './routes/admin/commercial-management/commercial-management.component';
 import { LiveActiveTableComponent } from './routes/admin/live-active-table/live-active-table.component';
 import { CreateListingComponent } from './routes/create-listing/create-listing.component';
 import { LogoutComponent } from './routes/logout/logout.component';
@@ -263,10 +264,36 @@ export const routes: Routes = [
     data: {
       requireAuthParams: [GuardRequireRole.SuperAdmin],
     },
-    loadComponent: () =>
-      import('./routes/admin/commercial-management/commercial-management.component').then(
-        (m) => m.CommercialManagementComponent,
-      ),
+    component: CommercialManagementComponent,
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'members' },
+      {
+        path: 'members',
+        loadComponent: () =>
+          import('./share/ui/admin/commercial/admin-member/admin-member.component').then((m) => m.AdminMemberComponent),
+      },
+      {
+        path: 'sellers',
+        loadComponent: () =>
+          import('./share/ui/admin/commercial/admin-seller-activity/admin-seller-activity.component').then(
+            (m) => m.AdminSellerActivityComponent,
+          ),
+      },
+      {
+        path: 'buyers',
+        loadComponent: () =>
+          import('./share/ui/admin/commercial/admin-buyer-activity/admin-buyer-activity.component').then(
+            (m) => m.AdminBuyerActivityComponent,
+          ),
+      },
+      {
+        path: 'wanted',
+        loadComponent: () =>
+          import('./share/ui/admin/commercial/admin-wanted-activity/admin-wanted-activity.component').then(
+            (m) => m.AdminWantedActivityComponent,
+          ),
+      },
+    ],
   },
   {
     path: `${ROUTES.adminSaleListingDetail}/:listingId`,
