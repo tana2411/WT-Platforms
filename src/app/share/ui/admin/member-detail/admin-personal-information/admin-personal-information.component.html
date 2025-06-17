@@ -1,6 +1,6 @@
 @if (userDetail(); as userDetail) {
   <div class="col-12 overflow-hidden">
-    <h4 class="fw-bold mb-4" i18n>Personal Information</h4>
+    <h4 class="fw-bold mb-4">Personal Information</h4>
 
     <div class="d-flex flex-column flex-lg-row gap-4 overflow-hidden">
       <div
@@ -24,30 +24,30 @@
         <div class="col-12 col-md-8 col-lg-9 d-flex flex-column justify-content-between overflow-hidden flex-grow-1 min-w-0">
           <div class="row g-3 mb-4 mx-0">
             <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold text-uppercase small mb-1 text-truncate" i18n>PREFIX</div>
+              <div class="fw-bold text-uppercase small mb-1 text-truncate">PREFIX</div>
               <div class="text-truncate fw-500">{{ userDetail.prefix | titlecase }}</div>
             </div>
             <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold text-uppercase small mb-1 text-truncate" i18n>FIRST NAME</div>
+              <div class="fw-bold text-uppercase small mb-1 text-truncate">FIRST NAME</div>
               <div class="text-truncate fw-500">{{ userDetail.first_name }}</div>
             </div>
             <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold text-uppercase small mb-1 text-truncate" i18n>LAST NAME</div>
+              <div class="fw-bold text-uppercase small mb-1 text-truncate">LAST NAME</div>
               <div class="text-truncate fw-500">{{ userDetail.last_name }}</div>
             </div>
           </div>
 
           <div class="row g-3 mx-0">
             <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold text-uppercase small mb-1 text-truncate" i18n>JOB TITLE</div>
+              <div class="fw-bold text-uppercase small mb-1 text-truncate">JOB TITLE</div>
               <div class="text-truncate fw-500">{{ userDetail.job_title }}</div>
             </div>
             <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold text-uppercase small mb-1 text-truncate" i18n>EMAIL ADDRESS</div>
+              <div class="fw-bold text-uppercase small mb-1 text-truncate">EMAIL ADDRESS</div>
               <div class="text-truncate fw-500" title="john.smith@example.com">{{ userDetail.email }}</div>
             </div>
             <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold text-uppercase small mb-1 text-truncate" i18n>TELEPHONE</div>
+              <div class="fw-bold text-uppercase small mb-1 text-truncate">TELEPHONE</div>
               <div class="text-truncate fw-500">{{ userDetail.phone_number }}</div>
             </div>
           </div>
@@ -60,7 +60,7 @@
           class="d-flex align-items-center justify-content-center"
           style="max-width: 200px"
           (click)="onEditProfile()"
-          i18n
+          
         >
           <img
             src="assets/images/edit_24px.svg"

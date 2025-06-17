@@ -14,6 +14,7 @@ import { PaginationComponent } from 'app/share/ui/listing/pagination/pagination.
 import { ProductGridComponent } from 'app/share/ui/listing/product-grid/product-grid.component';
 import { BiddingFormComponent } from 'app/share/ui/product-detail/bidding-form/bidding-form.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
+import { scrollTop } from 'app/share/utils/common';
 import { catchError, EMPTY, finalize, of, switchMap } from 'rxjs';
 import { PAGE_SIZE } from '../wanted-material/wanted-material.component';
 
@@ -95,10 +96,7 @@ export class SaleListingComponent {
     const currentFilter = this.filter();
     this.loading.set(true);
 
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
+    scrollTop();
 
     this.listingService
       .getMyListing(currentFilter)

@@ -9,7 +9,7 @@
       </mat-radio-group>
 
       @if (requestInfoForm?.get('requestInfo')?.value == RequestInfo.Other) {
-        <mat-label class="fw-bold text-uppercase d-block mb-2 mt-3" i18n>Input custom request</mat-label>
+        <mat-label class="fw-bold text-uppercase d-block mb-2 mt-3">Input custom request</mat-label>
         <mat-form-field appearance="outline" class="w-100">
           <textarea
             matInput
@@ -22,7 +22,7 @@
           ></textarea>
 
           @if (requestInfoForm.get('message')?.hasError('required')) {
-            <mat-error class="mt-0" i18n> This is a required field. </mat-error>
+            <mat-error class="mt-0"> This is a required field. </mat-error>
           }
         </mat-form-field>
       }
@@ -37,7 +37,7 @@
       </mat-radio-group>
 
       @if (requestInfoForm?.get('sendMessage')?.value == SendMessage.Other) {
-        <mat-label class="fw-bold text-uppercase d-block mb-2 mt-3" i18n>Input custom message</mat-label>
+        <mat-label class="fw-bold text-uppercase d-block mb-2 mt-3">Input custom message</mat-label>
         <mat-form-field appearance="outline" class="w-100">
           <textarea
             matInput
@@ -50,7 +50,7 @@
           ></textarea>
 
           @if (requestInfoForm.get('otherMessage')?.hasError('required')) {
-            <mat-error class="mt-0" i18n> This is a required field. </mat-error>
+            <mat-error class="mt-0"> This is a required field. </mat-error>
           }
         </mat-form-field>
       }

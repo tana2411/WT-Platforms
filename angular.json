@@ -34,7 +34,8 @@
               "includePaths": ["src/styles"]
             },
             "styles": ["src/styles.scss"],
-            "scripts": []
+            "scripts": [],
+            "outputMode": "static"
           },
           "configurations": {
             "production": {

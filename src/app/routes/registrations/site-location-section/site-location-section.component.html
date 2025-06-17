@@ -4,92 +4,92 @@
     <div class="" style="width: 320px">
       <div class="d-flex justify-content-between">
         <mat-icon class="primary">check_circle</mat-icon>
-        <div class="w-75 mx-auto fw-bold" i18n>COMPANY INFORMATION</div>
+        <div class="w-75 mx-auto fw-bold">COMPANY INFORMATION</div>
         <mat-icon class="text-empty">remove</mat-icon>
       </div>
       <hr />
       <div class="d-flex justify-content-between">
         <mat-icon class="primary">check_circle</mat-icon>
-        <div class="w-75 mx-auto fw-bold" i18n>COMPANY DOCUMENT</div>
+        <div class="w-75 mx-auto fw-bold">COMPANY DOCUMENT</div>
         <mat-icon class="text-empty">remove</mat-icon>
       </div>
       <hr />
       <div class="d-flex justify-content-between">
         <mat-icon></mat-icon>
-        <div class="w-75 fw-bold mx-auto" i18n>SITE LOCATION</div>
+        <div class="w-75 fw-bold mx-auto">SITE LOCATION</div>
         <mat-icon>add</mat-icon>
       </div>
     </div>
     <div class="" style="width: 830px">
       <form [formGroup]="formGroup">
         <div class="border border-dark boder-2 p-4 border-radius bg-white">
-          <h3 class="text-center my-2 fw-bold fs-40" i18n>Site Location</h3>
+          <h3 class="text-center my-2 fw-bold fs-40">Site Location</h3>
           <div class="px-2 py-3 background-primary d-flex align-items-center justify-content-center mb-4 rounded-4">
             <div class="col-1 text-center d-flex align-items-center justify-content-center">
               <mat-icon class="material-icons-outlined text-white">error_outline</mat-icon>
             </div>
-            <div i18n class="fw-500 fs-16 text-white">Ensure all details are correct; errors may delay verification (*Required field).</div>
+            <div class="fw-500 fs-16 text-white">Ensure all details are correct; errors may delay verification (*Required field).</div>
           </div>
           <div class="col-12 mb-4">
-            <mat-label class="fw-bold mb-1" i18n>LOCATION NAME*</mat-label>
+            <mat-label class="fw-bold mb-1">LOCATION NAME*</mat-label>
             <mat-form-field appearance="outline" class="w-100">
               <input matInput placeholder="Type here" type="text" formControlName="locationName" />
               @if (formGroup.get('locationName')?.hasError('required')) {
-                <mat-error i18n>This field is required </mat-error>
+                <mat-error>This field is required </mat-error>
               }
             </mat-form-field>
           </div>
-          <h6 class="mt-5 mb-3 primary fw-bold" i18n>SITE POINT OF CONTACT</h6>
+          <h6 class="mt-5 mb-3 primary fw-bold">SITE POINT OF CONTACT</h6>
           <div class="row g-3 mb-4">
             <div class="col-md-2">
-              <mat-label class="fw-bold mb-1" i18n>PREFIX*</mat-label>
+              <mat-label class="fw-bold mb-1">PREFIX*</mat-label>
               <mat-form-field appearance="outline" class="w-100">
                 <mat-select formControlName="prefix" placeholder="Please Select">
-                  <mat-option value="dr" i18n> Dr.</mat-option>
-                  <mat-option value="miss" i18n>Miss.</mat-option>
-                  <mat-option value="mr" i18n>Mr.</mat-option>
-                  <mat-option value="mrs" i18n>Mrs.</mat-option>
-                  <mat-option value="ms" i18n>Ms.</mat-option>
-                  <mat-option value="mx" i18n>Mx.</mat-option>
-                  <mat-option value="prof" i18n>Prof.</mat-option>
-                  <mat-option value="rev" i18n>Rev.</mat-option>
+                  <mat-option value="dr"> Dr.</mat-option>
+                  <mat-option value="miss">Miss.</mat-option>
+                  <mat-option value="mr">Mr.</mat-option>
+                  <mat-option value="mrs">Mrs.</mat-option>
+                  <mat-option value="ms">Ms.</mat-option>
+                  <mat-option value="mx">Mx.</mat-option>
+                  <mat-option value="prof">Prof.</mat-option>
+                  <mat-option value="rev">Rev.</mat-option>
                 </mat-select>
                 @if (formGroup.get('prefix')?.hasError('required')) {
-                  <mat-error i18n>This field is required </mat-error>
+                  <mat-error>This field is required </mat-error>
                 }
               </mat-form-field>
             </div>
             <div class="col-md-5">
-              <mat-label class="fw-bold mb-1" i18n>FIRST NAME*</mat-label>
+              <mat-label class="fw-bold mb-1">FIRST NAME*</mat-label>
               <mat-form-field appearance="outline" class="w-100">
                 <input matInput placeholder="e.g. Mark" type="text" formControlName="firstName" />
                 @if (formGroup.get('firstName')?.hasError('required')) {
-                  <mat-error i18n>This field is required </mat-error>
+                  <mat-error>This field is required </mat-error>
                 }
                 @if (formGroup.get('firstName')?.hasError('maxlength')) {
-                  <mat-error i18n>First Name cannot exceed 50 characters</mat-error>
+                  <mat-error>First Name cannot exceed 50 characters</mat-error>
                 }
               </mat-form-field>
             </div>
             <div class="col-md-5">
-              <label class="fw-bold" i18n>LAST NAME*</label>
+              <label class="fw-bold">LAST NAME*</label>
               <mat-form-field appearance="outline" class="w-100">
                 <input matInput placeholder="e.g. Smith" type="text" formControlName="lastName" />
                 @if (formGroup.get('lastName')?.hasError('required')) {
-                  <mat-error i18n>This field is required </mat-error>
+                  <mat-error>This field is required </mat-error>
                 }
                 @if (formGroup.get('lastName')?.hasError('maxlength')) {
-                  <mat-error i18n>Last Name cannot exceed 50 characters</mat-error>
+                  <mat-error>Last Name cannot exceed 50 characters</mat-error>
                 }
               </mat-form-field>
             </div>
           </div>
           <div class="col-12 mb-4">
-            <mat-label class="fw-bold mb-1" i18n>POSITION*</mat-label>
+            <mat-label class="fw-bold mb-1">POSITION*</mat-label>
             <mat-form-field appearance="outline" class="w-100">
               <input matInput placeholder="Type here" type="text" formControlName="positionInCompany" />
               @if (formGroup.get('positionInCompany')?.hasError('required')) {
-                <mat-error i18n>This field is required </mat-error>
+                <mat-error>This field is required </mat-error>
               }
             </mat-form-field>
           </div>
@@ -98,7 +98,7 @@
             formControlName="phoneNumber"
             [label]="'COMPANY TELEPHONE'"
           ></app-telephone-form-control>
-          <h6 class="mt-5 mb-3 primary fw-bold" i18n>COMPANY ADDRESS</h6>
+          <h6 class="mt-5 mb-3 primary fw-bold">COMPANY ADDRESS</h6>
 
           <div class="col-md-12 mb-3">
             <mat-checkbox
@@ -111,46 +111,46 @@
             </mat-checkbox>
           </div>
           <div class="col-md-12 mb-4">
-            <label class="fw-bold" i18n>STREET ADDRESS*</label>
+            <label class="fw-bold">STREET ADDRESS*</label>
             <mat-form-field appearance="outline" class="w-100" [class.disable-mat-form-field]="selectPreviousAddress()">
               <input matInput placeholder="Type here" type="text" formControlName="adressLine" />
               @if (formGroup.get('adressLine')?.hasError('required')) {
-                <mat-error i18n>This field is required </mat-error>
+                <mat-error>This field is required </mat-error>
               }
             </mat-form-field>
           </div>
           <div class="row g-3 mb-4">
             <div class="col-md-6">
-              <mat-label class="fw-bold mb-1" i18n>POST CODE*</mat-label>
+              <mat-label class="fw-bold mb-1">POST CODE*</mat-label>
               <mat-form-field appearance="outline" class="w-100" [class.disable-mat-form-field]="selectPreviousAddress()">
                 <input matInput placeholder="Type here" type="text" formControlName="postcode" />
                 @if (formGroup.get('postcode')?.hasError('required')) {
-                  <mat-error i18n>This field is required </mat-error>
+                  <mat-error>This field is required </mat-error>
                 }
               </mat-form-field>
             </div>
             <div class="col-md-6">
-              <mat-label class="fw-bold mb-1" i18n>CITY*</mat-label>
+              <mat-label class="fw-bold mb-1">CITY*</mat-label>
               <mat-form-field appearance="outline" class="w-100" [class.disable-mat-form-field]="selectPreviousAddress()">
                 <input matInput placeholder="Type here" type="text" formControlName="city" />
                 @if (formGroup.get('city')?.hasError('required')) {
-                  <mat-error i18n>This field is required </mat-error>
+                  <mat-error>This field is required </mat-error>
                 }
               </mat-form-field>
             </div>
           </div>
           <div class="row g-3 mb-4">
             <div class="col-md-6">
-              <mat-label class="fw-bold mb-1" i18n>COUNTY / STATE / REGION*</mat-label>
+              <mat-label class="fw-bold mb-1">COUNTY / STATE / REGION*</mat-label>
               <mat-form-field appearance="outline" class="w-100" [class.disable-mat-form-field]="selectPreviousAddress()">
                 <input matInput placeholder="Type here" type="text" formControlName="stateProvince" />
                 @if (formGroup.get('stateProvince')?.hasError('required')) {
-                  <mat-error i18n>This field is required </mat-error>
+                  <mat-error>This field is required </mat-error>
                 }
               </mat-form-field>
             </div>
             <div class="col-md-6">
-              <mat-label class="fw-bold mb-1" i18n>COUNTRY*</mat-label>
+              <mat-label class="fw-bold mb-1">COUNTRY*</mat-label>
               <mat-form-field appearance="outline" class="w-100" [class.disable-mat-form-field]="selectPreviousAddress()">
                 <mat-select formControlName="country" placeholder="Please Select">
                   @for (item of countryList; track $index; let i = $index) {
@@ -158,7 +158,7 @@
                   }
                 </mat-select>
                 @if (formGroup.get('country')?.hasError('required')) {
-                  <mat-error i18n>This field is required </mat-error>
+                  <mat-error>This field is required </mat-error>
                 }
               </mat-form-field>
             </div>
@@ -166,7 +166,7 @@
           <hr class="mb-4" />
           <div class="row g-3 mb-4">
             <div class="col-md-6">
-              <mat-label class="fw-bold mb-1" i18n>HEAD OFFICE OPENING TIME*</mat-label>
+              <mat-label class="fw-bold mb-1">HEAD OFFICE OPENING TIME*</mat-label>
               <mat-form-field appearance="outline" class="w-100">
                 <input placeholder="Choose a Time" matInput [matTimepicker]="open" formControlName="officeOpenTime" />
                 <mat-timepicker-toggle matIconSuffix [for]="open">
@@ -174,15 +174,15 @@
                 </mat-timepicker-toggle>
                 <mat-timepicker #open />
                 @if (formGroup.get('officeOpenTime')?.hasError('required')) {
-                  <mat-error i18n>This field is required </mat-error>
+                  <mat-error>This field is required </mat-error>
                 }
                 @if (formGroup.get('officeOpenTime')?.hasError('matTimepickerParse')) {
-                  <mat-error i18n>Please enter the opening and closing times in HH:MM format. </mat-error>
+                  <mat-error>Please enter the opening and closing times in HH:MM format. </mat-error>
                 }
               </mat-form-field>
             </div>
             <div class="col-md-6">
-              <mat-label class="fw-bold mb-1" i18n>HEAD OFFICE CLOSING TIME*</mat-label>
+              <mat-label class="fw-bold mb-1">HEAD OFFICE CLOSING TIME*</mat-label>
               <mat-form-field appearance="outline" class="w-100">
                 <input placeholder="Choose a Time" matInput [matTimepicker]="close" formControlName="officeCloseTime" />
                 <mat-timepicker-toggle matIconSuffix [for]="close">
@@ -190,10 +190,10 @@
                 </mat-timepicker-toggle>
                 <mat-timepicker #close />
                 @if (formGroup.get('officeCloseTime')?.hasError('required')) {
-                  <mat-error i18n>This field is required </mat-error>
+                  <mat-error>This field is required </mat-error>
                 }
                 @if (formGroup.get('officeCloseTime')?.hasError('matTimepickerParse')) {
-                  <mat-error i18n>Please enter the opening and closing times in HH:MM format. </mat-error>
+                  <mat-error>Please enter the opening and closing times in HH:MM format. </mat-error>
                 }
               </mat-form-field>
             </div>
@@ -201,14 +201,14 @@
           <hr />
 
           <div class="col-12 mb-4">
-            <mat-label class="mt-5 mb-3 primary fw-bold" i18n>MATERIALS ACCEPTED </mat-label>
+            <mat-label class="mt-5 mb-3 primary fw-bold">MATERIALS ACCEPTED </mat-label>
             @for (material of materialTypes; track $index) {
               @if (material.materials.length > 0) {
                 <div class="mb-3">
                   <mat-expansion-panel [expanded]="isOpenGroup(material.materials)">
                     <mat-expansion-panel-header>
                       <mat-panel-title>
-                        <div class="fw-bold" i18n>{{ material.name | uppercase }}</div>
+                        <div class="fw-bold">{{ material.name | uppercase }}</div>
                       </mat-panel-title>
                     </mat-expansion-panel-header>
                     <div class="col-12 mb-4" style="margin-left: 10px">
@@ -235,54 +235,54 @@
               }
             }
             @if (formGroup.get('materials')?.invalid && formGroup.get('materials')?.touched) {
-              <mat-error class="mat-error" i18n>This field is required</mat-error>
+              <mat-error class="mat-error">This field is required</mat-error>
             }
             @if (showOtherMaterial()) {
               <div class="col-12">
-                <mat-label class="fw-bold" i18n>OTHER MATERIAL*</mat-label>
+                <mat-label class="fw-bold">OTHER MATERIAL*</mat-label>
                 <mat-form-field appearance="outline" class="w-100">
                   <input matInput placeholder="Type here" type="text" formControlName="otherMaterial" />
                   @if (formGroup.get('otherMaterial')?.hasError('required') && formGroup.get('otherMaterial')?.touched) {
-                    <mat-error i18n>This field is required </mat-error>
+                    <mat-error>This field is required </mat-error>
                   }
                   @if (formGroup.get('otherMaterial')?.hasError('maxlength')) {
-                    <mat-error i18n>Other Material cannot exceed 100 characters </mat-error>
+                    <mat-error>Other Material cannot exceed 100 characters </mat-error>
                   }
                 </mat-form-field>
               </div>
             }
           </div>
 
-          <h6 class="mt-5 mb-3 primary fw-bold" i18n>SITE DETAILS</h6>
+          <h6 class="mt-5 mb-3 primary fw-bold">SITE DETAILS</h6>
 
           <div class="col-md-12 mb-4">
-            <mat-label class="mb-0 fw-bold" i18n> IS THERE A LOADING RAMP ON THIS SITE?* </mat-label>
+            <mat-label class="mb-0 fw-bold"> IS THERE A LOADING RAMP ON THIS SITE?* </mat-label>
             <mat-radio-group formControlName="loadingRamp" class="col-6 d-flex justify-content-between radio-mat-error" name="loadingRamp">
-              <mat-radio-button class="bold-label" [value]="true" i18n>Yes </mat-radio-button>
-              <mat-radio-button class="bold-label" [value]="false" i18n> No </mat-radio-button>
+              <mat-radio-button class="bold-label" [value]="true">Yes </mat-radio-button>
+              <mat-radio-button class="bold-label" [value]="false"> No </mat-radio-button>
             </mat-radio-group>
             @if (
               formGroup.get('loadingRamp')?.hasError('required') &&
               (formGroup.get('loadingRamp')?.touched || formGroup.get('loadingRamp')?.dirty)
             ) {
-              <mat-error class="mt-0 mat-error" i18n> This field is required </mat-error>
+              <mat-error class="mt-0 mat-error"> This field is required </mat-error>
             }
           </div>
           <div class="col-md-12 mb-4">
-            <mat-label class="mb-0 fw-bold" i18n> HAVE YOU GOT A WEIGHBRIDGE ON THIS SITE?* </mat-label>
+            <mat-label class="mb-0 fw-bold"> HAVE YOU GOT A WEIGHBRIDGE ON THIS SITE?* </mat-label>
             <mat-radio-group formControlName="weighbridge" class="col-6 d-flex justify-content-between radio-mat-error" name="weighbridge">
-              <mat-radio-button class="bold-label" [value]="true" i18n>Yes </mat-radio-button>
-              <mat-radio-button class="bold-label" [value]="false" i18n> No </mat-radio-button>
+              <mat-radio-button class="bold-label" [value]="true">Yes </mat-radio-button>
+              <mat-radio-button class="bold-label" [value]="false"> No </mat-radio-button>
             </mat-radio-group>
             @if (
               formGroup.get('weighbridge')?.hasError('required') &&
               (formGroup.get('weighbridge')?.touched || formGroup.get('weighbridge')?.dirty)
             ) {
-              <mat-error class="mt-0 mat-error" i18n> This field is required </mat-error>
+              <mat-error class="mt-0 mat-error"> This field is required </mat-error>
             }
           </div>
           <div class="col-12 mb-4">
-            <mat-label class="mb-0 fw-bold" i18n>WHICH CONTAINER TYPES CAN YOU MANAGE ON THIS SITE?* </mat-label>
+            <mat-label class="mb-0 fw-bold">WHICH CONTAINER TYPES CAN YOU MANAGE ON THIS SITE?* </mat-label>
             <mat-checkbox class="d-block bold-label" color="primary" (change)="selectAllContainerTypes.set(!selectAllContainerTypes())">{{
               selectAllContainerTypes() ? 'Deselect All' : 'Select All'
             }}</mat-checkbox>
@@ -320,41 +320,41 @@
                 Tipper trucks
               </mat-checkbox>
               @if (containerType.invalid && containerType.touched) {
-                <mat-error class="mt-0 mat-error" i18n> This field is required </mat-error>
+                <mat-error class="mt-0 mat-error"> This field is required </mat-error>
               }
             </div>
           </div>
           <div class="col-md-12 mb-4">
-            <mat-label class="mb-0 fw-bold" i18n> CAN YOU LOAD/UNLOAD MATERIAL YOURSELF ON THIS SITE?* </mat-label>
+            <mat-label class="mb-0 fw-bold"> CAN YOU LOAD/UNLOAD MATERIAL YOURSELF ON THIS SITE?* </mat-label>
             <mat-radio-group
               formControlName="selfLoadUnLoadCapability"
               class="col-6 d-flex justify-content-between radio-mat-error"
               name="selfLoadUnLoadCapability"
             >
-              <mat-radio-button class="bold-label" [value]="true" i18n>Yes </mat-radio-button>
-              <mat-radio-button class="bold-label" [value]="false" i18n> No </mat-radio-button>
+              <mat-radio-button class="bold-label" [value]="true">Yes </mat-radio-button>
+              <mat-radio-button class="bold-label" [value]="false"> No </mat-radio-button>
             </mat-radio-group>
             @if (
               formGroup.get('selfLoadUnLoadCapability')?.hasError('required') &&
               (formGroup.get('selfLoadUnLoadCapability')?.touched || formGroup.get('selfLoadUnLoadCapability')?.dirty)
             ) {
-              <mat-error class="mt-0 mat-error" i18n> This field is required </mat-error>
+              <mat-error class="mt-0 mat-error"> This field is required </mat-error>
             }
           </div>
           <div class="col-md-12 mb-4">
-            <mat-label class="mb-0 fw-bold" i18n> DO YOU HAVE ANY ACCESS RESTRICTIONS?* </mat-label>
+            <mat-label class="mb-0 fw-bold"> DO YOU HAVE ANY ACCESS RESTRICTIONS?* </mat-label>
             <mat-radio-group class="col-6 d-flex justify-content-between radio-mat-error">
-              <mat-radio-button class="bold-label" value="true" (change)="showAccessRestriction.set(true)" i18n>Yes </mat-radio-button>
-              <mat-radio-button class="bold-label" value="N/a" (change)="showAccessRestriction.set(false)" i18n> No </mat-radio-button>
+              <mat-radio-button class="bold-label" value="true" (change)="showAccessRestriction.set(true)">Yes </mat-radio-button>
+              <mat-radio-button class="bold-label" value="N/a" (change)="showAccessRestriction.set(false)"> No </mat-radio-button>
             </mat-radio-group>
           </div>
           @if (showAccessRestriction()) {
             <div class="col-12 mb-4">
-              <mat-label class="fw-bold mb-1" i18n>ACCESS RESTRICTIONS DETAILS*</mat-label>
+              <mat-label class="fw-bold mb-1">ACCESS RESTRICTIONS DETAILS*</mat-label>
               <mat-form-field appearance="outline" class="w-100">
                 <input matInput placeholder="Type here" type="text" formControlName="accessRestrictions" />
                 @if (formGroup.get('accessRestrictions')?.hasError('required') && formGroup.get('accessRestrictions')?.touched) {
-                  <mat-error i18n>Please provide details about the access restrictions. </mat-error>
+                  <mat-error>Please provide details about the access restrictions. </mat-error>
                 }
               </mat-form-field>
             </div>
@@ -362,7 +362,7 @@
         </div>
         <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-between align-items-center">
           <div class="col-3">
-            <button mat-stroked-button class="w-100" type="button" [routerLink]="['/company-document']" i18n>BACK</button>
+            <button mat-stroked-button class="w-100" type="button" [routerLink]="['/company-document']">BACK</button>
           </div>
           <div class="col-5 fw-bold text-decoration-underline cursor-pointer text-center" (click)="send('/buy')">SAVE AND RESUME LATER</div>
           <div class="col-3">
@@ -374,7 +374,6 @@
               (click)="send('/account-complete-result')"
               mat-flat-button
               class="w-100"
-              i18n
             >
               SUBMIT
             </button>

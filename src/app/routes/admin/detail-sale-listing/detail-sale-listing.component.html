@@ -9,44 +9,44 @@
         (click)="onBack()"
       >
         <mat-icon class="icon">west</mat-icon>
-        <span i18n>go back</span>
+        <span>go back</span>
       </div>
 
-      <h2 class="fw-bold sub-title" i18n>Seller information</h2>
+      <h2 class="fw-bold sub-title">Seller information</h2>
 
       <div class="rounded border border-primary p-3 p-lg-5 mb-4 seller-information">
         <div class="row align-items-center">
-          <div class="col-4" i18n>
+          <div class="col-4">
             <h2 class="primary fw-bold mb-0">Seller</h2>
           </div>
           <div class="col-4">
-            <p class="text-uppercase fw-bold mb-2" i18n>Full name</p>
-            <p class="mb-0" i18n>{{ listingDetail.userInformation.fullName }}</p>
+            <p class="text-uppercase fw-bold mb-2">Full name</p>
+            <p class="mb-0">{{ listingDetail.userInformation.fullName }}</p>
           </div>
           <div class="col-4">
-            <p class="text-uppercase fw-bold mb-2" i18n>Company</p>
-            <p class="mb-0" i18n>{{ listingDetail.userInformation.company }}</p>
+            <p class="text-uppercase fw-bold mb-2">Company</p>
+            <p class="mb-0">{{ listingDetail.userInformation.company }}</p>
           </div>
         </div>
       </div>
 
-      <h2 class="fw-bold sub-title" i18n>Material Information</h2>
+      <h2 class="fw-bold sub-title">Material Information</h2>
 
       <div class="rounded border border-primary p-3 pb-0 p-lg-5 pb-lg-4 mb-4 mb-lg-5">
         <div class="d-flex flex-wrap">
           <!-- <div class="row align-items-center row-item"> -->
           <div class="col-6 col-md-4 material-item mb-4">
-            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>material</p>
-            <p class="mb-0 fw-500" i18n>{{ listingDetail.materialInformation.materialName }}</p>
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">material</p>
+            <p class="mb-0 fw-500">{{ listingDetail.materialInformation.materialName }}</p>
           </div>
 
           <div class="col-6 col-md-4 material-item mb-4">
-            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>Packaging</p>
-            <p class="mb-0 fw-500" i18n>{{ listingDetail.materialInformation.packaging }}</p>
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">Packaging</p>
+            <p class="mb-0 fw-500">{{ listingDetail.materialInformation.packaging }}</p>
           </div>
 
           <div class="col-6 col-md-4 material-item mb-4">
-            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>Bid status</p>
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">Bid status</p>
             <p class="mb-0 fw-500" [style.color]="getStatusColor(listingDetail.bidStatus.status)">
               {{ listingDetail.bidStatus.status | titlecase }}
             </p>
@@ -55,13 +55,13 @@
 
           <!-- <div class="row align-items-center row-item"> -->
           <div class="col-6 col-md-4 material-item mb-4">
-            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>Location/warehouse</p>
-            <p class="mb-0 fw-500" i18n>{{ mapCountryCodeToName[listingDetail.materialInformation.country] }}</p>
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">Location/warehouse</p>
+            <p class="mb-0 fw-500">{{ mapCountryCodeToName[listingDetail.materialInformation.country] }}</p>
           </div>
 
           <div class="col-6 col-md-4 material-item mb-4">
-            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>number of loads</p>
-            <p class="mb-0 primary fw-bold" i18n>
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">number of loads</p>
+            <p class="mb-0 primary fw-bold">
               {{ listingDetail.materialInformation.quantity }}/{{
                 listingDetail.materialInformation.quantity + (listingDetail.materialInformation.remainingQuantity ?? 0)
               }}
@@ -73,13 +73,13 @@
 
           <!-- <div class="row align-items-center"> -->
           <div class="col-6 col-md-4 material-item mb-4">
-            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>currency</p>
-            <p class="mb-0 fw-bold" i18n>{{ listingDetail.materialInformation.currency }}</p>
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">currency</p>
+            <p class="mb-0 fw-bold">{{ listingDetail.materialInformation.currency }}</p>
           </div>
 
           <div class="col-6 col-md-4 material-item mb-4">
-            <p class="text-uppercase fw-bold mb-2 mb-xxl-3" i18n>weight per load</p>
-            <p class="mb-0 fw-500" i18n>{{ listingDetail.materialInformation.materialWeightPerUnit }}</p>
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">weight per load</p>
+            <p class="mb-0 fw-500">{{ listingDetail.materialInformation.materialWeightPerUnit }}</p>
           </div>
           <!-- </div> -->
         </div>

@@ -12,11 +12,11 @@
         @for (url of urls.controls; track $index; let i = $index) {
           <div [formGroupName]="i" class="d-flex align-items-center gap-2">
             <div class="col-md-11">
-              <mat-label class="fw-bold fs-16" i18n>{{ extractWebsiteName(url.get('key')?.value) }}</mat-label>
+              <mat-label class="fw-bold fs-16">{{ extractWebsiteName(url.get('key')?.value) }}</mat-label>
               <mat-form-field appearance="outline" class="w-100">
                 <input matInput placeholder="Type here" type="text" formControlName="value" />
                 @if (url.get('value')?.hasError('pattern')) {
-                  <mat-error i18n>Please enter a valid URL.</mat-error>
+                  <mat-error>Please enter a valid URL.</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -24,27 +24,27 @@
         }
       </div>
       <div class="mb-4 border rounded p-3 col-md-11">
-        <h3 class="mb-5" i18n>Add new social url</h3>
+        <h3 class="mb-5">Add new social url</h3>
         <div class="row g-3" formGroupName="newUrl">
           <div class="col-md-12 mb-4">
-            <mat-label class="fw-bold fs-16" i18n>SOCIAL NAME</mat-label>
+            <mat-label class="fw-bold fs-16">SOCIAL NAME</mat-label>
             <mat-form-field appearance="outline" class="w-100">
               <input matInput placeholder="e.g. Instagram, LinkedIn" type="text" formControlName="name" />
               @if (newUrl.get('name')?.hasError('required')) {
-                <mat-error i18n>This field is required</mat-error>
+                <mat-error>This field is required</mat-error>
               }
             </mat-form-field>
           </div>
 
           <div class="col-md-12 mb-4">
-            <mat-label class="fw-bold fs-16" i18n>SOCIAL URL</mat-label>
+            <mat-label class="fw-bold fs-16">SOCIAL URL</mat-label>
             <mat-form-field appearance="outline" class="w-100">
               <input matInput placeholder="https://example.com" type="url" formControlName="url" />
               @if (newUrl.get('url')?.hasError('required')) {
-                <mat-error i18n>This field is required</mat-error>
+                <mat-error>This field is required</mat-error>
               }
               @if (newUrl.get('url')?.hasError('pattern')) {
-                <mat-error i18n>Please enter a valid URL.</mat-error>
+                <mat-error>Please enter a valid URL.</mat-error>
               }
             </mat-form-field>
           </div>
@@ -57,7 +57,6 @@
               class=""
               (click)="addUrlGroup()"
               [disabled]="!newUrl.get('name')?.value || !newUrl.get('url')?.value"
-              i18n
             >
               <mat-icon class="me-2">add</mat-icon>
               Add Social Link
@@ -69,14 +68,13 @@
   </mat-dialog-content>
   <mat-dialog-actions>
     <div class="d-flex justify-content-between align-items-center gap-3 col-md-12 col-12">
-      <button mat-stroked-button class="text-uppercase outline-primary-btn w-100 fs-16" (click)="close()" i18n>Discard Changes</button>
+      <button mat-stroked-button class="text-uppercase outline-primary-btn w-100 fs-16" (click)="close()">Discard Changes</button>
       <button
         mat-flat-button
         [disabled]="urls.invalid || urls.pristine"
         class="text-uppercase primary-btn w-100 fw-bold fs-16"
         [class.overlay-spinner]="submitting()"
         (click)="submit()"
-        i18n
       >
         Save Changes
       </button>

@@ -10,70 +10,70 @@
     <form [formGroup]="formGroup">
       <div class="row g-3 mb-4">
         <div class="col-md-2">
-          <mat-label class="fw-bold mb-1 fs-16" i18n>PREFIX*</mat-label>
+          <mat-label class="fw-bold mb-1 fs-16">PREFIX*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <mat-select formControlName="prefix" placeholder="Please Select">
-              <mat-option value="dr" i18n> Dr.</mat-option>
-              <mat-option value="miss" i18n>Miss.</mat-option>
-              <mat-option value="mr" i18n>Mr.</mat-option>
-              <mat-option value="mrs" i18n>Mrs.</mat-option>
-              <mat-option value="ms" i18n>Ms.</mat-option>
-              <mat-option value="mx" i18n>Mx.</mat-option>
-              <mat-option value="prof" i18n>Prof.</mat-option>
-              <mat-option value="rev" i18n>Rev.</mat-option>
+              <mat-option value="dr"> Dr.</mat-option>
+              <mat-option value="miss">Miss.</mat-option>
+              <mat-option value="mr">Mr.</mat-option>
+              <mat-option value="mrs">Mrs.</mat-option>
+              <mat-option value="ms">Ms.</mat-option>
+              <mat-option value="mx">Mx.</mat-option>
+              <mat-option value="prof">Prof.</mat-option>
+              <mat-option value="rev">Rev.</mat-option>
             </mat-select>
             @if (formGroup.get('prefix')?.hasError('required')) {
-              <mat-error i18n>This field is required </mat-error>
+              <mat-error>This field is required </mat-error>
             }
           </mat-form-field>
         </div>
         <div class="col-md-5">
-          <mat-label class="fw-bold mb-1 fs-16" i18n>FIRST NAME*</mat-label>
+          <mat-label class="fw-bold mb-1 fs-16">FIRST NAME*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="e.g. Mark" type="text" formControlName="firstName" />
             @if (formGroup.get('firstName')?.hasError('required')) {
-              <mat-error i18n>This field is required </mat-error>
+              <mat-error>This field is required </mat-error>
             }
             @if (formGroup.get('firstName')?.hasError('maxlength') || formGroup.get('firstName')?.hasError('pattern')) {
-              <mat-error i18n>First Name must only contain letters and be under 50 characters</mat-error>
+              <mat-error>First Name must only contain letters and be under 50 characters</mat-error>
             }
           </mat-form-field>
         </div>
         <div class="col-md-5">
-          <label class="fw-bold fs-16" i18n>LAST NAME*</label>
+          <label class="fw-bold fs-16">LAST NAME*</label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="e.g. Smith" type="text" formControlName="lastName" />
             @if (formGroup.get('lastName')?.hasError('required')) {
-              <mat-error i18n>This field is required </mat-error>
+              <mat-error>This field is required </mat-error>
             }
             @if (formGroup.get('lastName')?.hasError('maxlength') || formGroup.get('lastName')?.hasError('pattern')) {
-              <mat-error i18n>Last Name must only contain letters and be under 50 characters</mat-error>
+              <mat-error>Last Name must only contain letters and be under 50 characters</mat-error>
             }
           </mat-form-field>
         </div>
       </div>
 
       <div class="col-12 mb-4">
-        <mat-label class="fw-bold mb-1 fs-16" i18n>JOB TITLE*</mat-label>
+        <mat-label class="fw-bold mb-1 fs-16">JOB TITLE*</mat-label>
         <mat-form-field appearance="outline" class="w-100">
           <input matInput placeholder="Type here" type="text" formControlName="jobTitle" />
           @if (formGroup.get('jobTitle')?.hasError('required')) {
-            <mat-error i18n>This field is required </mat-error>
+            <mat-error>This field is required </mat-error>
           }
           @if (formGroup.get('jobTitle')?.hasError('maxlength') || formGroup.get('jobTitle')?.hasError('pattern')) {
-            <mat-error i18n>Job Title must only contain letters, spaces and be under 50 characters </mat-error>
+            <mat-error>Job Title must only contain letters, spaces and be under 50 characters </mat-error>
           }
         </mat-form-field>
       </div>
       <div class="row mb-4">
-        <mat-label class="fw-bold mb-1 fs-16" i18n>EMAIL ADDRESS*</mat-label>
+        <mat-label class="fw-bold mb-1 fs-16">EMAIL ADDRESS*</mat-label>
         <mat-form-field appearance="outline" class="w-100">
           <input matInput placeholder="Type here" type="text" formControlName="email" />
           @if (formGroup.get('email')?.hasError('required')) {
-            <mat-error i18n>This field is required </mat-error>
+            <mat-error>This field is required </mat-error>
           }
           @if (formGroup.get('email')?.hasError('email')) {
-            <mat-error i18n>Invalid email address format. Please enter a valid email </mat-error>
+            <mat-error>Invalid email address format. Please enter a valid email </mat-error>
           }
         </mat-form-field>
       </div>
@@ -84,14 +84,13 @@
   </mat-dialog-content>
   <mat-dialog-actions>
     <div class="d-flex justify-content-between align-items-center gap-3 col-md-12 col-12">
-      <button mat-stroked-button class="text-uppercase outline-primary-btn w-100 fs-16" (click)="close()" i18n>Discard Changes</button>
+      <button mat-stroked-button class="text-uppercase outline-primary-btn w-100 fs-16" (click)="close()">Discard Changes</button>
       <button
         mat-flat-button
         [disabled]="formGroup.invalid || formGroup.pristine"
         class="text-uppercase primary-btn w-100 fw-bold fs-16"
         [class.overlay-spinner]="submitting()"
         (click)="submit()"
-        i18n
       >
         Save Changes
       </button>

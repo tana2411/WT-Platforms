@@ -5,19 +5,19 @@
       <div>
         <div class="d-flex justify-content-between">
           <mat-icon class="primary">check_circle</mat-icon>
-          <div class="w-75 mx-auto fw-bold" i18n>COMPANY INFORMATION</div>
+          <div class="w-75 mx-auto fw-bold">COMPANY INFORMATION</div>
           <mat-icon class="text-empty">remove</mat-icon>
         </div>
         <hr />
         <div class="d-flex justify-content-between">
           <mat-icon></mat-icon>
-          <div class="w-75 fw-bold mx-auto" i18n>COMPANY DOCUMENTS</div>
+          <div class="w-75 fw-bold mx-auto">COMPANY DOCUMENTS</div>
           <mat-icon>add</mat-icon>
         </div>
         <hr />
         <div class="d-flex justify-content-between">
           <mat-icon></mat-icon>
-          <div class="w-75 mx-auto fw-bold text-empty" i18n>SITE LOCATION</div>
+          <div class="w-75 mx-auto fw-bold text-empty">SITE LOCATION</div>
           <mat-icon class="text-empty">remove</mat-icon>
         </div>
       </div>
@@ -25,41 +25,41 @@
     <div class="" style="width: 830px">
       <form [formGroup]="formGroup">
         <div class="border border-dark boder-2 p-4 border-radius bg-white">
-          <h3 class="text-center my-2 fw-bold fs-40" i18n>Company Documents</h3>
+          <h3 class="text-center my-2 fw-bold fs-40">Company Documents</h3>
           <div class="px-2 py-3 background-primary d-flex align-items-center mb-4 rounded-4 justify-content-center">
             <div class="col-1 text-center d-flex align-items-center justify-content-center">
               <mat-icon class="material-icons-outlined text-white">error_outline</mat-icon>
             </div>
-            <div i18n class="fw-500 fs-16 text-white">
+            <div class="fw-500 fs-16 text-white">
               Ensure uploaded documents are up-to-date versions and licence numbers are correct; errors may delay verification (*Required
               Field).
             </div>
           </div>
           <div class="col-12 mb-4">
-            <mat-label class="fw-bold mb-1" i18n>COMPANY TYPE*</mat-label>
+            <mat-label class="fw-bold mb-1">COMPANY TYPE*</mat-label>
             <mat-form-field appearance="outline" class="w-100">
               <mat-select formControlName="companyType" placeholder="Please Select">
-                <mat-option value="manufacturer" i18n> Manufacturer </mat-option>
-                <mat-option value="processor" i18n>Processor</mat-option>
-                <mat-option value="recycler" i18n>Recycler</mat-option>
-                <mat-option value="broker" i18n>Broker</mat-option>
-                <mat-option value="waste_producer" i18n>Waste Producer</mat-option>
+                <mat-option value="manufacturer"> Manufacturer </mat-option>
+                <mat-option value="processor">Processor</mat-option>
+                <mat-option value="recycler">Recycler</mat-option>
+                <mat-option value="broker">Broker</mat-option>
+                <mat-option value="waste_producer">Waste Producer</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
           <div class="col-12 mb-4">
-            <mat-label class="fw-bold mb-1 d-block" i18n>WHICH PERMIT/LICENCE DO YOU HAVE?*</mat-label>
+            <mat-label class="fw-bold mb-1 d-block">WHICH PERMIT/LICENCE DO YOU HAVE?*</mat-label>
             <mat-radio-group class="d-flex justify-content-between flex-wrap" formControlName="documentType">
               <div class="col-md-10 d-flex justify-content-between align-items-center">
-                <mat-radio-button class="bold-label" value="environmental_permit" (change)="onSelectUploadLater.set(false)" i18n
+                <mat-radio-button class="bold-label" value="environmental_permit" (change)="onSelectUploadLater.set(false)"
                   >Environmental Permit
                 </mat-radio-button>
-                <mat-radio-button class="bold-label" value="waste_exemption" (change)="onSelectUploadLater.set(false)" i18n>
+                <mat-radio-button class="bold-label" value="waste_exemption" (change)="onSelectUploadLater.set(false)">
                   Waste Exemptions
                 </mat-radio-button>
-                <mat-radio-button class="bold-label" value="other" (change)="onSelectUploadLater.set(false)" i18n> Other </mat-radio-button>
+                <mat-radio-button class="bold-label" value="other" (change)="onSelectUploadLater.set(false)"> Other </mat-radio-button>
               </div>
-              <mat-radio-button class="bold-label w-100" value="uploadLater" (change)="onSelectUploadLater.set(true)" i18n>
+              <mat-radio-button class="bold-label w-100" value="uploadLater" (change)="onSelectUploadLater.set(true)">
                 Upload Later
               </mat-radio-button>
             </mat-radio-group>
@@ -69,7 +69,7 @@
               <div class="col-1 text-center d-flex align-items-center justify-content-center">
                 <mat-icon class="material-icons-outlined text-white error">error_outline</mat-icon>
               </div>
-              <div class="error fw-bold fw-500 fs-16" i18n>
+              <div class="error fw-bold fw-500 fs-16">
                 You can start buying and selling material now, but please note that all transactions will be pending until you upload your
                 company documentation.
               </div>
@@ -77,7 +77,7 @@
           </div>
           <div [hidden]="onSelectUploadLater()">
             <div class="col-12 mb-4" [hidden]="!(documentType.value == CompanyDocumentType.EnvironmentalPermit)">
-              <h6 class="mt-5 mb-4 fw-bold" i18n>UPLOAD AS ENVIRONMENTAL PERMIT*</h6>
+              <h6 class="mt-5 mb-4 fw-bold">UPLOAD AS ENVIRONMENTAL PERMIT*</h6>
               <app-file-upload
                 [maxFile]="1"
                 (filesAdded)="handleFileReady($event, 'document', CompanyDocumentType.EnvironmentalPermit)"
@@ -90,7 +90,7 @@
             </div>
 
             <div class="col-12 mb-4" [hidden]="!(documentType.value == CompanyDocumentType.WasteExemption)">
-              <h6 class="mt-5 mb-4 fw-bold" i18n>UPLOAD AS WASTE EXEMPTIONS*</h6>
+              <h6 class="mt-5 mb-4 fw-bold">UPLOAD AS WASTE EXEMPTIONS*</h6>
               <app-file-upload
                 [maxFile]="1"
                 (filesAdded)="handleFileReady($event, 'document', CompanyDocumentType.WasteExemption)"
@@ -104,17 +104,17 @@
 
             @if (documentType.value == 'other') {
               <div class="col-md-12 mb-4">
-                <label class="fw-bold" i18n>OTHER DOCUMENT DESCRIPTION*</label>
+                <label class="fw-bold">OTHER DOCUMENT DESCRIPTION*</label>
                 <mat-form-field appearance="outline" class="w-100">
                   <input matInput placeholder="Type here" type="text" formControlName="otherDocumentType" />
                   @if (formGroup.get('otherDocumentType')?.hasError('required')) {
-                    <mat-error i18n>This field is required </mat-error>
+                    <mat-error>This field is required </mat-error>
                   }
                 </mat-form-field>
               </div>
             }
             <div class="col-12 mb-4" [hidden]="!(documentType.value == 'other')">
-              <h6 class="mt-5 mb-4 fw-bold text-uppercase" i18n>Other Document Upload*</h6>
+              <h6 class="mt-5 mb-4 fw-bold text-uppercase">Other Document Upload*</h6>
               <app-file-upload
                 [maxFile]="1"
                 (filesAdded)="handleFileReady($event, 'document', 'other')"
@@ -130,22 +130,22 @@
           <hr style="opacity: 1" />
 
           <div class="col-12 mb-4">
-            <mat-label class="mb-0 fw-bold" i18n> DO YOU HAVE A WASTE CARRIER LICENCE?* </mat-label>
+            <mat-label class="mb-0 fw-bold"> DO YOU HAVE A WASTE CARRIER LICENCE?* </mat-label>
             <mat-radio-group
               formControlName="wasteLicence"
               class="d-flex justify-content-between col-9"
               name="wasteLicence"
               (change)="onLicenceChange($event)"
             >
-              <mat-radio-button class="bold-label" [value]="true" i18n> Yes </mat-radio-button>
-              <mat-radio-button class="bold-label" [value]="false" i18n> Not Applicable </mat-radio-button>
+              <mat-radio-button class="bold-label" [value]="true"> Yes </mat-radio-button>
+              <mat-radio-button class="bold-label" [value]="false"> Not Applicable </mat-radio-button>
             </mat-radio-group>
             @if (formGroup.get('wasteLicence')?.hasError('required') && formGroup.get('wasteLicence')?.touched) {
-              <mat-error class="mt-0 mat-error" i18n> This field is required </mat-error>
+              <mat-error class="mt-0 mat-error"> This field is required </mat-error>
             }
           </div>
           @if (formGroup.get('wasteLicence')?.value) {
-            <h6 class="mb-4 mt-5 fw-bold" i18n>UPLOAD WASTE CARRIER LICENCE*</h6>
+            <h6 class="mb-4 mt-5 fw-bold">UPLOAD WASTE CARRIER LICENCE*</h6>
             <div class="col-12 mb-4">
               <app-file-upload
                 (filesAdded)="handleFileReady($event, 'licence', CompanyDocumentType.WasteCarrierLicense)"
@@ -159,19 +159,19 @@
           }
           <hr style="opacity: 1" />
           <div class="col-12 mb-4">
-            <mat-label class="mb-0 fw-bold" i18n> BOX CLEANING?* </mat-label>
+            <mat-label class="mb-0 fw-bold"> BOX CLEANING?* </mat-label>
             <mat-radio-group formControlName="boxClearingAgent" class="d-flex justify-content-between col-6" name="boxClearingAgent">
-              <mat-radio-button [value]="true" class="bold-label" i18n> Yes </mat-radio-button>
-              <mat-radio-button [value]="false" class="bold-label" i18n> No </mat-radio-button>
+              <mat-radio-button [value]="true" class="bold-label"> Yes </mat-radio-button>
+              <mat-radio-button [value]="false" class="bold-label"> No </mat-radio-button>
             </mat-radio-group>
             @if (formGroup.get('boxClearingAgent')?.hasError('required') && formGroup.get('boxClearingAgent')?.touched) {
-              <mat-error class="mt-0 mat-error" i18n> This field is required </mat-error>
+              <mat-error class="mt-0 mat-error"> This field is required </mat-error>
             }
           </div>
         </div>
         <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-between align-items-center">
           <div class="col-3">
-            <button mat-stroked-button type="button" class="w-100" [routerLink]="['/company-information']" i18n>BACK</button>
+            <button mat-stroked-button type="button" class="w-100" [routerLink]="['/company-information']">BACK</button>
           </div>
           <div class="col-5 fw-bold text-decoration-underline cursor-pointer text-center" (click)="send('/buy')">SAVE AND RESUME LATER</div>
           <div class="col-3">
@@ -184,7 +184,6 @@
               mat-flat-button
               class="w-100 p-2 fw-bold"
               (click)="send('/site-location')"
-              i18n
             >
               NEXT
             </button>

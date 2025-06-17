@@ -9,6 +9,7 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { routes } from './app.routes';
 import { CanActivateAuthPage } from './guards/auth/auth.guard';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -59,5 +60,6 @@ export const appConfig: ApplicationConfig = {
         },
       }),
     ]),
+    provideClientHydration(withEventReplay()),
   ],
 };

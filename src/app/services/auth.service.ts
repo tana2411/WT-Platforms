@@ -1,10 +1,11 @@
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '@app/environments';
 import { FULL_PAGINATION_LIMIT } from 'app/constants/common';
 import { ROUTES } from 'app/constants/route.const';
 import { getDefaultRouteByRole } from 'app/guards/auth/utils';
-import { ACCESS_TOKEN_KEY } from 'app/interceptors/auth.interceptor';
 import { User } from 'app/models/auth.model';
 import { BehaviorSubject, catchError, filter, map, of, switchMap, tap } from 'rxjs';
 import {
@@ -16,6 +17,7 @@ import {
   ResponseMe,
   ResquestGetCompanyLocationParams,
 } from '../types/requests/auth';
+import { ACCESS_TOKEN_KEY, LocalStorageService } from './local-storage.service';
 
 export const NOT_INITIAL_USER = null;
 
@@ -24,6 +26,9 @@ export const NOT_INITIAL_USER = null;
 })
 export class AuthService {
   private _user$ = new BehaviorSubject<User | null | undefined>(NOT_INITIAL_USER);
+  private platformId = inject(PLATFORM_ID);
+  private localStorageService = inject(LocalStorageService);
+  accessToken: string | undefined;
 
   get isNotFinishCheckAuth() {
     return this._user$.value === NOT_INITIAL_USER;
@@ -72,7 +77,11 @@ export class AuthService {
             throw new Error('Invalid login data');
           }
 
-          this.setToken(loginData.accessToken);
+          // Only set token in localStorage if in browser
+          if (isPlatformBrowser(this.platformId)) {
+            document.cookie = `accessToken=${loginData.accessToken}; path=/; SameSite=Lax${environment.production ? '; secure' : ''}`;
+            this.setToken(loginData.accessToken);
+          }
 
           // get the user data
           return this.getMe();
@@ -93,12 +102,12 @@ export class AuthService {
 
   setToken(token: string) {
     // store user data in local storage for the auth interceptor
-    localStorage.setItem(ACCESS_TOKEN_KEY, token);
+    this.localStorageService.setItem(ACCESS_TOKEN_KEY, token);
   }
 
   // todo: call API get me to set user
   checkToken() {
-    const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
+    const accessToken = this.localStorageService.getAccessToken();
 
     let source = of<User | undefined>(undefined);
 
@@ -166,7 +175,9 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem(ACCESS_TOKEN_KEY);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem(ACCESS_TOKEN_KEY);
+    }
     this._user$.next(undefined);
     this.router.navigateByUrl(ROUTES.login);
   }

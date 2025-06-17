@@ -1,19 +1,11 @@
-import { Injectable } from '@angular/core';
-import {
-  HttpInterceptor,
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpHandlerFn,
-} from '@angular/common/http';
+import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { LocalStorageService } from 'app/services/local-storage.service';
 import { Observable } from 'rxjs';
 
-export const ACCESS_TOKEN_KEY = 'accessToken';
-export function AuthInterceptor(
-  request: HttpRequest<unknown>,
-  next: HttpHandlerFn,
-): Observable<HttpEvent<unknown>> {
-  const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
+export function AuthInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
+  const localStorageService = inject(LocalStorageService);
+  const accessToken = localStorageService.getAccessToken();
 
   if (accessToken) {
     request = request.clone({

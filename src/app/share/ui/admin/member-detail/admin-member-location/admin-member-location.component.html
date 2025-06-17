@@ -1,6 +1,6 @@
 @if (transformedLocations(); as locations) {
   <div class="col-12 overflow-hidden">
-    <h4 class="fw-bold mb-4" i18n>Location</h4>
+    <h4 class="fw-bold mb-4">Location</h4>
 
     <div class="border rounded border-primary px-5 py-4">
       <mat-accordion class="mb-4" [multi]="true">
@@ -38,35 +38,35 @@
             <div class="body-wrapper rounded-3 mb-4">
               <div class="row g-3 mb-4">
                 <div class="col-12 col-sm-4 px-2">
-                  <div class="fw-bold mb-1 text-uppercase" i18n>STREET ADDRESS</div>
+                  <div class="fw-bold mb-1 text-uppercase">STREET ADDRESS</div>
                   <div>{{ location.street || '-' }}</div>
                 </div>
                 <div class="col-12 col-sm-4 px-2">
-                  <div class="fw-bold mb-1 text-uppercase" i18n>ADDRESS LINE 2</div>
+                  <div class="fw-bold mb-1 text-uppercase">ADDRESS LINE 2</div>
                   <div>{{ location.address_line || '-' }}</div>
                 </div>
                 <div class="col-12 col-sm-4 px-2">
-                  <div class="fw-bold mb-1 text-uppercase" i18n>ZIP / POSTAL CODE</div>
+                  <div class="fw-bold mb-1 text-uppercase">ZIP / POSTAL CODE</div>
                   <div>{{ location.postcode || '-' }}</div>
                 </div>
               </div>
               <div class="row g-3 mb-4">
                 <div class="col-12 col-sm-4 px-2">
-                  <div class="fw-bold mb-1 text-uppercase" i18n>CITY</div>
+                  <div class="fw-bold mb-1 text-uppercase">CITY</div>
                   <div>{{ location.city || '-' }}</div>
                 </div>
                 <div class="col-12 col-sm-4 px-2">
-                  <div class="fw-bold mb-1 text-uppercase" i18n>COUNTY / STATE / REGION</div>
+                  <div class="fw-bold mb-1 text-uppercase">COUNTY / STATE / REGION</div>
                   <div>{{ location.state_province || '-' }}</div>
                 </div>
                 <div class="col-12 col-sm-4 px-2">
-                  <div class="fw-bold mb-1 text-uppercase" i18n>COUNTRY</div>
+                  <div class="fw-bold mb-1 text-uppercase">COUNTRY</div>
                   <div>{{ mapCountryCodeToName[location.country] || '-' }}</div>
                 </div>
               </div>
               <div class="row g-3">
                 <div class="col-12 col-sm-4 px-2">
-                  <div class="fw-bold mb-1 text-uppercase" i18n>TELEPHONE</div>
+                  <div class="fw-bold mb-1 text-uppercase">TELEPHONE</div>
                   <div>{{ location.phone_number || '-' }}</div>
                 </div>
               </div>
@@ -76,21 +76,21 @@
               <p class="primary fw-bold text-uppercase" [style]="{ marginBottom: '24px' }">On-site facilities</p>
               <div class="row g-3 mb-4">
                 <div class="col-12 col-sm-6 px-2">
-                  <div class="fw-bold mb-1 text-uppercase" i18n>Is there a loading ramp on this site?*</div>
+                  <div class="fw-bold mb-1 text-uppercase">Is there a loading ramp on this site?*</div>
                   <div>{{ toYesNo(location.loading_ramp) }}</div>
                 </div>
                 <div class="col-12 col-sm-6 px-2">
-                  <div class="fw-bold mb-1 text-uppercase" i18n>Have you got a weighbridge on this site?*</div>
+                  <div class="fw-bold mb-1 text-uppercase">Have you got a weighbridge on this site?*</div>
                   <div>{{ toYesNo(location.weighbridge) }}</div>
                 </div>
               </div>
               <div class="row g-3">
                 <div class="col-12 col-sm-6 px-2">
-                  <div class="fw-bold mb-1 text-uppercase" i18n>Can you load/unload material yourself on this site?*</div>
+                  <div class="fw-bold mb-1 text-uppercase">Can you load/unload material yourself on this site?*</div>
                   <div>{{ toYesNo(location.self_load_unload_capability) }}</div>
                 </div>
                 <div class="col-12 col-sm-6 px-2">
-                  <div class="fw-bold mb-1 text-uppercase" i18n>Which container types can you manage on this site?*</div>
+                  <div class="fw-bold mb-1 text-uppercase">Which container types can you manage on this site?*</div>
                   <div>{{ containerType(location) || '-' }}</div>
                 </div>
               </div>

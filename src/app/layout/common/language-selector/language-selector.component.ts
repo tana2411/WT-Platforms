@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, inject, PLATFORM_ID } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { TranslateService } from '@ngx-translate/core';
@@ -16,9 +17,13 @@ export class LanguageSelectorComponent {
   ];
 
   currentLanguageFlag: string;
+  platformId = inject(PLATFORM_ID);
 
   constructor(private translate: TranslateService) {
-    const languageCode = localStorage.getItem('language') ?? 'en';
+    let languageCode = 'en';
+    if (isPlatformBrowser(this.platformId)) {
+      languageCode = localStorage.getItem('language') ?? 'en';
+    }
     this.currentLanguageFlag =
       this.languages.find((lang) => lang.code === languageCode)?.flag ?? this.languages[0].flag;
     this.translate.use(languageCode);

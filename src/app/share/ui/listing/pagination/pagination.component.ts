@@ -93,6 +93,10 @@ export class PaginationComponent implements OnInit {
   }
 
   private checkMobile() {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     this.isMobile.set(window.innerWidth < 768);
   }
 }

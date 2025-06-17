@@ -51,7 +51,7 @@
               @if (expiryDateMode !== 'hidden') {
                 <div class="col-12 col-md-6">
                   <mat-form-field appearance="outline" floatLabel="auto" class="w-100">
-                    <mat-label i18n>Expiry Date</mat-label>
+                    <mat-label>Expiry Date</mat-label>
                     <input
                       matInput
                       readonly
@@ -64,7 +64,7 @@
                     <mat-datepicker #picker></mat-datepicker>
 
                     @if (fileInfo.get('expiryDate')?.hasError('required')) {
-                      <mat-error class="mt-0" i18n> This field is required </mat-error>
+                      <mat-error class="mt-0"> This field is required </mat-error>
                     }
                   </mat-form-field>
                 </div>

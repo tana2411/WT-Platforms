@@ -6,9 +6,9 @@
           <div class="fw-500 fs-18 w-100 d-flex justify-content-center align-items-center gap-1 item-content">
             <mat-icon class="icon">lens</mat-icon>
             @if (fromDate) {
-              <span i18n>Available From</span> <span>{{ fromDate }}</span>
+              <span>Available From</span> <span>{{ fromDate }}</span>
             } @else {
-              <span i18n>Available Now</span>
+              <span>Available Now</span>
             }
           </div>
         </div>
@@ -19,9 +19,9 @@
           <div class="fw-500 fs-18 w-100 d-flex justify-content-center align-items-center gap-1 item-content">
             <mat-icon class="icon">lens</mat-icon>
             @if (fromDate) {
-              <span i18n>Required From</span> <span>{{ fromDate }}</span>
+              <span>Required From</span> <span>{{ fromDate }}</span>
             } @else {
-              <span i18n>Required Now</span>
+              <span>Required Now</span>
             }
           </div>
         </div>
@@ -29,13 +29,13 @@
 
       @case (ProductStatus.Sold) {
         <div class="border rounded rounded-pill mb-2 sold h-100 d-flex align-items-center">
-          <div class="fw-500 fs-18 w-100 d-flex justify-content-center align-items-center gap-1 item-content" i18n>Sold</div>
+          <div class="fw-500 fs-18 w-100 d-flex justify-content-center align-items-center gap-1 item-content">Sold</div>
         </div>
       }
 
       @case (ProductStatus.Expired) {
         <div class="border rounded py-1 rounded-pill mb-2 expired h-100 d-flex align-items-center">
-          <div class="fw-500 fs-18 w-100 d-flex justify-content-center align-items-center gap-1 item-content" i18n>
+          <div class="fw-500 fs-18 w-100 d-flex justify-content-center align-items-center gap-1 item-content">
             <mat-icon class="icon">lens</mat-icon>Expired
           </div>
         </div>
@@ -43,7 +43,7 @@
 
       @case (ProductStatus.Ongoing) {
         <div class="border rounded rounded-pill mb-2 ongoing h-100 d-flex align-items-center">
-          <div class="fw-500 fs-18 w-100 d-flex justify-content-center align-items-center gap-1 item-content" i18n>
+          <div class="fw-500 fs-18 w-100 d-flex justify-content-center align-items-center gap-1 item-content">
             <mat-icon class="icon">lens</mat-icon>Ongoing
           </div>
         </div>
