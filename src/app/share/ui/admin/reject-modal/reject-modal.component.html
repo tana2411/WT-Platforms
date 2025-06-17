@@ -9,7 +9,7 @@
     </mat-radio-group>
 
     @if (rejectForm?.get('rejectionReason')?.value == RejectionReason.Other) {
-      <mat-label class="fw-bold text-uppercase d-block mb-2 mt-3" i18n>Input custom reason</mat-label>
+      <mat-label class="fw-bold text-uppercase d-block mb-2 mt-3">Input custom reason</mat-label>
       <mat-form-field appearance="outline" class="w-100">
         <textarea
           matInput
@@ -22,7 +22,7 @@
         ></textarea>
 
         @if (rejectForm.get('message')?.hasError('required')) {
-          <mat-error class="mt-0" i18n> This is a required field. </mat-error>
+          <mat-error class="mt-0"> This is a required field. </mat-error>
         }
       </mat-form-field>
     }

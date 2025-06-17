@@ -11,7 +11,7 @@
           <app-icon [iconName]="'star_border'" [backgroundColor]="'#E2E2E2'" iconClassName="text-dark"></app-icon>
         </div>
         <div class="mb-3 d-flex gap-2">
-          <a class="primary fw-bold text-decoration-none cursor-pointer" (click)="onBack()" i18n>Back to the materials</a>
+          <a class="primary fw-bold text-decoration-none cursor-pointer" (click)="onBack()">Back to the materials</a>
           <mat-icon class="primary">chevron_left</mat-icon>
           <span class="fw-bold">{{ listingDetail.listing.title }}</span>
         </div>
@@ -22,11 +22,9 @@
 
           <app-product-description [items]="descriptionItems()">
             @if (isSeller(); as isSeller) {
-              <button mat-flat-button class="text-uppercase fw-bold w-100 request-button" i18n>request sample</button>
+              <button mat-flat-button class="text-uppercase fw-bold w-100 request-button">request sample</button>
             } @else {
-              <button mat-flat-button class="text-uppercase fw-bold w-100 request-button" [routerLink]="['/sell']" i18n>
-                Sell material
-              </button>
+              <button mat-flat-button class="text-uppercase fw-bold w-100 request-button" [routerLink]="['/sell']">Sell material</button>
             }
           </app-product-description>
 
@@ -42,7 +40,7 @@
         </div>
       </div>
       <div class="mt-5">
-        <div class="fs-40 fw-bold" i18n>You might also like</div>
+        <div class="fs-40 fw-bold">You might also like</div>
         <app-product-grid [items]="relateListing" [hideResultCount]="true" (selectItem)="onSelect($event)"></app-product-grid>
       </div>
     }

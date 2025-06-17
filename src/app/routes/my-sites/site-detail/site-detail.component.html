@@ -4,7 +4,7 @@
     (click)="onBack()"
   >
     <mat-icon class="icon">west</mat-icon>
-    <span i18n>go back</span>
+    <span >go back</span>
   </button> -->
 @if (!loading()) {
   <div class="col-12 overflow-hidden">
@@ -14,7 +14,7 @@
           class="border border-primary rounded-4 p-3 p-md-4 p-lg-4 d-flex flex-column flex-md-row justify-content-between col-12 col-lg-8 overflow-hidden gap-4"
         >
           <div class="col-12 col-md-9 col-lg-9 d-flex flex-column justify-content-between overflow-hidden flex-grow-1 min-w-0">
-            <div class="fw-bold w-100 fs-24 mb-5" i18n>Warehouse Location</div>
+            <div class="fw-bold w-100 fs-24 mb-5">Warehouse Location</div>
 
             <div class="row mb-md-4 mb-0">
               <div class="col-12 col-md-4 mb-3 mb-md-0">
@@ -84,7 +84,7 @@
               </div>
             </div>
 
-            <div class="fw-bold w-100 fs-24 mb-4" i18n>Material Accepted</div>
+            <div class="fw-bold w-100 fs-24 mb-4">Material Accepted</div>
             <div class="row mb-md-4 mb-0">
               @if (materials.length == 0) {
                 <div class="d-flex justify-content-center align-items-center fs-24 mt-3">
@@ -95,7 +95,7 @@
               }
             </div>
 
-            <div class="fw-bold w-100 fs-24 mb-4" i18n>On-site Facilities</div>
+            <div class="fw-bold w-100 fs-24 mb-4">On-site Facilities</div>
             <div class="row mb-md-4 mb-0">
               <div class="col-12 col-md-6 mb-3 mb-md-0">
                 <div class="fw-bold">IS THERE A LOADING RAMP ON THIS SITE?</div>
@@ -124,7 +124,7 @@
             </div>
 
             <!-- LICENCE  -->
-            <div class="fw-bold w-100 fs-24 mb-4" i18n>Licences / Permits</div>
+            <div class="fw-bold w-100 fs-24 mb-4">Licences / Permits</div>
             <div class="row mb-md-4 mb-0">
               <div class="col-12 mb-3 mb-md-0">
                 <app-document [isReusable]="true" [externalDocument]="location.companyLocationDocuments"></app-document>
@@ -139,7 +139,6 @@
             class="d-flex align-items-center justify-content-center"
             style="max-width: 200px"
             (click)="openEditLocation()"
-            i18n
           >
             <img
               src="assets/images/edit_24px.svg"

@@ -11,24 +11,24 @@
     <form [formGroup]="formGroup">
       <div class="row g-3 mb-3">
         <div class="col-md-6">
-          <mat-label class="fw-bold mb-1 fs-16" i18n>COMPANY NAME*</mat-label>
+          <mat-label class="fw-bold mb-1 fs-16">COMPANY NAME*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Type Here" type="text" formControlName="name" />
             @if (formGroup.get('name')?.hasError('required')) {
-              <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
+              <mat-error>This field is required. Please complete it before saving. </mat-error>
             }
             @if (formGroup.get('name')?.hasError('maxlength')) {
-              <mat-error i18n>This input exceeds the field character limit.</mat-error>
+              <mat-error>This input exceeds the field character limit.</mat-error>
             }
           </mat-form-field>
         </div>
         <div class="col-md-6">
-          <mat-label class="fw-bold mb-1 fs-16" i18n>WEBSITE</mat-label>
+          <mat-label class="fw-bold mb-1 fs-16">WEBSITE</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Type Here" type="text" formControlName="website" />
 
             @if (formGroup.get('website')?.hasError('pattern')) {
-              <mat-error i18n> Please enter a valid URL.</mat-error>
+              <mat-error> Please enter a valid URL.</mat-error>
             }
           </mat-form-field>
         </div>
@@ -36,57 +36,57 @@
 
       <div class="row mb-4">
         <div class="col-md-6">
-          <mat-label class="mb-0 fw-bold fs-16" i18n> COMPANY INTEREST* </mat-label>
+          <mat-label class="mb-0 fw-bold fs-16"> COMPANY INTEREST* </mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <mat-select placeholder="Please Select" formControlName="companyInterest">
-              <mat-option value="both" i18n> Both</mat-option>
-              <mat-option value="seller" i18n>Seller</mat-option>
-              <mat-option value="buyer" i18n>Buyer</mat-option>
+              <mat-option value="both"> Both</mat-option>
+              <mat-option value="seller">Seller</mat-option>
+              <mat-option value="buyer">Buyer</mat-option>
             </mat-select>
           </mat-form-field>
           @if (formGroup.get('companyInterest')?.hasError('required') && formGroup.get('companyInterest')?.touched) {
-            <mat-error class="mt-0 mat-error" i18n>This field is required. Please complete it before saving.</mat-error>
+            <mat-error class="mt-0 mat-error">This field is required. Please complete it before saving.</mat-error>
           }
         </div>
         <div class="col-md-6">
-          <mat-label class="fw-bold mb-1 fs-16" i18n>COMPANY TYPE*</mat-label>
+          <mat-label class="fw-bold mb-1 fs-16">COMPANY TYPE*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <mat-select formControlName="companyType" placeholder="Please Select">
-              <mat-option value="manufacturer" i18n> Manufacturer </mat-option>
-              <mat-option value="processor" i18n>Processor</mat-option>
-              <mat-option value="recycler" i18n>Recycler</mat-option>
-              <mat-option value="broker" i18n>Broker</mat-option>
-              <mat-option value="waste_producer" i18n>Waste Producer</mat-option>
+              <mat-option value="manufacturer"> Manufacturer </mat-option>
+              <mat-option value="processor">Processor</mat-option>
+              <mat-option value="recycler">Recycler</mat-option>
+              <mat-option value="broker">Broker</mat-option>
+              <mat-option value="waste_producer">Waste Producer</mat-option>
             </mat-select>
             @if (formGroup.get('companyType')?.hasError('required')) {
-              <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
+              <mat-error>This field is required. Please complete it before saving. </mat-error>
             }
           </mat-form-field>
         </div>
       </div>
 
       <div class="col-md-12 mb-4">
-        <label class="fw-bold fs-16" i18n>COMPANY VAT NUMBER*</label>
+        <label class="fw-bold fs-16">COMPANY VAT NUMBER*</label>
         <mat-form-field appearance="outline" class="w-100">
           <input matInput placeholder="Type here" type="text" formControlName="vatNumber" />
           @if (formGroup.get('vatNumber')?.hasError('required')) {
-            <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
+            <mat-error>This field is required. Please complete it before saving. </mat-error>
           }
           @if (formGroup.get('vatNumber')?.hasError('maxlength')) {
-            <mat-error i18n>This input exceeds the field character limit.</mat-error>
+            <mat-error>This input exceeds the field character limit.</mat-error>
           }
         </mat-form-field>
       </div>
 
       <div class="col-md-12 mb-4">
-        <label class="fw-bold fs-16" i18n>COMPANY REGISTRATION NUMBER*</label>
+        <label class="fw-bold fs-16">COMPANY REGISTRATION NUMBER*</label>
         <mat-form-field appearance="outline" class="w-100">
           <input matInput placeholder="Type here" type="text" formControlName="registrationNumber" />
           @if (formGroup.get('registrationNumber')?.hasError('required')) {
-            <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
+            <mat-error>This field is required. Please complete it before saving. </mat-error>
           }
           @if (formGroup.get('registrationNumber')?.hasError('maxlength')) {
-            <mat-error i18n>This input exceeds the field character limit.</mat-error>
+            <mat-error>This input exceeds the field character limit.</mat-error>
           }
         </mat-form-field>
       </div>
@@ -96,7 +96,7 @@
         <mat-form-field appearance="outline" class="w-100">
           <textarea matInput rows="7" style="resize: none" formControlName="description"></textarea>
           @if (formGroup.get('description')?.hasError('maxlength')) {
-            <mat-error i18n>This input exceeds the field character limit.</mat-error>
+            <mat-error>This input exceeds the field character limit.</mat-error>
           }
         </mat-form-field>
       </div>
@@ -105,39 +105,39 @@
         <h2 class="fw-bold flex-grow-1">Business Address</h2>
       </div>
       <div class="col-md-12 mb-4">
-        <label class="fw-bold fs-16" i18n>STREET ADDRESS*</label>
+        <label class="fw-bold fs-16">STREET ADDRESS*</label>
         <mat-form-field appearance="outline" class="w-100">
           <input matInput placeholder="Type here" type="text" formControlName="addressLine1" />
           @if (formGroup.get('addressLine1')?.hasError('required')) {
-            <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
+            <mat-error>This field is required. Please complete it before saving. </mat-error>
           }
           @if (formGroup.get('addressLine1')?.hasError('maxlength')) {
-            <mat-error i18n>This input exceeds the field character limit.</mat-error>
+            <mat-error>This input exceeds the field character limit.</mat-error>
           }
         </mat-form-field>
       </div>
       <div class="row g-3 mb-4">
         <div class="col-md-6">
-          <mat-label class="fw-bold mb-1 fs-16" i18n>POSTCODE*</mat-label>
+          <mat-label class="fw-bold mb-1 fs-16">POSTCODE*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Type here" type="text" formControlName="postalCode" />
             @if (formGroup.get('postalCode')?.hasError('required')) {
-              <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
+              <mat-error>This field is required. Please complete it before saving. </mat-error>
             }
             @if (formGroup.get('postalCode')?.hasError('maxlength')) {
-              <mat-error i18n>This input exceeds the field character limit.</mat-error>
+              <mat-error>This input exceeds the field character limit.</mat-error>
             }
           </mat-form-field>
         </div>
         <div class="col-md-6">
-          <mat-label class="fw-bold mb-1 fs-16" i18n>CITY*</mat-label>
+          <mat-label class="fw-bold mb-1 fs-16">CITY*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Type here" type="text" formControlName="city" />
             @if (formGroup.get('city')?.hasError('required')) {
-              <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
+              <mat-error>This field is required. Please complete it before saving. </mat-error>
             }
             @if (formGroup.get('city')?.hasError('maxlength')) {
-              <mat-error i18n>This input exceeds the field character limit.</mat-error>
+              <mat-error>This input exceeds the field character limit.</mat-error>
             }
           </mat-form-field>
         </div>
@@ -145,19 +145,19 @@
 
       <div class="row g-3 mb-4">
         <div class="col-md-6">
-          <mat-label class="fw-bold mb-1 fs-16" i18n>COUNTY / STATE / REGION*</mat-label>
+          <mat-label class="fw-bold mb-1 fs-16">COUNTY / STATE / REGION*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Type here" type="text" formControlName="stateProvince" />
             @if (formGroup.get('stateProvince')?.hasError('required')) {
-              <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
+              <mat-error>This field is required. Please complete it before saving. </mat-error>
             }
             @if (formGroup.get('stateProvince')?.hasError('maxlength')) {
-              <mat-error i18n>This input exceeds the field character limit.</mat-error>
+              <mat-error>This input exceeds the field character limit.</mat-error>
             }
           </mat-form-field>
         </div>
         <div class="col-md-6">
-          <mat-label class="fw-bold mb-1 fs-16" i18n>COUNTRY*</mat-label>
+          <mat-label class="fw-bold mb-1 fs-16">COUNTRY*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <mat-select formControlName="country" placeholder="Please Select">
               @for (item of countryList; track $index; let i = $index) {
@@ -165,20 +165,20 @@
               }
             </mat-select>
             @if (formGroup.get('country')?.hasError('required')) {
-              <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
+              <mat-error>This field is required. Please complete it before saving. </mat-error>
             }
           </mat-form-field>
         </div>
       </div>
       <div class="col-md-12 mb-4">
-        <mat-label class="fw-bold mb-1 fs-16" i18n>COMPANY EMAIL*</mat-label>
+        <mat-label class="fw-bold mb-1 fs-16">COMPANY EMAIL*</mat-label>
         <mat-form-field appearance="outline" class="w-100">
           <input matInput placeholder="Type here" type="text" formControlName="email" />
           @if (formGroup.get('email')?.hasError('required')) {
-            <mat-error i18n>This field is required. Please complete it before saving. </mat-error>
+            <mat-error>This field is required. Please complete it before saving. </mat-error>
           }
           @if (formGroup.get('email')?.hasError('email')) {
-            <mat-error i18n>Invalid email address format. Please enter a valid email. </mat-error>
+            <mat-error>Invalid email address format. Please enter a valid email. </mat-error>
           }
         </mat-form-field>
       </div>
@@ -189,14 +189,13 @@
   </mat-dialog-content>
   <mat-dialog-actions>
     <div class="d-flex justify-content-between align-items-center gap-3 col-md-12 col-12">
-      <button mat-stroked-button class="text-uppercase outline-primary-btn w-100 fs-16" (click)="close()" i18n>Discard Changes</button>
+      <button mat-stroked-button class="text-uppercase outline-primary-btn w-100 fs-16" (click)="close()">Discard Changes</button>
       <button
         mat-flat-button
         [disabled]="formGroup.invalid || formGroup.pristine"
         class="text-uppercase primary-btn w-100 fw-bold fs-16"
         [class.overlay-spinner]="submitting()"
         (click)="submit()"
-        i18n
       >
         Save Changes
       </button>

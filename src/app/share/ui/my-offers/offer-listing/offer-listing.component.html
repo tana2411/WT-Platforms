@@ -4,34 +4,34 @@
   <div class="wrapper w-100 overflow-auto mb-4 mb-md-5">
     <div class="d-flex border rounded border-primary align-items-center justify-content-between gap-4 row-item">
       <div class="background-primary p-3 text-white text-center">
-        <p class="text-uppercase fw-bold mb-1" i18n>bid amount</p>
-        <h2 class="text-uppercase fw-bold mb-3" i18n>{{ item.bidAmount }}</h2>
+        <p class="text-uppercase fw-bold mb-1">bid amount</p>
+        <h2 class="text-uppercase fw-bold mb-3">{{ item.bidAmount }}</h2>
 
-        <button mat-flat-button class="fw-bold text-uppercase rounded py-2 px-3 primary counter-button" i18n>counter offer</button>
+        <button mat-flat-button class="fw-bold text-uppercase rounded py-2 px-3 primary counter-button">counter offer</button>
       </div>
 
       <div class="column-item">
-        <p class="label" i18n>Bid date</p>
+        <p class="label">Bid date</p>
         <p class="content">{{ item.date }}</p>
       </div>
 
       <div class="column-item">
-        <p class="label" i18n>amount</p>
+        <p class="label">amount</p>
         <p class="content fw-bold primary">{{ item.bidAmount }}</p>
       </div>
 
       <div class="column-item">
-        <p class="label" i18n>Buyer Id</p>
+        <p class="label">Buyer Id</p>
         <p class="content fw-bold primary">{{ item.buyerId ?? '&nbsp;' }}</p>
       </div>
 
       <div class="column-item">
-        <p class="label" i18n>Status</p>
+        <p class="label">Status</p>
         <p class="content fw-bold primary {{ item.status }}">{{ item.status }}</p>
       </div>
 
       <div class="column-item">
-        <p class="label" i18n>Buyer Status</p>
+        <p class="label">Buyer Status</p>
         <p class="content fw-bold primary {{ item.buyerStatus }}">{{ item.buyerStatus ?? '&nbsp;' }}</p>
       </div>
 

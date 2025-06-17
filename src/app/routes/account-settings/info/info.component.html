@@ -1,5 +1,5 @@
 <div class="col-12 overflow-hidden">
-  <h4 class="fw-bold mt-3 mb-4" i18n>Company Information</h4>
+  <h4 class="fw-bold mt-3 mb-4">Company Information</h4>
   <div class="d-flex flex-column flex-lg-row gap-4">
     <div
       class="border border-primary rounded-4 p-3 p-md-4 p-lg-5 d-flex flex-column flex-md-row justify-content-between col-12 col-lg-8 overflow-hidden gap-4"
@@ -7,37 +7,37 @@
       <div class="col-12 col-md-8 col-lg-9 d-flex flex-column justify-content-between overflow-hidden flex-grow-1 min-w-0">
         <div class="row g-3 mb-4 mx-0">
           <div class="col-12 col-sm-4 px-2">
-            <div class="fw-bold mb-1" i18n>COMPANY NAME</div>
+            <div class="fw-bold mb-1">COMPANY NAME</div>
             <div class="">{{ company?.name || '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
-            <div class="fw-bold mb-1" i18n>WEBSITE</div>
+            <div class="fw-bold mb-1">WEBSITE</div>
             <div class="">{{ company?.website || '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
-            <div class="fw-bold mb-1" i18n>COMPANY INTEREST</div>
+            <div class="fw-bold mb-1">COMPANY INTEREST</div>
             <div class="">{{ company?.companyInterest || '-' | titlecase }}</div>
           </div>
         </div>
 
         <div class="row g-3 mx-0 mb-4">
           <div class="col-12 col-sm-4 px-2">
-            <div class="fw-bold mb-1" i18n>COMPANY TYPE</div>
+            <div class="fw-bold mb-1">COMPANY TYPE</div>
             <div class="">{{ company?.companyType || '-' | titlecase }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
-            <div class="fw-bold d-flex align-items-center gap-2 mb-1" i18n><mat-icon class="error">info_rounded</mat-icon> VAT</div>
+            <div class="fw-bold d-flex align-items-center gap-2 mb-1"><mat-icon class="error">info_rounded</mat-icon> VAT</div>
             <div class="">{{ company?.vatNumber || '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
-            <div class="fw-bold mb-1" i18n>COMPANY REGISTRATION NUMBER</div>
+            <div class="fw-bold mb-1">COMPANY REGISTRATION NUMBER</div>
             <div class="">{{ company?.registrationNumber || '-' }}</div>
           </div>
         </div>
 
         <div class="w-100">
           <div class="col-12 col-sm-4 px-2">
-            <div class="fw-bold mb-1" i18n>COMPANY DESCRIPTION</div>
+            <div class="fw-bold mb-1">COMPANY DESCRIPTION</div>
             <div class="">{{ company?.description || '-' || '' }}</div>
           </div>
         </div>
@@ -49,7 +49,6 @@
       class="d-flex align-items-center justify-content-center"
       style="max-width: 200px"
       (click)="openEditCompanyInfo()"
-      i18n
     >
       <img
         src="assets/images/edit_24px.svg"
@@ -62,7 +61,7 @@
     </button>
   </div>
 
-  <h4 class="fw-bold mt-5 mb-4" i18n>Business Address</h4>
+  <h4 class="fw-bold mt-5 mb-4">Business Address</h4>
   <div class="d-flex flex-column flex-lg-row gap-4">
     <div
       class="border border-primary rounded-4 p-3 p-md-4 p-lg-5 d-flex flex-column flex-md-row justify-content-between col-12 col-lg-8 overflow-hidden gap-4"
@@ -70,37 +69,37 @@
       <div class="col-12 col-md-8 col-lg-9 d-flex flex-column justify-content-between overflow-hidden flex-grow-1 min-w-0">
         <div class="row g-3 mb-4 mx-0">
           <div class="col-12 col-sm-4 px-2">
-            <div class="fw-bold mb-1" i18n>STREET ADDRESS</div>
+            <div class="fw-bold mb-1">STREET ADDRESS</div>
             <div class="">{{ company?.addressLine1 || '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
-            <div class="fw-bold mb-1" i18n>ZIP / PORTAL CODE</div>
+            <div class="fw-bold mb-1">ZIP / PORTAL CODE</div>
             <div class="">{{ company?.postalCode || '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
-            <div class="fw-bold mb-1" i18n>CITY</div>
+            <div class="fw-bold mb-1">CITY</div>
             <div class="">{{ company?.city || '-' }}</div>
           </div>
         </div>
 
         <div class="row g-3 mx-0 mb-4">
           <div class="col-12 col-sm-4 px-2">
-            <div class="fw-bold mb-1" i18n>COUNTY / STATE / PROVINCE</div>
+            <div class="fw-bold mb-1">COUNTY / STATE / PROVINCE</div>
             <div class="">{{ company?.stateProvince || '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
-            <div class="fw-bold mb-1" i18n>COUNTRY</div>
+            <div class="fw-bold mb-1">COUNTRY</div>
             <div class="">{{ countryCodeToName(company?.country) }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
-            <div class="fw-bold mb-1" i18n>EMAIL ADDRESS</div>
+            <div class="fw-bold mb-1">EMAIL ADDRESS</div>
             <div class="">{{ company?.email || '-' }}</div>
           </div>
         </div>
 
         <div class="row g-3 mx-0 mb-4">
           <div class="col-12 col-sm-4 px-2">
-            <div class="fw-bold mb-1" i18n>TELEPHONE</div>
+            <div class="fw-bold mb-1">TELEPHONE</div>
             <div class="">{{ company?.phoneNumber || '-' }}</div>
           </div>
         </div>
@@ -112,7 +111,6 @@
       class="d-flex align-items-center justify-content-center"
       style="max-width: 200px"
       (click)="openEditCompanyInfo()"
-      i18n
     >
       <img
         src="assets/images/edit_24px.svg"
@@ -125,7 +123,7 @@
     </button>
   </div>
 
-  <h4 class="fw-bold mt-5 mb-4" i18n>Social</h4>
+  <h4 class="fw-bold mt-5 mb-4">Social</h4>
   <div class="d-flex flex-column flex-lg-row gap-4">
     <div
       class="border border-primary rounded-4 p-3 p-md-4 p-lg-5 d-flex flex-column flex-md-row justify-content-between col-12 col-lg-8 overflow-hidden gap-4"
@@ -133,19 +131,19 @@
       <div class="col-12 col-md-8 col-lg-9 d-flex flex-column justify-content-between overflow-hidden flex-grow-1 min-w-0">
         <div class="row g-3 mb-4 mx-0">
           <div class="col-12 col-sm-4 px-2">
-            <div class="fw-bold mb-1 d-flex align-items-center gap-2" i18n>
+            <div class="fw-bold mb-1 d-flex align-items-center gap-2">
               <mat-icon class="error">info_rounded</mat-icon> FACEBOOK PROFILE URL
             </div>
             <div class="pl-2">{{ company?.facebookUrl || '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
-            <div class="fw-bold mb-1 d-flex align-items-center gap-2" i18n>
+            <div class="fw-bold mb-1 d-flex align-items-center gap-2">
               <mat-icon class="error">info_rounded</mat-icon>INSTAGRAM PROFILE URL
             </div>
             <div class="pl-2">{{ company?.instagramUrl || '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
-            <div class="fw-bold mb-1 d-flex align-items-center gap-2" i18n>
+            <div class="fw-bold mb-1 d-flex align-items-center gap-2">
               <mat-icon class="error">info_rounded</mat-icon> LINKED PROFILE URL
             </div>
             <div class="pl-5">{{ company?.linkedinUrl || '-' }}</div>
@@ -154,7 +152,7 @@
 
         <div class="row g-3 mx-0 mb-4">
           <div class="col-12 col-sm-4 px-2">
-            <div class="fw-bold mb-1 d-flex align-items-center gap-2" i18n>
+            <div class="fw-bold mb-1 d-flex align-items-center gap-2">
               <mat-icon class="error">info_rounded</mat-icon>X USERNAME (WITHOUT &#64;)
             </div>
             <div class="pl-2">{{ company?.xUrl || '-' }}</div>
@@ -169,7 +167,6 @@
         class="d-flex align-items-center justify-content-center"
         style="max-width: 200px"
         (click)="openEditSocialUrl()"
-        i18n
       >
         <img
           src="assets/images/edit_24px.svg"

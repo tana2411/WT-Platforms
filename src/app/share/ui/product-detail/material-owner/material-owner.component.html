@@ -2,7 +2,7 @@
   <div class="d-flex flex-column gap-3 border border-primary rounded rounded-4 wrapper">
     <div class="d-flex align-items-center gap-2">
       <app-icon iconName="person" backgroundColor="#E5F6F0" className="user-icon" iconClassName="primary"></app-icon>
-      <p class="text-uppercase fw-bold mb-0 fs-18" i18n>{{ isSeller() ? 'Seller' : 'Buyer' }}</p>
+      <p class="text-uppercase fw-bold mb-0 fs-18">{{ isSeller() ? 'Seller' : 'Buyer' }}</p>
     </div>
 
     @if (company.verifiedAt) {
@@ -14,22 +14,22 @@
           />
         </svg>
 
-        <p class="text-capitalize mb-0 fw-bold primary" style="font-size: 18px" i18n>Account verified</p>
+        <p class="text-capitalize mb-0 fw-bold primary" style="font-size: 18px">Account verified</p>
       </div>
     }
 
     <div class="d-flex flex-column fw-bold" style="gap: 4px">
       <p class="mb-0">
-        <span i18n>Seller ID:</span> <span>{{ company.id }}</span>
+        <span>Seller ID:</span> <span>{{ company.id }}</span>
       </p>
 
       <p class="mb-0">
-        <span i18n>Seller Location:</span> <span>{{ mapCountryCodeToName[company.country!] }}</span>
+        <span>Seller Location:</span> <span>{{ mapCountryCodeToName[company.country!] }}</span>
       </p>
 
       @if (listing(); as listing) {
         <p class="mb-0">
-          <span i18n>Listed on:</span> <span>{{ formatListedOn(listing.createdAt) }}</span>
+          <span>Listed on:</span> <span>{{ formatListedOn(listing.createdAt) }}</span>
         </p>
       }
     </div>

@@ -1,5 +1,5 @@
 <div class="col-12 overflow-hidden">
-  <h4 class="fw-bold mt-3 mb-4" i18n>Edit Notifications</h4>
+  <h4 class="fw-bold mt-3 mb-4">Edit Notifications</h4>
   <div class="d-flex flex-column flex-lg-row gap-4">
     <div
       class="border border-primary rounded-4 p-3 p-md-4 p-lg-5 d-flex flex-column flex-md-row justify-content-between col-12 col-lg-8 overflow-hidden gap-4"
@@ -7,9 +7,7 @@
       <div class="col-12 col-md-8 col-lg-9 d-flex flex-column justify-content-between overflow-hidden flex-grow-1 min-w-0">
         <div class="row g-3 mb-4 mx-0">
           <div class="col-11 col-md-7 px-2">
-            <div class="fw-bold text-break small mb-1 d-flex align-items-center gap-2" i18n>
-              EMAIL ME NEW LISTINGS THAT MATCH MY INTERESTS
-            </div>
+            <div class="fw-bold text-break small mb-1 d-flex align-items-center gap-2">EMAIL ME NEW LISTINGS THAT MATCH MY INTERESTS</div>
             <div class="fw-bold">
               {{
                 user()?.user?.receiveEmailForNewMatchingListings === true
@@ -21,7 +19,7 @@
             </div>
           </div>
           <div class="col-11 col-md-5 px-2">
-            <div class="fw-bold text-break small mb-1 d-flex align-items-center gap-2" i18n>EMAIL ME OFFERS ON MY LISTINGS</div>
+            <div class="fw-bold text-break small mb-1 d-flex align-items-center gap-2">EMAIL ME OFFERS ON MY LISTINGS</div>
             <div class="fw-bold">
               {{
                 user()?.user?.receiveEmailForOffersOnMyListings === true
@@ -41,7 +39,6 @@
       class="d-flex align-items-center justify-content-center"
       style="max-width: 200px"
       (click)="onEditNotifications()"
-      i18n
     >
       <img
         src="assets/images/edit_24px.svg"
