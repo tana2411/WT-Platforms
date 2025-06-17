@@ -78,7 +78,7 @@ export const allFilters: Filter[] = [
     options: [
       {
         name: 'Approved',
-        code: 'approve',
+        code: 'approved',
       },
       { code: 'pending', name: 'Pending' },
       { code: 'rejected', name: 'Rejected' },
