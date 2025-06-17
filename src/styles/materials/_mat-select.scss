@@ -1,7 +1,22 @@
+@import '../variables';
+
 .mat-mdc-select-panel {
   background-color: white !important;
 }
 
 .option-bold-label .mdc-list-item__primary-text {
   font-weight: 700 !important;
+}
+
+.mat-mdc-option.mdc-list-item--selected {
+  background-color: $on-primary !important;
+}
+
+.mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled):not(.mat-mdc-option-multiple)
+  .mdc-list-item__primary-text {
+  color: $black !important;
+}
+
+.mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after {
+  color: $black !important;
 }
