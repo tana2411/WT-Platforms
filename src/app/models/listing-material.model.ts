@@ -81,6 +81,8 @@ export interface ListingMaterial extends ListingMaterialPayload {
   isUrgent: boolean;
   viewCount: number | null;
   documents: ListingDocument[];
+  location_other: string;
+  location_id: string;
 }
 
 export interface ListingDocument {
