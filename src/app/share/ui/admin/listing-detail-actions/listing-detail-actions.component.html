@@ -2,7 +2,7 @@
   <div class="d-flex flex-wrap gap-2">
     <button
       mat-flat-button
-      class="custom-button"
+      class="custom-button fs-16"
       (click)="onApprove()"
       [disabled]="submitting()"
       [class.overlay-spinner]="submitting() == 'accept'"
@@ -12,7 +12,7 @@
 
     <button
       mat-flat-button
-      class="custom-button background-error"
+      class="custom-button fs-16 background-error"
       (click)="onReject()"
       [disabled]="submitting()"
       [class.overlay-spinner]="submitting() == 'reject'"
@@ -22,7 +22,7 @@
 
     <button
       matButton="outlined"
-      class="custom-button rounded primary border border-primary"
+      class="custom-button request-button fs-16 rounded primary border border-primary"
       style="border-width: 3px"
       (click)="onRequestMoreInformation()"
       [disabled]="submitting()"
