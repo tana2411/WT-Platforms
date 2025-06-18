@@ -18,7 +18,7 @@ import { ListingImageType } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
 import { ListingService } from 'app/services/listing.service';
 import { UploadService } from 'app/share/services/upload.service';
-import { catchError, combineLatest, filter, finalize, forkJoin, map, of, switchMap } from 'rxjs';
+import { catchError, combineLatest, filter, finalize, forkJoin, map, of, startWith, switchMap } from 'rxjs';
 
 const OTHER_LOCATION = '__OTHER_LOCATION';
 
@@ -110,8 +110,8 @@ export class SellLisingMaterialFormComponent {
   hasSpecialData = toSignal(this.formGroup.controls.hasSpecialData.valueChanges.pipe(map((v) => v === 'true')));
   hasLocation = toSignal(
     combineLatest([
-      this.formGroup.controls.locationId.valueChanges,
-      this.formGroup.controls.locationOther.valueChanges,
+      this.formGroup.controls.locationId.valueChanges.pipe(startWith(null)),
+      this.formGroup.controls.locationOther.valueChanges.pipe(startWith(null)),
     ]).pipe(
       map(
         ([locationId, locationOther]) =>
