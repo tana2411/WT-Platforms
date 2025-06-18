@@ -5,7 +5,7 @@
     @if (listingDetail(); as listingDetail) {
       <div
         mat-button
-        class="d-inline-flex mb-5 align-items-center py-1 rounded px-2 background-primary text-white text-uppercase fw-bold cursor-pointer button-wrapper"
+        class="d-inline-flex mb-5 align-items-center justify-content-center py-1 rounded px-2 background-primary text-white text-uppercase fw-bold cursor-pointer button-wrapper"
         (click)="onBack()"
       >
         <mat-icon class="icon">west</mat-icon>
@@ -37,17 +37,17 @@
           <!-- <div class="row align-items-center row-item"> -->
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">material</p>
-            <p class="mb-0 fw-500">{{ listingDetail.materialInformation.materialName }}</p>
+            <p class="mb-0 fw-500">{{ listingDetail.materialInformation.materialName | titlecase }}</p>
           </div>
 
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">Packaging</p>
-            <p class="mb-0 fw-500">{{ listingDetail.materialInformation.packaging }}</p>
+            <p class="mb-0 fw-500">{{ listingDetail.materialInformation.packaging | titlecase }}</p>
           </div>
 
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">Bid status</p>
-            <p class="mb-0 fw-500" [style.color]="getStatusColor(listingDetail.bidStatus.status)">
+            <p class="mb-0 fw-bold" [style.color]="getStatusColor(listingDetail.bidStatus.status)">
               {{ listingDetail.bidStatus.status | titlecase }}
             </p>
           </div>
@@ -74,7 +74,11 @@
           <!-- <div class="row align-items-center"> -->
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">currency</p>
-            <p class="mb-0 fw-bold">{{ listingDetail.materialInformation.currency }}</p>
+            <p class="mb-0 fw-bold">
+              {{ getCurrencySignal(listingDetail.materialInformation.currency) }} ({{
+                listingDetail.materialInformation.currency | titlecase
+              }})
+            </p>
           </div>
 
           <div class="col-6 col-md-4 material-item mb-4">
