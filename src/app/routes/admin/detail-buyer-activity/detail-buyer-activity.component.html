@@ -21,11 +21,11 @@
           </div>
           <div class="col-4">
             <p class="text-uppercase fw-bold mb-2">Full name</p>
-            <p class="mb-0">Seller name</p>
+            <p class="mb-0">{{ offerDetail.seller.company.name }}</p>
           </div>
           <div class="col-4">
             <p class="text-uppercase fw-bold mb-2">Company</p>
-            <p class="mb-0">Seller company</p>
+            <p class="mb-0">{{ offerDetail.seller.company.name }}</p>
           </div>
         </div>
       </div>
@@ -37,11 +37,11 @@
           </div>
           <div class="col-4">
             <p class="text-uppercase fw-bold mb-2">Full name</p>
-            <p class="mb-0">Buyer name</p>
+            <p class="mb-0">{{ offerDetail.buyer.company.name }}</p>
           </div>
           <div class="col-4">
             <p class="text-uppercase fw-bold mb-2">Company</p>
-            <p class="mb-0">Buyer Company</p>
+            <p class="mb-0">{{ offerDetail.buyer.company.name }}</p>
           </div>
         </div>
       </div>
@@ -53,19 +53,19 @@
           <!-- <div class="row align-items-center row-item"> -->
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">material</p>
-            <p class="mb-0 fw-500">material</p>
+            <p class="mb-0 fw-500">{{ offerDetail.listing.materialType }}</p>
           </div>
 
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">number of loads</p>
             <p class="mb-0 primary fw-bold">
-              {{ offerDetail.listing.quantity }}/{{ offerDetail.listing.quantity + (offerDetail.listing.remainingQuantity ?? 0) }}
+              {{ offerDetail.listing.quantity }}/{{ offerDetail.listing.quantity + offerDetail.listing.remainingQuantity }}
             </p>
           </div>
 
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">incoterms</p>
-            <p class="mb-0 fw-500">incoterms</p>
+            <p class="mb-0 fw-500">{{ offerDetail.offer.incoterms }}</p>
           </div>
 
           <div class="col-6 col-md-4 material-item mb-4">
@@ -106,7 +106,7 @@
 
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">Packaging</p>
-            <p class="mb-0 fw-500">{{ offerDetail.listing.materialPacking }}</p>
+            <p class="mb-0 fw-500">{{ offerDetail.listing.materialPacking | titlecase }}</p>
           </div>
 
           <div class="col-6 col-md-4 material-item mb-4">
