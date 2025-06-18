@@ -11,7 +11,7 @@ import {
 } from '@angular/router';
 import { ROUTES } from 'app/constants/route.const';
 import { User } from 'app/models/auth.model';
-import { filter, first, map, pipe, tap } from 'rxjs';
+import { filter, first, map, of, pipe, tap } from 'rxjs';
 import { AuthService, NOT_INITIAL_USER } from '../../services/auth.service';
 import { checkAllowAccessAuthPage, getDefaultRouteByRole } from './utils';
 
@@ -68,11 +68,25 @@ export class CanActivateUnAuthPage implements CanActivate, CanActivateChild {
     map((user) => !user),
   );
 
-  canActivate(): MaybeAsync<GuardResult> {
+  canActivate(route: ActivatedRouteSnapshot): MaybeAsync<GuardResult> {
+    const queryParams = route.queryParams;
+    const allowAuth = queryParams['lost_pass'] || queryParams['reset_pass'];
+
+    if (allowAuth) {
+      return of(true);
+    }
+
     return this.authService.user$.pipe(this.isUnAuthPipe);
   }
 
-  canActivateChild(): MaybeAsync<GuardResult> {
+  canActivateChild(route: ActivatedRouteSnapshot): MaybeAsync<GuardResult> {
+    const queryParams = route.queryParams;
+    const allowAuth = queryParams['lost_pass'] || queryParams['reset_pass'];
+
+    if (allowAuth) {
+      return of(true);
+    }
+
     return this.authService.user$.pipe(this.isUnAuthPipe);
   }
 }
