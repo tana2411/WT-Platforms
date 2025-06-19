@@ -46,6 +46,10 @@ export class RequestInformationComponent implements OnInit {
 
   ngOnInit() {}
 
+  close(): void {
+    this.dialogRef.close();
+  }
+
   submit() {
     this.formGroup.markAllAsTouched();
 

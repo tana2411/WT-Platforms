@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { tap } from 'rxjs';
 
 interface Option {
@@ -38,6 +39,7 @@ enum SendMessage {
     ReactiveFormsModule,
     MatButtonModule,
     MatSnackBarModule,
+    IconComponent,
   ],
   templateUrl: './admin-member-request-infor.component.html',
   styleUrl: './admin-member-request-infor.component.scss',

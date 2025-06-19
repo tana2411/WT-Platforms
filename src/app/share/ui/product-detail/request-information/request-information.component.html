@@ -1,8 +1,13 @@
 <div class="container-fluid p-3 p-md-4 p-lg-4">
   <div class="d-flex justify-content-between align-items-center w-100">
     <h2 class="fw-bold flex-grow-1">Request Information</h2>
-    <div mat-dialog-close="true" class="cursor-pointer">
-      <app-icon iconName="close"></app-icon>
+
+    <div class="dialog-close-button" (click)="close()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="12" fill="#1D1D1B" />
+        <path d="M7 7.06641L17.8064 17.8728" stroke="white" stroke-width="3" stroke-linecap="round" />
+        <path d="M17.8086 7L7.00222 17.8064" stroke="white" stroke-width="3" stroke-linecap="round" />
+      </svg>
     </div>
   </div>
 
