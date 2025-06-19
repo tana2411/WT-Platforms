@@ -1,8 +1,8 @@
 <p class="fw-bold mb-4 mb-lg-5">{{ items.length }} RESULT OF {{ totalItems }}</p>
 
 @for (item of items; track item.id) {
-  <div class="wrapper w-100 overflow-auto mb-4 mb-md-5">
-    <div class="d-flex p-4 border rounded border-primary justify-content-between gap-4 row-item">
+  <div class="wrapper w-100 overflow-auto mb-4 mb-md-5" routerLink="/my-account/my-buying-offers-details/{{ item.id }}">
+    <div class="d-flex p-4 border table-item-rounded border-primary justify-content-between gap-4 row-item">
       <img class="image" src="https://picsum.photos/200/300" appFallbackImage loading="lazy" alt="" />
 
       <div class="column-item">
@@ -37,13 +37,11 @@
 
       <div class="column-item">
         <p class="label">status</p>
-        <p class="content fw-bold primary">{{ item.status }}</p>
+        <p class="content fw-bold" [style.color]="getStatusColor(item.status)">{{ item.status | titlecase }}</p>
       </div>
 
       <div class="column-item d-flex align-items-center">
-        <a routerLink="/my-account/my-buying-offers-details/{{ item.id }}">
-          <button mat-stroked-button type="button" class="view-detail-btn primary border-primary">View details</button>
-        </a>
+        <button mat-stroked-button type="button" class="view-detail-btn primary border-primary text-uppercase fw-bold">View details</button>
       </div>
     </div>
   </div>
