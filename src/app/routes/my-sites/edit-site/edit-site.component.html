@@ -1,9 +1,19 @@
-<div class="col-12 col-md-8">
+<div class="col-12 col-md-8" [class.dialogContainer]="isDialog">
   <!-- @if (mode == 'edit') { -->
-  <button mat-flat-button class="px-5 py-2 background-primary text-white d-block d-flex align-items-center mb-4" (click)="onBack()">
-    <mat-icon class="d-flex align-items-center">west</mat-icon>
-    <span class="fw-bold">GO TO MY LOCATION</span>
-  </button>
+  @if (!isDialog) {
+    <button mat-flat-button class="px-5 py-2 background-primary text-white d-block d-flex align-items-center mb-4" (click)="onBack()">
+      <mat-icon class="d-flex align-items-center">west</mat-icon>
+      <span class="fw-bold">GO TO MY LOCATION</span>
+    </button>
+  } @else {
+    <div class="dialog-close-button" (click)="closeDialog()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="12" fill="#1D1D1B" />
+        <path d="M7 7.06641L17.8064 17.8728" stroke="white" stroke-width="3" stroke-linecap="round" />
+        <path d="M17.8086 7L7.00222 17.8064" stroke="white" stroke-width="3" stroke-linecap="round" />
+      </svg>
+    </div>
+  }
   <!-- <div class="d-flex justify-content-between align-items-center mt-5 mb-5">
       <div class="flex-column">
         <div class="fw-bold fs-24">ADDRESS NAME</div>

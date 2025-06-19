@@ -64,14 +64,22 @@ interface Company extends OfferLocation {
   status?: CompanyStatus;
 }
 
+interface User {
+  id: number;
+  firstName: string;
+  lastName: string;
+}
+
 export interface OfferDetail {
   offer: Offer;
   listing: Listing;
   seller: {
     company: Company;
+    user: User;
   };
   buyer: {
     company: Company;
+    user: User;
   };
 }
 

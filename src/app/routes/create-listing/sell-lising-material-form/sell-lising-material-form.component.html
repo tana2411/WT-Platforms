@@ -16,18 +16,20 @@
           <div class="col-lg-9 mx-auto mb-5">
             <h6 class="fw-bold text-uppercase mb-3">Warehouse location*</h6>
             <mat-form-field appearance="outline" class="w-100">
-              <mat-select formControlName="locationId" placeholder="Please Select">
+              <mat-select formControlName="locationId" placeholder="Please Select" #locationSelector>
                 @for (location of locations(); track location.id) {
                   <mat-option [value]="location.id">{{ location.locationName }}</mat-option>
                 }
-                <mat-option [value]="OTHER_LOCATION">Other</mat-option>
+                <!-- <mat-option [value]="OTHER_LOCATION"> -->
+                <div class="other-button" (click)="onAddOther()">Other</div>
+                <!-- </mat-option> -->
               </mat-select>
               @if (formGroup.get('locationId')?.hasError('required')) {
                 <mat-error class="mt-0"> This is a required field.</mat-error>
               }
             </mat-form-field>
 
-            @if (formGroup.get('locationId')?.value === OTHER_LOCATION) {
+            <!-- @if (formGroup.get('locationId')?.value === OTHER_LOCATION) {
               <div class="mt-3 mb-2 text-uppercase fw-bold">Other Warehouse Location*</div>
               <mat-form-field appearance="outline" class="w-100">
                 <input type="text" min="1" matInput placeholder="Type here" formControlName="locationOther" />
@@ -35,7 +37,7 @@
                   <mat-error class="mt-0"> This field is required </mat-error>
                 }
               </mat-form-field>
-            }
+            } -->
           </div>
         </div>
       </div>

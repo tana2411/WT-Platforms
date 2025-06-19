@@ -75,7 +75,6 @@ export class MemberDetailActionsComponent {
       return;
     }
 
-    this.submitting.set('reject');
     const dataConfig: MatDialogConfig = {
       width: '100%',
       maxWidth: '960px',
@@ -91,6 +90,7 @@ export class MemberDetailActionsComponent {
               return EMPTY;
             }
 
+            this.submitting.set('reject');
             return this.adminCommercialService.callAction({
               id: userId,
               action: MemberRequestActionEnum.REJECT,
@@ -122,7 +122,6 @@ export class MemberDetailActionsComponent {
       return;
     }
 
-    this.submitting.set('request');
     const dataConfig: MatDialogConfig = {
       width: '100%',
       maxWidth: '960px',
@@ -137,6 +136,8 @@ export class MemberDetailActionsComponent {
             if (!params) {
               return EMPTY;
             }
+
+            this.submitting.set('request');
 
             return this.adminCommercialService.callAction({
               id: userId,
