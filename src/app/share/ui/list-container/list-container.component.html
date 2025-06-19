@@ -15,9 +15,9 @@
       @if (items().length === 0) {
         <div class="fs-24 empty-message-container">
           @if (invalidPage()) {
-            <p class="text-muted">{{ emptyMessage }}</p>
+            <p class="text-muted">{{ emptyMessage | translate }}</p>
           } @else if (noResults()) {
-            <p class="text-muted">{{ emptyMessage }}</p>
+            <p class="text-muted">{{ emptyMessage | translate }}</p>
           }
         </div>
       } @else {

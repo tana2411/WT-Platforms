@@ -3,11 +3,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogClose, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { materialTypes } from '@app/statics';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { SettingsService } from 'app/services/settings.service';
 import { ConfirmModalComponent } from 'app/share/ui/confirm-modal/confirm-modal.component';
@@ -20,13 +22,13 @@ import { catchError, EMPTY, finalize } from 'rxjs';
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatDialogClose,
     MatButtonModule,
     MatSnackBarModule,
     MatDialogModule,
     MatCheckboxModule,
     IconComponent,
     MatExpansionModule,
+    TranslateModule,
   ],
 })
 export class EditMaterialFormComponent implements OnInit, AfterViewInit {
@@ -168,7 +170,9 @@ export class EditMaterialFormComponent implements OnInit, AfterViewInit {
           .updateMaterialPreferences(this.data.companyId, payload)
           .pipe(
             catchError((err) => {
-              this.snackBar.open('Failed to save changes. Please try again.', 'OK', { duration: 3000 });
+              this.snackBar.open(localized$('Failed to save changes. Please try again.'), localized$('OK'), {
+                duration: 3000,
+              });
               return EMPTY;
             }),
             finalize(() => {
@@ -176,7 +180,13 @@ export class EditMaterialFormComponent implements OnInit, AfterViewInit {
             }),
           )
           .subscribe((res) => {
-            this.snackBar.open('Your material preferences have been updated successfully.', 'OK', { duration: 3000 });
+            this.snackBar.open(
+              localized$('Your material preferences have been updated successfully.'),
+              localized$('OK'),
+              {
+                duration: 3000,
+              },
+            );
             this.dialogRef.close(true);
           });
       });

@@ -1,4 +1,4 @@
-<app-common-layout [title]="'Account Settings'">
+<app-common-layout [title]="'Account Settings' | translate">
   <div class="{{ activeTab() !== undefined ? 'd-none' : 'd-flex flex-column' }} d-lg-none">
     @for (item of listTab; track item.title) {
       <div class="d-flex gap-2 p-3 list-item" (click)="selectTab(item.title)">
@@ -11,15 +11,9 @@
 
   <div class="{{ activeTab() !== undefined ? 'd-block' : 'd-none d-lg-block' }}">
     <mat-tab-group class="common-tab" [selectedIndex]="activeTab()" animationDuration="0ms" (selectedTabChange)="onTabChange($event)">
-      <mat-tab label="My profile"> </mat-tab>
-
-      <mat-tab label="Company information"> </mat-tab>
-
-      <mat-tab label="Material preferences"> </mat-tab>
-
-      <mat-tab label="Notifications"> </mat-tab>
-
-      <mat-tab label="Company documents"> </mat-tab>
+      @for (item of listTab; track $index) {
+        <mat-tab label="{{ item.title | translate }}"> </mat-tab>
+      }
     </mat-tab-group>
     <app-tab-container (back)="closeTab()">
       <router-outlet></router-outlet>

@@ -1,8 +1,9 @@
-import { Component, effect, inject, Signal } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 import { User } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
 import { EditNotificationFormComponent } from './edit-notification-form/edit-notification-form.component';
@@ -11,7 +12,7 @@ import { EditNotificationFormComponent } from './edit-notification-form/edit-not
   selector: 'app-notification',
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.scss',
-  imports: [MatIconModule, MatButtonModule],
+  imports: [MatIconModule, MatButtonModule, TranslateModule],
 })
 export class NotificationComponent {
   user: Signal<User | null | undefined>;

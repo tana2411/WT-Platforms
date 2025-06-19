@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
 import { User } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
 import { EditProfileFormComponent } from './edit-profile-form/edit-profile-form.component';
@@ -13,7 +14,7 @@ import { EditProfileFormComponent } from './edit-profile-form/edit-profile-form.
   selector: 'app-my-profile',
   templateUrl: './my-profile.component.html',
   styleUrl: './my-profile.component.scss',
-  imports: [MatButtonModule, MatIconModule, TitleCasePipe],
+  imports: [MatButtonModule, MatIconModule, TitleCasePipe, TranslateModule],
 })
 export class MyProfileComponent {
   user: Signal<User | undefined | null>;

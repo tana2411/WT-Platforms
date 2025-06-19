@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { CompanyLocationDetail } from 'app/models';
 import { LocationService } from 'app/services/location.service';
@@ -16,7 +18,7 @@ import { catchError, finalize, of } from 'rxjs';
   selector: 'app-site-list',
   templateUrl: './site-list.component.html',
   styleUrls: ['./site-list.component.scss'],
-  imports: [MatIconModule, MatButtonModule, SpinnerComponent],
+  imports: [MatIconModule, MatButtonModule, SpinnerComponent, TranslateModule],
 })
 export class SiteListComponent implements OnInit {
   loading = signal(false);
@@ -63,7 +65,9 @@ export class SiteListComponent implements OnInit {
         finalize(() => this.loading.set(false)),
         catchError((err) => {
           if (err) {
-            this.snackBar.open('Unable to load locations. Please try again later.', 'Ok', { duration: 3000 });
+            this.snackBar.open(localized$('Unable to load locations. Please try again later.'), localized$('Ok'), {
+              duration: 3000,
+            });
           }
           return of([]);
         }),

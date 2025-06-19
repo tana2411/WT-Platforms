@@ -40,12 +40,12 @@ export class CommercialManagementComponent {
   location = inject(Location);
   activatedRoute = inject(ActivatedRoute);
 
-  tabPaths: Record<string, string> = {
-    MEMBERS: 'members',
-    SELLERS: 'sellers',
-    BUYERS: 'buyers',
-    WANTED: 'wanted',
-  };
+  listTabs = [
+    { label: 'Members', path: 'members' },
+    { label: 'Sellers', path: 'sellers' },
+    { label: 'Buyers', path: 'buyers' },
+    { label: 'Wanted', path: 'wanted' },
+  ];
 
   ngOnInit() {
     this.selectedIndex = this.indexOfTab;
@@ -60,7 +60,8 @@ export class CommercialManagementComponent {
   }
 
   get indexOfTab(): number {
-    const routes = Object.values(this.tabPaths);
+    const routes = Object.values(this.listTabs).map((tab) => tab.path);
+
     const child = this.activatedRoute.firstChild;
     const tabName = child?.snapshot.url[0]?.path;
 
@@ -75,7 +76,7 @@ export class CommercialManagementComponent {
   }
 
   onTabChange(event: MatTabChangeEvent) {
-    const segment = this.tabPaths[event.tab.textLabel];
+    const segment = this.listTabs[event.index].path;
     this.router.navigate([segment], { relativeTo: this.activatedRoute });
   }
 }

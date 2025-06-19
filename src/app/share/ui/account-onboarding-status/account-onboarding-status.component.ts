@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, Input, OnInit } from '@angu
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from 'app/services/auth.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { AuthService } from 'app/services/auth.service';
   templateUrl: './account-onboarding-status.component.html',
   styleUrls: ['./account-onboarding-status.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatIconModule, RouterModule, MatButtonModule],
+  imports: [MatIconModule, RouterModule, MatButtonModule, TranslateModule],
 })
 export class AccountOnboardingStatusComponent implements OnInit {
   @Input() type: 'pending' | 'completed' | 'completing' = 'pending';
@@ -18,9 +19,8 @@ export class AccountOnboardingStatusComponent implements OnInit {
 
   router = inject(Router);
   authService = inject(AuthService);
-  constructor() { }
-  ngOnInit() {
-  }
+  constructor() {}
+  ngOnInit() {}
 
   goToPlatform() {
     const targetRoute = this.authService.getDefaultRouteByRole();

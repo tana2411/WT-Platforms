@@ -16,6 +16,8 @@ import { MatTimepickerModule } from '@angular/material/timepicker';
 import { Router, RouterModule } from '@angular/router';
 import { countries, materialTypes } from '@app/statics';
 import { TelephoneFormControlComponent } from '@app/ui';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { User } from 'app/models/auth.model';
 import { AuthService } from 'app/services/auth.service';
@@ -44,6 +46,7 @@ import { catchError, filter, finalize, of, take } from 'rxjs';
     MatCheckboxModule,
     UpperCasePipe,
     MatExpansionModule,
+    TranslateModule,
   ],
 })
 export class SiteLocationSectionComponent implements OnInit {
@@ -171,8 +174,10 @@ export class SiteLocationSectionComponent implements OnInit {
         catchError((err) => {
           if (err) {
             this.snackBar.open(
-              'An error occurred while retrieving your information. Please refresh the page or contact support if the problem persists.',
-              'Ok',
+              localized$(
+                `An error occurred while retrieving your information. Please refresh the page or contact support if the problem persists.`,
+              ),
+              localized$('Ok'),
               { duration: 3000 },
             );
           }
@@ -232,9 +237,13 @@ export class SiteLocationSectionComponent implements OnInit {
         }),
         catchError((err) => {
           if (err) {
-            this.snackBar.open(`${err?.error?.error?.message ?? 'Some thing went wrong. Please try again.'}`, 'Ok', {
-              duration: 3000,
-            });
+            this.snackBar.open(
+              localized$(`${err?.error?.error?.message ?? 'Some thing went wrong. Please try again.'}`),
+              localized$('Ok'),
+              {
+                duration: 3000,
+              },
+            );
           }
           return of(null);
         }),

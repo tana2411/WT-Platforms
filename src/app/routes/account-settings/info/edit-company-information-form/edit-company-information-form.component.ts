@@ -11,6 +11,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { countries } from '@app/statics';
 import { TelephoneFormControlComponent } from '@app/ui';
 import { strictEmailValidator } from '@app/validators';
+import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { Company } from 'app/models';
 import { SettingsService } from 'app/services/settings.service';
@@ -32,6 +33,7 @@ import { catchError, EMPTY, finalize } from 'rxjs';
     MatSelectModule,
     TelephoneFormControlComponent,
     MatDialogModule,
+    TranslateModule,
   ],
 })
 export class EditCompanyInformationFormComponent implements OnInit {
@@ -120,9 +122,13 @@ export class EditCompanyInformationFormComponent implements OnInit {
 
   submit() {
     if (this.formGroup.pristine) {
-      this.snackBar.open('No changes detected. Please modify your profile details before saving.', 'OK', {
-        duration: 3000,
-      });
+      this.snackBar.open(
+        $localize`No changes detected. Please modify your profile details before saving.`,
+        $localize`OK`,
+        {
+          duration: 3000,
+        },
+      );
       return;
     }
 
@@ -155,9 +161,13 @@ export class EditCompanyInformationFormComponent implements OnInit {
           .updateCompany(this.data.companyInfo?.id, payload)
           .pipe(
             catchError((err) => {
-              this.snackBar.open('Failed to save changes. Please check your inputs and try again.', 'OK', {
-                duration: 3000,
-              });
+              this.snackBar.open(
+                $localize`Failed to save changes. Please check your inputs and try again.`,
+                $localize`OK`,
+                {
+                  duration: 3000,
+                },
+              );
               return EMPTY;
             }),
             finalize(() => {
@@ -165,7 +175,9 @@ export class EditCompanyInformationFormComponent implements OnInit {
             }),
           )
           .subscribe((res) => {
-            this.snackBar.open('Your Company Information has been updated successfully.', 'OK', { duration: 3000 });
+            this.snackBar.open($localize`Your Company Information has been updated successfully.`, $localize`OK`, {
+              duration: 3000,
+            });
             this.dialogRef.close(true);
           });
       });

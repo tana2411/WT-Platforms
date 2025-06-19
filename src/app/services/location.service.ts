@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { AddCompanyLocationResponse, CompanyLocationDetail, CompanyLocationResponse } from 'app/models';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, retry, tap } from 'rxjs/operators';
@@ -28,7 +29,9 @@ export class LocationService {
         }
       }),
       catchError((err) => {
-        this.snackBar.open('Failed to load company locations. Please try again.', 'OK', { duration: 3000 });
+        this.snackBar.open(localized$(`Failed to load company locations. Please try again.`), localized$('OK'), {
+          duration: 3000,
+        });
         return of([]);
       }),
     );
@@ -43,7 +46,9 @@ export class LocationService {
     return this.getLocations().pipe(
       map((list) => list.find((item) => item.id === id)),
       catchError((err) => {
-        this.snackBar.open('Failed to load location detail. Please try again.', 'OK', { duration: 3000 });
+        this.snackBar.open(localized$(`Failed to load location detail. Please try again.`), localized$('OK'), {
+          duration: 3000,
+        });
         return of(undefined);
       }),
     );

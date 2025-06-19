@@ -1,6 +1,6 @@
 <div class="mt-5">
   @if (!hideResultCount) {
-    <p class="fw-bold">{{ items.length }} RESULTS OF {{ totalItems }}</p>
+    <p class="fw-bold">{{ items.length }} {{ 'RESULTS OF' | translate }} {{ totalItems }}</p>
   }
   <div class="row px-1">
     @for (item of items; track $index) {

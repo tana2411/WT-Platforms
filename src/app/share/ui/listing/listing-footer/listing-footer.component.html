@@ -3,8 +3,8 @@
     <div class="wrapper col-12 mt-5 background-primary rounded rounded-3">
       <div class="mx-auto col-12 d-flex flex-column flex-md-row justify-content-center justify-content-md-between align-items-center">
         <div class="text-white text-center text-md-start mb-4 mb-md-0">
-          <h4 class="fs-32 fw-bold mb-1">Nothing find what you need?</h4>
-          <p class="mb-0 fs-16">Click the button to list a required material</p>
+          <h4 class="fs-32 fw-bold mb-1">{{ 'Nothing find what you need?' | translate }}</h4>
+          <p class="mb-0 fs-16">{{ 'Click the button to list a required material' | translate }}</p>
         </div>
         <button
           mat-flat-button
@@ -12,7 +12,7 @@
           style="height: 60px; width: 384px; max-width: 100%"
           [routerLink]="['/sell']"
         >
-          LIST REQUIRED MATERIAL
+          {{ 'LIST REQUIRED MATERIAL' | translate }}
         </button>
       </div>
     </div>

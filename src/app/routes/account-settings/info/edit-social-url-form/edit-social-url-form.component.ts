@@ -3,11 +3,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogClose, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { SettingsService } from 'app/services/settings.service';
 import { ConfirmModalComponent } from 'app/share/ui/confirm-modal/confirm-modal.component';
@@ -21,13 +23,13 @@ import { catchError, EMPTY, finalize } from 'rxjs';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatDialogClose,
     IconComponent,
     MatButtonModule,
     MatSnackBarModule,
     MatOptionModule,
     MatDialogModule,
     MatIconModule,
+    TranslateModule,
   ],
 })
 export class EditSocialUrlFormComponent implements OnInit {
@@ -154,9 +156,13 @@ export class EditSocialUrlFormComponent implements OnInit {
 
   submit() {
     if (this.urls.pristine) {
-      this.snackBar.open('No changes detected. Please modify your profile details before saving.', 'OK', {
-        duration: 3000,
-      });
+      this.snackBar.open(
+        localized$('No changes detected. Please modify your profile details before saving.'),
+        localized$('OK'),
+        {
+          duration: 3000,
+        },
+      );
       return;
     }
 
@@ -194,7 +200,9 @@ export class EditSocialUrlFormComponent implements OnInit {
           .updateCompany(this.data.companyId, payload)
           .pipe(
             catchError((err) => {
-              this.snackBar.open('Social Url update failed. Please try again later.', 'OK', { duration: 3000 });
+              this.snackBar.open(localized$('Social Url update failed. Please try again later.'), localized$('OK'), {
+                duration: 3000,
+              });
               return EMPTY;
             }),
             finalize(() => {
@@ -202,7 +210,9 @@ export class EditSocialUrlFormComponent implements OnInit {
             }),
           )
           .subscribe((res) => {
-            this.snackBar.open('Your Social Url has been updated successfully.', 'OK', { duration: 3000 });
+            this.snackBar.open(localized$('Your Social Url has been updated successfully.'), localized$('OK'), {
+              duration: 3000,
+            });
             this.dialogRef.close(true);
           });
       });

@@ -10,6 +10,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TelephoneFormControlComponent } from '@app/ui';
 import { strictEmailValidator } from '@app/validators';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { User } from 'app/models';
 import { SettingsService } from 'app/services/settings.service';
@@ -32,6 +34,7 @@ import { catchError, EMPTY, finalize } from 'rxjs';
     TelephoneFormControlComponent,
     MatSelectModule,
     MatDialogModule,
+    TranslateModule,
   ],
 })
 export class EditProfileFormComponent implements OnInit {
@@ -103,9 +106,13 @@ export class EditProfileFormComponent implements OnInit {
 
   submit() {
     if (this.formGroup.pristine) {
-      this.snackBar.open('No changes detected. Please modify your profile details before saving.', 'OK', {
-        duration: 3000,
-      });
+      this.snackBar.open(
+        localized$('No changes detected. Please modify your profile details before saving.'),
+        localized$('OK'),
+        {
+          duration: 3000,
+        },
+      );
       return;
     }
 
@@ -140,7 +147,9 @@ export class EditProfileFormComponent implements OnInit {
           .updateProfile(payload)
           .pipe(
             catchError((err) => {
-              this.snackBar.open('Profile update failed. Please try again later.', 'OK', { duration: 3000 });
+              this.snackBar.open(localized$('Profile update failed. Please try again later.'), localized$('OK'), {
+                duration: 3000,
+              });
               return EMPTY;
             }),
             finalize(() => {
@@ -148,7 +157,9 @@ export class EditProfileFormComponent implements OnInit {
             }),
           )
           .subscribe((res) => {
-            this.snackBar.open('Your profile has been updated successfully.', 'OK', { duration: 3000 });
+            this.snackBar.open(localized$('Your profile has been updated successfully.'), localized$('OK'), {
+              duration: 3000,
+            });
             this.dialogRef.close(true);
           });
       });

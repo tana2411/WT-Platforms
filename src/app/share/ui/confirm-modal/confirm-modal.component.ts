@@ -1,6 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
 
 export type ConfirmModalProps = {
   title: string;
@@ -10,7 +11,7 @@ export type ConfirmModalProps = {
 
 @Component({
   selector: 'app-confirm-modal',
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, TranslateModule],
   templateUrl: './confirm-modal.component.html',
   styleUrl: './confirm-modal.component.scss',
 })

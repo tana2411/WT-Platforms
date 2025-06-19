@@ -1,6 +1,6 @@
 <div class="container-fluid p-3 p-md-4 p-lg-4">
   <div class="d-flex justify-content-between align-items-center w-100" mat-dialog-title>
-    <h2 class="fw-bold flex-grow-1">Social</h2>
+    <h2 class="fw-bold flex-grow-1">{{ 'Social' | translate }}</h2>
     <div (click)="close()" class="cursor-pointer">
       <app-icon iconName="close"></app-icon>
     </div>
@@ -14,9 +14,9 @@
             <div class="col-md-11">
               <mat-label class="fw-bold fs-16">{{ extractWebsiteName(url.get('key')?.value) }}</mat-label>
               <mat-form-field appearance="outline" class="w-100">
-                <input matInput placeholder="Type here" type="text" formControlName="value" />
+                <input matInput placeholder="{{ 'Type here' | translate }}" type="text" formControlName="value" />
                 @if (url.get('value')?.hasError('pattern')) {
-                  <mat-error>Please enter a valid URL.</mat-error>
+                  <mat-error>{{ 'Please enter a valid URL.' | translate }}</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -24,27 +24,27 @@
         }
       </div>
       <div class="mb-4 border rounded p-3 col-md-11">
-        <h3 class="mb-5">Add new social url</h3>
+        <h3 class="mb-5">{{ 'Add new social url' | translate }}</h3>
         <div class="row g-3" formGroupName="newUrl">
           <div class="col-md-12 mb-4">
-            <mat-label class="fw-bold fs-16">SOCIAL NAME</mat-label>
+            <mat-label class="fw-bold fs-16">{{ 'SOCIAL NAME' | translate }}</mat-label>
             <mat-form-field appearance="outline" class="w-100">
               <input matInput placeholder="e.g. Instagram, LinkedIn" type="text" formControlName="name" />
               @if (newUrl.get('name')?.hasError('required')) {
-                <mat-error>This field is required</mat-error>
+                <mat-error>{{ 'This field is required' | translate }}</mat-error>
               }
             </mat-form-field>
           </div>
 
           <div class="col-md-12 mb-4">
-            <mat-label class="fw-bold fs-16">SOCIAL URL</mat-label>
+            <mat-label class="fw-bold fs-16">{{ 'SOCIAL URL' | translate }}</mat-label>
             <mat-form-field appearance="outline" class="w-100">
               <input matInput placeholder="https://example.com" type="url" formControlName="url" />
               @if (newUrl.get('url')?.hasError('required')) {
-                <mat-error>This field is required</mat-error>
+                <mat-error>{{ 'This field is required' | translate }}</mat-error>
               }
               @if (newUrl.get('url')?.hasError('pattern')) {
-                <mat-error>Please enter a valid URL.</mat-error>
+                <mat-error>{{ 'Please enter a valid URL.' | translate }}</mat-error>
               }
             </mat-form-field>
           </div>
@@ -59,7 +59,7 @@
               [disabled]="!newUrl.get('name')?.value || !newUrl.get('url')?.value"
             >
               <mat-icon class="me-2">add</mat-icon>
-              Add Social Link
+              {{ 'Add Social Link' | translate }}
             </button>
           </div>
         </div>
@@ -68,7 +68,9 @@
   </mat-dialog-content>
   <mat-dialog-actions>
     <div class="d-flex justify-content-between align-items-center gap-3 col-md-12 col-12">
-      <button mat-stroked-button class="text-uppercase outline-primary-btn w-100 fs-16" (click)="close()">Discard Changes</button>
+      <button mat-stroked-button class="text-uppercase outline-primary-btn w-100 fs-16" (click)="close()">
+        {{ 'Discard Changes' | translate }}
+      </button>
       <button
         mat-flat-button
         [disabled]="urls.invalid || urls.pristine"
@@ -76,7 +78,7 @@
         [class.overlay-spinner]="submitting()"
         (click)="submit()"
       >
-        Save Changes
+        {{ 'Save Changes' | translate }}
       </button>
     </div>
   </mat-dialog-actions>

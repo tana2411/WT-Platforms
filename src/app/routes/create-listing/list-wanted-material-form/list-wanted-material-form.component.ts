@@ -13,6 +13,8 @@ import { Router } from '@angular/router';
 import { colour, countries, finishing, materialTypes, packing } from '@app/statics';
 import { FileInfo, FileUploadComponent } from '@app/ui';
 import { noForbiddenPatternsValidator, pastDateValidator } from '@app/validators';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from 'app/services/auth.service';
 import { ListingService } from 'app/services/listing.service';
 import { UploadService } from 'app/share/services/upload.service';
@@ -32,6 +34,7 @@ import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
     MatDatepickerModule,
     ReactiveFormsModule,
     MatButtonModule,
+    TranslateModule,
   ],
 })
 export class ListWantedMaterialFormComponent implements OnInit {
@@ -141,8 +144,10 @@ export class ListWantedMaterialFormComponent implements OnInit {
         catchError((err) => {
           if (err) {
             this.snackBar.open(
-              'An error occurred while retrieving your information. Please refresh the page or contact support if the problem persists.',
-              'Ok',
+              localized$(
+                'An error occurred while retrieving your information. Please refresh the page or contact support if the problem persists.',
+              ),
+              localized$('Ok'),
               { duration: 3000 },
             );
           }
@@ -222,9 +227,13 @@ export class ListWantedMaterialFormComponent implements OnInit {
       .pipe(
         finalize(() => this.submitting.set(false)),
         catchError((err) => {
-          this.snackBar.open('An error occurred while uploading the file. Please try again.', 'Ok', {
-            duration: 3000,
-          });
+          this.snackBar.open(
+            localized$('An error occurred while uploading the file. Please try again.'),
+            localized$('Ok'),
+            {
+              duration: 3000,
+            },
+          );
           return of(null);
         }),
         concatMap((documentUrls) => {
@@ -240,7 +249,7 @@ export class ListWantedMaterialFormComponent implements OnInit {
           return this.listingService.createListing({ ...payload, documents }).pipe(
             finalize(() => this.submitting.set(false)),
             catchError((err) => {
-              this.snackBar.open(`${err.error?.error?.message ?? 'Unknown error'}`, 'Ok', {
+              this.snackBar.open(localized$(`${err.error?.error?.message ?? 'Unknown error'}`), localized$('Ok'), {
                 duration: 3000,
               });
               return of(null);
@@ -250,7 +259,7 @@ export class ListWantedMaterialFormComponent implements OnInit {
       )
       .subscribe((result) => {
         if (result) {
-          this.snackBar.open('Your listing is under review', 'Ok', {
+          this.snackBar.open(localized$('Your listing is under review'), localized$('Ok'), {
             duration: 3000,
           });
           this.router.navigate(['/wanted']);

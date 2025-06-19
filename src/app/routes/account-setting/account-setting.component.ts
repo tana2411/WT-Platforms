@@ -4,6 +4,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { User } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
@@ -14,27 +16,27 @@ import { TabContainerComponent } from '../account-settings/tab-container/tab-con
 const ListTab = [
   {
     icon: 'account_circle',
-    title: 'My profile',
+    title: localized$('My profile'),
     path: 'profile',
   },
   {
     icon: 'info',
-    title: 'Company information',
+    title: localized$('Company information'),
     path: 'company-information',
   },
   {
     icon: 'filter_list',
-    title: 'Material preferences',
+    title: localized$('Material preferences'),
     path: 'materials',
   },
   {
     icon: 'notifications_active',
-    title: 'Notifications',
+    title: localized$('Notifications'),
     path: 'notifications',
   },
   {
     icon: 'assignment',
-    title: 'Company documents',
+    title: localized$('Company documents'),
     path: 'documents',
   },
 ] as const;
@@ -43,7 +45,7 @@ type TabKey = ItemOf<typeof ListTab>['title'];
 
 @Component({
   selector: 'app-account-setting',
-  imports: [CommonLayoutComponent, MatIconModule, MatTabsModule, RouterModule, TabContainerComponent],
+  imports: [CommonLayoutComponent, MatIconModule, MatTabsModule, RouterModule, TabContainerComponent, TranslateModule],
   templateUrl: './account-setting.component.html',
   styleUrl: './account-setting.component.scss',
 })
@@ -65,7 +67,7 @@ export class AccountSettingComponent implements OnInit {
     this.user = toSignal(this.authService.user$);
 
     if (!this.user) {
-      this.snackBar.open('Failed to load profile details. Please try again later.', 'OK', {
+      this.snackBar.open(localized$('Failed to load profile details. Please try again later.'), localized$('OK'), {
         duration: 3000,
       });
     }
@@ -103,7 +105,7 @@ export class AccountSettingComponent implements OnInit {
   }
 
   onTabChange(event: MatTabChangeEvent) {
-    const segment = this.listTab.find((t) => t.title == event.tab.textLabel);
+    const segment = this.listTab[event.index];
     this.router.navigate([segment?.path], { relativeTo: this.activatedRoute });
   }
 }

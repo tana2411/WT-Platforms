@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 
 const ListTab = [
@@ -17,7 +18,7 @@ const ListTab = [
   selector: 'app-create-listing',
   templateUrl: './create-listing.component.html',
   styleUrls: ['./create-listing.component.scss'],
-  imports: [CommonLayoutComponent, MatTabsModule, RouterModule],
+  imports: [CommonLayoutComponent, MatTabsModule, RouterModule, TranslateModule],
 })
 export class CreateListingComponent implements OnInit {
   selectedIndex = 0;
@@ -40,7 +41,7 @@ export class CreateListingComponent implements OnInit {
   }
 
   onTabChange(event: MatTabChangeEvent) {
-    const segment = this.listTab.find((t) => t.title == event.tab.textLabel);
+    const segment = this.listTab[event.index];
     this.router.navigate([segment?.path], { relativeTo: this.activatedRoute });
   }
 }

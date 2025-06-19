@@ -6,6 +6,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { mapCountryCodeToName } from '@app/statics';
+import { TranslateModule } from '@ngx-translate/core';
 import { Company, User } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
 import { EditCompanyInformationFormComponent } from './edit-company-information-form/edit-company-information-form.component';
@@ -14,7 +15,7 @@ import { EditSocialUrlFormComponent } from './edit-social-url-form/edit-social-u
   selector: 'app-info',
   templateUrl: './info.component.html',
   styleUrl: './info.component.scss',
-  imports: [MatIconModule, MatButtonModule, TitleCasePipe],
+  imports: [MatIconModule, MatButtonModule, TitleCasePipe, TranslateModule],
 })
 export class InfoComponent {
   mapCountryCodeToName = mapCountryCodeToName;

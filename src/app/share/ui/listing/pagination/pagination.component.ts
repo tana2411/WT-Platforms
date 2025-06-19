@@ -1,12 +1,13 @@
 import { Component, computed, effect, EventEmitter, HostListener, Input, OnInit, Output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-pagination',
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.scss'],
-  imports: [MatButtonModule, MatIconModule],
+  imports: [MatButtonModule, MatIconModule, TranslateModule],
 })
 export class PaginationComponent implements OnInit {
   @Input() set pageNumber(val: number) {

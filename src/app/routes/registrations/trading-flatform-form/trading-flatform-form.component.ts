@@ -14,10 +14,13 @@ import { Router } from '@angular/router';
 import { materialTypes } from '@app/statics';
 import { InputWithConfirmControlComponent, TelephoneFormControlComponent } from '@app/ui';
 import { checkPasswordStrength, pwdStrengthValidator } from '@app/validators';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { AuthService } from 'app/services/auth.service';
 import { RegistrationsService } from 'app/services/registrations.service';
 import { catchError, concatMap, finalize, of } from 'rxjs';
+
 @Component({
   selector: 'app-trading-flatform-form',
   templateUrl: './trading-flatform-form.component.html',
@@ -36,6 +39,7 @@ import { catchError, concatMap, finalize, of } from 'rxjs';
     TitleCasePipe,
     UpperCasePipe,
     MatExpansionModule,
+    TranslateModule,
   ],
 })
 export class TradingFlatformFormComponent implements OnInit {
@@ -180,13 +184,21 @@ export class TradingFlatformFormComponent implements OnInit {
         catchError((err) => {
           if (err) {
             if (err?.error?.error?.statusCode == 422 && err?.error?.error?.message == 'existed-user') {
-              this.snackBar.open('This email already exists. Please enter an alternative email address', 'Ok', {
-                duration: 3000,
-              });
+              this.snackBar.open(
+                localized$(`This email already exists. Please enter an alternative email address`),
+                localized$('Ok'),
+                {
+                  duration: 3000,
+                },
+              );
             } else {
-              this.snackBar.open(`${err?.error?.error?.message ?? 'Some thing went wrong. Please try again.'}`, 'Ok', {
-                duration: 3000,
-              });
+              this.snackBar.open(
+                localized$(`${err?.error?.error?.message ?? 'Some thing went wrong. Please try again.'}`),
+                localized$('Ok'),
+                {
+                  duration: 3000,
+                },
+              );
             }
           }
           return of(null);

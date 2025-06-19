@@ -10,6 +10,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { DocumentFileInfo, FileInfo, FileUploadComponent } from '@app/ui';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { CompanyDocument, CompanyDocumentType } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
@@ -35,6 +37,7 @@ import { catchError, concatMap, finalize, of } from 'rxjs';
     MatIconModule,
     MatRadioModule,
     FileUploadComponent,
+    TranslateModule,
   ],
 })
 export class EditDocumentFormComponent implements OnInit {
@@ -364,8 +367,8 @@ export class EditDocumentFormComponent implements OnInit {
               finalize(() => this.submitting.set(false)),
               catchError((err) => {
                 this.snackBar.open(
-                  'Document upload failed. Please check the file size and format and try again.',
-                  'Ok',
+                  localized$('Document upload failed. Please check the file size and format and try again.'),
+                  localized$('Ok'),
                   {
                     duration: 3000,
                   },
@@ -397,14 +400,22 @@ export class EditDocumentFormComponent implements OnInit {
             )
             .subscribe((result) => {
               if (result) {
-                this.snackBar.open('Your Company Document has been updated successfully.', 'OK', { duration: 3000 });
+                this.snackBar.open(
+                  localized$('Your Company Document has been updated successfully.'),
+                  localized$('OK'),
+                  {
+                    duration: 3000,
+                  },
+                );
                 this.dialogRef.close(true);
               }
             });
         } else {
           this.submitWithDocument([...alreadyUpload]).subscribe((result) => {
             if (result) {
-              this.snackBar.open('Your Company Document has been updated successfully.', 'OK', { duration: 3000 });
+              this.snackBar.open(localized$('Your Company Document has been updated successfully.'), localized$('OK'), {
+                duration: 3000,
+              });
               this.dialogRef.close(true);
             }
           });
@@ -416,7 +427,9 @@ export class EditDocumentFormComponent implements OnInit {
     return this.settingsService.updateCompanyDocument(documents).pipe(
       finalize(() => this.submitting.set(false)),
       catchError((err) => {
-        this.snackBar.open(`Company Document update failed. Please try again later.'`, 'Ok', { duration: 3000 });
+        this.snackBar.open(localized$('Company Document update failed. Please try again later.'), localized$('Ok'), {
+          duration: 3000,
+        });
         return of(null);
       }),
       concatMap((result: any) => {

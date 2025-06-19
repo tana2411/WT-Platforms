@@ -2,10 +2,12 @@ import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogClose, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { User } from 'app/models';
 import { SettingsService } from 'app/services/settings.service';
@@ -18,13 +20,13 @@ import { catchError, EMPTY, finalize } from 'rxjs';
   styleUrls: ['./edit-notification-form.component.scss'],
   imports: [
     ReactiveFormsModule,
-    MatDialogClose,
     MatButtonModule,
     MatSnackBarModule,
     MatRadioModule,
     IconComponent,
     MatFormFieldModule,
     MatDialogModule,
+    TranslateModule,
   ],
 })
 export class EditNotificationFormComponent implements OnInit {
@@ -85,9 +87,13 @@ export class EditNotificationFormComponent implements OnInit {
 
   submit() {
     if (this.formGroup.pristine) {
-      this.snackBar.open('No changes detected. Please modify your profile details before saving.', 'OK', {
-        duration: 3000,
-      });
+      this.snackBar.open(
+        localized$('No changes detected. Please modify your profile details before saving.'),
+        localized$('OK'),
+        {
+          duration: 3000,
+        },
+      );
       return;
     }
 
@@ -123,8 +129,8 @@ export class EditNotificationFormComponent implements OnInit {
           .pipe(
             catchError((err) => {
               this.snackBar.open(
-                'Failed to save notification settings. Please check your selections and try again.',
-                'OK',
+                localized$('Failed to save notification settings. Please check your selections and try again.'),
+                localized$('OK'),
                 { duration: 3000 },
               );
               return EMPTY;
@@ -134,7 +140,9 @@ export class EditNotificationFormComponent implements OnInit {
             }),
           )
           .subscribe((res) => {
-            this.snackBar.open('Your notification has been updated successfully.', 'OK', { duration: 3000 });
+            this.snackBar.open(localized$('Your notification has been updated successfully.'), localized$('OK'), {
+              duration: 3000,
+            });
             this.dialogRef.close(true);
           });
       });

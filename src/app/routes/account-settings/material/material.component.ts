@@ -6,6 +6,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { materialTypes } from '@app/statics';
+import { TranslateModule } from '@ngx-translate/core';
 import { User } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
 import { EditMaterialFormComponent } from './edit-material-form/edit-material-form.component';
@@ -14,7 +15,7 @@ import { EditMaterialFormComponent } from './edit-material-form/edit-material-fo
   selector: 'app-material',
   templateUrl: './material.component.html',
   styleUrls: ['./material.component.scss'],
-  imports: [MatIconModule, MatButtonModule, MatCheckboxModule, FormsModule],
+  imports: [MatIconModule, MatButtonModule, MatCheckboxModule, FormsModule, TranslateModule],
 })
 export class MaterialComponent {
   favoriteMaterials: string[] | undefined = [];

@@ -2,6 +2,8 @@ import { NgTemplateOutlet } from '@angular/common';
 import { Component, ContentChild, inject, Input, OnInit, signal, TemplateRef } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { mapCountryCodeToName } from '@app/statics';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { scrollTop } from 'app/share/utils/common';
 import { catchError, finalize, of } from 'rxjs';
 import { FilterComponent, PageType } from '../listing/filter/filter.component';
@@ -17,7 +19,7 @@ export interface PageResult {
   selector: 'app-list-container',
   templateUrl: './list-container.component.html',
   styleUrls: ['./list-container.component.scss'],
-  imports: [FilterComponent, PaginationComponent, SpinnerComponent, NgTemplateOutlet],
+  imports: [FilterComponent, PaginationComponent, SpinnerComponent, NgTemplateOutlet, TranslateModule],
 })
 export class ListContainerComponent implements OnInit {
   mapCountryCodeToName = mapCountryCodeToName;
@@ -124,7 +126,7 @@ export class ListContainerComponent implements OnInit {
         finalize(() => this.loading.set(false)),
         catchError((err) => {
           if (err) {
-            this.snackBar.open(err.message, 'OK', { duration: 3000 });
+            this.snackBar.open(localized$(`${err.message}`), localized$('OK'), { duration: 3000 });
           }
           return of(null);
         }),

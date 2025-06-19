@@ -1,5 +1,5 @@
 <div class="d-flex flex-column">
-  <mat-label class="fw-bold fs-16">{{ label }}{{ isRequired ? '*' : '' }}</mat-label>
+  <mat-label class="fw-bold fs-16">{{ label | translate }}{{ isRequired ? '*' : '' }}</mat-label>
   <div class="d-flex flex-column phone-input">
     <div class="d-flex rounded">
       <div class="col-md-2 col-5">
@@ -31,10 +31,10 @@
     </div>
     <div>
       @if (telephoneControl.hasError('required') && telephoneControl.touched) {
-        <mat-error>This field is required</mat-error>
+        <mat-error>{{ 'This field is required' | translate }}</mat-error>
       }
       @if (telephoneControl.hasError('maxlength') || telephoneControl.hasError('pattern')) {
-        <mat-error>Invalid telephone number. Please enter a valid number</mat-error>
+        <mat-error>{{ 'Invalid telephone number. Please enter a valid number' | translate }}</mat-error>
       }
     </div>
   </div>

@@ -7,6 +7,8 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { ListingService } from 'app/services/listing.service';
 import { catchError, finalize, of } from 'rxjs';
@@ -23,6 +25,7 @@ import { catchError, finalize, of } from 'rxjs';
     MatCheckboxModule,
     MatButtonModule,
     MatInputModule,
+    TranslateModule,
   ],
 })
 export class RequestInformationComponent implements OnInit {
@@ -63,14 +66,22 @@ export class RequestInformationComponent implements OnInit {
       .pipe(
         finalize(() => this.submitting.set(false)),
         catchError((err) => {
-          this.snackBar.open('Failed to send request. Please try again or contact support.', 'Ok', { duration: 3000 });
+          this.snackBar.open(
+            localized$('Failed to send request. Please try again or contact support.'),
+            localized$('Ok'),
+            {
+              duration: 3000,
+            },
+          );
           return of(null);
         }),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((res) => {
         if (res) {
-          this.snackBar.open('Your request has been successfully sent', 'Ok', { duration: 3000 });
+          this.snackBar.open(localized$('Your request has been successfully sent'), localized$('Ok'), {
+            duration: 3000,
+          });
           this.dialogRef.close(true);
         }
       });

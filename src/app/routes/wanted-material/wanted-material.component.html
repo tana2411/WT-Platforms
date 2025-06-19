@@ -1,4 +1,4 @@
-<app-common-layout [title]="'Wanted Material'" class="d-flex flex-column min-vh-100">
+<app-common-layout [title]="'Wanted Material' | translate" class="d-flex flex-column min-vh-100">
   <app-filter
     [displayFilter]="['country', 'materialType', 'materialItem', 'materialPacking', 'wasteStoration', 'showFullfilledListing', 'sortBy']"
     (filterChanged)="onFilterChange($event)"
@@ -16,7 +16,7 @@
         <app-pagination [pageNumber]="page()" [totalCount]="totalItem()" (pageChange)="onPageChange($event)"></app-pagination>
       } @else {
         <div class="d-flex justify-content-center align-items-center fs-24 mt-3 flex-grow-1">
-          <p class="text-muted">No wanted materials are currently available for display.</p>
+          <p class="text-muted">{{ 'No wanted materials are currently available for display.' | translate }}</p>
         </div>
       }
     }

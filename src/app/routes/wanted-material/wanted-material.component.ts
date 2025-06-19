@@ -1,6 +1,8 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { FilterParams, ListingMaterial } from 'app/models';
@@ -25,6 +27,7 @@ export const PAGE_SIZE = 10;
     PaginationComponent,
     ListingFooterComponent,
     SpinnerComponent,
+    TranslateModule,
   ],
 })
 export class WantedMaterialComponent implements OnInit {
@@ -105,9 +108,9 @@ export class WantedMaterialComponent implements OnInit {
         }),
         catchError((err) => {
           const errorMessage = this.isFirstLoad
-            ? 'Failed to load the Wanted Section. Please try refreshing the page.'
-            : 'Unable to apply filters at this time. Please try again.';
-          this.snackBar.open(errorMessage, 'Ok', {
+            ? localized$(`Failed to load the Wanted Section. Please try refreshing the page.`)
+            : localized$(`Unable to apply filters at this time. Please try again.`);
+          this.snackBar.open(errorMessage, localized$('Ok'), {
             duration: 3000,
           });
           return of(null);
