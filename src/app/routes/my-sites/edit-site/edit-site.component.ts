@@ -118,7 +118,7 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
   cd = inject(ChangeDetectorRef);
 
   // Dialog mode
-  readonly dialogRef = inject(MatDialogRef<EditSiteComponent>);
+  readonly dialogRef = inject(MatDialogRef<EditSiteComponent>, { optional: true });
   dialogData = inject(MAT_DIALOG_DATA, { optional: true });
   isDialog = !!this.dialogData;
 
@@ -596,7 +596,7 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
         this.snackBar.open(successMessage, 'OK', { duration: 3000 });
 
         if (this.isDialog) {
-          this.dialogRef.close(res);
+          this.dialogRef?.close(res);
           return;
         }
 
