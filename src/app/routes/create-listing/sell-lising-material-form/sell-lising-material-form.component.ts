@@ -368,7 +368,6 @@ export class SellLisingMaterialFormComponent {
           ),
         ),
         tap(({ locations, locationId }) => {
-          debugger;
           this.locations.set(locations.results);
           setTimeout(() => {
             this.formGroup.controls['locationId'].setValue(locationId);
