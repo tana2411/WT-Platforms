@@ -1,7 +1,7 @@
-import { Component, Signal } from '@angular/core';
+import { Component, signal, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
@@ -9,6 +9,7 @@ import { User } from 'app/models/auth.model';
 import { AuthService } from 'app/services/auth.service';
 import { HeaderService } from 'app/services/header.service';
 import { Role } from 'app/types/auth';
+import { first } from 'rxjs';
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
@@ -20,11 +21,27 @@ import { IconComponent } from '../icon/icon.component';
 export class SidebarComponent {
   user: Signal<User | undefined | null>;
   Role = Role;
+
+  openChildMenuIndex = signal<number | null>(null);
+
   constructor(
     private authService: AuthService,
     public headerService: HeaderService,
+    private router: Router,
   ) {
     this.user = toSignal(this.authService.user$);
+
+    this.router.events.pipe(first()).subscribe(() => {
+      const currentUrl = this.router.url;
+      const parentIndex = this.listMenuPlatform.findIndex((item) =>
+        item.children?.some((child) => child.link === currentUrl),
+      );
+      if (parentIndex !== -1) {
+        this.openChildMenuIndex.set(parentIndex);
+      } else {
+        this.openChildMenuIndex.set(null);
+      }
+    });
   }
 
   listMenuPlatform = [
@@ -53,15 +70,21 @@ export class SidebarComponent {
     },
 
     {
-      title: localized$('My Offers Selling'),
-      link: ROUTES_WITH_SLASH.myOffersSelling,
+      title: localized$('My Offers'),
       icon: 'ballot',
-    },
-
-    {
-      title: localized$('My Offers Buying'),
-      link: ROUTES_WITH_SLASH.myOffersBuying,
-      icon: 'ballot',
+      // icon: 'more-icon',
+      children: [
+        {
+          title: localized$('Seller'),
+          link: ROUTES_WITH_SLASH.myOffersSelling,
+          icon: 'ballot',
+        },
+        {
+          title: localized$('Buyer'),
+          link: ROUTES_WITH_SLASH.myOffersBuying,
+          icon: 'ballot',
+        },
+      ],
     },
 
     {
@@ -85,4 +108,16 @@ export class SidebarComponent {
       iconClass: 'highlight',
     },
   ];
+
+  toggleChildMenu(index: number, item: any, event: any) {
+    if (item.children) {
+      this.openChildMenuIndex.update((v) => (v === null ? index : null));
+      event.preventDefault();
+    }
+  }
+
+  clickChildMenu(event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
 }

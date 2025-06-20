@@ -23,10 +23,37 @@
 
       <div class="d-flex flex-column">
         @for (item of listMenuPlatform; track item.title) {
-          <a routerLink="{{ item.link }}" routerLinkActive="active-link" class="menu-item d-flex gap-3 align-items-center">
+          <a
+            (click)="toggleChildMenu($index, item, $event)"
+            [routerLink]="!item.children ? item.link : undefined"
+            routerLinkActive="active-link"
+            class="menu-item d-flex gap-3 align-items-center"
+            [class.has-children]="item.children"
+            [class.open]="openChildMenuIndex() === $index"
+          >
             <app-icon iconName="{{ item.icon }}" className="{{ item.iconClass }}"></app-icon>
             <p class="fw-bold mb-0">{{ item.title | translate }}</p>
+            @if (item.children) {
+              <mat-icon class="more-icon">
+                {{ openChildMenuIndex() === $index ? 'expand_less' : 'arrow_drop_down' }}
+              </mat-icon>
+            }
           </a>
+
+          @if (item.children && openChildMenuIndex() === $index) {
+            <div class="child-menu">
+              @for (child of item.children; track child.title) {
+                <a
+                  routerLink="{{ child.link }}"
+                  (click)="clickChildMenu($event)"
+                  routerLinkActive="active-link"
+                  class="menu-item child-menu-item d-flex gap-3 align-items-center"
+                >
+                  <p class="fw-500 mb-0">{{ child.title | translate }}</p>
+                </a>
+              }
+            </div>
+          }
         }
       </div>
 
