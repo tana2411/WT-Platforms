@@ -38,7 +38,7 @@
         </div>
 
         <div class="w-100">
-          <div class="col-12 col-sm-4 px-2">
+          <div class="col-12 px-2">
             <div class="fw-bold mb-1">{{ 'COMPANY DESCRIPTION' | translate }}</div>
             <div class="">{{ company?.description || '-' || '' }}</div>
           </div>
@@ -136,28 +136,28 @@
             <div class="fw-bold mb-1 d-flex align-items-center gap-2">
               <mat-icon class="error">info_rounded</mat-icon> {{ 'FACEBOOK PROFILE URL' | translate }}
             </div>
-            <div class="pl-2">{{ company?.facebookUrl || '-' }}</div>
+            <div class="pe-2 text-break">{{ company?.facebookUrl || '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1 d-flex align-items-center gap-2">
               <mat-icon class="error">info_rounded</mat-icon> {{ 'INSTAGRAM PROFILE URL' | translate }}
             </div>
-            <div class="pl-2">{{ company?.instagramUrl || '-' }}</div>
+            <div class="pe-2 text-break">{{ company?.instagramUrl || '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1 d-flex align-items-center gap-2">
               <mat-icon class="error">info_rounded</mat-icon> {{ 'LINKEDIN PROFILE URL' | translate }}
             </div>
-            <div class="pl-5">{{ company?.linkedinUrl || '-' }}</div>
+            <div class="pe-2 text-break">{{ company?.linkedinUrl || '-' }}</div>
           </div>
         </div>
 
         <div class="row g-3 mx-0 mb-4">
-          <div class="col-12 col-sm-4 px-2">
+          <div class="col-12 px-2">
             <div class="fw-bold mb-1 d-flex align-items-center gap-2">
               <mat-icon class="error">info_rounded</mat-icon>{{ 'X USERNAME (WITHOUT @)' | translate }}
             </div>
-            <div class="pl-2">{{ company?.xUrl || '-' }}</div>
+            <div class="pe-2">{{ company?.xUrl || '-' }}</div>
           </div>
         </div>
       </div>

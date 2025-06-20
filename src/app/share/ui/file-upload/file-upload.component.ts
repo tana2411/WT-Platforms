@@ -214,7 +214,9 @@ export class FileUploadComponent implements OnInit, OnChanges {
       }
 
       if (file.size > this.maxFileSize) {
-        this.snackBar.open(localized$(`File size is too large. Please upload a file smaller than 25MB.`));
+        this.snackBar.open(
+          localized$(`File size is too large. Please upload a file smaller than ${this.maxFileSize / 1024 / 1024}MB.`),
+        );
         continue;
       }
 

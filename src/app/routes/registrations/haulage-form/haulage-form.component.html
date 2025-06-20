@@ -69,7 +69,7 @@
         </div>
         <div class="row mb-4">
           <app-input-with-confirm-control
-            valueLabel="{{ 'EMAIL*' | translate }}"
+            valueLabel="{{ 'ENTER EMAIL*' | translate }}"
             confirmLabel="{{ 'CONFIRM EMAIL*' | translate }}"
             valueErrorLabel="{{ 'Email' | translate }}"
             valueErrorLabel="{{ 'Confirm Email' | translate }}"
@@ -331,7 +331,7 @@
         <h6 class="mb-4 mt-5 primary fw-bold">{{ 'WASTE CARRIER LICENCE UPLOAD*' | translate }}</h6>
         <div class="col-12 mb-4">
           <app-file-upload
-            [maxFile]="6"
+            [maxFile]="1"
             (filesAdded)="handleFileReady($event)"
             (uploadValid)="fileUploadValid.set($event)"
           ></app-file-upload>
