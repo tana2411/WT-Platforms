@@ -14,7 +14,7 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -120,8 +120,15 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
   uploadService = inject(UploadService);
   cd = inject(ChangeDetectorRef);
 
+  // Dialog mode
+  readonly dialogRef = inject(MatDialogRef<EditSiteComponent>, { optional: true });
+  dialogData = inject(MAT_DIALOG_DATA, { optional: true });
+  isDialog = !!this.dialogData;
+
   constructor() {
     this.user = toSignal(this.authService.user$);
+
+    console.log(this.dialogData, this.isDialog);
 
     effect(() => {
       if (this.selectAllContainerTypes()) {
@@ -595,6 +602,12 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
           return;
         }
         this.snackBar.open(successMessage, localized$('OK'), { duration: 3000 });
+
+        if (this.isDialog) {
+          this.dialogRef?.close(res);
+          return;
+        }
+
         const next =
           this.mode === 'edit' && this.location?.id
             ? [ROUTES_WITH_SLASH.sites, this.location.id]
@@ -602,5 +615,9 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
         this.locationService.getLocations().subscribe();
         this.router.navigate(next);
       });
+  }
+
+  closeDialog() {
+    this.dialogRef?.close();
   }
 }

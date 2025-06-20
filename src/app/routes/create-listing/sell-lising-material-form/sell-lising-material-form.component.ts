@@ -1,26 +1,27 @@
-import { ChangeDetectorRef, Component, computed, effect, inject, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, effect, inject, signal, ViewChild } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { colour, countries, finishing, materialTypes, packing } from '@app/statics';
 import { FileInfo, FileUploadComponent } from '@app/ui';
 import { noForbiddenPatternsValidator, pastDateValidator } from '@app/validators';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
-import { ListingImageType } from 'app/models';
+import { AddCompanyLocationResponse, ListingImageType } from 'app/models';
+import { EditSiteComponent } from 'app/routes/my-sites/edit-site/edit-site.component';
 import { AuthService } from 'app/services/auth.service';
 import { ListingService } from 'app/services/listing.service';
 import { UploadService } from 'app/share/services/upload.service';
-import { catchError, combineLatest, filter, finalize, forkJoin, map, of, startWith, switchMap } from 'rxjs';
-
-const OTHER_LOCATION = '__OTHER_LOCATION';
+import { ResponseGetCompanyLocation } from 'app/types/requests/auth';
+import { catchError, filter, finalize, first, forkJoin, map, of, startWith, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-sell-lising-material-form',
@@ -34,6 +35,7 @@ const OTHER_LOCATION = '__OTHER_LOCATION';
     MatDatepickerModule,
     ReactiveFormsModule,
     MatButtonModule,
+    MatDialogModule,
   ],
   templateUrl: './sell-lising-material-form.component.html',
   styleUrl: './sell-lising-material-form.component.scss',
@@ -45,7 +47,7 @@ export class SellLisingMaterialFormComponent {
   finishingOption = finishing;
   packingOption = packing;
   today = new Date();
-  OTHER_LOCATION = OTHER_LOCATION;
+  @ViewChild('locationSelector') locationSelector!: MatSelect;
 
   maxFileSize = 5 * 1024 * 1024; // 5mb
 
@@ -55,6 +57,7 @@ export class SellLisingMaterialFormComponent {
   listingService = inject(ListingService);
   authService = inject(AuthService);
   router = inject(Router);
+  dialog = inject(MatDialog);
 
   // onGoingListing = signal<boolean | undefined>(undefined);
   // hasSpecialData = signal<boolean | undefined>(false);
@@ -68,7 +71,7 @@ export class SellLisingMaterialFormComponent {
 
   additionalInformationLength = signal<number>(0);
   submitting = signal<boolean>(false);
-  locations = toSignal(this.authService.companyLocations$.pipe(map((res) => res.results)), { initialValue: [] });
+  locations = signal<ResponseGetCompanyLocation['results']>([]);
   companyId = toSignal(
     this.authService.user$.pipe(
       filter((user) => !!user),
@@ -77,9 +80,7 @@ export class SellLisingMaterialFormComponent {
   );
 
   formGroup = new FormGroup({
-    locationId: new FormControl<string | null>(null, [Validators.required]),
-    locationOther: new FormControl<string | null>(null),
-
+    locationId: new FormControl<number | null>(null, [Validators.required]),
     hasSpecialData: new FormControl<string | null>('false', [Validators.required]),
 
     materialType: new FormControl<string | null>(null, [Validators.required]),
@@ -109,15 +110,7 @@ export class SellLisingMaterialFormComponent {
 
   hasSpecialData = toSignal(this.formGroup.controls.hasSpecialData.valueChanges.pipe(map((v) => v === 'true')));
   hasLocation = toSignal(
-    combineLatest([
-      this.formGroup.controls.locationId.valueChanges.pipe(startWith(null)),
-      this.formGroup.controls.locationOther.valueChanges.pipe(startWith(null)),
-    ]).pipe(
-      map(
-        ([locationId, locationOther]) =>
-          (!!locationId && locationId !== OTHER_LOCATION) || (locationId === OTHER_LOCATION && !!locationOther),
-      ),
-    ),
+    this.formGroup.controls.locationId.valueChanges.pipe(startWith(null)).pipe(map((locationId) => !!locationId)),
     {
       initialValue: false,
     },
@@ -148,9 +141,7 @@ export class SellLisingMaterialFormComponent {
 
     // Control disable / enable form according has location or not
     effect(() => {
-      const disableControlNames = Object.keys(this.formGroup.controls).filter(
-        (i) => !['locationId', 'locationOther'].includes(i),
-      );
+      const disableControlNames = Object.keys(this.formGroup.controls).filter((i) => !['locationId'].includes(i));
 
       disableControlNames.forEach((key) => {
         if (this.hasLocation()) {
@@ -163,18 +154,12 @@ export class SellLisingMaterialFormComponent {
 
     // Effect add, remove fields
     effect(() => {
-      const { materialForm, materialGrading, materialItem, locationId, locationOther } = this.formGroup.controls;
+      const { materialForm, materialGrading, materialItem } = this.formGroup.controls;
       if (this.formOption().length > 0) {
         materialForm.setValidators(Validators.required);
       } else {
         materialForm.clearValidators();
         materialForm.setValue('N/A', { emitEvent: false });
-      }
-
-      if (locationId.value === OTHER_LOCATION) {
-        locationOther.setValidators(Validators.required);
-      } else {
-        locationOther.clearValidators();
       }
 
       if (this.gradingOption().length > 0) {
@@ -194,6 +179,10 @@ export class SellLisingMaterialFormComponent {
       materialForm.updateValueAndValidity();
       materialGrading.updateValueAndValidity();
       this.formGroup.updateValueAndValidity();
+    });
+
+    this.authService.companyLocations$.pipe(first()).subscribe((data) => {
+      this.locations.set(data.results);
     });
   }
 
@@ -354,5 +343,38 @@ export class SellLisingMaterialFormComponent {
         this.snackBar.open('Your listing is under review');
         this.router.navigateByUrl(ROUTES_WITH_SLASH.buy);
       });
+  }
+
+  onAddOther() {
+    const dialogRef = this.dialog.open(EditSiteComponent, {
+      maxWidth: '900px',
+      maxHeight: '85vh',
+      width: '100%',
+      data: {
+        dialogMode: true,
+      },
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        map((data: AddCompanyLocationResponse['data']) => data.companyLocation.id),
+        switchMap((locationId) =>
+          this.authService.companyLocations$.pipe(
+            map((locations) => ({
+              locations,
+              locationId,
+            })),
+          ),
+        ),
+        tap(({ locations, locationId }) => {
+          this.locations.set(locations.results);
+          setTimeout(() => {
+            this.formGroup.controls['locationId'].setValue(locationId);
+            this.locationSelector.close();
+          }, 0);
+        }),
+      )
+      .subscribe();
   }
 }
