@@ -17,6 +17,8 @@ import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
 import { catchError, EMPTY, filter, finalize, map, switchMap, tap } from 'rxjs';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { ProductGridComponent } from 'app/share/ui/listing/product-grid/product-grid.component';
@@ -41,6 +43,7 @@ import { isNil } from 'lodash';
     MatIconModule,
     RouterModule,
     ProductGridComponent,
+    TranslateModule,
   ],
   templateUrl: './listing-offers-detail.component.html',
   styleUrl: './listing-offers-detail.component.scss',
@@ -138,7 +141,7 @@ export class ListingOffersDetailComponent {
             .get({
               skip: 0,
               limit: 10,
-              where: { listingType: 'wanted' },
+              where: { listingType: this.listingDetail()?.listing.listingType },
             })
             .pipe(map((res) => res.results.filter((item) => item.id !== this.offerId()).slice(0, 4))),
         ),
@@ -147,9 +150,13 @@ export class ListingOffersDetailComponent {
         }),
 
         catchError((err) => {
-          this.snackBar.open(err.error?.error?.message || 'Failed to load details. Please refresh the page.', 'OK', {
-            duration: 3000,
-          });
+          this.snackBar.open(
+            localized$(`${err.error?.error?.message || 'Failed to load details. Please refresh the page.'}`),
+            localized$('OK'),
+            {
+              duration: 3000,
+            },
+          );
           return EMPTY;
         }),
 

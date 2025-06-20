@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { mapCountryCodeToName, materialTypes } from '@app/statics';
+import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { WantedListingDetail } from 'app/models/wanted.model';
 import { getStateColor, getStatusColor } from 'app/share/utils/offer';
@@ -12,7 +13,7 @@ import { getStateColor, getStatusColor } from 'app/share/utils/offer';
   selector: 'app-wanted-detail',
   templateUrl: './wanted-detail.component.html',
   styleUrls: ['./wanted-detail.component.scss'],
-  imports: [DatePipe, TitleCasePipe, MatIconModule, MatButtonModule],
+  imports: [DatePipe, TitleCasePipe, MatIconModule, MatButtonModule, TranslateModule],
 })
 export class WantedDetailComponent implements OnInit {
   @Input() wanted: WantedListingDetail | undefined = undefined;

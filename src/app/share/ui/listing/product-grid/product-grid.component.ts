@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 import { ListingMaterial } from 'app/models';
 import { ProductCardComponent } from '../product-card/product-card.component';
 
@@ -7,7 +8,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
   selector: 'app-product-grid',
   templateUrl: './product-grid.component.html',
   styleUrls: ['./product-grid.component.scss'],
-  imports: [MatIconModule, ProductCardComponent],
+  imports: [MatIconModule, ProductCardComponent, TranslateModule],
 })
 export class ProductGridComponent implements OnInit {
   @Input() items: any[] = [];

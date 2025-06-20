@@ -7,6 +7,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 import { CompanyDocumentType, User } from 'app/models';
 import { IDocument } from 'app/models/listing-material-detail.model';
 import { AuthService } from 'app/services/auth.service';
@@ -26,6 +27,7 @@ import { EditDocumentFormComponent } from './edit-document-form/edit-document-fo
     NgTemplateOutlet,
     TitleCasePipe,
     MatTooltipModule,
+    TranslateModule,
   ],
 })
 export class DocumentComponent implements OnChanges {

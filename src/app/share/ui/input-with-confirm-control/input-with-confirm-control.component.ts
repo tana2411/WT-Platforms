@@ -16,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { strictEmailValidator } from '@app/validators';
+import { TranslateModule } from '@ngx-translate/core';
 
 const CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -34,7 +35,7 @@ const CONTROL_VALUE_VALIDATORS: any = {
   templateUrl: './input-with-confirm-control.component.html',
   styleUrls: ['./input-with-confirm-control.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatIconModule],
+  imports: [CommonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatIconModule, TranslateModule],
   providers: [CONTROL_VALUE_ACCESSOR, CONTROL_VALUE_VALIDATORS],
   standalone: true,
 })

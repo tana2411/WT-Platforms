@@ -9,20 +9,22 @@
     <div class="col-4 col-md-3" style="padding-left: 0">
       <button mat-flat-button class="background-primary w-100 h-100 fs-16" (click)="search()">
         <mat-icon class="d-none d-md-block">search</mat-icon>
-        SEARCH
+        {{ 'SEARCH' | translate }}
       </button>
     </div>
   </div>
 
   <!-- clean filter button for desktop  -->
   @if (hasFilterParams && !openMobileFilter()) {
-    <div class="clear-all-btn d-none d-md-block fw-bold rounded border" (click)="clearFilter(); $event.stopPropagation()">Clear Filter</div>
+    <div class="clear-all-btn d-none d-md-block fw-bold rounded border" (click)="clearFilter(); $event.stopPropagation()">
+      {{ 'Clear Filter' | translate }}
+    </div>
   }
   <!-- Filter Section -->
   <div class="mt-lg-3 border background-on-primary border-radius filter-wrapper" [class.open-mobile-filter]="openMobileFilter()">
     <div class="d-flex flex-wrap p-4 justify-content-between align-items-end">
       <div class="d-md-none pt-4 pb-4 w-100 position-relative">
-        <h2 style="font-size: 28px" class="fw-bold">Filter</h2>
+        <h2 style="font-size: 28px" class="fw-bold">{{ 'Filter' | translate }}</h2>
         <app-icon
           (click)="onCloseFilterMobile()"
           class="d-block position-absolute end-0 top-0 m-3 cursor-pointer"
@@ -38,7 +40,7 @@
             @if (item.type == 'dateRange') {
               <div class="{{ item.value }}-wrapper">
                 <div class="small-mat-form-field d-flex flex-column align-items-start {{ item.value }}">
-                  <div class="filter-select-item-label d-flex align-items-start">{{ item.name }}</div>
+                  <div class="filter-select-item-label d-flex align-items-start">{{ item.name | translate }}</div>
                   <div class="row g-1 align-items-center">
                     <!-- Start Date -->
                     <div class="date-item {{ item.value }}">
@@ -81,7 +83,7 @@
             @if (item.type == 'select') {
               <div class="{{ item.value }}-wrapper select-wrapper">
                 <div class="small-mat-form-field select-item d-flex flex-column align-items-start {{ item.value }}">
-                  <div class="filter-select-item-label d-flex align-items-start">{{ item.name }}</div>
+                  <div class="filter-select-item-label d-flex align-items-start">{{ item.name | translate }}</div>
                   <mat-form-field appearance="outline" class="w-100 bg-white">
                     <mat-select
                       [formControlName]="item.value"
@@ -89,11 +91,11 @@
                       class="fw-bold"
                     >
                       @if (item.value !== 'sortBy') {
-                        <mat-option [value]="null" class="option-bold-label">All</mat-option>
+                        <mat-option [value]="null" class="option-bold-label">{{ 'All' | translate }}</mat-option>
                       }
                       @for (option of item.options; track $index) {
                         <mat-option [value]="getOptionValue(item, option)" class="option-bold-label">
-                          {{ option.name }}
+                          {{ option.name | translate }}
                         </mat-option>
                       }
                     </mat-select>
@@ -105,17 +107,17 @@
             @if (item.type == 'checkbox') {
               <div class="d-flex flex-column align-items-start {{ item.value }}">
                 <div class="filter-item-label d-flex align-items-start">
-                  <span>{{ item.name }}</span>
+                  <span>{{ item.name | translate }}</span>
                 </div>
                 <div class="d-flex gap-2">
                   @if (item.options && item.options.length === 1) {
                     <mat-checkbox class="large-checkbox" [formControlName]="item.options[0].value || item.value">
-                      <span class="fw-bold">{{ item.options[0].name }}</span>
+                      <span class="fw-bold">{{ item.options[0].name | translate }}</span>
                     </mat-checkbox>
                   } @else {
                     @for (option of item.options; track $index) {
                       <mat-checkbox class="large-checkbox" [formControlName]="option.value">
-                        <span class="fw-bold">{{ option.name }}</span>
+                        <span class="fw-bold">{{ option.name | translate }}</span>
                       </mat-checkbox>
                     }
                   }
@@ -126,9 +128,9 @@
             @if (item.type == 'input') {
               <div class="{{ item.value }}-wrapper text-input-wrapper">
                 <div class="small-mat-form-field input-item d-flex flex-column align-items-start {{ item.value }}">
-                  <div class="filter-select-item-label d-flex align-items-start">{{ item.name }}</div>
+                  <div class="filter-select-item-label d-flex align-items-start">{{ item.name | translate }}</div>
                   <mat-form-field appearance="outline" class="w-100 bg-white">
-                    <input matInput [formControlName]="item.value" placeholder="Type here" />
+                    <input matInput [formControlName]="item.value" placeholder="{{ 'Type here' | translate }}" />
                   </mat-form-field>
                 </div>
               </div>
@@ -145,11 +147,13 @@
         mat-button
         (click)="onUpdateFilter()"
       >
-        Update Filter
+        {{ ' Update Filter' | translate }}
       </div>
 
       @if (hasFilterParams) {
-        <div class="text-uppercase fw-bold p-3 d-inline-block cursor-pointer" mat-button (click)="clearFilter()">Clear Filter</div>
+        <div class="text-uppercase fw-bold p-3 d-inline-block cursor-pointer" mat-button (click)="clearFilter()">
+          {{ 'Clear Filter' | translate }}
+        </div>
       }
     </div>
   </div>
@@ -159,7 +163,7 @@
     class="d-flex align-items-center justify-content-between border rounded px-2 py-3 my-3 d-md-none border-black cursor-pointer"
     (click)="openFilterMobile()"
   >
-    <span class="text-uppercase fw-bold">Filter</span>
+    <span class="text-uppercase fw-bold">{{ 'Filter' | translate }}</span>
     <mat-icon>tune</mat-icon>
   </div>
   <!-- </div> -->

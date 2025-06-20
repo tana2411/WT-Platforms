@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { CompaniesService } from 'app/share/services/companies.service';
 import { countries, materialTypes } from 'app/statics';
@@ -34,6 +35,7 @@ export type PageType = 'default' | 'sellListing' | 'wanted';
     ReactiveFormsModule,
     IconComponent,
     MatDatepickerModule,
+    TranslateModule,
   ],
 })
 export class FilterComponent implements OnInit {

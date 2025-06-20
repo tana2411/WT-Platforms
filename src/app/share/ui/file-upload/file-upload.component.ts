@@ -18,6 +18,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { isNil } from 'lodash';
 import moment, { Moment } from 'moment';
 
@@ -46,6 +48,7 @@ export interface DocumentFileInfo {
     MatDatepickerModule,
     ReactiveFormsModule,
     MatSnackBarModule,
+    TranslateModule,
   ],
 })
 export class FileUploadComponent implements OnInit, OnChanges {
@@ -181,7 +184,7 @@ export class FileUploadComponent implements OnInit, OnChanges {
 
   private processFiles(files: FileList | null): void {
     if (this.documents.length >= this.maxFile) {
-      this.snackBar.open(`Only accept ${this.maxFile} file(s) upload`);
+      this.snackBar.open($localize`Only accept ${this.maxFile} file(s) upload`);
       return;
     }
 
@@ -204,12 +207,14 @@ export class FileUploadComponent implements OnInit, OnChanges {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       if (!allowedMimeType.includes(file.type)) {
-        this.snackBar.open('Invalid file type uploaded. Please upload the document in one of the supported formats');
+        this.snackBar.open(
+          localized$(`Invalid file type uploaded. Please upload the document in one of the supported formats`),
+        );
         continue;
       }
 
       if (file.size > this.maxFileSize) {
-        this.snackBar.open('File size is too large. Please upload a file smaller than 25MB.');
+        this.snackBar.open(localized$(`File size is too large. Please upload a file smaller than 25MB.`));
         continue;
       }
 

@@ -1,8 +1,8 @@
 <div class="wrapper">
-  <h4 class="mb-5">{{ props.title }}</h4>
+  <h4 class="mb-5">{{ props.title | translate }}</h4>
 
   <div class="d-flex gap-3 justify-content-end">
-    <button mat-stroked-button class="border-primary primary" (click)="onCancel()">{{ props.cancelLabel || 'Cancel' }}</button>
-    <button mat-flat-button class="action-button" (click)="onOk()">{{ props.confirmLabel || 'Ok' }}</button>
+    <button mat-stroked-button class="border-primary primary" (click)="onCancel()">{{ props.cancelLabel || 'Cancel' | translate }}</button>
+    <button mat-flat-button class="action-button" (click)="onOk()">{{ props.confirmLabel || 'Ok' | translate }}</button>
   </div>
 </div>

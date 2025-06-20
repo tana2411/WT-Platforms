@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { mapCountryCodeToName, materialTypes } from '@app/statics';
+import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { SellListingDetail } from 'app/models';
 import { getStateColor, getStatusColor } from 'app/share/utils/offer';
@@ -12,7 +13,7 @@ import { getStateColor, getStatusColor } from 'app/share/utils/offer';
   selector: 'app-listing-detail',
   templateUrl: './listing-detail.component.html',
   styleUrls: ['./listing-detail.component.scss'],
-  imports: [MatIconModule, MatButtonModule, DatePipe, TitleCasePipe, DecimalPipe],
+  imports: [MatIconModule, MatButtonModule, DatePipe, TitleCasePipe, DecimalPipe, TranslateModule],
 })
 export class ListingDetailComponent implements OnInit {
   mapCountryCodeToName = mapCountryCodeToName;

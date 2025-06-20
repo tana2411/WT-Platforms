@@ -10,12 +10,13 @@ import {
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-time-input-form-control',
   templateUrl: './time-input-form-control.component.html',
   styleUrls: ['./time-input-form-control.component.scss'],
-  imports: [MatFormFieldModule, MatInputModule, ReactiveFormsModule],
+  imports: [MatFormFieldModule, MatInputModule, ReactiveFormsModule, TranslateModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

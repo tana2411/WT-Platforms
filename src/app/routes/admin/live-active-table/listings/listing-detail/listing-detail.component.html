@@ -3,7 +3,7 @@
     <div class="row gy-3 gy-md-4">
       <!-- SELLER Section -->
       <div class="col-12 col-md-2">
-        <div class="fw-bold mb-2 mb-md-3 text-uppercase">SELLER</div>
+        <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'SELLER' | translate }}</div>
         <p class="mb-1 small">{{ listing?.createdBy?.user?.id }}</p>
         <p class="mb-1 small">{{ listing?.createdBy?.user?.firstName }} {{ listing?.createdBy?.user?.lastName }}</p>
         <p class="mb-1 small">{{ listing?.createdBy?.company?.name }}</p>
@@ -12,7 +12,7 @@
 
       <!-- MATERIAL Section -->
       <div class="col-12 col-md-2">
-        <div class="fw-bold mb-2 mb-md-3 text-uppercase">MATERIAL</div>
+        <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'MATERIAL' | translate }}</div>
         <p class="mb-1 small">{{ getMaterialName(listing?.material_type) }}</p>
       </div>
 
@@ -27,45 +27,45 @@
           <!-- First Row -->
           <div class="flex-md-column d-flex justify-content-between col-md-3 col-12">
             <div class="mb-4 col-6 col-md-auto">
-              <div class="fw-bold mb-2 mb-md-3 text-uppercase">DATE</div>
+              <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'DATE' | translate }}</div>
               <p class="mb-1 small">{{ listing?.created_at | date: 'dd/MM/YYYY' }}</p>
             </div>
             <div class="col-5 col-md-auto">
-              <div class="fw-bold mb-2 mb-md-3 text-uppercase">BEST OFFER</div>
+              <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'BEST OFFER' | translate }}</div>
               <p class="mb-1 small">{{ listing?.bestOffer ?? '-' }}</p>
             </div>
           </div>
 
           <div class="flex-md-column d-flex justify-content-between col-md-4 col-12">
             <div class="mb-4 col-6 col-md-auto">
-              <div class="fw-bold mb-2 mb-md-3 text-uppercase">DATE AVAILABLE FROM</div>
+              <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'DATE AVAILABLE FROM' | translate }}</div>
               <p class="mb-1 small">{{ listing?.start_date | date: 'dd/MM/YYYY' }}</p>
             </div>
 
             <div class="col-5 col-md-auto">
-              <div class="fw-bold mb-2 mb-md-3 text-uppercase">WEIGHT</div>
+              <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'WEIGHT' | translate }}</div>
               <p class="mb-1 small">{{ getWeight(listing?.material_weight_wanted) | number }} Kg</p>
             </div>
           </div>
           <div class="flex-md-column d-flex justify-content-between col-md-4 col-12">
             <div class="mb-4 col-6 col-md-auto">
-              <div class="fw-bold mb-2 mb-md-3 text-uppercase">NUMBER OF OFFERS</div>
+              <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'NUMBER OF OFFERS' | translate }}</div>
               <p class="mb-1 small">{{ listing?.numberOfOffers ?? '-' }}</p>
             </div>
 
             <div class="col-5 col-md-auto">
-              <div class="fw-bold mb-2 mb-md-3 text-uppercase">REMAINING</div>
+              <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'REMAINING' | translate }}</div>
               <p class="mb-1 small">{{ listing?.remaining_quantity }}</p>
             </div>
           </div>
           <div class="flex-md-column d-flex justify-content-between col-md-3 col-12">
             <div class="mb-4 col-6 col-md-auto">
-              <div class="fw-bold mb-2 mb-md-3 text-uppercase">STATUS</div>
+              <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'STATUS' | translate }}</div>
               <p class="mb-1 small fw-500" [style.color]="getStatusColor(listing!.status)">{{ listing?.status | titlecase }}</p>
             </div>
 
             <div class="col-5 col-md-auto">
-              <div class="fw-bold mb-2 mb-md-3 text-uppercase">STATE</div>
+              <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'STATE' | translate }}</div>
               <div class="d-flex align-items-center gap-1">
                 <mat-icon [style.color]="getStateColor(listing!.state)">fiber_manual_record</mat-icon>
                 <span class="small" [style.color]="getStateColor(listing!.state)">{{ listing?.state | titlecase }}</span>
@@ -82,7 +82,7 @@
 
       <!-- Button Section -->
       <div class="col-12 col-md-2 col-md-auto d-flex align-items-center justify-content-center justify-content-lg-end">
-        <button mat-stroked-button class="border-primary primary" (click)="onViewDetail()">VIEW DETAIL</button>
+        <button mat-stroked-button class="border-primary primary" (click)="onViewDetail()">{{ 'VIEW DETAIL' | translate }}</button>
       </div>
     </div>
   </div>

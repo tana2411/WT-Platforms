@@ -1,8 +1,8 @@
-<app-common-layout [title]="'Create Listing'">
+<app-common-layout [title]="'Create Listing' | translate">
   <div class="mt-4">
     <mat-tab-group class="common-tab" animationDuration="0ms" [selectedIndex]="selectedIndex" (selectedTabChange)="onTabChange($event)">
-      <mat-tab label="SELL MATERIAL"> </mat-tab>
-      <mat-tab label="LIST WANTED MATERIAL"> </mat-tab>
+      <mat-tab label="{{ 'SELL MATERIAL' | translate }}"> </mat-tab>
+      <mat-tab label="{{ 'LIST WANTED MATERIAL' | translate }}"> </mat-tab>
     </mat-tab-group>
     <router-outlet></router-outlet>
   </div>

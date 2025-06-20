@@ -4,17 +4,17 @@
     <div class="" style="width: 320px">
       <div>
         <div class="d-flex justify-content-between">
-          <div class="w-75 mx-auto fw-bold">COMPANY INFORMATION</div>
+          <div class="w-75 mx-auto fw-bold">{{ 'COMPANY INFORMATION' | translate }}</div>
           <mat-icon>add</mat-icon>
         </div>
         <hr />
         <div class="d-flex justify-content-between">
-          <div class="w-75 mx-auto fw-bold text-empty">COMPANY DOCUMENT</div>
+          <div class="w-75 mx-auto fw-bold text-empty">{{ 'COMPANY DOCUMENT' | translate }}</div>
           <mat-icon class="text-empty">remove</mat-icon>
         </div>
         <hr />
         <div class="d-flex justify-content-between">
-          <div class="w-75 mx-auto fw-bold text-empty">SITE LOCATION</div>
+          <div class="w-75 mx-auto fw-bold text-empty">{{ 'SITE LOCATION' | translate }}</div>
           <mat-icon class="text-empty">remove</mat-icon>
         </div>
       </div>
@@ -22,22 +22,24 @@
     <div class="" style="width: 830px">
       <form [formGroup]="formGroup" (submit)="submit('/company-document')">
         <div class="border border-dark boder-2 p-4 border-radius bg-white">
-          <h3 class="text-center my-2 fw-bold fs-40">Company Information</h3>
+          <h3 class="text-center my-2 fw-bold fs-40">{{ 'Company Information' | translate }}</h3>
           <div class="px-2 py-3 background-primary d-flex align-items-center mb-4 rounded-4 justify-content-center">
             <div class="col-1 text-center d-flex align-items-center justify-content-center">
               <mat-icon class="material-icons-outlined text-white">error_outline</mat-icon>
             </div>
-            <div class="fw-500 fs-16 text-white">Ensure all details are correct, error may delay verification (*Required field).</div>
+            <div class="fw-500 fs-16 text-white">
+              {{ 'Ensure all details are correct, error may delay verification (*Required field).' | translate }}
+            </div>
           </div>
           <div class="col-12 mb-4">
-            <mat-label class="fw-bold mb-1">COMPANY TYPE*</mat-label>
+            <mat-label class="fw-bold mb-1">{{ 'COMPANY TYPE' | translate }}*</mat-label>
             <mat-form-field appearance="outline" class="w-100">
-              <mat-select formControlName="companyType" placeholder="Please Select">
-                <mat-option value="manufacturer"> Manufacturer </mat-option>
-                <mat-option value="processor">Processor</mat-option>
-                <mat-option value="recycler">Recycler</mat-option>
-                <mat-option value="broker">Broker</mat-option>
-                <mat-option value="waste_producer">Waste Producer</mat-option>
+              <mat-select formControlName="companyType" placeholder="{{ 'Please Select' | translate }}">
+                <mat-option value="manufacturer">{{ 'Manufacturer' | translate }}</mat-option>
+                <mat-option value="processor">{{ 'Processor' | translate }}</mat-option>
+                <mat-option value="recycler">{{ 'Recycler' | translate }}</mat-option>
+                <mat-option value="broker">{{ 'Broker' | translate }}</mat-option>
+                <mat-option value="waste_producer">{{ 'Waste Producer' | translate }}</mat-option>
               </mat-select>
               @if (formGroup.get('companyType')?.hasError('required')) {
                 <mat-error>This field is required </mat-error>
@@ -45,81 +47,81 @@
             </mat-form-field>
           </div>
           <div class="col-md-12 mb-4">
-            <mat-label class="mb-0 fw-bold"> VAT COUNTRY LOCATION* </mat-label>
+            <mat-label class="mb-0 fw-bold">{{ 'VAT COUNTRY LOCATION' | translate }}*</mat-label>
             <mat-radio-group
               formControlName="vatRegistrationCountry"
               class="d-flex justify-content-between radio-mat-error col-md-8"
               name="vatRegistrationCountry"
             >
-              <mat-radio-button class="bold-label" value="EU">EU (European Union) </mat-radio-button>
-              <mat-radio-button class="bold-label" value="UK"> United Kingdom </mat-radio-button>
-              <mat-radio-button class="bold-label" value="Other"> Other </mat-radio-button>
+              <mat-radio-button class="bold-label" value="EU">{{ 'EU (European Union)' | translate }}</mat-radio-button>
+              <mat-radio-button class="bold-label" value="UK">{{ 'United Kingdom' | translate }}</mat-radio-button>
+              <mat-radio-button class="bold-label" value="Other">{{ 'Other' | translate }}</mat-radio-button>
             </mat-radio-group>
             @if (
               formGroup.get('vatRegistrationCountry')?.hasError('required') &&
               (formGroup.get('vatRegistrationCountry')?.touched || formGroup.get('vatRegistrationCountry')?.dirty)
             ) {
-              <mat-error class="mt-0 mat-error"> This field is required </mat-error>
+              <mat-error class="mt-0 mat-error">{{ 'This field is required' | translate }}</mat-error>
             }
           </div>
           <div class="col-md-12 mb-4">
-            <label class="fw-bold">COMPANY VAT NUMBER*</label>
+            <label class="fw-bold">{{ 'COMPANY VAT NUMBER' | translate }}*</label>
             <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="Type here" type="text" formControlName="vatNumber" />
+              <input matInput placeholder="{{ 'Type here' | translate }}" type="text" formControlName="vatNumber" />
               @if (formGroup.get('vatNumber')?.hasError('required')) {
-                <mat-error>This field is required </mat-error>
+                <mat-error>{{ 'This field is required' | translate }}</mat-error>
               }
               @if (formGroup.get('vatNumber')?.hasError('maxlength')) {
-                <mat-error>Company Vat Number cannot exceed 20 characters</mat-error>
+                <mat-error>{{ 'Company Vat Number cannot exceed 20 characters' | translate }}</mat-error>
               }
             </mat-form-field>
           </div>
           <div class="col-12 mb-4">
-            <mat-label class="fw-bold mb-1">COMPANY REGISTRATION NUMBER*</mat-label>
+            <mat-label class="fw-bold mb-1">{{ 'COMPANY REGISTRATION NUMBER' | translate }}*</mat-label>
             <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="Type here" type="text" formControlName="registrationNumber" />
+              <input matInput placeholder="{{ 'Type here' | translate }}" type="text" formControlName="registrationNumber" />
               @if (formGroup.get('registrationNumber')?.hasError('required')) {
-                <mat-error>This field is required </mat-error>
+                <mat-error>{{ 'This field is required' | translate }}</mat-error>
               }
               @if (formGroup.get('registrationNumber')?.hasError('maxlength')) {
-                <mat-error>Company Registration Number cannot exceed 20 characters</mat-error>
+                <mat-error>{{ 'Company Registration Number cannot exceed 20 characters' | translate }}</mat-error>
               }
             </mat-form-field>
           </div>
           <div class="col-md-12 mb-4">
-            <label class="fw-bold">STREET ADDRESS*</label>
+            <label class="fw-bold">{{ 'STREET ADDRESS' | translate }}*</label>
             <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="Type here" type="text" formControlName="addressLine1" />
+              <input matInput placeholder="{{ 'Type here' | translate }}" type="text" formControlName="addressLine1" />
               @if (formGroup.get('addressLine1')?.hasError('required')) {
-                <mat-error>This field is required </mat-error>
+                <mat-error>{{ 'This field is required' | translate }}</mat-error>
               }
               @if (formGroup.get('addressLine1')?.hasError('maxlength')) {
-                <mat-error>Street Address cannot exceed 100 characters</mat-error>
+                <mat-error>{{ 'Street Address cannot exceed 100 characters' | translate }}</mat-error>
               }
             </mat-form-field>
           </div>
           <div class="row g-3 mb-4">
             <div class="col-md-6">
-              <mat-label class="fw-bold mb-1">POST CODE*</mat-label>
+              <mat-label class="fw-bold mb-1">{{ 'POST CODE' | translate }}*</mat-label>
               <mat-form-field appearance="outline" class="w-100">
-                <input matInput placeholder="Type here" type="text" formControlName="postalCode" />
+                <input matInput placeholder="{{ 'Type here' | translate }}" type="text" formControlName="postalCode" />
                 @if (formGroup.get('postalCode')?.hasError('required')) {
-                  <mat-error>This field is required </mat-error>
+                  <mat-error>{{ 'This field is required' | translate }}</mat-error>
                 }
                 @if (formGroup.get('postalCode')?.hasError('maxlength')) {
-                  <mat-error>Post Code cannot exceed 20 characters</mat-error>
+                  <mat-error>{{ 'Post Code cannot exceed 20 characters' | translate }}</mat-error>
                 }
               </mat-form-field>
             </div>
             <div class="col-md-6">
-              <mat-label class="fw-bold mb-1">CITY*</mat-label>
+              <mat-label class="fw-bold mb-1">{{ 'CITY' | translate }}*</mat-label>
               <mat-form-field appearance="outline" class="w-100">
-                <input matInput placeholder="Type here" type="text" formControlName="city" />
+                <input matInput placeholder="{{ 'Type here' | translate }}" type="text" formControlName="city" />
                 @if (formGroup.get('city')?.hasError('required')) {
-                  <mat-error>This field is required </mat-error>
+                  <mat-error>{{ 'This field is required' | translate }}</mat-error>
                 }
                 @if (formGroup.get('city')?.hasError('maxlength')) {
-                  <mat-error>City cannot exceed 50 characters</mat-error>
+                  <mat-error>{{ 'City cannot exceed 50 characters' | translate }}</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -127,27 +129,27 @@
 
           <div class="row g-3 mb-4">
             <div class="col-md-6">
-              <mat-label class="fw-bold mb-1">COUNTRY*</mat-label>
+              <mat-label class="fw-bold mb-1">{{ 'COUNTRY' | translate }}*</mat-label>
               <mat-form-field appearance="outline" class="w-100">
-                <mat-select formControlName="country" placeholder="Please Select">
+                <mat-select formControlName="country" placeholder="{{ 'Please Select' | translate }}">
                   @for (item of countryList; track $index; let i = $index) {
                     <mat-option color="primary" [value]="item.isoCode">{{ item.isoCode }} - {{ item.name }}</mat-option>
                   }
                 </mat-select>
                 @if (formGroup.get('country')?.hasError('required')) {
-                  <mat-error>This field is required </mat-error>
+                  <mat-error>{{ 'This field is required' | translate }}</mat-error>
                 }
               </mat-form-field>
             </div>
             <div class="col-md-6">
-              <mat-label class="fw-bold mb-1">COUNTY / STATE / REGION</mat-label>
+              <mat-label class="fw-bold mb-1">{{ 'COUNTY / STATE / REGION' | translate }}</mat-label>
               <mat-form-field appearance="outline" class="w-100">
-                <input matInput placeholder="Type here" type="text" formControlName="stateProvince" />
+                <input matInput placeholder="{{ 'Type here' | translate }}" type="text" formControlName="stateProvince" />
                 @if (formGroup.get('stateProvince')?.hasError('required')) {
-                  <mat-error>This field is required </mat-error>
+                  <mat-error>{{ 'This field is required' | translate }}</mat-error>
                 }
                 @if (formGroup.get('stateProvince')?.hasError('maxlength')) {
-                  <mat-error>Country / State / Region cannot exceed 50 characters</mat-error>
+                  <mat-error>{{ 'County / State / Region cannot exceed 50 characters' | translate }}</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -156,17 +158,21 @@
             <app-telephone-form-control
               [isRequired]="true"
               formControlName="phoneNumber"
-              [label]="'PHONE NUMBER'"
+              [label]="'PHONE NUMBER' | translate"
             ></app-telephone-form-control>
           </div>
           <div class="mb-4">
-            <app-telephone-form-control [isRequired]="true" formControlName="mobileNumber" [label]="'MOBILE'"></app-telephone-form-control>
+            <app-telephone-form-control
+              [isRequired]="true"
+              formControlName="mobileNumber"
+              [label]="'MOBILE' | translate"
+            ></app-telephone-form-control>
           </div>
         </div>
         <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-between align-items-center">
           <div class="col-3"></div>
           <div class="col-5 fw-bold text-decoration-underline cursor-pointer text-center" (click)="submit('/buy')">
-            SAVE AND RESUME LATER
+            {{ 'SAVE AND RESUME LATER' | translate }}
           </div>
           <div class="col-3">
             <button
@@ -177,7 +183,7 @@
               mat-flat-button
               class="w-100"
             >
-              NEXT
+              {{ 'NEXT' | translate }}
             </button>
           </div>
         </div>

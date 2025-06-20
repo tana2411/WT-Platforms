@@ -11,16 +11,20 @@ import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { countries } from '@app/statics';
+import {
+  FileInfo,
+  FileUploadComponent,
+  InputWithConfirmControlComponent,
+  TelephoneFormControlComponent,
+} from '@app/ui';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { AuthService } from 'app/services/auth.service';
 import { RegistrationsService } from 'app/services/registrations.service';
-import { strictEmailValidator } from 'app/share/validators/';
+import { checkPasswordStrength, pwdStrengthValidator, strictEmailValidator } from 'app/share/validators/';
 import { catchError, concatMap, debounceTime, finalize, of } from 'rxjs';
-import { FileInfo, FileUploadComponent } from '../../../share/ui/file-upload/file-upload.component';
-import { InputWithConfirmControlComponent } from '../../../share/ui/input-with-confirm-control/input-with-confirm-control.component';
-import { TelephoneFormControlComponent } from '../../../share/ui/telephone-form-control/telephone-form-control.component';
-import { checkPasswordStrength, pwdStrengthValidator } from '../../../share/validators/password-strength';
-import { countries } from './../../../statics/country-data';
 
 @Component({
   selector: 'app-haulage-form',
@@ -40,6 +44,7 @@ import { countries } from './../../../statics/country-data';
     MatDatepickerModule,
     MatButtonModule,
     TitleCasePipe,
+    TranslateModule,
   ],
 })
 export class HaulageFormComponent {
@@ -229,13 +234,17 @@ export class HaulageFormComponent {
               catchError((err) => {
                 if (err) {
                   if (err?.error?.error?.statusCode == 422 && err?.error?.error?.message == 'existed-user') {
-                    this.snackBar.open('This email already exists. Please enter an alternative email address', 'Ok', {
-                      duration: 3000,
-                    });
+                    this.snackBar.open(
+                      localized$(`This email already exists. Please enter an alternative email address`),
+                      localized$('Ok'),
+                      {
+                        duration: 3000,
+                      },
+                    );
                   } else {
                     this.snackBar.open(
-                      `${err?.error?.error?.message ?? 'Some thing went wrong. Please try again.'}`,
-                      'Ok',
+                      localized$(`${err?.error?.error?.message ?? 'Some thing went wrong. Please try again.'}`),
+                      localized$('Ok'),
                       {
                         duration: 3000,
                       },
@@ -247,9 +256,13 @@ export class HaulageFormComponent {
             );
           }),
           catchError((err) => {
-            this.snackBar.open('An error occurred while uploading the file. Please try again.', 'Ok', {
-              duration: 3000,
-            });
+            this.snackBar.open(
+              localized$(`An error occurred while uploading the file. Please try again.`),
+              localized$('Ok'),
+              {
+                duration: 3000,
+              },
+            );
             return of(null);
           }),
           concatMap((res) => {

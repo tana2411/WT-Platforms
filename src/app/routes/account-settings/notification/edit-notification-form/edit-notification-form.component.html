@@ -1,6 +1,6 @@
 <div class="container-fluid p-3 p-md-4 p-lg-4">
   <div class="d-flex justify-content-between align-items-center w-100" mat-dialog-title>
-    <h2 class="fw-bold flex-grow-1">Notifications</h2>
+    <h2 class="fw-bold flex-grow-1">{{ 'Notifications' | translate }}</h2>
     <div (click)="close()" class="cursor-pointer">
       <app-icon iconName="close"></app-icon>
     </div>
@@ -9,25 +9,27 @@
   <mat-dialog-content>
     <form [formGroup]="formGroup">
       <div class="row g-3 mb-4">
-        <mat-label class="fw-bold fs-16">EMAIL ME NEW LISTINGS THAT MATCH MY INTERESTS</mat-label>
+        <mat-label class="fw-bold fs-16">{{ 'EMAIL ME NEW LISTINGS THAT MATCH MY INTERESTS' | translate }}</mat-label>
         <mat-radio-group class="col-md-4 d-flex justify-content-between col-7" formControlName="receiveEmailForNewMatchingListings">
-          <mat-radio-button class="bold-label fs-16" [value]="true">Yes</mat-radio-button>
-          <mat-radio-button class="bold-label fs-16" [value]="false">No</mat-radio-button>
+          <mat-radio-button class="bold-label fs-16" [value]="true">{{ 'Yes' | translate }}</mat-radio-button>
+          <mat-radio-button class="bold-label fs-16" [value]="false">{{ 'No' | translate }}</mat-radio-button>
         </mat-radio-group>
       </div>
 
       <div class="row g-3 mb-4">
-        <mat-label class="fw-bold fs-16">EMAIL ME OFFERS ON MY LISTINGS</mat-label>
+        <mat-label class="fw-bold fs-16">{{ 'EMAIL ME OFFERS ON MY LISTINGS' | translate }}</mat-label>
         <mat-radio-group class="col-md-4 d-flex justify-content-between col-7" formControlName="receiveEmailForOffersOnMyListings">
-          <mat-radio-button class="bold-label fs-16" [value]="true">Yes</mat-radio-button>
-          <mat-radio-button class="bold-label fs-16" [value]="false">No</mat-radio-button>
+          <mat-radio-button class="bold-label fs-16" [value]="true">{{ 'Yes' | translate }}</mat-radio-button>
+          <mat-radio-button class="bold-label fs-16" [value]="false">{{ 'No' | translate }}</mat-radio-button>
         </mat-radio-group>
       </div>
     </form>
   </mat-dialog-content>
   <mat-dialog-actions>
     <div class="d-flex justify-content-between align-items-center gap-3 col-md-12 col-12">
-      <button mat-stroked-button class="text-uppercase outline-primary-btn w-100 fs-16" (click)="close()">Discard Changes</button>
+      <button mat-stroked-button class="text-uppercase outline-primary-btn w-100 fs-16" (click)="close()">
+        {{ 'Discard Changes' | translate }}
+      </button>
       <button
         mat-flat-button
         class="text-uppercase primary-btn w-100 fw-bold fs-16"
@@ -35,7 +37,7 @@
         [class.overlay-spinner]="submitting()"
         (click)="submit()"
       >
-        Save Changes
+        {{ 'Save Changes' | translate }}
       </button>
     </div>
   </mat-dialog-actions>

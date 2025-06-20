@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { mapCountryCodeToName, materialTypes } from '@app/statics';
+import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { Purchase } from 'app/models/purchases.model';
 import { getStateColor, getStatusColor } from 'app/share/utils/offer';
@@ -12,7 +13,7 @@ import { getStateColor, getStatusColor } from 'app/share/utils/offer';
   selector: 'app-purchase-detail',
   templateUrl: './purchase-detail.component.html',
   styleUrls: ['./purchase-detail.component.scss'],
-  imports: [MatButtonModule, MatIconModule, TitleCasePipe, DatePipe, CurrencyPipe],
+  imports: [MatButtonModule, MatIconModule, TitleCasePipe, DatePipe, CurrencyPipe, TranslateModule],
 })
 export class PurchaseDetailComponent implements OnInit {
   @Input() purchase: Purchase | undefined = undefined;

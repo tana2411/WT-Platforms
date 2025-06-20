@@ -25,6 +25,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { countries, materialTypes } from '@app/statics';
 import { FileInfo, FileUploadComponent } from '@app/ui';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { CompanyDocumentType, CompanyLocationDetail, ContainerType, ContainerTypeList, User } from 'app/models';
 import { IDocument } from 'app/models/listing-material-detail.model';
@@ -56,6 +58,7 @@ import { TimeInputFormControlComponent } from '../../../share/ui/time-input-form
     FileUploadComponent,
     MatExpansionModule,
     UpperCasePipe,
+    TranslateModule,
   ],
 })
 export class EditSiteComponent implements OnInit, AfterViewInit {
@@ -506,9 +509,13 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
             .pipe(
               takeUntilDestroyed(this.destroyRef),
               catchError((err) => {
-                this.snackBar.open('An error occurred while uploading the file. Please try again.', 'OK', {
-                  duration: 3000,
-                });
+                this.snackBar.open(
+                  localized$('An error occurred while uploading the file. Please try again.'),
+                  localized$('OK'),
+                  {
+                    duration: 3000,
+                  },
+                );
                 return EMPTY;
               }),
             )
@@ -568,9 +575,10 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
 
     const errorMessage =
       this.mode == 'edit'
-        ? 'Failed to save changes, please check your input and try again.'
-        : 'Failed to add new location. Please check your input and try again.';
-    const successMessage = this.mode == 'edit' ? 'Location updated successfully.' : 'Location added successfully';
+        ? localized$('Failed to save changes, please check your input and try again.')
+        : localized$('Failed to add new location. Please check your input and try again.');
+    const successMessage =
+      this.mode == 'edit' ? localized$('Location updated successfully.') : localized$('Location added successfully.');
 
     request
       .pipe(
@@ -579,7 +587,7 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
           this.submitting.set(false);
         }),
         catchError((err) => {
-          this.snackBar.open(errorMessage, 'Ok', {
+          this.snackBar.open(errorMessage, localized$('Ok'), {
             duration: 3000,
           });
           return EMPTY;
@@ -587,13 +595,13 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
       )
       .subscribe((res) => {
         if (this.mode == 'add' && !res) {
-          this.snackBar.open(errorMessage, 'Ok', {
+          this.snackBar.open(errorMessage, localized$('Ok'), {
             duration: 3000,
           });
 
           return;
         }
-        this.snackBar.open(successMessage, 'OK', { duration: 3000 });
+        this.snackBar.open(successMessage, localized$('OK'), { duration: 3000 });
 
         if (this.isDialog) {
           this.dialogRef?.close(res);

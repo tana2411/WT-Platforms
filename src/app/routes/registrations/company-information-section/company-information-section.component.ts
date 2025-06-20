@@ -10,6 +10,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
 import { countries } from '@app/statics';
 import { AccountOnboardingStatusComponent, TelephoneFormControlComponent } from '@app/ui';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { AuthService } from 'app/services/auth.service';
 import { RegistrationsService } from 'app/services/registrations.service';
@@ -31,6 +33,7 @@ import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
     ReactiveFormsModule,
     UnAuthLayoutComponent,
     TelephoneFormControlComponent,
+    TranslateModule,
   ],
 })
 export class CompanyInformationSectionComponent implements OnInit {
@@ -63,8 +66,10 @@ export class CompanyInformationSectionComponent implements OnInit {
         catchError((err) => {
           if (err) {
             this.snackBar.open(
-              'An error occurred while retrieving your information. Please refresh the page or contact support if the problem persists.',
-              'Ok',
+              localized$(
+                `An error occurred while retrieving your information. Please refresh the page or contact support if the problem persists.`,
+              ),
+              localized$('Ok'),
               { duration: 3000 },
             );
           }
@@ -110,9 +115,13 @@ export class CompanyInformationSectionComponent implements OnInit {
         }),
         catchError((err) => {
           if (err) {
-            this.snackBar.open('Failed to submit your information due to a network error. Please try again.', 'Ok', {
-              duration: 3000,
-            });
+            this.snackBar.open(
+              localized$(`Failed to submit your information due to a network error. Please try again.`),
+              localized$('Ok'),
+              {
+                duration: 3000,
+              },
+            );
           }
           return of(null);
         }),

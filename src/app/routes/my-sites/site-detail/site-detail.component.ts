@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { mapCountryCodeToName, materialTypes } from '@app/statics';
+import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { CompanyLocationDetail, ContainerTypeList } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
@@ -19,7 +20,15 @@ import { DocumentComponent } from '../../account-settings/document/document.comp
   selector: 'app-site-detail',
   templateUrl: './site-detail.component.html',
   styleUrls: ['./site-detail.component.scss'],
-  imports: [MatIconModule, MatButtonModule, MatCheckboxModule, DocumentComponent, SpinnerComponent, TitleCasePipe],
+  imports: [
+    MatIconModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    DocumentComponent,
+    SpinnerComponent,
+    TitleCasePipe,
+    TranslateModule,
+  ],
 })
 export class SiteDetailComponent implements OnInit {
   loading = signal(false);

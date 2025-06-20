@@ -1,6 +1,6 @@
 <div class="container-fluid p-3 p-md-4 p-lg-4">
   <div class="d-flex justify-content-between align-items-center w-100" mat-dialog-title>
-    <h2 class="fw-bold flex-grow-1">Personal Information</h2>
+    <h2 class="fw-bold flex-grow-1">{{ 'Personal Information' | translate }}</h2>
     <div (click)="close()" class="cursor-pointer">
       <app-icon iconName="close"></app-icon>
     </div>
@@ -10,32 +10,32 @@
     <form [formGroup]="formGroup">
       <div class="row g-3 mb-4">
         <div class="col-md-2">
-          <mat-label class="fw-bold mb-1 fs-16">PREFIX*</mat-label>
+          <mat-label class="fw-bold mb-1 fs-16">{{ 'PREFIX' | translate }}*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
-            <mat-select formControlName="prefix" placeholder="Please Select">
-              <mat-option value="dr"> Dr.</mat-option>
-              <mat-option value="miss">Miss.</mat-option>
-              <mat-option value="mr">Mr.</mat-option>
-              <mat-option value="mrs">Mrs.</mat-option>
-              <mat-option value="ms">Ms.</mat-option>
-              <mat-option value="mx">Mx.</mat-option>
-              <mat-option value="prof">Prof.</mat-option>
-              <mat-option value="rev">Rev.</mat-option>
+            <mat-select formControlName="prefix" placeholder="{{ 'Please Select' | translate }}">
+              <mat-option value="dr">{{ 'Dr.' | translate }}</mat-option>
+              <mat-option value="miss">{{ 'Miss.' | translate }}</mat-option>
+              <mat-option value="mr">{{ 'Mr.' | translate }}</mat-option>
+              <mat-option value="mrs">{{ 'Mrs.' | translate }}</mat-option>
+              <mat-option value="ms">{{ 'Ms.' | translate }}</mat-option>
+              <mat-option value="mx">{{ 'Mx.' | translate }}</mat-option>
+              <mat-option value="prof">{{ 'Prof.' | translate }}</mat-option>
+              <mat-option value="rev">{{ 'Rev.' | translate }}</mat-option>
             </mat-select>
             @if (formGroup.get('prefix')?.hasError('required')) {
-              <mat-error>This field is required </mat-error>
+              <mat-error>{{ 'This field is required' | translate }} </mat-error>
             }
           </mat-form-field>
         </div>
         <div class="col-md-5">
-          <mat-label class="fw-bold mb-1 fs-16">FIRST NAME*</mat-label>
+          <mat-label class="fw-bold mb-1 fs-16">{{ 'FIRST NAME' | translate }}*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="e.g. Mark" type="text" formControlName="firstName" />
             @if (formGroup.get('firstName')?.hasError('required')) {
-              <mat-error>This field is required </mat-error>
+              <mat-error>{{ 'This field is required' | translate }}</mat-error>
             }
             @if (formGroup.get('firstName')?.hasError('maxlength') || formGroup.get('firstName')?.hasError('pattern')) {
-              <mat-error>First Name must only contain letters and be under 50 characters</mat-error>
+              <mat-error>{{ 'First Name must only contain letters and be under 50 characters' | translate }}</mat-error>
             }
           </mat-form-field>
         </div>
@@ -44,36 +44,36 @@
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="e.g. Smith" type="text" formControlName="lastName" />
             @if (formGroup.get('lastName')?.hasError('required')) {
-              <mat-error>This field is required </mat-error>
+              <mat-error>{{ 'This field is required' | translate }}</mat-error>
             }
             @if (formGroup.get('lastName')?.hasError('maxlength') || formGroup.get('lastName')?.hasError('pattern')) {
-              <mat-error>Last Name must only contain letters and be under 50 characters</mat-error>
+              <mat-error>{{ 'Last Name must only contain letters and be under 50 characters' | translate }}</mat-error>
             }
           </mat-form-field>
         </div>
       </div>
 
       <div class="col-12 mb-4">
-        <mat-label class="fw-bold mb-1 fs-16">JOB TITLE*</mat-label>
+        <mat-label class="fw-bold mb-1 fs-16">{{ 'JOB TITLE' | translate }}*</mat-label>
         <mat-form-field appearance="outline" class="w-100">
-          <input matInput placeholder="Type here" type="text" formControlName="jobTitle" />
+          <input matInput placeholder="{{ 'Type here' | translate }}" type="text" formControlName="jobTitle" />
           @if (formGroup.get('jobTitle')?.hasError('required')) {
-            <mat-error>This field is required </mat-error>
+            <mat-error>{{ 'This field is required' | translate }}</mat-error>
           }
           @if (formGroup.get('jobTitle')?.hasError('maxlength') || formGroup.get('jobTitle')?.hasError('pattern')) {
-            <mat-error>Job Title must only contain letters, spaces and be under 50 characters </mat-error>
+            <mat-error>{{ 'Job Title must only contain letters, spaces and be under 50 characters' | translate }}</mat-error>
           }
         </mat-form-field>
       </div>
       <div class="row mb-4">
-        <mat-label class="fw-bold mb-1 fs-16">EMAIL ADDRESS*</mat-label>
+        <mat-label class="fw-bold mb-1 fs-16">{{ 'EMAIL ADDRESS' | translate }}*</mat-label>
         <mat-form-field appearance="outline" class="w-100">
-          <input matInput placeholder="Type here" type="text" formControlName="email" />
+          <input matInput placeholder="{{ 'Type here' | translate }}" type="text" formControlName="email" />
           @if (formGroup.get('email')?.hasError('required')) {
-            <mat-error>This field is required </mat-error>
+            <mat-error>{{ 'This field is required' | translate }}</mat-error>
           }
           @if (formGroup.get('email')?.hasError('email')) {
-            <mat-error>Invalid email address format. Please enter a valid email </mat-error>
+            <mat-error>{{ 'Invalid email address format. Please enter a valid email' | translate }}</mat-error>
           }
         </mat-form-field>
       </div>
@@ -84,7 +84,9 @@
   </mat-dialog-content>
   <mat-dialog-actions>
     <div class="d-flex justify-content-between align-items-center gap-3 col-md-12 col-12">
-      <button mat-stroked-button class="text-uppercase outline-primary-btn w-100 fs-16" (click)="close()">Discard Changes</button>
+      <button mat-stroked-button class="text-uppercase outline-primary-btn w-100 fs-16" (click)="close()">
+        {{ 'Discard Changes' | translate }}
+      </button>
       <button
         mat-flat-button
         [disabled]="formGroup.invalid || formGroup.pristine"
@@ -92,7 +94,7 @@
         [class.overlay-spinner]="submitting()"
         (click)="submit()"
       >
-        Save Changes
+        {{ 'Save Changes' | translate }}
       </button>
     </div>
   </mat-dialog-actions>

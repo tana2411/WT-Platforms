@@ -13,13 +13,14 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { TranslateModule } from '@ngx-translate/core';
 import { countries } from '../../../statics/country-data';
 
 @Component({
   selector: 'app-telephone-form-control',
   templateUrl: './telephone-form-control.component.html',
   styleUrls: ['./telephone-form-control.component.scss'],
-  imports: [MatFormFieldModule, MatSelectModule, ReactiveFormsModule, MatInputModule],
+  imports: [MatFormFieldModule, MatSelectModule, ReactiveFormsModule, MatInputModule, TranslateModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

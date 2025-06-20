@@ -19,10 +19,10 @@
 
   <img src="assets/images/cloud_upload_24px.svg" alt="Upload Icon" class="mb-2" />
 
-  <div class="d-block mb-2">Drop file here or</div>
+  <div class="d-block mb-2">{{ 'Drop file here or' | translate }}</div>
 
   <button mat-flat-button color="primary" [disabled]="documents.length >= maxFile" class="fw-bold" (click)="handleUploadFile($event)">
-    SELECT FILES
+    {{ 'SELECT FILES' | translate }}
   </button>
 
   <form [formGroup]="formGroup">
@@ -51,12 +51,12 @@
               @if (expiryDateMode !== 'hidden') {
                 <div class="col-12 col-md-6">
                   <mat-form-field appearance="outline" floatLabel="auto" class="w-100">
-                    <mat-label>Expiry Date</mat-label>
+                    <mat-label>{{ 'Expiry Date' | translate }}</mat-label>
                     <input
                       matInput
                       readonly
                       [matDatepicker]="picker"
-                      placeholder="Expiry Date"
+                      placeholder="{{ 'Expiry Date' | translate }}"
                       formControlName="expiryDate"
                       [min]="today"
                     />
@@ -64,7 +64,7 @@
                     <mat-datepicker #picker></mat-datepicker>
 
                     @if (fileInfo.get('expiryDate')?.hasError('required')) {
-                      <mat-error class="mt-0"> This field is required </mat-error>
+                      <mat-error class="mt-0"> {{ 'This field is required' | translate }} </mat-error>
                     }
                   </mat-form-field>
                 </div>
