@@ -324,7 +324,7 @@
                   class="col-12 col-md-4 bold-label"
                   color="primary"
                   (change)="onSelectedItem($event, item.value)"
-                  [checked]="selectAllContainerTypes()"
+                  [checked]="containerType.value.includes(item.value)"
                 >
                   {{ item.name | translate }}
                 </mat-checkbox>
@@ -411,7 +411,7 @@
             <div class="col-12 mb-4">
               <app-file-upload
                 (filesAdded)="handleFileReady($event)"
-                [maxFile]="6"
+                [maxFile]="1"
                 (uploadValid)="wasteLicenceValid.set($event)"
                 [expiryDateMode]="'optional'"
                 [notAcceptable]="['.doc', '.docx', '.xls', '.xlsx']"

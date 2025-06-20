@@ -316,13 +316,15 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
       const { containerType, acceptedMaterials } = this.location;
       if (containerType.length > 0) {
         this.containerType.clear();
-        if (containerType.includes('all') || containerType.length == this.containerTypeList.length) {
-          this.selectAllContainerTypes.set(true);
-        } else {
-          containerType.forEach((type: string) => {
-            this.containerType.push(new FormControl(type));
+        containerType.forEach((type: string) => {
+          this.containerType.push(new FormControl(type));
+        });
+        if (containerType.includes('all')) {
+          this.containerTypeList.forEach((type) => {
+            this.containerType.push(new FormControl(type.value));
           });
         }
+        this.containerType.markAsPristine();
         this.containerType.updateValueAndValidity();
       }
 
@@ -343,6 +345,7 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
           this.showOtherMaterial.set(true);
           this.formGroup.patchValue({ otherMaterial: other.join(', ') });
         }
+        this.materials.markAsPristine();
         this.materials.updateValueAndValidity();
       }
     }
@@ -408,6 +411,8 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
 
       this.wasteCarrierLicenseDocuments = companyLocationDocuments;
       this.bindMaterialAndContainerTye();
+      this.formGroup.markAsUntouched();
+      this.formGroup.markAsPristine();
       this.formGroup.updateValueAndValidity();
     }
   }
@@ -448,6 +453,7 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
   get isSubmitDisabled(): boolean {
     return (
       this.formGroup.invalid ||
+      this.formGroup.pristine ||
       (this.formGroup.value.wasteLicence && this.selectedFiles().length === 0) ||
       !(this.formGroup.dirty || this.isDocumentsChanged(this.wasteCarrierLicenseDocuments, [...this.selectedFiles()]))
     );

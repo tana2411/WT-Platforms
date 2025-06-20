@@ -82,27 +82,27 @@
             <div class="col-12 mb-4" [hidden]="!(documentType.value == CompanyDocumentType.EnvironmentalPermit)">
               <h6 class="mt-5 mb-4 fw-bold">{{ 'UPLOAD AS ENVIRONMENTAL PERMIT' | translate }}*</h6>
               <app-file-upload
-                [maxFile]="1"
+                [maxFile]="6"
                 (filesAdded)="handleFileReady($event, 'document', CompanyDocumentType.EnvironmentalPermit)"
                 (uploadValid)="documentValid.set($event)"
                 [notAcceptable]="['.doc', '.docx', '.xls', '.xlsx']"
                 [expiryDateMode]="'optional'"
                 [fileList]="environmentPermitDocuments"
               ></app-file-upload>
-              <p>{{ 'Accepted file types: jpg, png, jpeg, pdf, Max. file size: 25 MB, Max. files: 1' | translate }}</p>
+              <p>{{ 'Accepted file types: jpg, png, jpeg, pdf, Max. file size: 25 MB, Max. files: 6' | translate }}</p>
             </div>
 
             <div class="col-12 mb-4" [hidden]="!(documentType.value == CompanyDocumentType.WasteExemption)">
               <h6 class="mt-5 mb-4 fw-bold">{{ 'UPLOAD AS WASTE EXEMPTIONS' | translate }}*</h6>
               <app-file-upload
-                [maxFile]="1"
+                [maxFile]="6"
                 (filesAdded)="handleFileReady($event, 'document', CompanyDocumentType.WasteExemption)"
                 (uploadValid)="documentValid.set($event)"
                 [notAcceptable]="['.doc', '.docx', '.xls', '.xlsx']"
                 [expiryDateMode]="'optional'"
                 [fileList]="wasteExemptionDocuments"
               ></app-file-upload>
-              <p>{{ 'Accepted file types: jpg, png, jpeg, pdf, Max. file size: 25 MB, Max. files: 1' | translate }}</p>
+              <p>{{ 'Accepted file types: jpg, png, jpeg, pdf, Max. file size: 25 MB, Max. files: 6' | translate }}</p>
             </div>
 
             @if (documentType.value == 'other') {
@@ -119,14 +119,14 @@
             <div class="col-12 mb-4" [hidden]="!(documentType.value == 'other')">
               <h6 class="mt-5 mb-4 fw-bold text-uppercase">{{ 'Other Document Upload' | translate }}*</h6>
               <app-file-upload
-                [maxFile]="1"
+                [maxFile]="6"
                 (filesAdded)="handleFileReady($event, 'document', 'other')"
                 (uploadValid)="documentValid.set($event)"
                 [notAcceptable]="['.doc', '.docx', '.xls', '.xlsx']"
                 [expiryDateMode]="'optional'"
                 [fileList]="otherDocuments"
               ></app-file-upload>
-              <p>{{ 'Accepted file types: jpg, png, jpeg, pdf, Max. file size: 25 MB, Max. files: 1' | translate }}</p>
+              <p>{{ 'Accepted file types: jpg, png, jpeg, pdf, Max. file size: 25 MB, Max. files: 6' | translate }}</p>
             </div>
           </div>
 
