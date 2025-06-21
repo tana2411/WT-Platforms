@@ -27,6 +27,7 @@ export type TableSellingOfferItem = {
   country: string | null;
   status: OfferStatus;
   bidAmount: string;
+  currency: string;
 };
 
 export type TableBuyingOfferItem = {
