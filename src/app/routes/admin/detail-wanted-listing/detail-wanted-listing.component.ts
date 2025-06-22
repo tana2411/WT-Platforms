@@ -13,7 +13,7 @@ import { DateFormatPipe } from 'app/pipes/date.pipe';
 import { AdminListingService } from 'app/services/admin/admin-listing.service';
 import { ListingDetailActionsComponent } from 'app/share/ui/admin/listing-detail-actions/listing-detail-actions.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
-import { getStateColor, getStatusColor } from 'app/share/utils/offer';
+import { getListingStateColor, getListingStatusColor } from 'app/share/utils/offer';
 import { catchError, EMPTY, map, startWith, Subject, switchMap, tap } from 'rxjs';
 
 @Component({
@@ -42,8 +42,8 @@ export class DetailWantedListingComponent {
   listingDetailUpdator$ = new Subject<void>();
 
   mapCountryCodeToName = mapCountryCodeToName;
-  getStatusColor = getStatusColor;
-  getStateColor = getStateColor;
+  getListingStateColor = getListingStateColor;
+  getListingStatusColor = getListingStatusColor;
 
   listingDetail = toSignal(
     this.listingDetailUpdator$.pipe(
@@ -71,6 +71,7 @@ export class DetailWantedListingComponent {
   }
 
   onBack() {
-    this.router.navigateByUrl(`${ROUTES_WITH_SLASH.commercialManagement}?tab=3`);
+    window.history.back();
+    // this.router.navigateByUrl(`${ROUTES_WITH_SLASH.commercialManagement}?tab=3`);
   }
 }

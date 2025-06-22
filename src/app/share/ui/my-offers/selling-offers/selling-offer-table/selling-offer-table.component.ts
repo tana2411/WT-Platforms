@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { FallbackImageDirective } from '@app/directives';
 import { TableSellingOfferItem } from 'app/models/offer';
-import { getStatusColor } from 'app/share/utils/offer';
+import { getOfferStatusColor } from 'app/share/utils/offer';
 import { PaginationComponent } from '../../../listing/pagination/pagination.component';
 
 @Component({
@@ -19,7 +19,7 @@ export class SellingOfferTableComponent {
   @Input() items: TableSellingOfferItem[] = [];
   @Output() pageChange = new EventEmitter<number>();
 
-  getStatusColor = getStatusColor;
+  getOfferStatusColor = getOfferStatusColor;
 
   onPageChange(page: number) {
     this.pageChange.emit(page);

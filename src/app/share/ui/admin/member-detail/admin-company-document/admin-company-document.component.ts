@@ -11,7 +11,7 @@ import { CommercialDocument, CompanyDocumentStatus, MemberDetail } from 'app/mod
 import { OfferStatus } from 'app/models/offer';
 import { AuthService } from 'app/services/auth.service';
 import { downloadFile } from 'app/share/utils/common';
-import { getStatusColor } from 'app/share/utils/offer';
+import { getOfferStatusColor } from 'app/share/utils/offer';
 import { DocumentPreviewModalComponent } from '../admin-document-preview-modal/admin-document-preview-modal.component';
 
 @Component({
@@ -66,12 +66,12 @@ export class AdminCompanyDocumentComponent {
     switch (status) {
       case CompanyDocumentStatus.ACTIVE:
       case CompanyDocumentStatus.APPROVED:
-        return getStatusColor(OfferStatus.ACCEPTED);
+        return getOfferStatusColor(OfferStatus.ACCEPTED);
       case CompanyDocumentStatus.PENDING:
       case CompanyDocumentStatus.REQUEST_INFORMATION:
-        return getStatusColor(OfferStatus.PENDING);
+        return getOfferStatusColor(OfferStatus.PENDING);
       case CompanyDocumentStatus.REJECTED:
-        return getStatusColor(OfferStatus.REJECTED);
+        return getOfferStatusColor(OfferStatus.REJECTED);
     }
   };
 

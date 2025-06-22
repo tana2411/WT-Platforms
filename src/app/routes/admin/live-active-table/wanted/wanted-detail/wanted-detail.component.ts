@@ -7,7 +7,7 @@ import { mapCountryCodeToName, materialTypes } from '@app/statics';
 import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { WantedListingDetail } from 'app/models/wanted.model';
-import { getStateColor, getStatusColor } from 'app/share/utils/offer';
+import { getListingStateColor, getListingStatusColor } from 'app/share/utils/offer';
 
 @Component({
   selector: 'app-wanted-detail',
@@ -19,8 +19,8 @@ export class WantedDetailComponent implements OnInit {
   @Input() wanted: WantedListingDetail | undefined = undefined;
   mapCountryCodeToName = mapCountryCodeToName;
   materialTypes = materialTypes;
-  getStatusColor = getStatusColor;
-  getStateColor = getStateColor;
+  getListingStateColor = getListingStateColor;
+  getListingStatusColor = getListingStatusColor;
 
   router = inject(Router);
 

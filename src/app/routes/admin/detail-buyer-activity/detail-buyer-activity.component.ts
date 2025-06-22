@@ -6,12 +6,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { mapCountryCodeToName } from '@app/statics';
-import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { AdminLayoutComponent } from 'app/layout/admin-layout/admin-layout.component';
 import { AdminOfferService } from 'app/services/admin/admin-offer.service';
 import { OfferDetailActionsComponent } from 'app/share/ui/admin/offer-detail-actions/offer-detail-actions.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
-import { formatDecimalNumber, getCurrencyLabel, getCurrencySignal, getStatusColor } from 'app/share/utils/offer';
+import { formatDecimalNumber, getCurrencyLabel, getCurrencySignal, getOfferStatusColor } from 'app/share/utils/offer';
 import { catchError, EMPTY, map, startWith, Subject, switchMap, tap } from 'rxjs';
 
 @Component({
@@ -30,7 +29,7 @@ import { catchError, EMPTY, map, startWith, Subject, switchMap, tap } from 'rxjs
   styleUrl: './detail-buyer-activity.component.scss',
 })
 export class DetailBuyerActivityComponent {
-  getStatusColor = getStatusColor;
+  getOfferStatusColor = getOfferStatusColor;
 
   activeRoute = inject(ActivatedRoute);
   router = inject(Router);
@@ -76,6 +75,7 @@ export class DetailBuyerActivityComponent {
   }
 
   onBack() {
-    this.router.navigateByUrl(`${ROUTES_WITH_SLASH.commercialManagement}?tab=2`);
+    window.history.back();
+    // this.router.navigateByUrl(`${ROUTES_WITH_SLASH.commercialManagement}?tab=2`);
   }
 }

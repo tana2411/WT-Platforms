@@ -9,7 +9,7 @@ import { OfferService } from 'app/services/offer.service';
 import { ProductDescriptionComponent } from 'app/share/ui/product-detail/product-description/product-description.component';
 import { ProductImageComponent } from 'app/share/ui/product-detail/product-image/product-image.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
-import { getMaterialTypeLabel } from 'app/share/utils/offer';
+import { getListingTitle, getMaterialTypeLabel } from 'app/share/utils/offer';
 import { map } from 'rxjs';
 import { BidRejectedComponent } from '../offer-detail-status/bid-rejected/bid-rejected.component';
 
@@ -30,6 +30,8 @@ export class BuyingOfferDetailComponent {
   offerService = inject(OfferService);
   route = inject(ActivatedRoute);
   router = inject(Router);
+
+  getListingTitle = getListingTitle;
 
   offerId = this.route.snapshot.params['offerId'];
   offer = toSignal(this.offerService.getOfferDetail(this.offerId!).pipe(map((res) => res.data)));

@@ -380,3 +380,32 @@ export const materialTypes = [
     packing: packing,
   },
 ];
+
+export const mapCodeToMaterialForm = plasticForm.reduce(
+  (memo, item) => {
+    memo[item.code] = item.name;
+
+    return memo;
+  },
+  {} as Record<string, string>,
+);
+
+export const mapCodeToMaterialFinishing = finishing.reduce(
+  (memo, item) => {
+    memo[item.code] = item.name;
+
+    return memo;
+  },
+  {} as Record<string, string>,
+);
+
+export const mapCodeToMaterialItem = materialTypes.reduce(
+  (memo, item) => {
+    item.materials.forEach((material) => {
+      memo[material.code] = material.name;
+    });
+
+    return memo;
+  },
+  {} as Record<string, string>,
+);

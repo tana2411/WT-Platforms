@@ -7,7 +7,7 @@ import { mapCountryCodeToName, materialTypes } from '@app/statics';
 import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { Purchase } from 'app/models/purchases.model';
-import { getStateColor, getStatusColor } from 'app/share/utils/offer';
+import { getOfferStateColor, getOfferStatusColor } from 'app/share/utils/offer';
 
 @Component({
   selector: 'app-purchase-detail',
@@ -22,8 +22,8 @@ export class PurchaseDetailComponent implements OnInit {
   mapCountryCodeToName = mapCountryCodeToName;
   materialTypes = materialTypes;
 
-  getStatusColor = getStatusColor;
-  getStateColor = getStateColor;
+  getOfferStatusColor = getOfferStatusColor;
+  getOfferStateColor = getOfferStateColor;
 
   constructor() {}
 

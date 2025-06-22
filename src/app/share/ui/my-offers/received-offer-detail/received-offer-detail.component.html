@@ -1,5 +1,5 @@
 @if (offer(); as offer) {
-  <div class="d-flex mb-4 mb-lg-5 justify-content-between">
+  <div class="d-flex flex-wrap gap-3 mb-4 mb-lg-5 justify-content-between">
     <button
       mat-flat-button
       class="d-flex align-items-center justify-content-center py-2 rounded px-2 background-primary text-white text-uppercase fw-bold button-back"
@@ -11,19 +11,21 @@
 
     <div class="d-flex justify-content-center gap-3">
       <button mat-stroked-button class="border-primary primary fw-bold text-uppercase">Edit</button>
-      <button mat-flat-button class="remove-button fw-bold text-uppercase">Remove</button>
+      @if (canRemove()) {
+        <button mat-flat-button class="remove-button fw-bold text-uppercase" (click)="onRemove()">Remove</button>
+      }
     </div>
   </div>
   <h2 class="fw-bold mb-4">{{ offer.listing.title }}</h2>
 
-  <div class="d-flex gap-3 flex-wrap flex-lg-nowrap">
+  <div class="d-flex gap-3 flex-wrap flex-xl-nowrap">
     <div class="product-image-wrapper">
       <!-- <app-product-image [images]="galleryImages()" /> -->
       <app-product-image />
     </div>
 
     <div class="flex-1">
-      <app-product-description [items]="offerDescription()" />
+      <app-product-description [items]="offerDescription()" [showMaterialDescriptionLabel]="false" />
     </div>
   </div>
 

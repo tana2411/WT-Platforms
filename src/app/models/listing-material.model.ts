@@ -1,16 +1,12 @@
 export enum ListingStatus {
-  APPROVED = 'approved',
+  AVAILABLE = 'available',
   PENDING = 'pending',
-  REJECTED = 'rejected',
-  CANCELLED = 'cancelled',
-  FULLFILLED = 'fullfilled',
   SOLD = 'sold',
+  REJECTED = 'rejected',
 }
 
 export enum ListingState {
   APPROVED = 'approved',
-  ACTIVE = 'active',
-  PROCESSING = 'processing',
   PENDING = 'pending',
   REJECTED = 'rejected',
 }
@@ -77,6 +73,7 @@ export interface ListingMaterial extends ListingMaterialPayload {
   currency: string | null;
   endDate: string | null;
   status: ListingStatus;
+  state: ListingState;
   isFeatured: boolean;
   isUrgent: boolean;
   viewCount: number | null;

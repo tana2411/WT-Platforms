@@ -73,3 +73,12 @@
     display: flex;
   }
 }
+
+:host::ng-deep app-header app-sidebar {
+  display: block;
+  height: 100%;
+
+  .sidebar-wrapper {
+    height: 100%;
+  }
+}

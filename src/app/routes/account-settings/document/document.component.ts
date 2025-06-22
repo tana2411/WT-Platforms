@@ -11,7 +11,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CompanyDocumentType, User } from 'app/models';
 import { IDocument } from 'app/models/listing-material-detail.model';
 import { AuthService } from 'app/services/auth.service';
-import { getStatusColor } from 'app/share/utils/offer';
+import { getOfferStatusColor } from 'app/share/utils/offer';
 import { EditDocumentFormComponent } from './edit-document-form/edit-document-form.component';
 
 @Component({
@@ -34,7 +34,7 @@ export class DocumentComponent implements OnChanges {
   @Input() isReusable: boolean = false;
   @Input() externalDocument: IDocument[] = [];
   user: Signal<User | null | undefined>;
-  getStatusColor = getStatusColor;
+  getOfferStatusColor = getOfferStatusColor;
   documentTypeUploaded: string = '';
   documents: IDocument[] | undefined = undefined;
   CompanyDocumentType = CompanyDocumentType;

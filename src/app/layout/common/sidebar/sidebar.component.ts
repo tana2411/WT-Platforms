@@ -75,13 +75,13 @@ export class SidebarComponent {
       // icon: 'more-icon',
       children: [
         {
-          title: localized$('Seller'),
-          link: ROUTES_WITH_SLASH.myOffersSelling,
+          title: localized$('Buyer'),
+          link: ROUTES_WITH_SLASH.myOffersBuying,
           icon: 'ballot',
         },
         {
-          title: localized$('Buyer'),
-          link: ROUTES_WITH_SLASH.myOffersBuying,
+          title: localized$('Seller'),
+          link: ROUTES_WITH_SLASH.myOffersSelling,
           icon: 'ballot',
         },
       ],

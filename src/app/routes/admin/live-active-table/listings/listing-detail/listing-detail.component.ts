@@ -7,7 +7,12 @@ import { mapCountryCodeToName, materialTypes } from '@app/statics';
 import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { SellListingDetail } from 'app/models';
-import { getStateColor, getStatusColor } from 'app/share/utils/offer';
+import {
+  getListingStateColor,
+  getListingStatusColor,
+  getOfferStateColor,
+  getOfferStatusColor,
+} from 'app/share/utils/offer';
 
 @Component({
   selector: 'app-listing-detail',
@@ -18,8 +23,10 @@ import { getStateColor, getStatusColor } from 'app/share/utils/offer';
 export class ListingDetailComponent implements OnInit {
   mapCountryCodeToName = mapCountryCodeToName;
   materialTypes = materialTypes;
-  getStatusColor = getStatusColor;
-  getStateColor = getStateColor;
+  getOfferStatusColor = getOfferStatusColor;
+  getOfferStateColor = getOfferStateColor;
+  getListingStatusColor = getListingStatusColor;
+  getListingStateColor = getListingStateColor;
   router = inject(Router);
 
   @Input() listing: SellListingDetail | undefined = undefined;

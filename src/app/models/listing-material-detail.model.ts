@@ -27,9 +27,9 @@ export interface Listing {
   companyId: number;
   locationId: number | null;
   createdByUserId: number;
-  materialType: string;
-  materialItem: string;
-  materialForm: string | null;
+  materialType?: string;
+  materialItem?: string;
+  materialForm?: string;
   materialGrading: string | null;
   materialColor: string;
   materialFinishing: string;
