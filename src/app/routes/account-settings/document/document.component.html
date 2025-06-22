@@ -27,8 +27,8 @@
                 </div>
               </div>
               <div class="col-md-2 d-flex align-items-center justify-content-md-end justify-content-start mt-md-0 mt-3">
-                <mat-icon [style.color]="getStatusColor(item!.status)">fiber_manual_record</mat-icon>
-                <div class="fw-500" [style.color]="getStatusColor(item!.status)">{{ (item?.status | titlecase) || '-' }}</div>
+                <mat-icon [style.color]="getOfferStatusColor(item!.status)">fiber_manual_record</mat-icon>
+                <div class="fw-500" [style.color]="getOfferStatusColor(item!.status)">{{ (item?.status | titlecase) || '-' }}</div>
               </div>
             </div>
           </div>

@@ -1,15 +1,31 @@
-import { Component, computed, effect, Input, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  Injector,
+  Input,
+  OnInit,
+  runInInjectionContext,
+  signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { ListingImageType } from 'app/models';
-import { OfferListingItem } from 'app/models/offer';
+import { OfferListingItem, OfferState } from 'app/models/offer';
+import { ListingService } from 'app/services/listing.service';
 import { OfferService } from 'app/services/offer.service';
 import { scrollTop } from 'app/share/utils/common';
+import { getCurrencySignal, getListingStatusColor } from 'app/share/utils/offer';
 import { OfferDetail } from 'app/types/requests/offer';
 import moment from 'moment';
-import { startWith, Subject, switchMap } from 'rxjs';
+import { catchError, EMPTY, startWith, Subject, switchMap } from 'rxjs';
+import { ConfirmModalComponent, ConfirmModalProps } from '../../confirm-modal/confirm-modal.component';
 import { ProductDescriptionComponent } from '../../product-detail/product-description/product-description.component';
 import { ProductImageComponent } from '../../product-detail/product-image/product-image.component';
 import { SpinnerComponent } from '../../spinner/spinner.component';
@@ -24,6 +40,8 @@ import { OfferListingComponent } from '../offer-listing/offer-listing.component'
     OfferListingComponent,
     MatIconModule,
     MatButtonModule,
+    MatDialogModule,
+    MatSnackBarModule,
   ],
   templateUrl: './received-offer-detail.component.html',
   styleUrl: './received-offer-detail.component.scss',
@@ -50,7 +68,7 @@ export class ReceivedOfferDetailComponent implements OnInit {
       {
         label: 'Weight',
         icon: 'fitness_center',
-        value: offer?.listing.materialWeightWanted,
+        value: offer?.listing.materialWeightWanted ?? 0,
       },
       {
         label: 'Best Offer',
@@ -68,13 +86,15 @@ export class ReceivedOfferDetailComponent implements OnInit {
         value: offer?.listing.numberOfOffers,
       },
       {
-        label: 'Loads Remaining',
+        label: 'Remaining Loads',
         icon: 'hourglass_top',
         value: offer?.listing.remainingQuantity,
       },
       {
         label: 'Status',
         icon: 'hourglass_top',
+        color: offer?.listing.status ? getListingStatusColor(offer.listing.status as any) : 'transparent',
+        class: 'fw-bold',
         value: offer?.listing.status,
       },
       // {
@@ -85,9 +105,18 @@ export class ReceivedOfferDetailComponent implements OnInit {
     ];
   });
 
+  canRemove = computed(() => {
+    return (this.listingItems() ?? []).every((i) => i.state !== OfferState.ACTIVE);
+  });
+
+  injector = inject(Injector);
+
   constructor(
     private router: Router,
     private offerService: OfferService,
+    private listingService: ListingService,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
   ) {
     effect(async () => {
       const offer = this.offer();
@@ -118,7 +147,8 @@ export class ReceivedOfferDetailComponent implements OnInit {
       date: moment(offer.createdAt).format('YYYY-MM-DD'),
       buyerId: offer.buyerCompanyId,
       status: offer.status,
-      bidAmount: `${offer.offeredPricePerUnit}/MT`,
+      state: offer.state as any,
+      bidAmount: `${getCurrencySignal(offer.currency)}${offer.offeredPricePerUnit}/MT`,
       buyerStatus: buyer.company.status,
     };
   }
@@ -150,6 +180,48 @@ export class ReceivedOfferDetailComponent implements OnInit {
       .subscribe((res) => {
         this.offer.set(res.data);
       });
+  }
+
+  onRemove() {
+    const listingId = this.offer()?.listing.id;
+    if (!listingId) {
+      return;
+    }
+
+    runInInjectionContext(this.injector, () => {
+      this.dialog
+        .open<ConfirmModalComponent, ConfirmModalProps>(ConfirmModalComponent, {
+          maxWidth: '500px',
+          width: '100%',
+          panelClass: 'px-3',
+          data: {
+            title: 'Are you sure you want to remove this listing? This action cannot be undone.',
+          },
+        })
+        .afterClosed()
+        .pipe(
+          takeUntilDestroyed(),
+          switchMap((shouldDelete) => {
+            if (!shouldDelete) {
+              return EMPTY;
+            }
+
+            return this.listingService.delete(listingId);
+          }),
+          catchError(() => {
+            this.snackBar.open('Failed to remove the listing. Please try again later.', 'Ok', {
+              duration: 3000,
+            });
+
+            return EMPTY;
+            // }
+          }),
+        )
+        .subscribe(() => {
+          this.snackBar.open('Your listing has been successfully removed.');
+          this.onRefresh();
+        });
+    });
   }
 
   onBack() {

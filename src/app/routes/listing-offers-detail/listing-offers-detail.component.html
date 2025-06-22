@@ -1,19 +1,19 @@
-<app-common-layout [title]="''">
+<app-common-layout [title]="listingDetail()?.listing ? getListingTitle(listingDetail()!.listing) : ''">
   @if (loading()) {
     <app-spinner />
   } @else {
     @if (listingDetail(); as listingDetail) {
       <div class="mb-3">
-        <div class="d-flex justify-content-between align-items-center col-12 col-md-6 col-lg-9 mb-3">
-          <h2 class="fw-bold">
-            {{ listingDetail.listing.title }}
-          </h2>
+        <div class="d-flex justify-content-end align-items-center col-12 col-md-6 col-lg-9 mb-3">
+          <!-- <h2 class="fw-bold">
+            {{ getListingTitle(listingDetail.listing) }}
+          </h2> -->
           <app-icon [iconName]="'star_border'" [backgroundColor]="'#E2E2E2'" iconClassName="text-dark"></app-icon>
         </div>
         <div class="mb-3 d-flex gap-2">
           <a class="primary fw-bold text-decoration-none cursor-pointer" (click)="onBack()">{{ 'Back to the materials' | translate }}</a>
           <mat-icon class="primary">chevron_left</mat-icon>
-          <span class="fw-bold">{{ listingDetail.listing.title }}</span>
+          <span class="fw-bold">{{ getListingTitle(listingDetail.listing) }}</span>
         </div>
       </div>
       <div class="d-flex gap-4">

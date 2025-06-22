@@ -1,16 +1,17 @@
 import { CompanyStatus } from './auth.model';
 
 export enum OfferStatus {
-  ACCEPTED = 'accepted',
-  SHIPPED = 'shipped',
-  REJECTED = 'rejected',
   PENDING = 'pending',
+  APPROVED = 'approved', // NEW: Admin approved, visible to seller
+  ACCEPTED = 'accepted',
+  REJECTED = 'rejected',
+  SHIPPED = 'shipped',
 }
 
 export enum OfferState {
-  APPROVED = 'approved',
-  PENDING = 'pending',
-  REJECTED = 'rejected',
+  PENDING = 'pending', // Waiting for admin review
+  ACTIVE = 'active', // Admin approved, seller can act
+  CLOSED = 'closed', // Final state (accepted/rejected)
 }
 
 export enum OfferRequestActionEnum {
@@ -48,5 +49,6 @@ export type OfferListingItem = {
   buyerId: number | null;
   bidAmount: string;
   status: OfferStatus;
+  state: OfferState;
   buyerStatus?: CompanyStatus;
 };

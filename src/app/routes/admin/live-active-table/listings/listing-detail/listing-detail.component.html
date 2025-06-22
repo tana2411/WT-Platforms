@@ -61,14 +61,14 @@
           <div class="flex-md-column d-flex justify-content-between col-md-3 col-12">
             <div class="mb-4 col-6 col-md-auto">
               <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'STATUS' | translate }}</div>
-              <p class="mb-1 small fw-500" [style.color]="getStatusColor(listing!.status)">{{ listing?.status | titlecase }}</p>
+              <p class="mb-1 small fw-500" [style.color]="getListingStatusColor(listing!.status)">{{ listing?.status | titlecase }}</p>
             </div>
 
             <div class="col-5 col-md-auto">
               <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'STATE' | translate }}</div>
               <div class="d-flex align-items-center gap-1">
-                <mat-icon [style.color]="getStateColor(listing!.state)">fiber_manual_record</mat-icon>
-                <span class="small" [style.color]="getStateColor(listing!.state)">{{ listing?.state | titlecase }}</span>
+                <mat-icon [style.color]="getListingStateColor(listing!.state)">fiber_manual_record</mat-icon>
+                <span class="small" [style.color]="getListingStateColor(listing!.state)">{{ listing?.state | titlecase }}</span>
               </div>
             </div>
           </div>

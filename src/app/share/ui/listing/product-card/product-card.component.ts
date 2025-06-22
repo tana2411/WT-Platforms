@@ -4,6 +4,7 @@ import { FallbackImageDirective } from '@app/directives';
 import { mapCountryCodeToName } from '@app/statics';
 import { TranslateModule } from '@ngx-translate/core';
 import { ListingImageType, ListingMaterial } from 'app/models';
+import { getListingTitle } from 'app/share/utils/offer';
 import { ProductStatusComponent } from '../product-status/product-status.component';
 
 @Component({
@@ -19,6 +20,7 @@ export class ProductCardComponent {
   @Output() delete = new EventEmitter();
 
   mapCountryCodeToName = mapCountryCodeToName;
+  getListingTitle = getListingTitle;
   constructor() {}
 
   get featureImage() {

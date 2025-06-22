@@ -4,7 +4,7 @@
     <textarea matInput formControlName="reason" placeholder="Please provide a reason for rejection" rows="4"> </textarea>
     @if (rejectForm.get('reason')?.errors; as errors) {
       <mat-error>
-        @if (errors['required']) {
+        @if (errors['requird']) {
           <span>This field is required</span>
         }
         @if (errors['maxlength']) {

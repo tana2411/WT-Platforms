@@ -12,7 +12,7 @@ import { ListingType } from 'app/models';
 import { AdminListingService } from 'app/services/admin/admin-listing.service';
 import { ListingDetailActionsComponent } from 'app/share/ui/admin/listing-detail-actions/listing-detail-actions.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
-import { getCurrencySignal, getStatusColor } from 'app/share/utils/offer';
+import { getCurrencySignal, getListingStatusColor } from 'app/share/utils/offer';
 import { catchError, EMPTY, map, startWith, Subject, switchMap, tap } from 'rxjs';
 
 @Component({
@@ -39,7 +39,7 @@ export class DetailSaleListingComponent {
   loadingListing = signal(true);
   listingDetailUpdator$ = new Subject<void>();
 
-  getStatusColor = getStatusColor;
+  getListingStatusColor = getListingStatusColor;
   getCurrencySignal = getCurrencySignal;
 
   mapCountryCodeToName = mapCountryCodeToName;
@@ -69,6 +69,7 @@ export class DetailSaleListingComponent {
   }
 
   onBack() {
-    this.router.navigateByUrl(`${ROUTES_WITH_SLASH.commercialManagement}?tab=1`);
+    window.history.back();
+    // this.router.navigateByUrl(`${ROUTES_WITH_SLASH.commercialManagement}?tab=1`);
   }
 }

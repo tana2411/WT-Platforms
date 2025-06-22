@@ -184,7 +184,7 @@ export class FileUploadComponent implements OnInit, OnChanges {
 
   private processFiles(files: FileList | null): void {
     if (this.documents.length >= this.maxFile) {
-      this.snackBar.open($localize`Only accept ${this.maxFile} file(s) upload`);
+      this.snackBar.open(`Only accept ${this.maxFile} file(s) upload`);
       return;
     }
 

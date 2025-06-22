@@ -63,7 +63,7 @@
 
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">status</p>
-            <p class="mb-0 fw-500" [style.color]="getStatusColor(listingDetail.bidStatus.status)">
+            <p class="mb-0 fw-500" [style.color]="getListingStatusColor(listingDetail.listing.status)">
               {{ listingDetail.bidStatus.status | titlecase }}
             </p>
           </div>
@@ -80,7 +80,7 @@
 
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">State</p>
-            <p class="mb-0 fw-500" [style.color]="getStateColor(listingDetail.bidStatus.state)">
+            <p class="mb-0 fw-500" [style.color]="getListingStateColor(listingDetail.listing.state)">
               {{ listingDetail.bidStatus.state | titlecase }}
             </p>
           </div>

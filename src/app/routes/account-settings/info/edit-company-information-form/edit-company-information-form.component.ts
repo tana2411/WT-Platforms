@@ -122,13 +122,9 @@ export class EditCompanyInformationFormComponent implements OnInit {
 
   submit() {
     if (this.formGroup.pristine) {
-      this.snackBar.open(
-        $localize`No changes detected. Please modify your profile details before saving.`,
-        $localize`OK`,
-        {
-          duration: 3000,
-        },
-      );
+      this.snackBar.open(`No changes detected. Please modify your profile details before saving.`, `OK`, {
+        duration: 3000,
+      });
       return;
     }
 
@@ -161,13 +157,9 @@ export class EditCompanyInformationFormComponent implements OnInit {
           .updateCompany(this.data.companyInfo?.id, payload)
           .pipe(
             catchError((err) => {
-              this.snackBar.open(
-                $localize`Failed to save changes. Please check your inputs and try again.`,
-                $localize`OK`,
-                {
-                  duration: 3000,
-                },
-              );
+              this.snackBar.open(`Failed to save changes. Please check your inputs and try again.`, `OK`, {
+                duration: 3000,
+              });
               return EMPTY;
             }),
             finalize(() => {
@@ -175,7 +167,7 @@ export class EditCompanyInformationFormComponent implements OnInit {
             }),
           )
           .subscribe((res) => {
-            this.snackBar.open($localize`Your Company Information has been updated successfully.`, $localize`OK`, {
+            this.snackBar.open(`Your Company Information has been updated successfully.`, `OK`, {
               duration: 3000,
             });
             this.dialogRef.close(true);

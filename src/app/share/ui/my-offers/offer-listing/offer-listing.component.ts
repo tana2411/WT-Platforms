@@ -1,3 +1,4 @@
+import { TitleCasePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -5,13 +6,19 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { OfferListingItem, OfferStatus } from 'app/models/offer';
 import { OfferService } from 'app/services/offer.service';
+import {
+  getCompanyStatusColor,
+  getCompanyStatusLabel,
+  getCurrencySignal,
+  getOfferStatusColor,
+} from 'app/share/utils/offer';
 import { finalize } from 'rxjs';
 import { PaginationComponent } from '../../listing/pagination/pagination.component';
 import { RejectReasonComponent } from '../reject-reason/reject-reason.component';
 
 @Component({
   selector: 'app-offer-listing',
-  imports: [PaginationComponent, MatButtonModule, MatSnackBarModule, MatDialogModule, RouterModule],
+  imports: [PaginationComponent, MatButtonModule, MatSnackBarModule, MatDialogModule, RouterModule, TitleCasePipe],
   templateUrl: './offer-listing.component.html',
   styleUrl: './offer-listing.component.scss',
 })
@@ -23,6 +30,10 @@ export class OfferListingComponent {
   @Output() refresh = new EventEmitter<void>();
 
   actionLoading = signal(false);
+  getOfferStatusColor = getOfferStatusColor;
+  getCompanyStatusColor = getCompanyStatusColor;
+  getCompanyStatusLabel = getCompanyStatusLabel;
+  getCurrencySignal = getCurrencySignal;
 
   constructor(
     private offerService: OfferService,
@@ -31,7 +42,7 @@ export class OfferListingComponent {
   ) {}
 
   canAcceptReject(status: OfferStatus) {
-    return status === OfferStatus.PENDING;
+    return status === OfferStatus.APPROVED;
   }
 
   onPageChange(page: number) {

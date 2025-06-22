@@ -127,7 +127,7 @@ export class BiddingFormComponent implements OnInit {
       listingId: this.props.listingId,
       companyId: user.companyId,
       locationId: Number(value.location),
-      createdByUserId: user.id,
+      createdByUserId: user.user.id,
       quantity: Number(value.loadBidOn),
       offeredPricePerUnit: Number(value.pricePerMetric),
       currency: value.currency!,

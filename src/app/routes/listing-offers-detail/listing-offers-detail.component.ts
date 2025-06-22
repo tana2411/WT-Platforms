@@ -24,6 +24,7 @@ import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { ProductGridComponent } from 'app/share/ui/listing/product-grid/product-grid.component';
 import { ProductStatusComponent } from 'app/share/ui/listing/product-status/product-status.component';
 import { ReviewStatusComponent } from 'app/share/ui/product-detail/review-status/review-status.component';
+import { getListingTitle } from 'app/share/utils/offer';
 import { isNil } from 'lodash';
 
 @Component({
@@ -61,6 +62,8 @@ export class ListingOffersDetailComponent {
   snackBar = inject(MatSnackBar);
   router = inject(Router);
   destroyRef = inject(DestroyRef);
+
+  getListingTitle = getListingTitle;
 
   images: string[] = [];
   descriptionItems = computed(() => {
