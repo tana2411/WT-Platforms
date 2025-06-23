@@ -73,6 +73,7 @@ export class SiteLocationSectionComponent implements OnInit {
     containerType: new FormArray([], [Validators.required]),
     selfLoadUnLoadCapability: new FormControl<string | null>(null, [Validators.required]),
     accessRestrictions: new FormControl<string | null>(null, []),
+    toggleAccessRestriction: new FormControl<boolean | null>(null, [Validators.required]),
   });
 
   submitting = signal<boolean>(false);
@@ -222,7 +223,7 @@ export class SiteLocationSectionComponent implements OnInit {
   send(navigateTo: string) {
     if (this.formGroup.invalid) return;
 
-    const { ...value } = this.formGroup.value;
+    const { toggleAccessRestriction, ...value } = this.formGroup.value;
     const payload: any = {
       ...value,
       companyId: this.user()?.companyId,
