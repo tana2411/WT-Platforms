@@ -40,6 +40,10 @@ interface Listing {
   status: string;
   state: string;
   materialWeightWanted: number;
+  materialWeightPerUnit: number;
+  materialFinishing?: string;
+  materialItem?: string;
+  materialForm?: string;
   quantity: number;
   remainingQuantity: number;
   materialPacking: string;

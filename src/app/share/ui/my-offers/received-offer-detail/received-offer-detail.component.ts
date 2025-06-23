@@ -14,14 +14,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { ListingImageType } from 'app/models';
 import { OfferListingItem, OfferState } from 'app/models/offer';
 import { ListingService } from 'app/services/listing.service';
 import { OfferService } from 'app/services/offer.service';
 import { scrollTop } from 'app/share/utils/common';
-import { getCurrencySignal, getListingStatusColor } from 'app/share/utils/offer';
+import { formatDecimalNumber, getCurrencySignal, getListingStatusColor, getListingTitle } from 'app/share/utils/offer';
 import { OfferDetail } from 'app/types/requests/offer';
 import moment from 'moment';
 import { catchError, EMPTY, startWith, Subject, switchMap } from 'rxjs';
@@ -42,6 +42,7 @@ import { OfferListingComponent } from '../offer-listing/offer-listing.component'
     MatButtonModule,
     MatDialogModule,
     MatSnackBarModule,
+    RouterModule,
   ],
   templateUrl: './received-offer-detail.component.html',
   styleUrl: './received-offer-detail.component.scss',
@@ -54,6 +55,8 @@ export class ReceivedOfferDetailComponent implements OnInit {
   totalItems = signal(0);
   listingItems = signal<OfferListingItem[] | null>(null);
   updator = new Subject<void>();
+
+  getListingTitle = getListingTitle;
 
   galleryImages = computed(
     () =>
@@ -68,7 +71,7 @@ export class ReceivedOfferDetailComponent implements OnInit {
       {
         label: 'Weight',
         icon: 'fitness_center',
-        value: offer?.listing.materialWeightWanted ?? 0,
+        value: `${formatDecimalNumber((offer?.listing.materialWeightPerUnit ?? 0) * (offer?.listing.quantity ?? 0), 4)} MT`,
       },
       {
         label: 'Best Offer',
@@ -219,7 +222,7 @@ export class ReceivedOfferDetailComponent implements OnInit {
         )
         .subscribe(() => {
           this.snackBar.open('Your listing has been successfully removed.');
-          this.onRefresh();
+          this.router.navigateByUrl(ROUTES_WITH_SLASH.myOffersSelling);
         });
     });
   }

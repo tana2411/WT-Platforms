@@ -13,8 +13,8 @@ export const getLocationAddress = (location: OfferLocation) => {
   return `${location.addressLine1}, ${location.city}, ${location.country ? mapCountryCodeToName[location.country] : ''}`;
 };
 
-export const formatDecimalNumber = (number: number): string => {
-  return Number.isInteger(number) ? number.toString() : number.toFixed(2).replace(/\.?0+$/, '');
+export const formatDecimalNumber = (number: number, amount = 2): string => {
+  return Number.isInteger(number) ? number.toString() : number.toFixed(amount).replace(/\.?0+$/, '');
 };
 
 export const getMaterialTypeLabel = (type: string) => {
