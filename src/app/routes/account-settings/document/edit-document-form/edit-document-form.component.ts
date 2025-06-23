@@ -201,7 +201,6 @@ export class EditDocumentFormComponent implements OnInit {
       this.selectedWasteLicenceFile.set(file ?? []);
     }
     this.formGroup.updateValueAndValidity();
-    this.cd.detectChanges();
   }
 
   private isDocumentsChanged(originalDocs: CompanyDocument[], selectedFiles: any[]): boolean {
@@ -224,6 +223,7 @@ export class EditDocumentFormComponent implements OnInit {
       }
 
       if (expiryOrig !== expirySel) {
+        this.formGroup.markAsDirty();
         return true;
       }
     }
@@ -245,14 +245,11 @@ export class EditDocumentFormComponent implements OnInit {
       const { wasteLicence } = this.formGroup.value;
       const validDocument = exitsFile.length > 0;
       const validLicence = wasteLicence ? this.selectedWasteLicenceFile().length > 0 : true;
-      return !(
-        validDocument &&
-        validLicence &&
-        this.isDocumentsChanged(this.companyDocuments, [
-          ...this.selectedDocumentFile(),
-          ...this.selectedWasteLicenceFile(),
-        ])
-      );
+      const hasDocumentChanges = this.isDocumentsChanged(this.companyDocuments, [
+        ...this.selectedDocumentFile(),
+        ...this.selectedWasteLicenceFile(),
+      ]);
+      return !(validDocument && validLicence && hasDocumentChanges);
     }
   }
 
