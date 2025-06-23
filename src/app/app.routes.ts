@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { ROUTES } from './constants/route.const';
-import { CanActivateAuthPage } from './guards/auth/auth.guard';
+import { CanActivateAuthPage, CanActivateUnAuthPage } from './guards/auth/auth.guard';
 import {} from './guards/auth/utils';
 import { AccountSettingComponent } from './routes/account-setting/account-setting.component';
 import { CommercialManagementComponent } from './routes/admin/commercial-management/commercial-management.component';
@@ -22,6 +22,8 @@ import { GuardRequireRole } from './types/auth';
 export const routes: Routes = [
   {
     path: ROUTES.login,
+    canActivate: [CanActivateUnAuthPage],
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
     loadComponent: () =>
       import('./routes/login-pages/login-page/login-page.component').then((m) => m.LoginPageComponent),
   },

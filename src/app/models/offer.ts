@@ -48,6 +48,7 @@ export type OfferListingItem = {
   date: string;
   buyerId: number | null;
   bidAmount: string;
+  totalPrice: string;
   status: OfferStatus;
   state: OfferState;
   buyerStatus?: CompanyStatus;

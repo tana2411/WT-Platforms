@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { mapCountryCodeToName } from '@app/statics';
+import { mapCodeToMaterialItem, mapCodeToPackaging, mapCountryCodeToName } from '@app/statics';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { AdminLayoutComponent } from 'app/layout/admin-layout/admin-layout.component';
 import { ListingType } from 'app/models';
@@ -44,6 +44,8 @@ export class DetailWantedListingComponent {
   mapCountryCodeToName = mapCountryCodeToName;
   getListingStateColor = getListingStateColor;
   getListingStatusColor = getListingStatusColor;
+  mapCodeToMaterialItem = mapCodeToMaterialItem;
+  mapCodeToPackaging = mapCodeToPackaging;
 
   listingDetail = toSignal(
     this.listingDetailUpdator$.pipe(

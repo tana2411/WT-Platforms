@@ -6,10 +6,6 @@ import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { AdminCommercialService } from 'app/services/admin/admin-commercial.service';
-import { AdminBuyerActivityComponent } from 'app/share/ui/admin/commercial/admin-buyer-activity/admin-buyer-activity.component';
-import { AdminMemberComponent } from 'app/share/ui/admin/commercial/admin-member/admin-member.component';
-import { AdminSellerActivityComponent } from 'app/share/ui/admin/commercial/admin-seller-activity/admin-seller-activity.component';
-import { AdminWantedActivityComponent } from 'app/share/ui/admin/commercial/admin-wanted-activity/admin-wanted-activity.component';
 import { filter } from 'rxjs';
 import { AdminLayoutComponent } from '../../../layout/admin-layout/admin-layout.component';
 
@@ -17,16 +13,7 @@ import { AdminLayoutComponent } from '../../../layout/admin-layout/admin-layout.
   selector: 'app-commercial-management',
   templateUrl: './commercial-management.component.html',
   styleUrls: ['./commercial-management.component.scss'],
-  imports: [
-    AdminLayoutComponent,
-    MatTabsModule,
-    AdminSellerActivityComponent,
-    AdminBuyerActivityComponent,
-    AdminWantedActivityComponent,
-    AdminMemberComponent,
-    MatIconModule,
-    RouterModule,
-  ],
+  imports: [AdminLayoutComponent, MatTabsModule, MatIconModule, RouterModule],
   providers: [AdminCommercialService],
 })
 export class CommercialManagementComponent {

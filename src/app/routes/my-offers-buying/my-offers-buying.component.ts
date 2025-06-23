@@ -1,13 +1,14 @@
 import { Component, effect, signal } from '@angular/core';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
+import { mapCodeToPackaging } from '@app/statics';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { TableBuyingOfferItem } from 'app/models/offer';
 import { OfferService } from 'app/services/offer.service';
 import { BuyingOfferTableComponent } from 'app/share/ui/my-offers/buying-offers/buying-offer-table/buying-offer-table.component';
 import { EmptyOfferButton, EmptyOfferComponent } from 'app/share/ui/my-offers/empty-offer/empty-offer.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
-import { formatDecimalNumber, getLocationAddress } from 'app/share/utils/offer';
+import { formatDecimalNumber, getListingTitle, getLocationAddress } from 'app/share/utils/offer';
 import { OfferDetail } from 'app/types/requests/offer';
 import { finalize } from 'rxjs';
 import { LIST_TAB_OFFER, MAP_OFFER_TYPE_TO_EMPTY_OFFER_PROP, OfferType } from './constants';
@@ -80,10 +81,10 @@ export class MyOffersBuyingComponent {
 
     return {
       id: offer.id,
-      materialName: listing.title ?? '',
+      materialName: getListingTitle(listing),
       pickupLocation: getLocationAddress(seller.company),
       destination: getLocationAddress(buyer.company),
-      packaging: listing.materialPacking,
+      packaging: listing.materialPacking ? mapCodeToPackaging[listing.materialPacking] : '',
       quantity: offer.quantity,
       weightPerLoad: formatDecimalNumber(listing.materialWeightWanted / listing.quantity),
       status: offer.status,

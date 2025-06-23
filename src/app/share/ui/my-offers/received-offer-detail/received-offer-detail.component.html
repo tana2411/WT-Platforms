@@ -11,12 +11,11 @@
 
     <div class="d-flex justify-content-center gap-3">
       <button mat-stroked-button class="border-primary primary fw-bold text-uppercase">Edit</button>
-      @if (canRemove()) {
-        <button mat-flat-button class="remove-button fw-bold text-uppercase" (click)="onRemove()">Remove</button>
-      }
+
+      <button mat-flat-button class="remove-button fw-bold text-uppercase" [disabled]="!canRemove()" (click)="onRemove()">Remove</button>
     </div>
   </div>
-  <h2 class="fw-bold mb-4">{{ offer.listing.title }}</h2>
+  <h2 class="fw-bold mb-4 cursor-pointer" routerLink="/wt_waste_listing/{{ offer.listing.id }}">{{ getListingTitle(offer.listing) }}</h2>
 
   <div class="d-flex gap-3 flex-wrap flex-xl-nowrap">
     <div class="product-image-wrapper">
