@@ -20,6 +20,7 @@ export const ROUTES = {
   adminWantedListingDetail: 'admin/wanted-listing',
   adminBuyerActivityDetail: 'admin/buyer-activity',
   adminMemberDetail: 'admin/member',
+  landingPage: 'landing-page',
 };
 
 export const ROUTES_WITH_SLASH = {
@@ -45,4 +46,6 @@ export const ROUTES_WITH_SLASH = {
   adminBuyerActivityDetail: '/admin/buyer-activity',
   adminWantedListingDetail: '/admin/wanted-listing',
   adminMemberDetail: '/admin/member',
+
+  landingPage: '/landing-page',
 };

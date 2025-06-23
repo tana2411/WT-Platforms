@@ -345,11 +345,11 @@
           </div>
           <div class="col-md-12 mb-4">
             <mat-label class="mb-0 fw-bold">{{ 'DO YOU HAVE ANY ACCESS RESTRICTIONS?*' | translate }}</mat-label>
-            <mat-radio-group class="col-6 d-flex justify-content-between radio-mat-error">
-              <mat-radio-button class="bold-label" value="true" (change)="showAccessRestriction.set(true)">{{
+            <mat-radio-group class="col-6 d-flex justify-content-between radio-mat-error" formControlName="toggleAccessRestriction">
+              <mat-radio-button class="bold-label" [value]="true" (change)="showAccessRestriction.set(true)">{{
                 'Yes' | translate
               }}</mat-radio-button>
-              <mat-radio-button class="bold-label" value="N/a" (change)="showAccessRestriction.set(false)">{{
+              <mat-radio-button class="bold-label" [value]="false" (change)="showAccessRestriction.set(false)">{{
                 'No' | translate
               }}</mat-radio-button>
             </mat-radio-group>

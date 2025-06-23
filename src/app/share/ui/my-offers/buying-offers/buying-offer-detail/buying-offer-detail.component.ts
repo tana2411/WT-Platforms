@@ -2,7 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { mapCountryCodeToName } from '@app/statics';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { OfferService } from 'app/services/offer.service';
@@ -22,6 +22,7 @@ import { BidRejectedComponent } from '../offer-detail-status/bid-rejected/bid-re
     MatIconModule,
     MatButtonModule,
     BidRejectedComponent,
+    RouterModule,
   ],
   templateUrl: './buying-offer-detail.component.html',
   styleUrl: './buying-offer-detail.component.scss',

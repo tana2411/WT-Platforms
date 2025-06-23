@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { LanguageSelectorComponent } from '../common/language-selector/language-selector.component';
 import { FooterComponent } from '../footer/footer.component';
 
@@ -10,8 +11,10 @@ import { FooterComponent } from '../footer/footer.component';
   styleUrls: ['./un-auth-layout.component.scss'],
   imports: [RouterModule, RouterModule, FooterComponent, MatButtonModule, LanguageSelectorComponent],
 })
-export class UnAuthLayoutComponent implements OnInit {
-  constructor() {}
+export class UnAuthLayoutComponent {
+  private router = inject(Router);
 
-  ngOnInit() {}
+  goLoginPage() {
+    this.router.navigateByUrl(ROUTES_WITH_SLASH.login);
+  }
 }

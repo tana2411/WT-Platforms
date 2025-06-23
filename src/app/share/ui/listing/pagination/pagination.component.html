@@ -2,10 +2,17 @@
   <div class="row justify-content-end">
     <div class="w-100 mt-5 p-4 p-md-5 background-on-primary rounded rounded-3">
       <div class="d-flex justify-content-between align-items-center col-auto col-md-8 col-lg-7 col-xl-6 mx-auto gap-2">
-        <button mat-stroked-button class="col-3 bg-white" [disabled]="pageNumber === 1" (click)="onPreviousPage()">
-          <mat-icon>arrow_back</mat-icon>
-          <span>{{ 'BACK' | translate }}</span>
-        </button>
+        @if (pageNumber$() <= 1) {
+          <button mat-stroked-button class="col-3 bg-white" disabled>
+            <mat-icon>arrow_back</mat-icon>
+            <span>{{ 'BACK' | translate }}</span>
+          </button>
+        } @else {
+          <button mat-flat-button class="col-3 background-primary" (click)="onPreviousPage()">
+            <mat-icon>arrow_back</mat-icon>
+            <span>{{ 'BACK' | translate }}</span>
+          </button>
+        }
 
         <div class="col-3 col-md-6 d-flex justify-content-center align-items-center">
           @if (pages().length > 0) {
@@ -23,15 +30,25 @@
           }
         </div>
 
-        <button
-          mat-flat-button
-          class="col-3 d-flex flex-row-reverse justify-content-center align-items-center gap-3"
-          [disabled]="pageNumber$() === totalPage() || totalPage() === 0"
-          (click)="onNextPage()"
-        >
-          <span>{{ 'NEXT' | translate }}</span>
-          <mat-icon>arrow_forward</mat-icon>
-        </button>
+        @if (pageNumber$() === totalPage() || totalPage() === 0) {
+          <button
+            mat-stroked-button
+            class="col-3 bg-white d-flex flex-row-reverse justify-content-center align-items-center gap-3"
+            disabled
+          >
+            <span>{{ 'NEXT' | translate }}</span>
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        } @else {
+          <button
+            mat-flat-button
+            class="col-3 d-flex flex-row-reverse justify-content-center align-items-center gap-3"
+            (click)="onNextPage()"
+          >
+            <span>{{ 'NEXT' | translate }}</span>
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        }
       </div>
     </div>
   </div>

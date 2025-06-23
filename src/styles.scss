@@ -24,6 +24,7 @@ $enable-dark-mode: false;
 @import 'styles/materials';
 @import 'styles/variables';
 @import 'styles/themes';
+@import 'styles/material-icon';
 
 @include mat.core();
 
@@ -87,4 +88,11 @@ input::placeholder {
   position: absolute;
   top: 15px;
   right: 15px;
+}
+
+.line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

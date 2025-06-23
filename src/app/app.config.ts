@@ -11,7 +11,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { routes } from './app.routes';
-import { CanActivateAuthPage } from './guards/auth/auth.guard';
+import { CanActivateAuthPage, CanActivateUnAuthPage } from './guards/auth/auth.guard';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { apiBaseUrlInterceptor } from './interceptors/base-url.interceptor';
 
@@ -51,6 +51,7 @@ export const appConfig: ApplicationConfig = {
     },
     { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
     CanActivateAuthPage,
+    CanActivateUnAuthPage,
     importProvidersFrom([
       TranslateModule.forRoot({
         loader: {

@@ -9,7 +9,7 @@
       <span>go back</span>
     </button>
   </div>
-  <h2 class="fw-bold mb-4">{{ offer.listing.title }}</h2>
+  <h2 class="fw-bold mb-4 cursor-pointer" routerLink="/wt_waste_listing/{{ offer.listing.id }}">{{ getListingTitle(offer.listing) }}</h2>
 
   <div class="d-flex gap-3 flex-wrap flex-lg-nowrap mb-5">
     <div class="product-image-wrapper">

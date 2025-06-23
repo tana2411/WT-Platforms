@@ -1,6 +1,6 @@
-import { TitleCasePipe } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
+import { upperFirst } from 'lodash';
 
 type Item = {
   label: string;
@@ -15,15 +15,13 @@ type Item = {
   templateUrl: './product-description.component.html',
   styleUrl: './product-description.component.scss',
   imports: [IconComponent],
-  providers: [TitleCasePipe],
 })
 export class ProductDescriptionComponent {
   @Input({ required: true }) items: Item[] = [];
   @Input() showMaterialDescriptionLabel = true;
 
-  private titlecase = inject(TitleCasePipe);
-
   transformValue(value: any) {
-    return this.titlecase.transform((value ?? '') + '');
+    const safeValue = value ?? '';
+    return upperFirst(safeValue);
   }
 }

@@ -232,14 +232,16 @@
         <div class="col-12 mt-3">
           <mat-checkbox color="primary" formControlName="acceptTerm"
             >{{ 'I accept the' | translate }}
-            <a class="fw-bold text-dark text-underline" href="/termsandconditions" target="_blank">{{ 'Terms & Condition' | translate }}</a>
+            <a class="fw-bold text-dark text-underline" href="/termsandconditions" target="_blank">{{
+              'Terms and Conditions' | translate
+            }}</a>
             {{ 'and' | translate }}
             <a class="fw-bold text-dark text-underline" href="/privacy-policy" target="_blank">{{ 'Privacy Policy' | translate }}</a>
             {{ 'by joining WasteTrade. *' | translate }}
           </mat-checkbox>
           @if (formGroup.get('acceptTerm')?.invalid && formGroup.get('acceptTerm')?.touched) {
             <mat-error class="mt-0 mat-error">
-              {{ 'You must accept the Terms & Conditions and Privacy Policy to proceed.' | translate }}
+              {{ 'You must accept the Terms and Conditions and Privacy Policy to proceed.' | translate }}
             </mat-error>
           }
         </div>

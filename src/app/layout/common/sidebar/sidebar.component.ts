@@ -120,4 +120,8 @@ export class SidebarComponent {
     event.preventDefault();
     event.stopPropagation();
   }
+
+  toLandingPage() {
+    this.router.navigate([ROUTES_WITH_SLASH.landingPage]);
+  }
 }
