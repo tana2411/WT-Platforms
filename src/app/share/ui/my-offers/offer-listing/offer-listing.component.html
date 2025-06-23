@@ -5,7 +5,8 @@
     <div class="d-flex border rounded border-primary align-items-center justify-content-between gap-4 row-item">
       <div class="background-primary p-4 text-white text-center">
         <p class="text-uppercase fw-bold mb-1">bid amount</p>
-        <h2 class="text-uppercase fw-bold mb-3">{{ item.bidAmount }}</h2>
+        <h2 class="text-uppercase fw-bold mb-1">{{ item.bidAmount }}</h2>
+        <p class="text-uppercase fw-500 mb-3">({{ item.totalPrice }})</p>
 
         <button mat-flat-button class="fw-bold text-uppercase rounded py-2 px-3 primary counter-button">counter offer</button>
       </div>
