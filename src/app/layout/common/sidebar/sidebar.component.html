@@ -10,7 +10,7 @@
     </div>
 
     <div class="d-none d-lg-block logo-wrapper">
-      <img src="assets/images/compact-logo.svg" alt="Logo" class="cursor-pointer" routerLink="/login" />
+      <img src="assets/images/compact-logo.svg" alt="Logo" class="cursor-pointer" (click)="toLandingPage()" />
     </div>
 
     @if (user()?.user?.globalRole === Role.USER) {

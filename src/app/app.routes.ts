@@ -375,5 +375,10 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    path: ROUTES.landingPage,
+    canActivate: [CanActivateAuthPage],
+    loadComponent: () => import('./routes/landing-page/landing-page.component').then((m) => m.LandingPageComponent),
+  },
   { path: '**', pathMatch: 'full', redirectTo: 'login' },
 ];
