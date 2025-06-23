@@ -366,7 +366,7 @@
           <mat-checkbox color="primary" formControlName="acceptTerm"
             >{{ 'I accept the' | translate }}
             <a class="fw-bold text-dark text-decoration-underline" href="/termsandconditions" target="_blank">{{
-              'Terms & Condition' | translate
+              'Terms and Conditions' | translate
             }}</a>
             {{ 'and' | translate }}
             <a class="fw-bold text-dark text-decoration-underline" href="/privacy-policy" target="_blank">{{
@@ -376,7 +376,7 @@
           </mat-checkbox>
           @if (formGroup.get('acceptTerm')?.invalid && formGroup.get('acceptTerm')?.touched) {
             <mat-error class="mt-0 mat-error">{{
-              'You must accept the Terms & Conditions and Privacy Policy to proceed.' | translate
+              'You must accept the Terms and Conditions and Privacy Policy to proceed.' | translate
             }}</mat-error>
           }
         </div>
