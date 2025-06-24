@@ -9,6 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { countries } from '@app/statics';
+import { TelephoneFormControlComponent } from '@app/ui';
+import { strictEmailValidator } from '@app/validators';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
@@ -18,9 +20,9 @@ import { ConfirmModalComponent } from 'app/share/ui/confirm-modal/confirm-modal.
 import { catchError, EMPTY, finalize } from 'rxjs';
 
 @Component({
-  selector: 'app-edit-company-information-form',
-  templateUrl: './edit-company-information-form.component.html',
-  styleUrls: ['./edit-company-information-form.component.scss'],
+  selector: 'app-edit-business-address-form',
+  templateUrl: './edit-business-address-form.component.html',
+  styleUrls: ['./edit-business-address-form.component.scss'],
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -32,23 +34,20 @@ import { catchError, EMPTY, finalize } from 'rxjs';
     MatSelectModule,
     MatDialogModule,
     TranslateModule,
+    TelephoneFormControlComponent,
   ],
 })
-export class EditCompanyInformationFormComponent implements OnInit {
+export class EditBusinessAddressFormComponent implements OnInit {
   countryList = countries.slice().sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
-  businessAddress: any = {};
+  companyInformation: any = {};
   formGroup = new FormGroup({
-    name: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(100)]),
-    website: new FormControl<string | null>(null, [
-      Validators.pattern(
-        /^(?:https?:\/\/)?(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,6}(?:\/[A-Za-z0-9\-._~:\/?#[\]@!$&'()*+,;=%]*)?$/,
-      ),
-    ]),
-    registrationNumber: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
-    vatNumber: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
-    companyType: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
-    companyInterest: new FormControl<string | null>(null, [Validators.required]),
-    description: new FormControl<string | null>(null, [Validators.maxLength(500)]),
+    email: new FormControl<string | null>(null, [Validators.required, strictEmailValidator()]),
+    addressLine1: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(200)]),
+    postalCode: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),
+    city: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(100)]),
+    country: new FormControl<string | null>(null, [Validators.required]),
+    stateProvince: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
+    phoneNumber: new FormControl<string | null>(null, [Validators.required]),
   });
 
   readonly dialogRef = inject(MatDialogRef<Company>);
@@ -64,16 +63,7 @@ export class EditCompanyInformationFormComponent implements OnInit {
   ngOnInit() {
     if (this.data.companyInfo) {
       const { companyInfo } = this.data;
-      this.businessAddress = {
-        email: companyInfo?.email,
-        addressLine1: companyInfo?.addressLine1,
-        postalCode: companyInfo?.postalCode,
-        city: companyInfo?.city,
-        country: companyInfo?.country,
-        stateProvince: companyInfo?.stateProvince,
-        phoneNumber: companyInfo?.phoneNumber,
-      };
-      this.formGroup.patchValue({
+      this.companyInformation = {
         name: companyInfo?.name,
         registrationNumber: companyInfo?.registrationNumber,
         vatNumber: companyInfo?.vatNumber,
@@ -81,6 +71,15 @@ export class EditCompanyInformationFormComponent implements OnInit {
         companyType: companyInfo?.companyType,
         companyInterest: companyInfo?.companyInterest,
         description: companyInfo?.description,
+      };
+      this.formGroup.patchValue({
+        email: companyInfo?.email,
+        addressLine1: companyInfo?.addressLine1,
+        postalCode: companyInfo?.postalCode,
+        city: companyInfo?.city,
+        country: companyInfo?.country,
+        stateProvince: companyInfo?.stateProvince,
+        phoneNumber: companyInfo?.phoneNumber,
       });
 
       this.formGroup.updateValueAndValidity();
@@ -131,7 +130,7 @@ export class EditCompanyInformationFormComponent implements OnInit {
       return;
     }
 
-    const payload: any = { ...this.formGroup.value, ...this.businessAddress };
+    const payload: any = { ...this.companyInformation, ...this.formGroup.value };
 
     this.dialog
       .open(ConfirmModalComponent, {
@@ -150,6 +149,8 @@ export class EditCompanyInformationFormComponent implements OnInit {
         if (!shouldSaveChange) return;
 
         this.submitting.set(true);
+        console.log(payload);
+
         this.settingsService
           .updateCompany(this.data.companyInfo?.id, payload)
           .pipe(

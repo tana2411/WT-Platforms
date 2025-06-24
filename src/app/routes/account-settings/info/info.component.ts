@@ -9,6 +9,7 @@ import { mapCountryCodeToName } from '@app/statics';
 import { TranslateModule } from '@ngx-translate/core';
 import { Company, User } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
+import { EditBusinessAddressFormComponent } from './edit-business-address-form/edit-business-address-form.component';
 import { EditCompanyInformationFormComponent } from './edit-company-information-form/edit-company-information-form.component';
 import { EditSocialUrlFormComponent } from './edit-social-url-form/edit-social-url-form.component';
 @Component({
@@ -43,6 +44,21 @@ export class InfoComponent {
       maxWidth: '960px',
     };
     const dialogRef = this.dialog.open(EditCompanyInformationFormComponent, dataConfig);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.authService.checkToken().subscribe();
+      }
+    });
+  }
+
+  openEditBusinessAddress() {
+    const dataConfig: MatDialogConfig = {
+      data: { companyInfo: this.company },
+      width: '100%',
+      maxWidth: '960px',
+    };
+    const dialogRef = this.dialog.open(EditBusinessAddressFormComponent, dataConfig);
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
