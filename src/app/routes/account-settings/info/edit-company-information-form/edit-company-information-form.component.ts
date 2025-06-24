@@ -11,6 +11,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { countries } from '@app/statics';
 import { TelephoneFormControlComponent } from '@app/ui';
 import { strictEmailValidator } from '@app/validators';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { Company } from 'app/models';
@@ -122,9 +123,13 @@ export class EditCompanyInformationFormComponent implements OnInit {
 
   submit() {
     if (this.formGroup.pristine) {
-      this.snackBar.open(`No changes detected. Please modify your profile details before saving.`, `OK`, {
-        duration: 3000,
-      });
+      this.snackBar.open(
+        localized$(`No changes detected. Please modify your profile details before saving.`),
+        localized$(`OK`),
+        {
+          duration: 3000,
+        },
+      );
       return;
     }
 
