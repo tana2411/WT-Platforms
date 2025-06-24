@@ -210,7 +210,10 @@ export class EditDocumentFormComponent implements OnInit {
     for (const file of selectedFiles) {
       const orig = originalMap.get(file.fileId ?? file.id);
 
-      if (!orig) return true;
+      if (!orig) {
+        this.formGroup.markAsDirty();
+        return true;
+      }
       const expiryOrig = orig.expiryDate
         ? moment(orig.expiryDate, ['YYYY-MM-DD', 'DD/MM/YYYY', moment.ISO_8601]).format('YYYY-MM-DD')
         : null;
@@ -228,11 +231,14 @@ export class EditDocumentFormComponent implements OnInit {
       }
     }
 
-    if (!wasteLicence) {
+    if (!wasteLicence && this.formGroup.dirty) {
       return true;
     }
 
-    if (originalDocs.length !== selectedFiles.length) return true;
+    if (originalDocs.length !== selectedFiles.length) {
+      this.formGroup.markAsDirty();
+      return true;
+    }
 
     return false;
   }

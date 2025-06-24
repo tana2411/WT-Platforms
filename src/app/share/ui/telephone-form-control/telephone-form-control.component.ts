@@ -37,6 +37,7 @@ import { countries } from '../../../statics/country-data';
 export class TelephoneFormControlComponent implements OnInit, ControlValueAccessor, Validators {
   @Input() isRequired: boolean = false;
   @Input() label: string = 'TELEPHONE';
+  @Input() isHalf: boolean = false;
   countryList = countries;
 
   countryCodeControl = new FormControl<any | null>(null);
