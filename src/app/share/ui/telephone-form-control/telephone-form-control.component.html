@@ -2,7 +2,7 @@
   <mat-label class="fw-bold fs-16">{{ label | translate }}{{ isRequired ? '*' : '' }}</mat-label>
   <div class="d-flex flex-column phone-input">
     <div class="d-flex rounded">
-      <div class="col-md-2 col-5">
+      <div class="col-5" [class.col-md-2]="!isHalf" [class.col-md-3]="isHalf">
         <mat-form-field appearance="fill" class="w-100 no-outline left-side">
           <mat-select [formControl]="countryCodeControl">
             <mat-select-trigger>
@@ -23,7 +23,7 @@
         </mat-form-field>
       </div>
 
-      <div class="col-md-10 col-7">
+      <div class="col-7" [class.col-md-10]="!isHalf" [class.col-md-9]="isHalf">
         <mat-form-field appearance="fill" class="w-100 no-outline bg-white right-side">
           <input matInput placeholder="ex. 741234480" type="text" [formControl]="telephoneControl" />
         </mat-form-field>

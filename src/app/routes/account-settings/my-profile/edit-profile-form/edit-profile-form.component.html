@@ -66,19 +66,21 @@
         </mat-form-field>
       </div>
       <div class="row mb-4">
-        <mat-label class="fw-bold mb-1 fs-16">{{ 'EMAIL ADDRESS' | translate }}*</mat-label>
-        <mat-form-field appearance="outline" class="w-100">
-          <input matInput placeholder="{{ 'Type here' | translate }}" type="text" formControlName="email" />
-          @if (formGroup.get('email')?.hasError('required')) {
-            <mat-error>{{ 'This field is required' | translate }}</mat-error>
-          }
-          @if (formGroup.get('email')?.hasError('email')) {
-            <mat-error>{{ 'Invalid email address format. Please enter a valid email' | translate }}</mat-error>
-          }
-        </mat-form-field>
-      </div>
-      <div class="mb-4">
-        <app-telephone-form-control formControlName="phoneNumber" [isRequired]="true"></app-telephone-form-control>
+        <div class="col-md-6 mb-4">
+          <mat-label class="fw-bold mb-1 fs-16">{{ 'EMAIL ADDRESS' | translate }}*</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="{{ 'Type here' | translate }}" type="text" formControlName="email" />
+            @if (formGroup.get('email')?.hasError('required')) {
+              <mat-error>{{ 'This field is required' | translate }}</mat-error>
+            }
+            @if (formGroup.get('email')?.hasError('email')) {
+              <mat-error>{{ 'Invalid email address format. Please enter a valid email' | translate }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <app-telephone-form-control formControlName="phoneNumber" [isRequired]="true" [isHalf]="true"></app-telephone-form-control>
+        </div>
       </div>
     </form>
   </mat-dialog-content>
