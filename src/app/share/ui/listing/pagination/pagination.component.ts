@@ -39,32 +39,50 @@ export class PaginationComponent implements OnInit {
 
   private updatePages(): void {
     const pages: number[] = [];
-    const maxButtonsToShow = this.isMobile() ? 3 : 5;
+    const maxButtonsToShow = 3;
+    const total = this.totalPage();
+    const current = this.pageNumber$();
 
-    if (this.totalPage() === 0) {
+    if (total === 0) {
       this.pages.set([]);
       return;
     }
 
-    if (this.totalPage() <= maxButtonsToShow) {
-      for (let i = 1; i <= this.totalPage(); i++) {
+    if (total <= maxButtonsToShow + 2) {
+      // Show all pages if not enough to need ellipsis
+      for (let i = 1; i <= total; i++) {
         pages.push(i);
       }
     } else {
-      let startPage: number;
+      pages.push(1); // Always show first page
 
-      if (this.pageNumber$() <= Math.ceil(maxButtonsToShow / 2)) {
-        startPage = 1;
-      } else if (this.pageNumber$() + Math.floor(maxButtonsToShow / 2) >= this.totalPage()) {
-        startPage = this.totalPage() - maxButtonsToShow + 1;
-      } else {
-        startPage = this.pageNumber$() - Math.floor(maxButtonsToShow / 2);
+      let start = Math.max(2, current - Math.floor(maxButtonsToShow / 2));
+      let end = Math.min(total - 1, current + Math.floor(maxButtonsToShow / 2));
+
+      // Adjust if close to start or end
+      if (current <= Math.ceil(maxButtonsToShow / 2)) {
+        start = 2;
+        end = maxButtonsToShow;
+      } else if (current >= total - Math.floor(maxButtonsToShow / 2)) {
+        start = total - maxButtonsToShow + 1;
+        end = total - 1;
       }
 
-      for (let i = 0; i < maxButtonsToShow; i++) {
-        pages.push(startPage + i);
+      if (start > 2) {
+        pages.push(-1); // Ellipsis
       }
+
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+
+      if (end < total - 1) {
+        pages.push(-1); // Ellipsis
+      }
+
+      pages.push(total); // Always show last page
     }
+
     this.pages.set(pages);
   }
 
