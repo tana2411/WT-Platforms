@@ -1,31 +1,41 @@
 <div class="container-fluid">
   <div class="row justify-content-end">
-    <div class="w-100 mt-5 p-4 p-md-5 background-on-primary rounded rounded-3">
-      <div class="d-flex justify-content-between align-items-center col-auto col-md-8 col-lg-7 col-xl-6 mx-auto gap-2">
+    <div class="w-100 mt-5 p-1 p-md-5 background-on-primary rounded rounded-3">
+      <div
+        class="d-flex justify-content-center justify-content-md-between align-items-center col-auto col-md-9 col-lg-7 col-xl-6 mx-auto gap-2"
+      >
         @if (pageNumber$() <= 1) {
-          <button mat-stroked-button class="col-3 bg-white" disabled>
-            <mat-icon>arrow_back</mat-icon>
-            <span>{{ 'BACK' | translate }}</span>
+          <button mat-stroked-button class="col-3 bg-white navigation-button prev-button" disabled>
+            <mat-icon class="mr-0">arrow_back</mat-icon>
+            @if (!isMobile()) {
+              <span>{{ 'BACK' | translate }}</span>
+            }
           </button>
         } @else {
-          <button mat-flat-button class="col-3 background-primary" (click)="onPreviousPage()">
-            <mat-icon>arrow_back</mat-icon>
-            <span>{{ 'BACK' | translate }}</span>
+          <button mat-flat-button class="col-3 background-primary navigation-button prev-button" (click)="onPreviousPage()">
+            <mat-icon class="mr-0">arrow_back</mat-icon>
+            @if (!isMobile()) {
+              <span>{{ 'BACK' | translate }}</span>
+            }
           </button>
         }
 
-        <div class="col-3 col-md-6 d-flex justify-content-center align-items-center">
+        <div class="col-auto col-md-7 col-lg-9 col-xl-7 d-flex justify-content-center align-items-center">
           @if (pages().length > 0) {
             @for (page of pages(); track $index) {
-              <button
-                class="rounded text-center border border-2 border-dark p-1 fw-bold mx-1 bg-white"
-                [class.background-dark]="page == pageNumber$()"
-                [class.text-white]="page == pageNumber$()"
-                (click)="onPageButtonClick(page)"
-                [style.min-width]="'40px'"
-              >
-                {{ page }}
-              </button>
+              @if (page !== -1) {
+                <button
+                  class="rounded text-center border border-2 border-dark p-1 fw-bold mx-1 bg-white"
+                  [class.background-dark]="page == pageNumber$()"
+                  [class.text-white]="page == pageNumber$()"
+                  (click)="onPageButtonClick(page)"
+                  [style.min-width]="'40px'"
+                >
+                  {{ page }}
+                </button>
+              } @else {
+                <p>...</p>
+              }
             }
           }
         </div>
@@ -33,19 +43,23 @@
         @if (pageNumber$() === totalPage() || totalPage() === 0) {
           <button
             mat-stroked-button
-            class="col-3 bg-white d-flex flex-row-reverse justify-content-center align-items-center gap-3"
+            class="col-6 bg-white d-flex flex-row-reverse justify-content-center align-items-center gap-3 navigation-button next-button"
             disabled
           >
-            <span>{{ 'NEXT' | translate }}</span>
+            @if (!isMobile()) {
+              <span>{{ 'NEXT' | translate }}</span>
+            }
             <mat-icon>arrow_forward</mat-icon>
           </button>
         } @else {
           <button
             mat-flat-button
-            class="col-3 d-flex flex-row-reverse justify-content-center align-items-center gap-3"
+            class="col-3 d-flex flex-row-reverse justify-content-center align-items-center gap-3 navigation-button next-button"
             (click)="onNextPage()"
           >
-            <span>{{ 'NEXT' | translate }}</span>
+            @if (!isMobile()) {
+              <span>{{ 'NEXT' | translate }}</span>
+            }
             <mat-icon>arrow_forward</mat-icon>
           </button>
         }

@@ -14,7 +14,7 @@
             <mat-expansion-panel-header>
               <div class="">
                 <div class="d-flex align-items-center fw-bold gap-4 text-uppercase" [style]="{ marginBottom: '20px' }">
-                  {{ location.location_name }}
+                  {{ location.locationName }}
                   @if ($index === 0) {
                     <p class="d-flex align-items-center px-3 py-1 gap-2 background-on-primary primary text-uppercase fw-bold mb-0">
                       <mat-icon>domain</mat-icon>
@@ -43,7 +43,7 @@
                 </div>
                 <div class="col-12 col-sm-4 px-2">
                   <div class="fw-bold mb-1 text-uppercase">ADDRESS LINE 2</div>
-                  <div>{{ location.address_line || '-' }}</div>
+                  <div>{{ location.addressLine || '-' }}</div>
                 </div>
                 <div class="col-12 col-sm-4 px-2">
                   <div class="fw-bold mb-1 text-uppercase">ZIP / POSTAL CODE</div>
@@ -57,7 +57,7 @@
                 </div>
                 <div class="col-12 col-sm-4 px-2">
                   <div class="fw-bold mb-1 text-uppercase">COUNTY / STATE / REGION</div>
-                  <div>{{ location.state_province || '-' }}</div>
+                  <div>{{ location.stateProvince || '-' }}</div>
                 </div>
                 <div class="col-12 col-sm-4 px-2">
                   <div class="fw-bold mb-1 text-uppercase">COUNTRY</div>
@@ -67,7 +67,7 @@
               <div class="row g-3">
                 <div class="col-12 col-sm-4 px-2">
                   <div class="fw-bold mb-1 text-uppercase">TELEPHONE</div>
-                  <div>{{ location.phone_number || '-' }}</div>
+                  <div>{{ location.phoneNumber || '-' }}</div>
                 </div>
               </div>
             </div>
@@ -77,7 +77,7 @@
               <div class="row g-3 mb-4">
                 <div class="col-12 col-sm-6 px-2">
                   <div class="fw-bold mb-1 text-uppercase">Is there a loading ramp on this site?*</div>
-                  <div>{{ toYesNo(location.loading_ramp) }}</div>
+                  <div>{{ toYesNo(location.loadingRamp) }}</div>
                 </div>
                 <div class="col-12 col-sm-6 px-2">
                   <div class="fw-bold mb-1 text-uppercase">Have you got a weighbridge on this site?*</div>
@@ -87,7 +87,7 @@
               <div class="row g-3">
                 <div class="col-12 col-sm-6 px-2">
                   <div class="fw-bold mb-1 text-uppercase">Can you load/unload material yourself on this site?*</div>
-                  <div>{{ toYesNo(location.self_load_unload_capability) }}</div>
+                  <div>{{ toYesNo(location.selfLoadUnloadCapability) }}</div>
                 </div>
                 <div class="col-12 col-sm-6 px-2">
                   <div class="fw-bold mb-1 text-uppercase">Which container types can you manage on this site?*</div>

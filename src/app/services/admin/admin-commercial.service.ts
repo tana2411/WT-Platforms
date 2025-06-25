@@ -56,8 +56,8 @@ export class AdminCommercialService {
     }
 
     return this.http.patch(`/users/admin/${id}/${action}`, {
-      infoRequestType: requestInfo ?? message,
-      message: sendMessage ?? otherMessage,
+      infoRequestType: message || requestInfo,
+      message: otherMessage || sendMessage,
     });
   }
 }

@@ -28,10 +28,10 @@ export class CommercialManagementComponent {
   activatedRoute = inject(ActivatedRoute);
 
   listTabs = [
-    { label: 'Members', path: 'members' },
-    { label: 'Sellers', path: 'sellers' },
-    { label: 'Buyers', path: 'buyers' },
-    { label: 'Wanted', path: 'wanted' },
+    { label: 'MEMBERS', path: 'members' },
+    { label: 'SELLERS', path: 'sellers' },
+    { label: 'BUYERS', path: 'buyers' },
+    { label: 'WANTED', path: 'wanted' },
   ];
 
   ngOnInit() {
