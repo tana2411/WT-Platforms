@@ -98,13 +98,13 @@ export class SidebarComponent {
     {
       title: localized$('Live Activity'),
       link: ROUTES_WITH_SLASH.liveActiveTable,
-      icon: 'table_chart',
+      icon: undefined,
       iconClass: 'highlight',
     },
     {
       title: localized$('Commercial Management'),
       link: ROUTES_WITH_SLASH.commercialManagement,
-      icon: 'business_center',
+      icon: undefined,
       iconClass: 'highlight',
     },
   ];
