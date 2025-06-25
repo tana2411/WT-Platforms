@@ -2,6 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { inject, Injectable, PLATFORM_ID, REQUEST } from '@angular/core';
 
 export const ACCESS_TOKEN_KEY = 'accessToken';
+export const FORGOT_PASSWORD_TIME_KEY = 'forgot-password-time';
 
 @Injectable({
   providedIn: 'root',
