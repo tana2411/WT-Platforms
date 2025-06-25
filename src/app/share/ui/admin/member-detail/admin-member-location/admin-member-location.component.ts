@@ -24,7 +24,7 @@ export class AdminMemberLocationComponent {
   mapCountryCodeToName = mapCountryCodeToName;
 
   transformedLocations = computed(() => {
-    const mainLocation = this.locations()?.findIndex((location) => !!location.main_location);
+    const mainLocation = this.locations()?.findIndex((location) => !!location.mainLocation);
     let newLocations = cloneDeep(this.locations() ?? []);
     if (mainLocation !== undefined && mainLocation >= 0) {
       const mainLocationItem = newLocations.splice(mainLocation, 1)[0];
@@ -38,7 +38,7 @@ export class AdminMemberLocationComponent {
   private readonly materialTypes = materialTypes;
 
   materialAccepteds = computed(() => {
-    const acceptedMaterials = (this.locations() ?? []).map((i) => i.accepted_materials ?? '');
+    const acceptedMaterials = (this.locations() ?? []).map((i) => i.acceptedMaterials ?? '');
     const result = acceptedMaterials.map((acceptedMaterialItem) => {
       return this.materialTypes
         .filter((type) => {
@@ -57,7 +57,7 @@ export class AdminMemberLocationComponent {
   });
 
   containerType(location: ItemOf<MemberDetail['company']['locations']>) {
-    return location.container_type?.map((type: string) => {
+    return location.containerType?.map((type: string) => {
       return MAP_CONTAINER_TYPES_TO_NAME[type];
     });
   }

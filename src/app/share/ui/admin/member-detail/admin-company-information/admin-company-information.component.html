@@ -14,14 +14,14 @@
 
             <div class="col-12 col-sm-4 px-2">
               <div class="fw-bold mb-1 text-uppercase">COMPANY TYPE</div>
-              <div class="">{{ company.company_type || '-' | titlecase }}</div>
+              <div class="">{{ company.companyType || '-' | titlecase }}</div>
             </div>
 
             <div class="col-12 col-sm-4 px-2">
               <div class="fw-bold d-flex align-items-center gap-2 mb-1 text-uppercase">
                 <mat-icon class="error">info_rounded</mat-icon> VAT
               </div>
-              <div class="">{{ company.vat_number || '-' }}</div>
+              <div class="">{{ company.vatNumber || '-' }}</div>
             </div>
 
             <!-- <div class="col-12 col-sm-4 px-2">
@@ -33,7 +33,7 @@
           <div class="row g-3 mx-0 mb-4">
             <div class="col-12 col-sm-4 px-2">
               <div class="fw-bold mb-1 text-uppercase">COMPANY REGISTRATION NUMBER</div>
-              <div class="">{{ company.registration_number || '-' }}</div>
+              <div class="">{{ company.registrationNumber || '-' }}</div>
             </div>
 
             <div class="col-12 col-sm-4 px-2">
@@ -43,7 +43,7 @@
 
             <div class="col-12 col-sm-4 px-2">
               <div class="fw-bold mb-1 text-uppercase">Company Telephone</div>
-              <div class="">{{ company.phone_number || '-' }}</div>
+              <div class="">{{ company.phoneNumber || '-' }}</div>
             </div>
           </div>
 

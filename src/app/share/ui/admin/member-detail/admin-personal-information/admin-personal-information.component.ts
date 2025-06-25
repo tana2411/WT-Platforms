@@ -19,8 +19,8 @@ export class AdminPersonalInformationComponent {
       return '';
     }
 
-    const firstName = userValue.first_name || '';
-    const lastName = userValue.last_name || '';
+    const firstName = userValue.firstName || '';
+    const lastName = userValue.lastName || '';
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   });
 }

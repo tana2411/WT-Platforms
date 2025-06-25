@@ -99,9 +99,9 @@ export class AdminCompanyDocumentComponent {
         this.documentTypeUploaded = [
           ...new Set(
             document
-              .filter((d) => d.document_type != 'waste_carrier_license')
+              .filter((d) => d.documentType != 'waste_carrier_license')
               .map((d) =>
-                (d.document_type ?? '')
+                (d.documentType ?? '')
                   .split('_')
                   .map((token) => token.at(0)?.toUpperCase() + token.slice(1))
                   .join(' '),
@@ -117,7 +117,7 @@ export class AdminCompanyDocumentComponent {
     if (this.documents()) {
       this.resetDocument();
       this.documents().forEach((document) => {
-        switch (document.document_type) {
+        switch (document.documentType) {
           case CompanyDocumentType.EnvironmentalPermit:
             this.environmentPermitDocuments.push(document);
             break;
@@ -147,7 +147,7 @@ export class AdminCompanyDocumentComponent {
 
   viewDocument(item: CommercialDocument) {
     this.dialog.open(DocumentPreviewModalComponent, {
-      data: { url: item.document_url },
+      data: { url: item.documentUrl },
       width: '960px',
       maxWidth: '95vw',
     });
