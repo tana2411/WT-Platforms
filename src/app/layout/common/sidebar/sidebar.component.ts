@@ -59,14 +59,35 @@ export class SidebarComponent {
     },
     {
       title: localized$('Create Listing'),
-      link: ROUTES_WITH_SLASH.sell,
       icon: 'library_add',
-      iconClass: 'highlight',
+      children: [
+        {
+          title: localized$('Sell Material'),
+          link: ROUTES_WITH_SLASH.sell,
+          icon: 'ballot',
+        },
+        {
+          title: localized$('List Wanted Material'),
+          link: `${ROUTES_WITH_SLASH.sell}/wanted`,
+          icon: 'ballot',
+        },
+      ],
     },
     {
       title: localized$('My Listings'),
-      link: ROUTES_WITH_SLASH.saleListings,
       icon: 'library_books',
+      children: [
+        {
+          title: localized$('Wanted Listings'),
+          link: ROUTES_WITH_SLASH.wantedListings,
+          icon: 'ballot',
+        },
+        {
+          title: localized$('Sales Listings'),
+          link: ROUTES_WITH_SLASH.saleListings,
+          icon: 'ballot',
+        },
+      ],
     },
 
     {

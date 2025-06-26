@@ -2,7 +2,7 @@ import { Component, EnvironmentInjector, inject, runInInjectionContext, signal }
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Data, NavigationEnd, Router } from '@angular/router';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { FilterParams, ListingMaterial } from 'app/models';
@@ -15,7 +15,7 @@ import { ProductGridComponent } from 'app/share/ui/listing/product-grid/product-
 import { BiddingFormComponent } from 'app/share/ui/product-detail/bidding-form/bidding-form.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
 import { scrollTop } from 'app/share/utils/common';
-import { catchError, EMPTY, finalize, of, switchMap } from 'rxjs';
+import { catchError, EMPTY, filter, finalize, map, of, switchMap } from 'rxjs';
 import { PAGE_SIZE } from '../wanted-material/wanted-material.component';
 
 @Component({
@@ -34,6 +34,8 @@ import { PAGE_SIZE } from '../wanted-material/wanted-material.component';
   styleUrl: './sale-listing.component.scss',
 })
 export class SaleListingComponent {
+  listingType: 'sell' | 'wanted' = 'sell';
+
   items = signal<ListingMaterial[]>([]);
   filter = signal<FilterParams | undefined>(undefined);
   loading = signal<boolean>(false);
@@ -49,11 +51,29 @@ export class SaleListingComponent {
   private injector = inject(EnvironmentInjector);
 
   constructor() {
-    this.filter.set({
-      skip: 0,
-      limit: PAGE_SIZE,
-      where: {},
-    });
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        map(() => {
+          let currentRoute: ActivatedRoute = this.route;
+          while (currentRoute.firstChild) {
+            currentRoute = currentRoute.firstChild;
+          }
+          return currentRoute;
+        }),
+        switchMap((child: ActivatedRoute) => child.data),
+        takeUntilDestroyed(),
+      )
+      .subscribe((data: Data) => {
+        this.listingType = data['listingType'] ?? 'sell';
+        if (this.listingType) {
+          this.filter.set({
+            skip: 0,
+            limit: PAGE_SIZE,
+            where: { listingType: this.listingType },
+          });
+        }
+      });
   }
 
   onPageChange(page: number) {

@@ -1,4 +1,4 @@
-<app-common-layout [title]="'My Sales Listings'">
+<app-common-layout [title]="'My ' + (listingType == 'sell' ? 'Sales' : 'Wanted') + ' Listings'">
   <app-filter
     [displayFilter]="['country', 'materialType', 'materialItem', 'wasteStoration', 'showFullfilledListing']"
     (filterChanged)="onFilterChange($event)"

@@ -47,6 +47,7 @@
                   routerLink="{{ child.link }}"
                   (click)="clickChildMenu($event)"
                   routerLinkActive="active-link"
+                  [routerLinkActiveOptions]="{ exact: true }"
                   class="menu-item child-menu-item d-flex gap-3 align-items-center"
                 >
                   <p class="fw-500 mb-0">{{ child.title | translate }}</p>
