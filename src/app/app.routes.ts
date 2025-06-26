@@ -89,6 +89,16 @@ export const routes: Routes = [
     canActivate: [CanActivateAuthPage],
     data: {
       requireAuthParams: [GuardRequireRole.SuperAdmin, GuardRequireRole.Trading],
+      listingType: 'sell',
+    },
+    loadComponent: () => import('./routes/sale-listing/sale-listing.component').then((m) => m.SaleListingComponent),
+  },
+  {
+    path: ROUTES.wantedListings,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [GuardRequireRole.SuperAdmin, GuardRequireRole.Trading],
+      listingType: 'wanted',
     },
     loadComponent: () => import('./routes/sale-listing/sale-listing.component').then((m) => m.SaleListingComponent),
   },
@@ -102,6 +112,9 @@ export const routes: Routes = [
     children: [
       {
         path: '',
+        data: {
+          type: 'sell',
+        },
         loadComponent: () =>
           import('./routes/create-listing/sell-lising-material-form/sell-lising-material-form.component').then(
             (m) => m.SellLisingMaterialFormComponent,
@@ -109,6 +122,9 @@ export const routes: Routes = [
       },
       {
         path: 'wanted',
+        data: {
+          type: 'wanted',
+        },
         loadComponent: () =>
           import('./routes/create-listing/list-wanted-material-form/list-wanted-material-form.component').then(
             (m) => m.ListWantedMaterialFormComponent,

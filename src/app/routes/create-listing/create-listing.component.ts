@@ -1,47 +1,50 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatTabsModule } from '@angular/material/tabs';
+import { ActivatedRoute, Data, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
+import { filter, map, switchMap } from 'rxjs';
+import { ListWantedMaterialFormComponent } from './list-wanted-material-form/list-wanted-material-form.component';
+import { SellLisingMaterialFormComponent } from './sell-lising-material-form/sell-lising-material-form.component';
 
-const ListTab = [
-  {
-    title: 'SELL MATERIAL',
-    path: '/sell',
-  },
-  {
-    title: 'LIST WANTED MATERIAL',
-    path: 'wanted',
-  },
-] as const;
 @Component({
   selector: 'app-create-listing',
   templateUrl: './create-listing.component.html',
   styleUrls: ['./create-listing.component.scss'],
-  imports: [CommonLayoutComponent, MatTabsModule, RouterModule, TranslateModule],
+  imports: [
+    CommonLayoutComponent,
+    MatTabsModule,
+    RouterModule,
+    TranslateModule,
+    SellLisingMaterialFormComponent,
+    ListWantedMaterialFormComponent,
+  ],
 })
 export class CreateListingComponent implements OnInit {
-  selectedIndex = 0;
-  listTab = ListTab;
+  type: 'sell' | 'wanted' = 'sell';
 
   router = inject(Router);
-  activatedRoute = inject(ActivatedRoute);
+  route = inject(ActivatedRoute);
 
-  constructor() {}
-
-  ngOnInit() {
-    const child = this.activatedRoute.firstChild;
-    const tabName = child?.snapshot.url[0]?.path;
-    const routes: string[] = Object.values(this.listTab).map((tab) => tab.path);
-
-    if (tabName) {
-      const index = routes.indexOf(tabName);
-      this.selectedIndex = index > -1 ? index : 0;
-    }
+  constructor() {
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        map(() => {
+          let currentRoute: ActivatedRoute = this.route;
+          while (currentRoute.firstChild) {
+            currentRoute = currentRoute.firstChild;
+          }
+          return currentRoute;
+        }),
+        switchMap((child: ActivatedRoute) => child.data),
+        takeUntilDestroyed(),
+      )
+      .subscribe((data: Data) => {
+        this.type = data['type'] ?? 'sell';
+      });
   }
 
-  onTabChange(event: MatTabChangeEvent) {
-    const segment = this.listTab[event.index];
-    this.router.navigate([segment?.path], { relativeTo: this.activatedRoute });
-  }
+  ngOnInit() {}
 }
