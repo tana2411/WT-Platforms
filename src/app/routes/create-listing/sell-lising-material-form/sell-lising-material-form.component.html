@@ -285,6 +285,9 @@
                   @if (formGroup.get('materialWeight')?.hasError('min')) {
                     <mat-error class="mt-0"> Please enter a positive number </mat-error>
                   }
+                  @if (formGroup.get('materialWeight')?.hasError('max')) {
+                    <mat-error class="mt-0"> Material Weight cannot exceed 1,000,000,000 </mat-error>
+                  }
                 </mat-form-field>
               </div>
 
@@ -297,6 +300,9 @@
                   }
                   @if (formGroup.get('quantity')?.hasError('min')) {
                     <mat-error class="mt-0"> Please enter a positive number </mat-error>
+                  }
+                  @if (formGroup.get('quantity')?.hasError('max')) {
+                    <mat-error class="mt-0"> Number of Loads cannot exceed 1,000,000,000 </mat-error>
                   }
                 </mat-form-field>
               </div>
@@ -326,6 +332,9 @@
                   <input matInput type="number" placeholder="Type here" formControlName="pricePerMetricTonne" />
                   @if (formGroup.get('pricePerMetricTonne')?.hasError('required')) {
                     <mat-error>This is a required field.</mat-error>
+                  }
+                  @if (formGroup.get('pricePerMetricTonne')?.hasError('max')) {
+                    <mat-error class="mt-0"> Price per Metric Tonne cannot exceed 1,000,000,000 </mat-error>
                   }
                 </mat-form-field>
               </div>

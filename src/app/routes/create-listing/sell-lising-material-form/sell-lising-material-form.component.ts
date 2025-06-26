@@ -93,11 +93,11 @@ export class SellLisingMaterialFormComponent {
     materialRemainInCountry: new FormControl<string | null>('false', [Validators.required]),
     wasteStoration: new FormControl<string | null>(null, [Validators.required]),
     weightUnit: new FormControl<string | null>(null, [Validators.required]),
-    materialWeight: new FormControl<number | null>(null, [Validators.required]),
-    quantity: new FormControl<number | null>(null, [Validators.required]),
+    materialWeight: new FormControl<number | null>(null, [Validators.required, Validators.max(1000000000)]),
+    quantity: new FormControl<number | null>(null, [Validators.required, Validators.max(1000000000)]),
 
     currency: new FormControl<string | null>(null, [Validators.required]),
-    pricePerMetricTonne: new FormControl<string | null>(null, [Validators.required]),
+    pricePerMetricTonne: new FormControl<string | null>(null, [Validators.required, Validators.max(1000000000)]),
 
     startDate: new FormControl<Date | null>(null, [Validators.required, pastDateValidator()]),
 
