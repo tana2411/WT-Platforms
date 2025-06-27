@@ -38,7 +38,16 @@ export const allFilters: Filter[] = [
     name: 'SORT BY',
     value: 'sortBy',
     type: 'select',
-    options: [],
+    options: [
+      {
+        name: 'Available Listing',
+        code: 'available',
+      },
+      {
+        name: 'Unavailable Listing',
+        code: 'unavailable',
+      },
+    ],
   },
   {
     name: 'BUYER',

@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterModule } from '@angular/router';
+import { AvatarComponent } from '../common/avatar/avatar.component';
+import { IconComponent } from '../common/icon/icon.component';
+import { LanguageSelectorComponent } from '../common/language-selector/language-selector.component';
+import { NotificationComponent } from '../common/notification/notification.component';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
-import { MatIconModule } from '@angular/material/icon';
-import { IconComponent } from '../common/icon/icon.component';
-import { AvatarComponent } from '../common/avatar/avatar.component';
-import { NotificationComponent } from '../common/notification/notification.component';
-import { LanguageSelectorComponent } from '../common/language-selector/language-selector.component';
 
 @Component({
   selector: 'app-common-layout',
@@ -17,6 +18,7 @@ import { LanguageSelectorComponent } from '../common/language-selector/language-
     AvatarComponent,
     NotificationComponent,
     LanguageSelectorComponent,
+    RouterModule,
   ],
   templateUrl: './common-layout.component.html',
   styleUrl: './common-layout.component.scss',

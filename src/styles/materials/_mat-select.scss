@@ -20,3 +20,9 @@
 .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after {
   color: $black !important;
 }
+
+.left-side {
+  .mat-mdc-option .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked {
+    margin-left: 0px !important;
+  }
+}

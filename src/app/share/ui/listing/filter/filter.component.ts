@@ -16,7 +16,7 @@ import { countries, materialTypes } from 'app/statics';
 import { ItemOf } from 'app/types/utils';
 import { isEqual, omit } from 'lodash';
 import { debounceTime, distinctUntilChanged, EMPTY, from, switchMap } from 'rxjs';
-import { allFilters, ListingSortBy, listingSortOption, wantedSortOption } from './constant';
+import { allFilters, ListingSortBy } from './constant';
 
 const searchKey = 'searchTerm';
 export type PageType = 'default' | 'sellListing' | 'wanted';
@@ -64,12 +64,6 @@ export class FilterComponent implements OnInit {
     return !isEqual(omit(this.filterForm.value, searchKey), omit(this.formDefaultValue(), searchKey));
   }
 
-  sortByMappings: Record<PageType, { code: string; name: string }[]> = {
-    default: [{ code: 'availableListings', name: 'Available Listings' }],
-    sellListing: listingSortOption,
-    wanted: wantedSortOption,
-  };
-
   get minEndDate(): Date | null {
     return this.filterForm.get('dateRequireFrom')?.value ?? null;
   }
@@ -114,15 +108,8 @@ export class FilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    const sortOption = this.sortByMappings[this.pageType] || [];
-
     if (this.displayFilter) {
       const needsCompany = this.displayFilter.includes('company');
-      const needsSortBy = this.displayFilter.includes('sortBy');
-
-      if (needsSortBy) {
-        this.allFilters = this.allFilters.map((f) => (f.value == 'sortBy' ? { ...f, options: sortOption } : f));
-      }
 
       if (needsCompany) {
         this.companiesService
@@ -154,7 +141,9 @@ export class FilterComponent implements OnInit {
           if (newMaterialType) {
             const selectedMaterialType = materialTypes.find((m) => m.code == newMaterialType);
             if (selectedMaterialType) {
-              itemOptions = selectedMaterialType.materials;
+              itemOptions = selectedMaterialType.materials.sort((a, b) =>
+                a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+              );
             }
           }
 
@@ -169,6 +158,16 @@ export class FilterComponent implements OnInit {
     this.activeFilter = this.displayFilter
       .map((val) => this.allFilters.find((f) => f.value === val))
       .filter((f): f is typeof f => !!f);
+
+    this.activeFilter.map((filter) => {
+      if (filter.type == 'select') {
+        return {
+          ...filter,
+          options: filter.options.sort((a: any, b: any) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())),
+        };
+      }
+      return filter;
+    });
     this.buildForm();
   }
 
