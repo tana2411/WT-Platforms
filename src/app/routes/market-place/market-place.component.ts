@@ -1,4 +1,5 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, EnvironmentInjector, inject, runInInjectionContext, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,10 +7,11 @@ import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { FilterParams, ListingMaterial } from 'app/models';
 import { ListingService } from 'app/services/listing.service';
+import { ConfirmModalComponent, ConfirmModalProps } from 'app/share/ui/confirm-modal/confirm-modal.component';
 import { BiddingFormComponent } from 'app/share/ui/product-detail/bidding-form/bidding-form.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
 import { scrollTop } from 'app/share/utils/common';
-import { catchError, finalize, of } from 'rxjs';
+import { catchError, EMPTY, finalize, of, switchMap } from 'rxjs';
 import { FilterComponent } from '../../share/ui/listing/filter/filter.component';
 import { ListingFooterComponent } from '../../share/ui/listing/listing-footer/listing-footer.component';
 import { PaginationComponent } from '../../share/ui/listing/pagination/pagination.component';
@@ -45,6 +47,7 @@ export class MarketPlaceComponent {
   router = inject(Router);
   route = inject(ActivatedRoute);
   dialog = inject(MatDialog);
+  private injector = inject(EnvironmentInjector);
 
   constructor() {
     this.filter.set({
@@ -119,5 +122,47 @@ export class MarketPlaceComponent {
 
   onSelect(item: ListingMaterial) {
     this.router.navigateByUrl(`${ROUTES_WITH_SLASH.listingOfferDetail}/${item.id}`);
+  }
+
+  deleteItem(item: ListingMaterial) {
+    runInInjectionContext(this.injector, () => {
+      this.dialog
+        .open<ConfirmModalComponent, ConfirmModalProps>(ConfirmModalComponent, {
+          maxWidth: '500px',
+          width: '100%',
+          panelClass: 'px-3',
+          data: {
+            title: 'Are you sure you want to remove this listing? This action cannot be undone.',
+          },
+        })
+        .afterClosed()
+        .pipe(
+          takeUntilDestroyed(),
+          switchMap((shouldDelete) => {
+            if (!shouldDelete) {
+              return EMPTY;
+            }
+
+            return this.listingService.delete(item.id);
+          }),
+          catchError(() => {
+            // if (err?.error?.error?.statusCode == 403) {
+            //   this.snackBar.open('You do not have permission to remove this listing.', 'Ok', {
+            //     duration: 3000,
+            //   });
+            // } else {
+            this.snackBar.open('Failed to remove the listing. Please try again later.', 'Ok', {
+              duration: 3000,
+            });
+
+            return EMPTY;
+            // }
+          }),
+        )
+        .subscribe(() => {
+          this.snackBar.open('Your listing has been successfully removed.');
+          this.refresh();
+        });
+    });
   }
 }
