@@ -1,4 +1,4 @@
-import { DatePipe, TitleCasePipe } from '@angular/common';
+import { DatePipe, DecimalPipe, TitleCasePipe } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,7 +13,7 @@ import { getListingStateColor, getListingStatusColor } from 'app/share/utils/off
   selector: 'app-wanted-detail',
   templateUrl: './wanted-detail.component.html',
   styleUrls: ['./wanted-detail.component.scss'],
-  imports: [DatePipe, TitleCasePipe, MatIconModule, MatButtonModule, TranslateModule],
+  imports: [DatePipe, TitleCasePipe, MatIconModule, MatButtonModule, TranslateModule, DecimalPipe],
 })
 export class WantedDetailComponent implements OnInit {
   @Input() wanted: WantedListingDetail | undefined = undefined;
