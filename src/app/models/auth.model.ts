@@ -40,10 +40,16 @@ export type Company = {
   instagramUrl: string | null;
   linkedinUrl: string | null;
   xUrl: string | null;
+  additionalSocialMediaUrls: AdditionalUrl[];
   createdAt: string;
   updatedAt: string;
   companyDocuments: IDocument[];
 };
+
+export interface AdditionalUrl {
+  name: string;
+  url: string;
+}
 
 type UserInfor = {
   id: number;
