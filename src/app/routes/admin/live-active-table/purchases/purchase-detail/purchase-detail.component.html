@@ -1,5 +1,5 @@
 <div class="w-100">
-  <div class="border border-primary rounded-4 p-3 p-md-4 mt-4 mb-3">
+  <div class="border cursor-pointer border-primary rounded-4 p-3 p-md-4 mt-4 mb-3" (click)="onViewDetail()">
     <div class="row gy-4">
       <!-- BUYER Section -->
       <div class="col-12 col-md-6 col-lg-3">
@@ -74,7 +74,7 @@
 
       <!-- Button Section -->
       <div class="col-12 col-lg-2 d-flex align-items-center justify-content-center justify-content-lg-end">
-        <button mat-stroked-button class="border-primary primary" (click)="onViewDetail()">{{ 'VIEW DETAIL' | translate }}</button>
+        <button mat-stroked-button class="border-primary primary">{{ 'VIEW DETAIL' | translate }}</button>
       </div>
     </div>
   </div>
