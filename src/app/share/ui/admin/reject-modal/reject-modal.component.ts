@@ -50,7 +50,7 @@ export class RejectModalComponent {
 
   rejectForm = new FormGroup({
     rejectionReason: new FormControl<string | null>(null, [Validators.required]),
-    message: new FormControl<string | null>(null),
+    message: new FormControl<string | undefined>(undefined),
   });
 
   adminListingService = inject(AdminListingService);
@@ -63,6 +63,9 @@ export class RejectModalComponent {
         tap((v) => {
           if (v.rejectionReason === RejectionReason.Other) {
             this.rejectForm.get('message')?.addValidators([Validators.required]);
+          } else {
+            this.rejectForm.get('message')?.removeValidators([Validators.required]);
+            this.rejectForm.get('message')?.setValue(undefined);
           }
         }),
         takeUntilDestroyed(),
