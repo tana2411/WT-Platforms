@@ -61,7 +61,12 @@
         </div>
       } @else {
         <a routerLink="/offer-detail/{{ item.id }}">
-          <button mat-stroked-button type="button" [disabled]="actionLoading()" class="view-detail-btn primary border-primary">
+          <button
+            mat-stroked-button
+            type="button"
+            [disabled]="actionLoading()"
+            class="view-detail-btn primary border-primary text-uppercase fw-bold"
+          >
             View details
           </button>
         </a>

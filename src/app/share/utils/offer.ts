@@ -5,12 +5,24 @@ import {
   mapCountryCodeToName,
   materialTypes,
 } from '@app/statics';
-import { CompanyStatus, ListingState, ListingStatus } from 'app/models';
+import {
+  CompanyLocationDetail,
+  CompanyStatus,
+  ListingDocument,
+  ListingImageType,
+  ListingState,
+  ListingStatus,
+} from 'app/models';
+import { Location } from 'app/models/admin/commercial.model';
 import { OfferState, OfferStatus } from 'app/models/offer';
-import { OfferLocation } from 'app/types/requests/offer';
 
-export const getLocationAddress = (location: OfferLocation) => {
-  return `${location.addressLine1}, ${location.city}, ${location.country ? mapCountryCodeToName[location.country] : ''}`;
+export const getLocationAddress = (location: CompanyLocationDetail | Location) => {
+  const data = [
+    location.addressLine,
+    location.city,
+    location.country ? mapCountryCodeToName[location.country] : '',
+  ].filter((i) => !!i);
+  return data.join(', ');
 };
 
 export const formatDecimalNumber = (number: number, amount = 2): string => {
@@ -140,4 +152,8 @@ export const getListingTitle = (listing: {
     .join(' - ');
 
   return data;
+};
+
+export const getListingFeatureImage = (documents: ListingDocument[]) => {
+  return documents.find((d) => d.documentType === ListingImageType.FEATURE_IMAGE)?.documentUrl;
 };

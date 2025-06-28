@@ -16,11 +16,13 @@ import { ShareListingComponent } from 'app/share/ui/product-detail/share-listing
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
 import { catchError, EMPTY, filter, finalize, map, switchMap, tap } from 'rxjs';
 
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
+import { AuthService } from 'app/services/auth.service';
+import { ProductExpiryComponent } from 'app/share/ui/listing/product-expiry/product-expiry.component';
 import { ProductGridComponent } from 'app/share/ui/listing/product-grid/product-grid.component';
 import { ProductStatusComponent } from 'app/share/ui/listing/product-status/product-status.component';
 import { ReviewStatusComponent } from 'app/share/ui/product-detail/review-status/review-status.component';
@@ -31,6 +33,7 @@ import { isNil } from 'lodash';
   selector: 'app-listing-offers-detail',
   imports: [
     ProductImageComponent,
+    ProductExpiryComponent,
     MaterialOwnerComponent,
     ProductDescriptionComponent,
     SpinnerComponent,
@@ -53,15 +56,18 @@ export class ListingOffersDetailComponent {
   mapCountryCodeToName = mapCountryCodeToName;
   relateListing: ListingMaterial[] = [];
 
-  offerId = signal<number | undefined>(undefined);
-  listingDetail = signal<ListingMaterialDetail | undefined>(undefined);
-  isSeller = computed(() => this.listingDetail()?.listing?.listingType === ListingType.SELL);
-  loading = signal(false);
-
   listingService = inject(ListingService);
   snackBar = inject(MatSnackBar);
   router = inject(Router);
   destroyRef = inject(DestroyRef);
+  auth = inject(AuthService);
+
+  offerId = signal<number | undefined>(undefined);
+  listingDetail = signal<ListingMaterialDetail | undefined>(undefined);
+  isSeller = computed(() => this.listingDetail()?.listing?.listingType === ListingType.SELL);
+  loading = signal(false);
+  userId = toSignal(this.auth.user$.pipe(map((user) => user?.userId)));
+  isOwnListing = computed(() => this.userId() === this.listingDetail()?.listing.createdByUserId);
 
   getListingTitle = getListingTitle;
 

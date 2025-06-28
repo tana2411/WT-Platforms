@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import {
   Component,
   computed,
@@ -24,7 +25,7 @@ import { scrollTop } from 'app/share/utils/common';
 import { formatDecimalNumber, getCurrencySignal, getListingStatusColor, getListingTitle } from 'app/share/utils/offer';
 import { OfferDetail } from 'app/types/requests/offer';
 import moment from 'moment';
-import { catchError, EMPTY, startWith, Subject, switchMap } from 'rxjs';
+import { catchError, EMPTY, of, startWith, Subject, switchMap } from 'rxjs';
 import { ConfirmModalComponent, ConfirmModalProps } from '../../confirm-modal/confirm-modal.component';
 import { ProductDescriptionComponent } from '../../product-detail/product-description/product-description.component';
 import { ProductImageComponent } from '../../product-detail/product-image/product-image.component';
@@ -44,12 +45,13 @@ import { OfferListingComponent } from '../offer-listing/offer-listing.component'
     MatSnackBarModule,
     RouterModule,
   ],
+  providers: [DecimalPipe],
   templateUrl: './received-offer-detail.component.html',
   styleUrl: './received-offer-detail.component.scss',
 })
 export class ReceivedOfferDetailComponent implements OnInit {
   @Input({ required: true }) offerId: number | undefined;
-  offer = signal<OfferDetail | undefined>(undefined);
+  offer = signal<OfferDetail | undefined | null>(undefined);
   loadingListing = signal(false);
   page = signal(1);
   totalItems = signal(0);
@@ -57,6 +59,7 @@ export class ReceivedOfferDetailComponent implements OnInit {
   updator = new Subject<void>();
 
   getListingTitle = getListingTitle;
+  decimalPipe = inject(DecimalPipe);
 
   galleryImages = computed(
     () =>
@@ -70,32 +73,32 @@ export class ReceivedOfferDetailComponent implements OnInit {
     return [
       {
         label: 'Weight',
-        icon: 'fitness_center',
-        value: `${formatDecimalNumber((offer?.listing.materialWeightPerUnit ?? 0) * (offer?.listing.quantity ?? 0), 4)} MT`,
+        // icon: 'fitness_center',
+        value: `${this.decimalPipe.transform(formatDecimalNumber((offer?.listing.materialWeightPerUnit ?? 0) * (offer?.listing.quantity ?? 0), 4))} MT`,
       },
       {
         label: 'Best Offer',
-        icon: 'pages',
-        value: offer?.listing.bestOffer,
+        // icon: 'pages',
+        value: this.decimalPipe.transform(offer?.listing.bestOffer),
       },
       {
         label: `No. loads`,
-        icon: 'sell',
-        value: offer?.listing.quantity,
+        // icon: 'sell',
+        value: this.decimalPipe.transform(offer?.listing.quantity),
       },
       {
         label: 'No. offers',
-        icon: 'list_alt',
+        // icon: 'list_alt',
         value: offer?.listing.numberOfOffers,
       },
       {
         label: 'Remaining Loads',
-        icon: 'hourglass_top',
-        value: offer?.listing.remainingQuantity,
+        // icon: 'hourglass_top',
+        value: this.decimalPipe.transform(offer?.listing.remainingQuantity),
       },
       {
         label: 'Status',
-        icon: 'hourglass_top',
+        // icon: 'hourglass_top',
         color: offer?.listing.status ? getListingStatusColor(offer.listing.status as any) : 'transparent',
         class: 'fw-bold',
         value: offer?.listing.status,
@@ -180,6 +183,9 @@ export class ReceivedOfferDetailComponent implements OnInit {
       .pipe(
         startWith(0),
         switchMap(() => this.offerService.getOfferDetail(this.offerId!)),
+        catchError((error) => {
+          return of({ data: null });
+        }),
       )
       .subscribe((res) => {
         this.offer.set(res.data);

@@ -5,8 +5,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { mapCountryCodeToName } from '@app/statics';
 import { MemberDetail } from 'app/models/admin/commercial.model';
-import { getLocationAddress } from 'app/share/utils/offer';
-import { OfferLocation } from 'app/types/requests/offer';
 
 @Component({
   selector: 'app-admin-company-information',
@@ -29,7 +27,13 @@ export class AdminCompanyInformationComponent {
   }
 
   location = computed(() => {
-    return getLocationAddress(this.company() as OfferLocation);
+    const location = this.company() ?? ({} as any);
+    const data = [
+      location.addressLine1,
+      location.city,
+      location.country ? mapCountryCodeToName[location.country] : undefined,
+    ].filter((i) => !!i);
+    return data.join(', ');
   });
 
   // openEditCompanyInfo() {

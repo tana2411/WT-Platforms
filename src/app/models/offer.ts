@@ -23,6 +23,7 @@ export enum OfferRequestActionEnum {
 export type TableSellingOfferItem = {
   id: number;
   date: string;
+  featureImage?: string;
   materialName: string;
   quantity: number;
   country: string | null;
@@ -33,6 +34,7 @@ export type TableSellingOfferItem = {
 
 export type TableBuyingOfferItem = {
   id: number;
+  featureImage?: string;
   materialName: string;
   quantity: number;
   status: OfferStatus;

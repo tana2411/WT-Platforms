@@ -1,4 +1,4 @@
-import { ListingDocument } from 'app/models';
+import { CompanyLocationDetail, ListingDocument } from 'app/models';
 import { CompanyStatus } from 'app/models/auth.model';
 import { OfferStatus } from 'app/models/offer';
 
@@ -80,10 +80,12 @@ export interface OfferDetail {
   seller: {
     company: Company;
     user: User;
+    location: CompanyLocationDetail;
   };
   buyer: {
     company: Company;
     user: User;
+    location: CompanyLocationDetail;
   };
 }
 

@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="d-flex gap-4">
-        <div class="d-flex flex-column gap-4 col-12 col-md-6 col-lg-9">
+        <div class="d-flex flex-column gap-4 col-12 col-md-6 col-lg-8">
           <app-product-image [images]="images" />
 
           <app-product-description [items]="descriptionItems()">
@@ -33,10 +33,17 @@
           <app-share-listing [title]="listingDetail.listing.title" />
         </div>
 
-        <div class="d-flex flex-column gap-4 col-12 col-md-6 col-lg-3 flex-fill mb-3">
-          <app-review-status [state]="listingDetail.listing.state"></app-review-status>
-          <!-- <app-product-status [product]="listingDetail()"></app-product-status> -->
+        <div class="d-flex flex-column gap-4 col-12 col-md-6 col-lg-4 flex-fill mb-3">
+          @if (isOwnListing()) {
+            <app-product-expiry [listingDetail]="listingDetail" />
+            <app-review-status [state]="listingDetail.listing.state"></app-review-status>
+          }
+          <app-product-status [product]="listingDetail.listing"></app-product-status>
           <app-material-owner [listingDetail]="listingDetail" />
+
+          @if (!isOwnListing()) {
+            <app-product-expiry [listingDetail]="listingDetail" />
+          }
 
           <app-material-action [isSeller]="isSeller()" [listingDetail]="listingDetail" />
         </div>

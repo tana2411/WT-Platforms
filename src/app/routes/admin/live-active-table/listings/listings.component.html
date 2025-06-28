@@ -1,6 +1,7 @@
 <app-list-container
   [fetchFn]="listingsService.getListingsSell.bind(listingsService)"
   [displayFilter]="['name', 'materialType', 'country', 'status', 'state', 'sortBy']"
+  [customOptionValues]="customOptionValues"
   [pageSize]="20"
   [pageType]="'sellListing'"
   [emptyMessage]="'No listings found. Adjust your filters or check back later.'"

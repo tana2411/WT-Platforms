@@ -1,4 +1,4 @@
-import { TitleCasePipe } from '@angular/common';
+import { DecimalPipe, TitleCasePipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,6 +27,7 @@ import { catchError, EMPTY, map, startWith, Subject, switchMap, tap } from 'rxjs
     ListingDetailActionsComponent,
     DateFormatPipe,
     TitleCasePipe,
+    DecimalPipe,
   ],
   templateUrl: './detail-wanted-listing.component.html',
   styleUrl: './detail-wanted-listing.component.scss',

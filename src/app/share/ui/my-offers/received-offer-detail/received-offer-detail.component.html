@@ -19,8 +19,7 @@
 
   <div class="d-flex gap-3 flex-wrap flex-xl-nowrap">
     <div class="product-image-wrapper">
-      <!-- <app-product-image [images]="galleryImages()" /> -->
-      <app-product-image />
+      <app-product-image [images]="galleryImages()" />
     </div>
 
     <div class="flex-1">
@@ -42,6 +41,6 @@
       />
     }
   }
-} @else {
+} @else if (offer() === undefined) {
   <app-spinner></app-spinner>
 }

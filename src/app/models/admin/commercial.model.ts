@@ -106,7 +106,7 @@ export type CommercialDocument = {
   companyId: number;
 };
 
-type Location = {
+export type Location = {
   id: number;
   locationName: string;
   firstName: string;

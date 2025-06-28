@@ -41,6 +41,7 @@ export type PageType = 'default' | 'sellListing' | 'wanted';
 export class FilterComponent implements OnInit {
   @Input() displayFilter: Array<ItemOf<typeof allFilters>['value']> = [];
   @Input() pageType: PageType = 'default';
+  @Input() customOptionValues: Record<ItemOf<typeof allFilters>['value'], any> = {};
   @Output() filterChanged = new EventEmitter<any>();
   @Output() searchTerm = new EventEmitter<string | null>();
 
@@ -168,6 +169,19 @@ export class FilterComponent implements OnInit {
       }
       return filter;
     });
+
+    if (this.customOptionValues) {
+      this.activeFilter = this.activeFilter.map((filter) => {
+        if (this.customOptionValues[filter.value]) {
+          return {
+            ...filter,
+            options: this.customOptionValues[filter.value],
+          };
+        }
+        return filter;
+      });
+    }
+
     this.buildForm();
   }
 

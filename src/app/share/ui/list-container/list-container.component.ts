@@ -5,7 +5,9 @@ import { mapCountryCodeToName } from '@app/statics';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule } from '@ngx-translate/core';
 import { scrollTop } from 'app/share/utils/common';
+import { ItemOf } from 'app/types/utils';
 import { catchError, finalize, of } from 'rxjs';
+import { allFilters } from '../listing/filter/constant';
 import { FilterComponent, PageType } from '../listing/filter/filter.component';
 import { PaginationComponent } from '../listing/pagination/pagination.component';
 import { SpinnerComponent } from '../spinner/spinner.component';
@@ -25,6 +27,7 @@ export class ListContainerComponent implements OnInit {
   mapCountryCodeToName = mapCountryCodeToName;
 
   @Input() displayFilter: string[] = [];
+  @Input() customOptionValues: Record<ItemOf<typeof allFilters>['value'], any> = {};
   @Input() fetchFn!: (filter: any) => import('rxjs').Observable<PageResult>;
   @Input() pageSize = 20;
   @Input() pageType: PageType = 'default';

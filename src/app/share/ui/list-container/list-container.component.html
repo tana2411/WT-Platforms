@@ -1,6 +1,7 @@
 <div class="col-12 h-100 d-flex flex-column flex-grown" style="overflow: hidden">
   <app-filter
     [displayFilter]="displayFilter"
+    [customOptionValues]="customOptionValues"
     (filterChanged)="onFilterChange($event)"
     (searchTerm)="searchTerm.set($event)"
     [pageType]="pageType"
@@ -15,9 +16,9 @@
       @if (items().length === 0) {
         <div class="fs-24 empty-message-container">
           @if (invalidPage()) {
-            <p class="text-muted">{{ emptyMessage | translate }}</p>
+            <p class="text-muted text-center">{{ emptyMessage | translate }}</p>
           } @else if (noResults()) {
-            <p class="text-muted">{{ emptyMessage | translate }}</p>
+            <p class="text-muted text-center">{{ emptyMessage | translate }}</p>
           }
         </div>
       } @else {

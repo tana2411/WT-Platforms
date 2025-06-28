@@ -1,6 +1,7 @@
 <app-list-container
   [fetchFn]="listingsService.getListingsWanted.bind(listingsService)"
   [displayFilter]="['dateRange', 'buyerCompanyName', 'company', 'materialType', 'country', 'status', 'state', 'sortBy']"
+  [customOptionValues]="customOptionValues"
   [pageSize]="20"
   [emptyMessage]="'No wanted are currently available for display.'"
   [isCountryFilter]="false"
