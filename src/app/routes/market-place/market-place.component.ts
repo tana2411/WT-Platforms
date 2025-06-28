@@ -10,6 +10,7 @@ import { ListingService } from 'app/services/listing.service';
 import { ConfirmModalComponent, ConfirmModalProps } from 'app/share/ui/confirm-modal/confirm-modal.component';
 import { BiddingFormComponent } from 'app/share/ui/product-detail/bidding-form/bidding-form.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
+import { UnsuccessfulSearchComponent } from 'app/share/ui/unsuccessful-search/unsuccessful-search.component';
 import { scrollTop } from 'app/share/utils/common';
 import { catchError, EMPTY, finalize, of, switchMap } from 'rxjs';
 import { FilterComponent } from '../../share/ui/listing/filter/filter.component';
@@ -32,6 +33,7 @@ const PAGE_SIZE = 10;
     MatDialogModule,
     BiddingFormComponent,
     SpinnerComponent,
+    UnsuccessfulSearchComponent,
   ],
 })
 export class MarketPlaceComponent {
@@ -57,6 +59,7 @@ export class MarketPlaceComponent {
         listingType: 'sell',
       },
     });
+    this.loading.set(true);
   }
 
   onPageChange(page: number) {

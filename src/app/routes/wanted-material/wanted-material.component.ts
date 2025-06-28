@@ -12,6 +12,7 @@ import { ListingFooterComponent } from 'app/share/ui/listing/listing-footer/list
 import { PaginationComponent } from 'app/share/ui/listing/pagination/pagination.component';
 import { ProductGridComponent } from 'app/share/ui/listing/product-grid/product-grid.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
+import { UnsuccessfulSearchComponent } from 'app/share/ui/unsuccessful-search/unsuccessful-search.component';
 import { scrollTop } from 'app/share/utils/common';
 import { catchError, finalize, of } from 'rxjs';
 
@@ -28,6 +29,7 @@ export const PAGE_SIZE = 10;
     ListingFooterComponent,
     SpinnerComponent,
     TranslateModule,
+    UnsuccessfulSearchComponent,
   ],
 })
 export class WantedMaterialComponent implements OnInit {
@@ -53,6 +55,7 @@ export class WantedMaterialComponent implements OnInit {
         listingType: 'wanted',
       },
     });
+    this.loading.set(true);
   }
 
   ngOnInit() {}
