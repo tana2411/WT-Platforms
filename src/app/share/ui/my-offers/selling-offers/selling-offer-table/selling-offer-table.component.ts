@@ -1,4 +1,4 @@
-import { TitleCasePipe } from '@angular/common';
+import { DecimalPipe, TitleCasePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
@@ -9,7 +9,7 @@ import { PaginationComponent } from '../../../listing/pagination/pagination.comp
 
 @Component({
   selector: 'app-selling-offer-table',
-  imports: [PaginationComponent, MatButtonModule, RouterModule, FallbackImageDirective, TitleCasePipe],
+  imports: [PaginationComponent, MatButtonModule, RouterModule, FallbackImageDirective, TitleCasePipe, DecimalPipe],
   templateUrl: './selling-offer-table.component.html',
   styleUrl: './selling-offer-table.component.scss',
 })
