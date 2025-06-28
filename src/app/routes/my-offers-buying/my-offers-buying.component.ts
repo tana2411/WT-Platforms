@@ -82,8 +82,8 @@ export class MyOffersBuyingComponent {
     return {
       id: offer.id,
       materialName: getListingTitle(listing),
-      pickupLocation: getLocationAddress(seller.company),
-      destination: getLocationAddress(buyer.company),
+      pickupLocation: getLocationAddress(seller.location),
+      destination: getLocationAddress(buyer.location),
       packaging: listing.materialPacking ? mapCodeToPackaging[listing.materialPacking] : '',
       quantity: offer.quantity,
       weightPerLoad: formatDecimalNumber(listing.materialWeightWanted / listing.quantity),
