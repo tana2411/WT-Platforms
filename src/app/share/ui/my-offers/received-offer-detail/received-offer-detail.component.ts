@@ -24,7 +24,7 @@ import { scrollTop } from 'app/share/utils/common';
 import { formatDecimalNumber, getCurrencySignal, getListingStatusColor, getListingTitle } from 'app/share/utils/offer';
 import { OfferDetail } from 'app/types/requests/offer';
 import moment from 'moment';
-import { catchError, EMPTY, startWith, Subject, switchMap } from 'rxjs';
+import { catchError, EMPTY, of, startWith, Subject, switchMap } from 'rxjs';
 import { ConfirmModalComponent, ConfirmModalProps } from '../../confirm-modal/confirm-modal.component';
 import { ProductDescriptionComponent } from '../../product-detail/product-description/product-description.component';
 import { ProductImageComponent } from '../../product-detail/product-image/product-image.component';
@@ -49,7 +49,7 @@ import { OfferListingComponent } from '../offer-listing/offer-listing.component'
 })
 export class ReceivedOfferDetailComponent implements OnInit {
   @Input({ required: true }) offerId: number | undefined;
-  offer = signal<OfferDetail | undefined>(undefined);
+  offer = signal<OfferDetail | undefined | null>(undefined);
   loadingListing = signal(false);
   page = signal(1);
   totalItems = signal(0);
@@ -180,6 +180,9 @@ export class ReceivedOfferDetailComponent implements OnInit {
       .pipe(
         startWith(0),
         switchMap(() => this.offerService.getOfferDetail(this.offerId!)),
+        catchError((error) => {
+          return of({ data: null });
+        }),
       )
       .subscribe((res) => {
         this.offer.set(res.data);
