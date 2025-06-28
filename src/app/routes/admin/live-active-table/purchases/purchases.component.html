@@ -1,6 +1,7 @@
 <app-list-container
   [fetchFn]="offerService.getPurchases.bind(offerService)"
   [displayFilter]="['buyerCompanyName', 'name', 'materialType', 'country', 'materialPacking', 'status', 'state', 'sortBy']"
+  [customOptionValues]="customOptionValues"
   [pageSize]="20"
   [emptyMessage]="'No purchases are currently available for display.'"
   [isCountryFilter]="false"

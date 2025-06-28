@@ -1,6 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { ListingState, ListingStatus } from 'app/models';
 import { ListingService } from 'app/services/listing.service';
 import { ListContainerComponent, PageResult } from 'app/share/ui/list-container/list-container.component';
+import { allFilters } from 'app/share/ui/listing/filter/constant';
+import { ItemOf } from 'app/types/utils';
 import { Observable, of } from 'rxjs';
 import { WantedDetailComponent } from './wanted-detail/wanted-detail.component';
 
@@ -13,6 +16,26 @@ import { WantedDetailComponent } from './wanted-detail/wanted-detail.component';
 export class WantedComponent implements OnInit {
   listingsService = inject(ListingService);
   constructor() {}
+
+  customOptionValues: Record<ItemOf<typeof allFilters>['value'], any> = {
+    status: [
+      { code: ListingStatus.PENDING, name: 'Pending' },
+      { code: ListingStatus.AVAILABLE, name: 'Available' },
+      { code: ListingStatus.REJECTED, name: 'Rejected' },
+      // {
+      //   code: ListingStatus.SOLD,
+      //   name: 'Sold',
+      // },
+    ],
+    state: [
+      { code: ListingState.PENDING, name: 'Pending' },
+      {
+        code: ListingState.APPROVED,
+        name: 'Approved',
+      },
+      { code: ListingState.REJECTED, name: 'Rejected' },
+    ],
+  };
 
   ngOnInit() {}
 

@@ -1,6 +1,7 @@
 <div class="col-12 h-100 d-flex flex-column flex-grown" style="overflow: hidden">
   <app-filter
     [displayFilter]="displayFilter"
+    [customOptionValues]="customOptionValues"
     (filterChanged)="onFilterChange($event)"
     (searchTerm)="searchTerm.set($event)"
     [pageType]="pageType"
