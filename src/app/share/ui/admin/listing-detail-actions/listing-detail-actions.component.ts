@@ -29,6 +29,7 @@ import { RejectModalComponent } from '../reject-modal/reject-modal.component';
 export class ListingDetailActionsComponent {
   listingId = input<string | undefined>(undefined);
   listing = input<AdminListingDetail | undefined>(undefined);
+  canRequestInformation = input<boolean>(true);
   @Output() refresh = new EventEmitter<void>();
 
   adminListingService = inject(AdminListingService);

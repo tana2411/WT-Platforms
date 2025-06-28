@@ -20,15 +20,17 @@
       Reject
     </button>
 
-    <button
-      matButton="outlined"
-      class="custom-button bg-white fs-16 rounded primary border border-primary"
-      style="border-width: 3px"
-      (click)="onRequestMoreInformation()"
-      [disabled]="submitting()"
-      [class.overlay-spinner]="submitting() == 'request'"
-    >
-      Request more information
-    </button>
+    @if (canRequestInformation()) {
+      <button
+        matButton="outlined"
+        class="custom-button bg-white fs-16 rounded primary border border-primary"
+        style="border-width: 3px"
+        (click)="onRequestMoreInformation()"
+        [disabled]="submitting()"
+        [class.overlay-spinner]="submitting() == 'request'"
+      >
+        Request more information
+      </button>
+    }
   </div>
 }

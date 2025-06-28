@@ -89,7 +89,12 @@
         </div>
       </div>
 
-      <app-listing-detail-actions [listingId]="listingId" [listing]="listingDetail" (refresh)="reloadListingDetail()" />
+      <app-listing-detail-actions
+        [listingId]="listingId"
+        [listing]="listingDetail"
+        (refresh)="reloadListingDetail()"
+        [canRequestInformation]="false"
+      />
     }
   }
 </app-admin-layout>
