@@ -8,7 +8,12 @@ import { OfferService } from 'app/services/offer.service';
 import { BuyingOfferTableComponent } from 'app/share/ui/my-offers/buying-offers/buying-offer-table/buying-offer-table.component';
 import { EmptyOfferButton, EmptyOfferComponent } from 'app/share/ui/my-offers/empty-offer/empty-offer.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
-import { formatDecimalNumber, getListingTitle, getLocationAddress } from 'app/share/utils/offer';
+import {
+  formatDecimalNumber,
+  getListingFeatureImage,
+  getListingTitle,
+  getLocationAddress,
+} from 'app/share/utils/offer';
 import { OfferDetail } from 'app/types/requests/offer';
 import { finalize } from 'rxjs';
 import { LIST_TAB_OFFER, MAP_OFFER_TYPE_TO_EMPTY_OFFER_PROP, OfferType } from './constants';
@@ -81,6 +86,7 @@ export class MyOffersBuyingComponent {
 
     return {
       id: offer.id,
+      featureImage: getListingFeatureImage(listing.documents ?? []),
       materialName: getListingTitle(listing),
       pickupLocation: getLocationAddress(seller.location),
       destination: getLocationAddress(buyer.location),

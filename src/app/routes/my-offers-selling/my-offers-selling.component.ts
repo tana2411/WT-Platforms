@@ -7,7 +7,7 @@ import { OfferService } from 'app/services/offer.service';
 import { EmptyOfferButton, EmptyOfferComponent } from 'app/share/ui/my-offers/empty-offer/empty-offer.component';
 import { SellingOfferTableComponent } from 'app/share/ui/my-offers/selling-offers/selling-offer-table/selling-offer-table.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
-import { getCurrencySignal, getListingTitle, getLocationAddress } from 'app/share/utils/offer';
+import { getCurrencySignal, getListingFeatureImage, getListingTitle, getLocationAddress } from 'app/share/utils/offer';
 import { OfferDetail } from 'app/types/requests/offer';
 import moment from 'moment';
 import { finalize } from 'rxjs';
@@ -81,6 +81,7 @@ export class MyOffersSellingComponent {
 
     return {
       id: offer.id,
+      featureImage: getListingFeatureImage(listing.documents ?? []),
       date: moment(offer.createdAt).format('YYYY-MM-DD'),
       materialName: getListingTitle(listing),
       quantity: offer.quantity,

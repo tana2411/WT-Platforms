@@ -5,7 +5,14 @@ import {
   mapCountryCodeToName,
   materialTypes,
 } from '@app/statics';
-import { CompanyLocationDetail, CompanyStatus, ListingState, ListingStatus } from 'app/models';
+import {
+  CompanyLocationDetail,
+  CompanyStatus,
+  ListingDocument,
+  ListingImageType,
+  ListingState,
+  ListingStatus,
+} from 'app/models';
 import { Location } from 'app/models/admin/commercial.model';
 import { OfferState, OfferStatus } from 'app/models/offer';
 
@@ -145,4 +152,8 @@ export const getListingTitle = (listing: {
     .join(' - ');
 
   return data;
+};
+
+export const getListingFeatureImage = (documents: ListingDocument[]) => {
+  return documents.find((d) => d.documentType === ListingImageType.FEATURE_IMAGE)?.documentUrl;
 };
