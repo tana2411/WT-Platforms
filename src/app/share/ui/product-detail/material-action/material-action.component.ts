@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, computed, DestroyRef, inject, input, Input, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,7 +20,7 @@ import { RequestInformationComponent } from '../request-information/request-info
   selector: 'app-material-action',
   templateUrl: './material-action.component.html',
   styleUrl: './material-action.component.scss',
-  imports: [MatDialogModule, MatButtonModule, RouterModule],
+  imports: [MatDialogModule, MatButtonModule, RouterModule, CommonModule],
 })
 export class MaterialActionComponent {
   @Input({ required: true }) isSeller: boolean = false;
@@ -121,4 +122,6 @@ export class MaterialActionComponent {
           });
       });
   }
+
+  onEditListing() {}
 }

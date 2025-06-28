@@ -1,6 +1,7 @@
 import { Component, effect, input, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ListingMaterial, ListingType } from 'app/models';
+import { Listing } from 'app/models/listing-material-detail.model';
 import { ProductStatus } from 'app/models/product.model';
 import moment from 'moment';
 
@@ -11,7 +12,7 @@ import moment from 'moment';
   styleUrl: './product-status.component.scss',
 })
 export class ProductStatusComponent {
-  product = input<ListingMaterial | undefined>(undefined);
+  product = input<ListingMaterial | Listing | undefined>(undefined);
   status = signal<ProductStatus | undefined>(undefined);
   ProductStatus = ProductStatus;
   fromDate = signal<string | undefined>(undefined);
