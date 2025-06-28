@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import {
   Component,
   computed,
@@ -44,6 +45,7 @@ import { OfferListingComponent } from '../offer-listing/offer-listing.component'
     MatSnackBarModule,
     RouterModule,
   ],
+  providers: [DecimalPipe],
   templateUrl: './received-offer-detail.component.html',
   styleUrl: './received-offer-detail.component.scss',
 })
@@ -57,6 +59,7 @@ export class ReceivedOfferDetailComponent implements OnInit {
   updator = new Subject<void>();
 
   getListingTitle = getListingTitle;
+  decimalPipe = inject(DecimalPipe);
 
   galleryImages = computed(
     () =>
@@ -71,17 +74,17 @@ export class ReceivedOfferDetailComponent implements OnInit {
       {
         label: 'Weight',
         // icon: 'fitness_center',
-        value: `${formatDecimalNumber((offer?.listing.materialWeightPerUnit ?? 0) * (offer?.listing.quantity ?? 0), 4)} MT`,
+        value: `${this.decimalPipe.transform(formatDecimalNumber((offer?.listing.materialWeightPerUnit ?? 0) * (offer?.listing.quantity ?? 0), 4))} MT`,
       },
       {
         label: 'Best Offer',
         // icon: 'pages',
-        value: offer?.listing.bestOffer,
+        value: this.decimalPipe.transform(offer?.listing.bestOffer),
       },
       {
         label: `No. loads`,
         // icon: 'sell',
-        value: offer?.listing.quantity,
+        value: this.decimalPipe.transform(offer?.listing.quantity),
       },
       {
         label: 'No. offers',
@@ -91,7 +94,7 @@ export class ReceivedOfferDetailComponent implements OnInit {
       {
         label: 'Remaining Loads',
         // icon: 'hourglass_top',
-        value: offer?.listing.remainingQuantity,
+        value: this.decimalPipe.transform(offer?.listing.remainingQuantity),
       },
       {
         label: 'Status',
