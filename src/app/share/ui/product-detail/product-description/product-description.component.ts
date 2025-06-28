@@ -4,7 +4,7 @@ import { upperFirst } from 'lodash';
 
 type Item = {
   label: string;
-  icon: string;
+  icon?: string;
   color?: string;
   class?: string;
   value: any;

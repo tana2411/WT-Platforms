@@ -70,32 +70,32 @@ export class ReceivedOfferDetailComponent implements OnInit {
     return [
       {
         label: 'Weight',
-        icon: 'fitness_center',
+        // icon: 'fitness_center',
         value: `${formatDecimalNumber((offer?.listing.materialWeightPerUnit ?? 0) * (offer?.listing.quantity ?? 0), 4)} MT`,
       },
       {
         label: 'Best Offer',
-        icon: 'pages',
+        // icon: 'pages',
         value: offer?.listing.bestOffer,
       },
       {
         label: `No. loads`,
-        icon: 'sell',
+        // icon: 'sell',
         value: offer?.listing.quantity,
       },
       {
         label: 'No. offers',
-        icon: 'list_alt',
+        // icon: 'list_alt',
         value: offer?.listing.numberOfOffers,
       },
       {
         label: 'Remaining Loads',
-        icon: 'hourglass_top',
+        // icon: 'hourglass_top',
         value: offer?.listing.remainingQuantity,
       },
       {
         label: 'Status',
-        icon: 'hourglass_top',
+        // icon: 'hourglass_top',
         color: offer?.listing.status ? getListingStatusColor(offer.listing.status as any) : 'transparent',
         class: 'fw-bold',
         value: offer?.listing.status,
