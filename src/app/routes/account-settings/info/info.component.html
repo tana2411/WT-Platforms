@@ -136,49 +136,67 @@
             <div class="fw-bold mb-1 d-flex align-items-center gap-2">
               <mat-icon class="error">info_rounded</mat-icon> {{ 'FACEBOOK PROFILE URL' | translate }}
             </div>
-            <div class="pe-2 text-break">{{ company?.facebookUrl || '-' }}</div>
+            <a class="pe-2 text-break text-decoration-none text-black cursor-pointer" target="_blank" [href]="company?.facebookUrl">{{
+              company?.facebookUrl || '-'
+            }}</a>
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1 d-flex align-items-center gap-2">
               <mat-icon class="error">info_rounded</mat-icon> {{ 'INSTAGRAM PROFILE URL' | translate }}
             </div>
-            <div class="pe-2 text-break">{{ company?.instagramUrl || '-' }}</div>
+            <a class="pe-2 text-break text-decoration-none text-black cursor-pointer" target="_blank" [href]="company?.instagramUrl">{{
+              company?.instagramUrl || '-'
+            }}</a>
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1 d-flex align-items-center gap-2">
               <mat-icon class="error">info_rounded</mat-icon> {{ 'LINKEDIN PROFILE URL' | translate }}
             </div>
-            <div class="pe-2 text-break">{{ company?.linkedinUrl || '-' }}</div>
+            <a class="pe-2 text-break text-decoration-none text-black cursor-pointer" target="_blank" [href]="company?.linkedinUrl">{{
+              company?.linkedinUrl || '-'
+            }}</a>
           </div>
-        </div>
-
-        <div class="row g-3 mx-0 mb-4">
-          <div class="col-12 px-2">
+          <div class="col-sm-4 px-2">
             <div class="fw-bold mb-1 d-flex align-items-center gap-2">
               <mat-icon class="error">info_rounded</mat-icon>{{ 'X USERNAME (WITHOUT @)' | translate }}
             </div>
-            <div class="pe-2">{{ company?.xUrl || '-' }}</div>
+            <a class="pe-2 text-break text-decoration-none text-black cursor-pointer" target="_blank" [href]="company?.xUrl">{{
+              company?.xUrl || '-'
+            }}</a>
           </div>
+          @if ((company?.additionalSocialMediaUrls?.length ?? 0) > 0) {
+            @for (social of company?.additionalSocialMediaUrls; track $index) {
+              <div class="col-sm-4 px-2">
+                <div class="fw-bold mb-1 d-flex align-items-center gap-2">
+                  <mat-icon class="error">info_rounded</mat-icon>
+                  <span class="text-uppercase">
+                    {{ `${social.name} PROFILE URL`| translate }}
+                  </span>
+                </div>
+                <a class="pe-2 text-break text-decoration-none text-black cursor-pointer" target="_blank" [href]="company?.xUrl">{{
+                  social?.url || '-'
+                }}</a>
+              </div>
+            }
+          }
         </div>
       </div>
     </div>
 
-    <div class="d-flex justify-content-center justify-content-lg-start align-items-start">
-      <button
-        mat-stroked-button
-        class="d-flex align-items-center justify-content-center"
-        style="max-width: 200px"
-        (click)="openEditSocialUrl()"
-      >
-        <img
-          src="assets/images/edit_24px.svg"
-          appFallbackImage
-          loading="lazy"
-          alt="Edit icon"
-          style="height: 1em; width: auto; vertical-align: baseline; margin-right: 5px"
-        />
-        <span class="fw-bold fs-16">{{ 'EDIT' | translate }}</span>
-      </button>
-    </div>
+    <button
+      mat-stroked-button
+      class="d-flex align-items-center justify-content-center"
+      style="max-width: 200px"
+      (click)="openEditSocialUrl()"
+    >
+      <img
+        src="assets/images/edit_24px.svg"
+        appFallbackImage
+        loading="lazy"
+        alt="Edit icon"
+        style="height: 1em; width: auto; vertical-align: baseline; margin-right: 5px"
+      />
+      <span class="fw-bold fs-16">{{ 'EDIT' | translate }}</span>
+    </button>
   </div>
 </div>

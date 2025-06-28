@@ -68,10 +68,12 @@ export class InfoComponent {
   }
 
   openEditSocialUrl() {
-    const { facebookUrl, instagramUrl, linkedinUrl, xUrl } = this.company || {};
+    const { facebookUrl, instagramUrl, linkedinUrl, xUrl, additionalSocialMediaUrls } = this.company || {};
+
     const dataConfig: MatDialogConfig = {
       data: {
         urlInfo: { facebookUrl, instagramUrl, linkedinUrl, xUrl },
+        additionalSocialMediaUrls,
         companyId: this.company?.id,
       },
       width: '100%',

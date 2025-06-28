@@ -11,9 +11,13 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
+import { AdditionalUrl } from 'app/models';
 import { SettingsService } from 'app/services/settings.service';
 import { ConfirmModalComponent } from 'app/share/ui/confirm-modal/confirm-modal.component';
 import { catchError, EMPTY, finalize } from 'rxjs';
+
+const SOCIAL_URL_PATTERN =
+  /^(?!http[A-Za-z0-9-]*\.)(?:https?:\/\/)?(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,6}(?:\/[A-Za-z0-9\-._~:\/?#[\]@!$&'()*+,;=%]*)?$/;
 
 @Component({
   selector: 'app-edit-social-url-form',
@@ -34,89 +38,74 @@ import { catchError, EMPTY, finalize } from 'rxjs';
 })
 export class EditSocialUrlFormComponent implements OnInit {
   formGroup = new FormGroup({
-    urls: new FormArray([]),
-    newUrl: new FormGroup({
-      name: new FormControl<string | null>(null, []),
-      url: new FormControl<string | null>(null, [
-        Validators.pattern(
-          /^(?:https?:\/\/)?(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,6}(?:\/[A-Za-z0-9\-._~:\/?#[\]@!$&'()*+,;=%]*)?$/,
-        ),
-      ]),
-    }),
+    facebookUrl: new FormControl<string | null>(null, [Validators.pattern(SOCIAL_URL_PATTERN)]),
+    instagramUrl: new FormControl<string | null>(null, [Validators.pattern(SOCIAL_URL_PATTERN)]),
+    linkedinUrl: new FormControl<string | null>(null, [Validators.pattern(SOCIAL_URL_PATTERN)]),
+    xUrl: new FormControl<string | null>(null, [Validators.pattern(SOCIAL_URL_PATTERN)]),
+    additionalSocialMediaUrls: new FormArray([]),
+  });
+
+  newUrl = new FormGroup({
+    name: new FormControl<string | null>(null),
+    url: new FormControl<string | null>(null, Validators.pattern(SOCIAL_URL_PATTERN)),
   });
 
   readonly dialogRef = inject(MatDialogRef<{ [key: string]: string }>);
-  readonly data = inject<{ urlInfo: { [key: string]: string }; companyId: number }>(MAT_DIALOG_DATA);
+  readonly data = inject<{
+    urlInfo: { [key: string]: string };
+    companyId: number;
+    additionalSocialMediaUrls: AdditionalUrl[];
+  }>(MAT_DIALOG_DATA);
   snackBar = inject(MatSnackBar);
   settingsService = inject(SettingsService);
   submitting = signal(false);
   dialog = inject(MatDialog);
   destroyRef = inject(DestroyRef);
 
-  get urls() {
-    return this.formGroup.get('urls') as FormArray;
-  }
-
-  get newUrl() {
-    return this.formGroup.controls.newUrl as FormGroup;
+  get additionalUrls() {
+    return this.formGroup.get('additionalSocialMediaUrls') as FormArray;
   }
 
   constructor() {}
 
   ngOnInit() {
     if (this.data.urlInfo) {
-      const { urlInfo } = this.data;
-      Object.keys(urlInfo).map((key) => {
-        const urlGroup = new FormGroup({
-          key: new FormControl(key),
-          value: new FormControl(urlInfo[key], [
-            Validators.pattern(
-              /^(?:https?:\/\/)?(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,6}(?:\/[A-Za-z0-9\-._~:\/?#[\]@!$&'()*+,;=%]*)?$/,
-            ),
-          ]),
+      const { urlInfo, additionalSocialMediaUrls } = this.data;
+      if (urlInfo) {
+        this.formGroup.patchValue({
+          facebookUrl: urlInfo['facebookUrl'] ?? null,
+          instagramUrl: urlInfo['instagramUrl'] ?? null,
+          linkedinUrl: urlInfo['linkedinUrl'] ?? null,
+          xUrl: urlInfo['xUrl'] ?? null,
         });
+        if (additionalSocialMediaUrls && additionalSocialMediaUrls.length > 0) {
+          additionalSocialMediaUrls.forEach((social) => {
+            const urlGroup = new FormGroup({
+              name: new FormControl<string | null>(social.name),
+              url: new FormControl<string | null>(social.url, Validators.pattern(SOCIAL_URL_PATTERN)),
+            });
+            this.additionalUrls.push(urlGroup);
+          });
+          this.additionalUrls.updateValueAndValidity();
+        }
+      }
 
-        this.urls.push(urlGroup);
-      });
       this.formGroup.updateValueAndValidity();
     }
-  }
-
-  extractWebsiteName(key: string): string {
-    const tokens = key.match(/[A-Z]?[a-z]+|[A-Z]/g);
-    if (!tokens) {
-      return '';
-    }
-
-    if (tokens[tokens.length - 1].toLowerCase() === 'url') {
-      tokens.pop();
-    }
-    const labelPart = tokens.map((tok) => tok.toUpperCase()).join(' ');
-
-    return `${labelPart} PROFILE URL`;
-  }
-
-  private generateUrlPropertyName(name: string): string {
-    const tokens = name.split(' ').map((token) => token.toLowerCase());
-    return tokens
-      .map((token, index) => {
-        return index != 0 ? token.charAt(0).toUpperCase() + token.slice(1) : token;
-      })
-      .join('')
-      .concat('Url');
   }
 
   addUrlGroup() {
     const { name, url } = this.newUrl.value;
     if (name && url) {
       const urlGroup = new FormGroup({
-        key: new FormControl<string | null>(this.generateUrlPropertyName(name)),
-        value: new FormControl<string | null>(url),
+        name: new FormControl<string | null>(name),
+        url: new FormControl<string | null>(url, Validators.pattern(SOCIAL_URL_PATTERN)),
       });
 
       this.resetForm();
-      this.urls.push(urlGroup);
-      this.urls.markAsDirty();
+      this.additionalUrls.push(urlGroup);
+      this.additionalUrls.markAsDirty();
+      this.formGroup.markAsDirty();
       this.formGroup.updateValueAndValidity();
     }
   }
@@ -155,7 +144,7 @@ export class EditSocialUrlFormComponent implements OnInit {
   }
 
   submit() {
-    if (this.urls.pristine) {
+    if (this.formGroup.pristine) {
       this.snackBar.open(
         localized$('No changes detected. Please modify your profile details before saving.'),
         localized$('OK'),
@@ -166,18 +155,13 @@ export class EditSocialUrlFormComponent implements OnInit {
       return;
     }
 
-    this.urls.markAllAsTouched();
+    this.formGroup.markAllAsTouched();
 
-    if (this.urls.invalid) {
+    if (this.formGroup.invalid) {
       return;
     }
 
-    const payload = this.urls.value
-      .filter((item: any) => item.value !== null)
-      .reduce((acc: Record<string, any>, group: any) => {
-        acc[group.key] = group.value;
-        return acc;
-      }, {});
+    const payload: any = this.formGroup.value;
 
     this.dialog
       .open(ConfirmModalComponent, {
