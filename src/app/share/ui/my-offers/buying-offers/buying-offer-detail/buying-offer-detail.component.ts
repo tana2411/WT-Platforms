@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { mapCountryCodeToName } from '@app/statics';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
+import { ListingImageType } from 'app/models';
 import { OfferService } from 'app/services/offer.service';
 import { ProductDescriptionComponent } from 'app/share/ui/product-detail/product-description/product-description.component';
 import { ProductImageComponent } from 'app/share/ui/product-detail/product-image/product-image.component';
@@ -75,6 +76,14 @@ export class BuyingOfferDetailComponent {
         value: mapCountryCodeToName[offer.offer.sellerCountry!],
       },
     ];
+  });
+
+  images = computed(() => {
+    return (
+      this.offer()
+        ?.listing.documents?.filter((d) => d.documentType === ListingImageType.GALLERY_IMAGE)
+        ?.map((d) => d.documentUrl) ?? []
+    );
   });
 
   onBack() {

@@ -13,12 +13,7 @@ register();
   styleUrl: './product-image.component.scss',
 })
 export class ProductImageComponent {
-  @Input() images: string[] = [
-    'https://picsum.photos/200/300',
-    'https://picsum.photos/201/300',
-    'https://picsum.photos/202/300',
-    'https://picsum.photos/203/300',
-  ];
+  @Input() images: string[] = [];
 
   swiperEl: SwiperContainer | undefined = undefined;
 
