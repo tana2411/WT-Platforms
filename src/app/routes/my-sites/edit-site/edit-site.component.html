@@ -172,7 +172,7 @@
               <mat-form-field appearance="outline" class="w-100">
                 <mat-select placeholder="{{ 'Please Select' | translate }}" formControlName="country">
                   @for (item of countryList; track $index; let i = $index) {
-                    <mat-option color="primary" [value]="item.isoCode">{{ item.isoCode }} - {{ item.name }}</mat-option>
+                    <mat-option color="primary" [value]="item.isoCode">{{ item.name }}</mat-option>
                   }
                 </mat-select>
                 @if (formGroup.get('country')?.hasError('required')) {
