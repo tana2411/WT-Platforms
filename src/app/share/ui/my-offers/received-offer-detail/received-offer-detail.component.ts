@@ -61,6 +61,16 @@ export class ReceivedOfferDetailComponent implements OnInit {
   getListingTitle = getListingTitle;
   decimalPipe = inject(DecimalPipe);
 
+  getBestOffer() {
+    const offer = this.offer();
+
+    if (!offer || !offer.listing?.bestOffer || !offer.listing.bestOfferCurrency) {
+      return '-';
+    }
+
+    return `${getCurrencySignal(offer.listing.bestOfferCurrency)}${offer.listing.bestOffer}`;
+  }
+
   galleryImages = computed(
     () =>
       this.offer()
@@ -79,7 +89,7 @@ export class ReceivedOfferDetailComponent implements OnInit {
       {
         label: 'Best Offer',
         // icon: 'pages',
-        value: this.decimalPipe.transform(offer?.listing.bestOffer),
+        value: this.getBestOffer(),
       },
       {
         label: `No. loads`,

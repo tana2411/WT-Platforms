@@ -22,10 +22,10 @@ export class WantedComponent implements OnInit {
       { code: ListingStatus.PENDING, name: 'Pending' },
       { code: ListingStatus.AVAILABLE, name: 'Available' },
       { code: ListingStatus.REJECTED, name: 'Rejected' },
-      // {
-      //   code: ListingStatus.SOLD,
-      //   name: 'Sold',
-      // },
+      {
+        code: ListingStatus.SOLD,
+        name: 'Fulfilled',
+      },
     ],
     state: [
       { code: ListingState.PENDING, name: 'Pending' },

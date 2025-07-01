@@ -57,7 +57,7 @@ export class DetailSaleListingComponent {
       }),
       tap((value) => {
         if (value && value.listing.listingType !== ListingType.SELL) {
-          this.router.navigateByUrl(ROUTES_WITH_SLASH.admin);
+          this.router.navigateByUrl(ROUTES_WITH_SLASH.liveActiveTable);
         }
         this.loadingListing.set(false);
       }),

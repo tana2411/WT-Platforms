@@ -48,6 +48,12 @@ export class ListingService {
     return this.httpClient.delete(`/listings/${listingId}`);
   }
 
+  sold(listingId: number) {
+    return this.httpClient.patch(`/listings/${listingId}`, {
+      status: 'sold',
+    });
+  }
+
   getListingsSell(filter?: any) {
     let params = new HttpParams();
 

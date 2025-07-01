@@ -60,7 +60,7 @@ export class DetailWantedListingComponent {
       }),
       tap((value) => {
         if (value.listing.listingType !== ListingType.WANTED) {
-          this.router.navigateByUrl(ROUTES_WITH_SLASH.admin);
+          this.router.navigateByUrl(ROUTES_WITH_SLASH.liveActiveTable);
         }
 
         this.loadingListing.set(false);
