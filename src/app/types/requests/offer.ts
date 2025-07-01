@@ -50,6 +50,7 @@ interface Listing {
   materialType: string;
   numberOfOffers?: number;
   bestOffer?: number;
+  bestOfferCurrency?: string;
   documents?: ListingDocument[];
 }
 
