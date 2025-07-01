@@ -40,6 +40,10 @@ export class MaterialActionComponent {
   userId = toSignal(this.auth.user$.pipe(map((user) => user?.userId)));
   isOwnListing = computed(() => this.userId() === this.listingDetail()?.listing.createdByUserId);
 
+  canSold = computed(() => {
+    return this.listingDetail()?.listing.status !== 'sold';
+  });
+
   onBid() {
     const dialogRef = this.dialog.open(BiddingFormComponent, {
       maxWidth: '750px',

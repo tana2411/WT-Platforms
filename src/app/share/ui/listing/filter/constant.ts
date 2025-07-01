@@ -9,6 +9,22 @@ export interface Filter {
   defaultValue?: string;
 }
 
+export enum ListingSortBy {
+  DEFAULT = 'createAtDesc',
+  COMPANY_NAME_ASC = 'companyNameAsc',
+  COMPANY_NAME_DESC = 'companyNameDesc',
+  MATERIAL_TYPE_ASC = 'materialTypeAsc',
+  MATERIAL_TYPE_DESC = 'materialTypeDesc',
+  COUNTRY_ASC = 'countryAsc',
+  COUNTRY_DESC = 'countryDesc',
+  STATUS_ASC = 'statusAsc',
+  STATUS_DESC = 'statusDesc',
+  STATE_ASC = 'stateAsc',
+  STATE_DESC = 'stateDesc',
+  AVAILABLE_LISTINGS_ASC = 'availableListingsAsc',
+  AVAILABLE_LISTINGS_DESC = 'availableListingsDesc',
+}
+
 export const allFilters: Filter[] = [
   {
     name: 'LOCATION',
@@ -41,11 +57,11 @@ export const allFilters: Filter[] = [
     options: [
       {
         name: 'Available Listing',
-        code: 'available',
+        code: ListingSortBy.AVAILABLE_LISTINGS_ASC,
       },
       {
         name: 'Unavailable Listing',
-        code: 'unavailable',
+        code: ListingSortBy.AVAILABLE_LISTINGS_DESC,
       },
     ],
   },
@@ -95,7 +111,7 @@ export const allFilters: Filter[] = [
     ],
   },
   {
-    name: 'FULFILLED LISTINGS',
+    name: 'Show FULFILLED listings',
     value: 'showFullfilledListing',
     type: 'checkbox',
     options: [
@@ -106,12 +122,11 @@ export const allFilters: Filter[] = [
   },
 
   {
-    name: 'SOLD listings',
+    name: 'Show SOLD listings ',
     value: 'soldListings',
     type: 'checkbox',
     options: [
       {
-        name: 'Show SOLD listings',
         value: 'soldListings',
       },
     ],
@@ -140,20 +155,6 @@ export const allFilters: Filter[] = [
     options: [],
   },
 ];
-
-export enum ListingSortBy {
-  DEFAULT = 'createAtDesc',
-  COMPANY_NAME_ASC = 'companyNameAsc',
-  COMPANY_NAME_DESC = 'companyNameDesc',
-  MATERIAL_TYPE_ASC = 'materialTypeAsc',
-  MATERIAL_TYPE_DESC = 'materialTypeDesc',
-  COUNTRY_ASC = 'countryAsc',
-  COUNTRY_DESC = 'countryDesc',
-  STATUS_ASC = 'statusAsc',
-  STATUS_DESC = 'statusDesc',
-  STATE_ASC = 'stateAsc',
-  STATE_DESC = 'stateDesc',
-}
 
 export const listingSortOption = [
   { name: 'Create At Desc', code: ListingSortBy.DEFAULT },
@@ -186,3 +187,30 @@ export const wantedSortOption = [
   { name: 'Country Asc', code: WantedListingSortBy.COUNTRY_ASC },
   { name: 'Country Desc', code: WantedListingSortBy.COUNTRY_DESC },
 ];
+
+export enum OfferSortBy {
+  // BUYER_COMPANY_NAME_ASC = 'buyerCompanyNameAsc',
+  // BUYER_COMPANY_NAME_DESC = 'buyerCompanyNameDesc',
+  // SELLER_COMPANY_NAME_ASC = 'sellerCompanyNameAsc',
+  // SELLER_COMPANY_NAME_DESC = 'sellerCompanyNameDesc',
+  // BUYER_COUNTRY_ASC = 'buyerCountryAsc',
+  // BUYER_COUNTRY_DESC = 'buyerCountryDesc',
+  // SELLER_COUNTRY_ASC = 'sellerCountryAsc',
+  // SELLER_COUNTRY_DESC = 'sellerCountryDesc',
+  // BUYER_NAME_ASC = 'buyerNameAsc',
+  // BUYER_NAME_DESC = 'buyerNameDesc',
+  // SELLER_NAME_ASC = 'sellerNameAsc',
+  // SELLER_NAME_DESC = 'sellerNameDesc',
+  // STATUS_ASC = 'statusAsc',
+  // STATUS_DESC = 'statusDesc',
+  // STATE_ASC = 'stateAsc',
+  // STATE_DESC = 'stateDesc',
+  // MATERIAL_TYPE_ASC = 'materialTypeAsc',
+  // MATERIAL_TYPE_DESC = 'materialTypeDesc',
+  // MATERIAL_PACKING_ASC = 'materialPackingAsc',
+  // MATERIAL_PACKING_DESC = 'materialPackingDesc',
+  AVAILABLE_LISTINGS_ASC = 'availableListingsAsc',
+  AVAILABLE_LISTINGS_DESC = 'availableListingsDesc',
+  // CREATED_AT_ASC = 'createdAtAsc',
+  // CREATED_AT_DESC = 'createdAtDesc',
+}

@@ -24,14 +24,16 @@
       View Bid on this listing
     </button> -->
 
-    <button
-      mat-flat-button
-      class="text-uppercase w-100 py-4 mb-4 background-dark text-white fw-bold fs-16"
-      [class.overlay-spinner]="solding()"
-      (click)="onSold()"
-    >
-      Sold
-    </button>
+    @if (canSold()) {
+      <button
+        mat-flat-button
+        class="text-uppercase w-100 py-4 mb-4 background-dark text-white fw-bold fs-16"
+        [class.overlay-spinner]="solding()"
+        (click)="onSold()"
+      >
+        Sold
+      </button>
+    }
 
     <ng-container [ngTemplateOutlet]="removeSection"> </ng-container>
   } @else {

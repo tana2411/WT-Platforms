@@ -77,11 +77,20 @@ type UserInfor = {
   updatedAt: string;
 };
 
+export enum UserStatus {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  SUSPENDED = 'suspended',
+  PENDING = 'pending',
+  REQUEST_INFORMATION = 'request_information',
+  REJECTED = 'rejected',
+}
+
 export type User = {
   id: number;
   companyRole: 'owner' | 'member';
   isPrimaryContact: boolean;
-  status: 'pending' | 'active' | 'inactive';
+  status: UserStatus;
   createdAt: string;
   updatedAt: string;
   companyId: number;

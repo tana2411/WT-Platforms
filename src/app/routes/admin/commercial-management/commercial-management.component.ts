@@ -59,7 +59,7 @@ export class CommercialManagementComponent {
   }
 
   onBack() {
-    this.router.navigateByUrl(ROUTES_WITH_SLASH.admin);
+    this.router.navigateByUrl(ROUTES_WITH_SLASH.liveActiveTable);
   }
 
   onTabChange(event: MatTabChangeEvent) {

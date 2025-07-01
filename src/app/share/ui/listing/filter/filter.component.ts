@@ -293,6 +293,11 @@ export class FilterComponent implements OnInit {
 
       if (value === null || value === '' || value === false) continue;
 
+      if (key === 'soldListings' || key === 'showFullfilledListing') {
+        // result['status'] = 'sold';
+        continue;
+      }
+
       if (selectFilters.includes(key)) {
         result[key] = Array.isArray(value) ? value : [value];
         continue;
@@ -308,6 +313,12 @@ export class FilterComponent implements OnInit {
 
       result[key] = Array.isArray(value) ? value : [value];
     }
+
+    // if (!rawValue['soldListings'] && !rawValue['showFullfilledListing']) {
+    //   result['status'] = {
+    //     neq: 'sold',
+    //   };
+    // }
 
     delete result['searchTerm'];
 
