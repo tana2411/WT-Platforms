@@ -140,7 +140,7 @@ export class MaterialActionComponent {
     this.fulfilling.set(true);
 
     this.listingService
-      .fulfill(listingId)
+      .sold(listingId)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         finalize(() => {
