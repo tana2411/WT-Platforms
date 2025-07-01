@@ -35,6 +35,8 @@ export class MaterialActionComponent {
   activeRoute = inject(ActivatedRoute);
 
   deleting = signal(false);
+  fulfilling = signal(false);
+  solding = signal(false);
   userId = toSignal(this.auth.user$.pipe(map((user) => user?.userId)));
   isOwnListing = computed(() => this.userId() === this.listingDetail()?.listing.createdByUserId);
 
@@ -124,4 +126,64 @@ export class MaterialActionComponent {
   }
 
   onEditListing() {}
+
+  onFulfill() {
+    const listingId = this.listingDetail()?.listing?.id;
+
+    if (isNil(listingId)) {
+      return;
+    }
+    this.fulfilling.set(true);
+
+    this.listingService
+      .fulfill(listingId)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => {
+          this.fulfilling.set(false);
+        }),
+        catchError((err) => {
+          if (err?.error?.error?.statusCode == 403) {
+            this.snackBar.open('You do not have permission to mark fulfill this listing.');
+          } else {
+            this.snackBar.open('Failed to mark fulfill the listing. Please try again later.');
+          }
+          return EMPTY;
+        }),
+      )
+      .subscribe(() => {
+        this.snackBar.open('Your listing has been successfully fulfilled.');
+        this.router.navigateByUrl(ROUTES_WITH_SLASH.wanted);
+      });
+  }
+
+  onSold() {
+    const listingId = this.listingDetail()?.listing?.id;
+
+    if (isNil(listingId)) {
+      return;
+    }
+    this.solding.set(true);
+
+    this.listingService
+      .sold(listingId)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => {
+          this.solding.set(false);
+        }),
+        catchError((err) => {
+          if (err?.error?.error?.statusCode == 403) {
+            this.snackBar.open('You do not have permission to mark sold this listing.');
+          } else {
+            this.snackBar.open('Failed to mark sold the listing. Please try again later.');
+          }
+          return EMPTY;
+        }),
+      )
+      .subscribe(() => {
+        this.snackBar.open('Your listing has been successfully sold.');
+        this.router.navigateByUrl(ROUTES_WITH_SLASH.wanted);
+      });
+  }
 }
