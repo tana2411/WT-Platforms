@@ -8,7 +8,7 @@
 .image {
   width: 100%;
   height: 263px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 swiper-container::part(button-next),
