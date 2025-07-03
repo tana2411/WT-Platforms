@@ -5,7 +5,7 @@
     (searchTerm)="searchTerm.set($event)"
   ></app-filter>
 
-  <div class="flex-grow-1 position-relative overflow-auto">
+  <div class="flex-grow-1 position-relative overflow-y-auto overflow-x-hidden">
     @if (loading()) {
       <app-spinner></app-spinner>
     } @else {

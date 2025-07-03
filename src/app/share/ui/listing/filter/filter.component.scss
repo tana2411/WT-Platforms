@@ -282,3 +282,12 @@
     padding-right: 16px;
   }
 }
+
+:host::ng-deep {
+  .date-item {
+    .mdc-text-field--outlined {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
+}

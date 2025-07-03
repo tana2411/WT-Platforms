@@ -43,6 +43,8 @@ export class FilterComponent implements OnInit {
   @Input() pageType: PageType = 'default';
   @Input() defaultExcludeSold = true;
   @Input() customOptionValues: Record<ItemOf<typeof allFilters>['value'], any> = {};
+  @Input() onlySearchBar: boolean = false;
+  @Input() onlyFilter: boolean = false;
   @Output() filterChanged = new EventEmitter<any>();
   @Output() searchTerm = new EventEmitter<string | null>();
 

@@ -1,8 +1,8 @@
 <div class="w-100">
   <div class="border cursor-pointer border-primary rounded-4 p-3 p-md-4 mt-4 mb-3" (click)="onViewDetail()">
-    <div class="row gy-4">
+    <div class="d-flex flex-md-row flex-column justify-content-between align-items-center">
       <!-- BUYER Section -->
-      <div class="col-12 col-md-6 col-lg-3">
+      <div class="col-12 col-md-6 col-lg-2 mb-md-0 mb-3">
         <div class="fw-bold mb-3">{{ 'BUYER' | translate }}</div>
         <p class="mb-1">{{ purchase?.buyer?.user?.id }}</p>
         <p class="mb-1">{{ purchase?.buyer?.user?.firstName }} {{ purchase?.buyer?.user?.lastName }}</p>
@@ -11,7 +11,7 @@
       </div>
 
       <!-- SELLER Section -->
-      <div class="col-12 col-md-6 col-lg-3">
+      <div class="col-12 col-md-6 col-lg-2">
         <div class="fw-bold mb-3">{{ 'SELLER' | translate }}</div>
         <p class="mb-1">{{ purchase?.seller?.user?.id }}</p>
         <p class="mb-1">{{ purchase?.seller?.user?.firstName }} {{ purchase?.seller?.user?.lastName }}</p>
@@ -25,18 +25,18 @@
       </div>
 
       <!-- Middle Information Section -->
-      <div class="col-12 col-lg-4">
-        <div class="row">
+      <div class="col-12 col-lg-6">
+        <div class="d-flex justify-content-between">
           <!-- First Row -->
-          <div class="col-4">
+          <div class="col-3">
             <div class="fw-bold mb-3">{{ 'DATE' | translate }}</div>
             <p class="mb-1">{{ purchase?.offer?.createdAt | date: 'dd/MM/YYYY' }}</p>
           </div>
-          <div class="col-4">
+          <div class="col-3">
             <div class="fw-bold mb-3">{{ 'PACKING' | translate }}</div>
             <p class="mb-1">{{ getPackingName(purchase?.listing?.materialPacking) }}</p>
           </div>
-          <div class="col-4">
+          <div class="col-3">
             <div class="fw-bold mb-3">{{ 'STATUS' | translate }}</div>
             @if (purchase?.offer; as offer) {
               <p class="mb-1" [style.color]="getOfferStatusColor(offer.status)">{{ offer.status | titlecase }}</p>
@@ -44,17 +44,17 @@
           </div>
         </div>
 
-        <div class="row mt-3">
+        <div class="d-flex justify-content-between mt-3">
           <!-- Second Row -->
-          <div class="col-4">
+          <div class="col-3">
             <div class="fw-bold mb-3">{{ 'MATERIAL' | translate }}</div>
             <p class="mb-1">{{ getMaterialName(purchase?.listing?.materialType) }}</p>
           </div>
-          <div class="col-4">
+          <div class="col-3">
             <div class="fw-bold mb-3">{{ 'AMOUNT' | translate }} (GBP)</div>
             <p class="mb-1">{{ purchase?.offer?.offeredPricePerUnit | currency: 'GBP' : 'symbol' : '1.2-2' : 'en-GB' }}</p>
           </div>
-          <div class="col-4">
+          <div class="col-3">
             <div class="fw-bold mb-3">{{ 'STATE' | translate }}</div>
 
             @if (purchase?.offer; as offer) {
@@ -73,9 +73,9 @@
       </div>
 
       <!-- Button Section -->
-      <div class="col-12 col-lg-2 d-flex align-items-center justify-content-center justify-content-lg-end">
-        <button mat-stroked-button class="border-primary primary">{{ 'VIEW DETAIL' | translate }}</button>
-      </div>
+      <button mat-stroked-button class="border-primary primary py-4 fw-bold" style="max-width: 215px">
+        {{ 'VIEW DETAIL' | translate }}
+      </button>
     </div>
   </div>
 </div>
