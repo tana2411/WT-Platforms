@@ -1,24 +1,21 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import {
-  GetMemberDetailResponse,
-  GetMembersParams,
-  GetMembersResponse,
-  MemberRequestActionEnum,
-} from 'app/types/requests/admin';
+import { FilterParams } from 'app/models';
+import { GetMemberDetailResponse, GetMembersResponse, MemberRequestActionEnum } from 'app/types/requests/admin';
 
 @Injectable()
 export class AdminCommercialService {
   http = inject(HttpClient);
 
-  getMembers({ page, pageSize }: GetMembersParams) {
+  getMembers(filter: FilterParams) {
+    let params = new HttpParams();
+
+    if (filter) {
+      const encodedFilter = JSON.stringify(filter);
+      params = params.set('filter', encodedFilter);
+    }
     return this.http.get<GetMembersResponse>('/companies/new-members', {
-      params: {
-        filter: JSON.stringify({
-          skip: (page - 1) * pageSize,
-          limit: pageSize,
-        }),
-      },
+      params,
     });
   }
 

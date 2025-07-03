@@ -42,6 +42,8 @@ export class FilterComponent implements OnInit {
   @Input() displayFilter: Array<ItemOf<typeof allFilters>['value']> = [];
   @Input() pageType: PageType = 'default';
   @Input() customOptionValues: Record<ItemOf<typeof allFilters>['value'], any> = {};
+  @Input() onlySearchBar: boolean = false;
+  @Input() onlyFilter: boolean = false;
   @Output() filterChanged = new EventEmitter<any>();
   @Output() searchTerm = new EventEmitter<string | null>();
 

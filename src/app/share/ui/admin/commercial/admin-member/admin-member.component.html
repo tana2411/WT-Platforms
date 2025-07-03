@@ -1,3 +1,8 @@
+<app-filter
+  [onlySearchBar]="true"
+  (filterChanged)="onFilterChange($event)"
+  [displayFilter]="['country', 'materialType', 'materialItem', 'materialPacking', 'wasteStoration', 'showFullfilledListing', 'sortBy']"
+></app-filter>
 @if (loading()) {
   <div class="d-flex justify-content-center align-items-center h-100">
     <app-spinner></app-spinner>
