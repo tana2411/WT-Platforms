@@ -117,7 +117,7 @@ export class SidebarComponent {
 
   adminMenu = [
     {
-      title: localized$('Live Activity'),
+      title: localized$('Homepage'),
       link: ROUTES_WITH_SLASH.liveActiveTable,
       icon: undefined,
       iconClass: 'highlight',
