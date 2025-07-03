@@ -5,6 +5,7 @@
     (filterChanged)="onFilterChange($event)"
     (searchTerm)="searchTerm.set($event)"
     [pageType]="pageType"
+    [defaultExcludeSold]="false"
   ></app-filter>
 
   <div class="content-grid flex-grow-1 overflow-auto overflow-x-hidden">

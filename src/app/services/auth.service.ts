@@ -12,6 +12,7 @@ import {
   RequestForgotPasswordParams,
   RequestLoginParams,
   RequestSetPasswordParams,
+  ResponseAccountStatus,
   ResponseGetCompanyLocation,
   ResponseLogin,
   ResponseMe,
@@ -147,6 +148,10 @@ export class AuthService {
         return user;
       }),
     );
+  }
+
+  getAccountStatus() {
+    return this.http.get<ResponseAccountStatus>('/users/me/account-status');
   }
 
   getCompanyLocation({ companyId, page, limit }: ResquestGetCompanyLocationParams) {

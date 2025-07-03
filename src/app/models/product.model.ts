@@ -4,6 +4,7 @@ export enum ProductStatus {
   Sold = 'sold',
   Expired = 'expired',
   Ongoing = 'ongoing',
+  Pending = 'pending',
 }
 
 // todo: update it later

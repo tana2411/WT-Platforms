@@ -14,7 +14,38 @@
   font-size: 16px;
 }
 
-:host::ng-deep mat-tab-header .mat-mdc-tab {
-  width: 90px;
-  flex-grow: unset !important;
+:host::ng-deep {
+  .mat-mdc-tab-labels {
+    gap: 2px;
+  }
+
+  mat-tab-header .mat-mdc-tab {
+    width: fit-content;
+    flex-grow: unset !important;
+  }
+
+  .wrapper.warning {
+    .mdc-tab__text-label {
+      color: #e84f63 !important;
+    }
+
+    position: relative;
+    // background-color: #fdedef;
+    overflow: auto;
+
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 0;
+      // transform: translate(50%, -50%);
+      left: unset;
+      margin: 0;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #e84f63;
+    }
+  }
 }

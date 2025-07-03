@@ -2,9 +2,9 @@ import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
-import { UserStatus } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
-import { filter, map } from 'rxjs';
+import { BannerType } from 'app/types/requests/auth';
+import { filter, map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-account-status-warning',
@@ -14,11 +14,12 @@ import { filter, map } from 'rxjs';
 })
 export class AccountStatusWarningComponent {
   authService = inject(AuthService);
-  UserStatus = UserStatus;
+  BannerType = BannerType;
   status = toSignal(
     this.authService.user$.pipe(
       filter((user) => !!user),
-      map((user) => user.status),
+      switchMap(() => this.authService.getAccountStatus()),
+      map((res) => res.data),
     ),
     {
       initialValue: undefined,

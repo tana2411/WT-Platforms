@@ -11,12 +11,13 @@ import {
 export class AdminCommercialService {
   http = inject(HttpClient);
 
-  getMembers({ page, pageSize }: GetMembersParams) {
+  getMembers({ page, pageSize, ...rest }: GetMembersParams) {
     return this.http.get<GetMembersResponse>('/companies/new-members', {
       params: {
         filter: JSON.stringify({
           skip: (page - 1) * pageSize,
           limit: pageSize,
+          ...rest,
         }),
       },
     });

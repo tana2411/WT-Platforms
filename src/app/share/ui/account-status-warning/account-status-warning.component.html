@@ -1,18 +1,18 @@
-@switch (status()) {
-  @case (UserStatus.SUSPENDED) {
+@switch (status()?.bannerType) {
+  @case (BannerType.INCOMPLETE_ONBOARDING) {
     <div class="warning-bar suspended-suspend background-on-error">
       <mat-icon style="color: #e84f63">info</mat-icon>
-      <span routerLink="/company-information" class="text-decoration-underline fw-bold cursor-pointer">COMPLETE ACCOUNT</span> to be able to
-      sell and buy material seamlessly
+      <span routerLink="/company-information" class="text-decoration-underline fw-bold cursor-pointer pe-2">COMPLETE ACCOUNT</span>
+      to be able to sell and buy material seamlessly
     </div>
   }
-  @case (UserStatus.PENDING) {
+  @case (BannerType.VERIFICATION_PENDING) {
     <div class="warning-bar status-pending">
       <mat-icon style="color: #f9a52b">info</mat-icon>
       Your account is being verified
     </div>
   }
-  @case (UserStatus.REJECTED) {
+  @case (BannerType.VERIFICATION_FAILED) {
     <div class="warning-bar rejected-pending background-on-error">
       <mat-icon style="color: #e84f63">info</mat-icon>
       Verification failed, please contact the WasteTrade team at
