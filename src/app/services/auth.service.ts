@@ -27,9 +27,14 @@ export const NOT_INITIAL_USER = null;
 })
 export class AuthService {
   private _user$ = new BehaviorSubject<User | null | undefined>(NOT_INITIAL_USER);
+  private _accountStatus$ = new BehaviorSubject<ResponseAccountStatus['data'] | null>(null);
   private platformId = inject(PLATFORM_ID);
   private localStorageService = inject(LocalStorageService);
   accessToken: string | undefined;
+
+  get accountStatus() {
+    return this._accountStatus$.asObservable();
+  }
 
   get isNotFinishCheckAuth() {
     return this._user$.value === NOT_INITIAL_USER;
@@ -151,7 +156,11 @@ export class AuthService {
   }
 
   getAccountStatus() {
-    return this.http.get<ResponseAccountStatus>('/users/me/account-status');
+    return this.http.get<ResponseAccountStatus>('/users/me/account-status').pipe(
+      tap((res) => {
+        this._accountStatus$.next(res.data);
+      }),
+    );
   }
 
   getCompanyLocation({ companyId, page, limit }: ResquestGetCompanyLocationParams) {

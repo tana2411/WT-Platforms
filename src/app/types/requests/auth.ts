@@ -44,13 +44,15 @@ export enum BannerType {
   VERIFICATION_FAILED = 'verification_failed',
 }
 
+export type AccountStatus = {
+  bannerType: BannerType;
+  showBanner: boolean;
+};
+
 export type ResponseAccountStatus = {
   status: string;
   message: string;
-  data: {
-    bannerType: BannerType;
-    showBanner: boolean;
-  };
+  data: AccountStatus;
 };
 
 export type ResquestGetCompanyLocationParams = {

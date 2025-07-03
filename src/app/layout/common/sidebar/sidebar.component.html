@@ -22,7 +22,7 @@
       <p class="mb-0 px-3 px-lg-5 text-uppercase mt-2 mt-lg-3 mb-lg-3">{{ 'PLATFORM' | translate }}</p>
 
       <div class="d-flex flex-column">
-        @for (item of listMenuPlatform; track item.title) {
+        @for (item of listMenuPlatform(); track item.title) {
           <a
             (click)="toggleChildMenu($index, item, $event)"
             [routerLink]="!item.children ? item.link : undefined"
@@ -44,11 +44,10 @@
             <div class="child-menu">
               @for (child of item.children; track child.title) {
                 <a
-                  routerLink="{{ child.link }}"
-                  (click)="clickChildMenu($event)"
+                  (click)="clickChildMenu($event, child)"
                   routerLinkActive="active-link"
                   [routerLinkActiveOptions]="{ exact: true }"
-                  class="menu-item child-menu-item d-flex gap-3 align-items-center"
+                  class="menu-item child-menu-item d-flex gap-3 align-items-center {{ child.disabled ? 'disabled' : '' }}"
                 >
                   <p class="fw-500 mb-0">{{ child.title | translate }}</p>
                 </a>

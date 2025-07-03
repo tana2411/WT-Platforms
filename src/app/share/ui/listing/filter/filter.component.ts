@@ -315,7 +315,6 @@ export class FilterComponent implements OnInit {
       result[key] = Array.isArray(value) ? value : [value];
     }
 
-    debugger;
     if (this.defaultExcludeSold && !rawValue['soldListings'] && !rawValue['showFullfilledListing']) {
       result['status'] = {
         neq: 'sold',

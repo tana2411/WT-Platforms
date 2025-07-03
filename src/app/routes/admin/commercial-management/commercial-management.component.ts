@@ -121,7 +121,6 @@ export class CommercialManagementComponent {
         .pipe(
           takeUntilDestroyed(),
           tap(([listings, offers, wanted]) => {
-            debugger;
             this.needCheck.set({
               sellers: !!Number(listings.totalCount),
               buyers: !!Number(offers.totalCount),
