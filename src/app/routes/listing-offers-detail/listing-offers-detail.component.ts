@@ -181,12 +181,6 @@ export class ListingOffersDetailComponent {
   }
 
   onBack() {
-    const type = this.listingDetail()?.listing.listingType;
-
-    if (type === 'sell') {
-      this.router.navigateByUrl(ROUTES_WITH_SLASH.buy);
-    } else if (type === 'wanted') {
-      this.router.navigateByUrl(ROUTES_WITH_SLASH.wanted);
-    }
+    window.history.back();
   }
 }
