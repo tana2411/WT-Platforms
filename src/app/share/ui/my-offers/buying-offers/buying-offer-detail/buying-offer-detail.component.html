@@ -21,7 +21,14 @@
     </div>
   </div>
 
-  <app-bid-rejected />
+  @switch (offerStatus()) {
+    @case (OfferStatus.PENDING) {
+      <app-bid-pending [offer]="offer" />
+    }
+    @case (OfferStatus.REJECTED) {
+      <app-bid-rejected [offer]="offer" />
+    }
+  }
 } @else {
   <app-spinner></app-spinner>
 }
