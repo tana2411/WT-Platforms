@@ -6,12 +6,14 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { mapCountryCodeToName } from '@app/statics';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { ListingImageType } from 'app/models';
+import { OfferStatus } from 'app/models/offer';
 import { OfferService } from 'app/services/offer.service';
 import { ProductDescriptionComponent } from 'app/share/ui/product-detail/product-description/product-description.component';
 import { ProductImageComponent } from 'app/share/ui/product-detail/product-image/product-image.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
 import { getListingTitle, getMaterialTypeLabel } from 'app/share/utils/offer';
 import { map } from 'rxjs';
+import { BidPendingComponent } from '../offer-detail-status/bid-pending/bid-pending.component';
 import { BidRejectedComponent } from '../offer-detail-status/bid-rejected/bid-rejected.component';
 
 @Component({
@@ -24,6 +26,7 @@ import { BidRejectedComponent } from '../offer-detail-status/bid-rejected/bid-re
     MatButtonModule,
     BidRejectedComponent,
     RouterModule,
+    BidPendingComponent,
   ],
   templateUrl: './buying-offer-detail.component.html',
   styleUrl: './buying-offer-detail.component.scss',
@@ -32,11 +35,13 @@ export class BuyingOfferDetailComponent {
   offerService = inject(OfferService);
   route = inject(ActivatedRoute);
   router = inject(Router);
+  OfferStatus = OfferStatus;
 
   getListingTitle = getListingTitle;
 
   offerId = this.route.snapshot.params['offerId'];
   offer = toSignal(this.offerService.getOfferDetail(this.offerId!).pipe(map((res) => res.data)));
+  offerStatus = computed(() => this.offer()?.offer.status);
 
   offerDescription = computed(() => {
     const offer = this.offer();
