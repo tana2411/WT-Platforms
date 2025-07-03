@@ -1,28 +1,38 @@
-<app-filter
-  [onlySearchBar]="true"
-  (filterChanged)="onFilterChange($event)"
-  [displayFilter]="['country', 'materialType', 'materialItem', 'materialPacking', 'wasteStoration', 'showFullfilledListing', 'sortBy']"
-></app-filter>
-@if (loading()) {
-  <div class="d-flex justify-content-center align-items-center h-100">
-    <app-spinner></app-spinner>
-  </div>
-} @else {
-  @if (members(); as memberData) {
-    @if (!memberData.total) {
-      <div class="d-flex justify-content-center align-items-center fs-24 mt-3">
-        <p class="text-muted">No data</p>
+<div [formGroup]="form">
+  @if (loading()) {
+    <div class="d-flex justify-content-center align-items-center h-100">
+      <app-spinner></app-spinner>
+    </div>
+  } @else {
+    @if (members(); as memberData) {
+      <div class="row mb-4">
+        <div class="col-8 col-md-9">
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput type="text" maxlength="50" placeholder="What are you looking for?" formControlName="searchTerm" />
+          </mat-form-field>
+        </div>
+        <div class="col-4 col-md-3" style="padding-left: 0">
+          <button mat-flat-button class="background-primary w-100 h-100 fs-16" (click)="search()">
+            <mat-icon class="d-none d-md-block">search</mat-icon>
+            {{ 'SEARCH' | translate }}
+          </button>
+        </div>
       </div>
-    } @else {
-      <div class="row g-3">
-        @for (item of memberData.data; track item.user.userId) {
-          <app-member-listing-item [member]="item" />
-        }
-      </div>
-      <div class="mt-auto">
-        <app-pagination [pageNumber]="page()" [totalCount]="memberData.total" (pageChange)="onPageChange($event)" [size]="pageSize">
-        </app-pagination>
-      </div>
+      @if (!memberData.total) {
+        <div class="d-flex justify-content-center align-items-center fs-24 mt-3">
+          <p class="text-muted">No data</p>
+        </div>
+      } @else {
+        <div class="row g-3">
+          @for (item of memberData.data; track item.user.userId) {
+            <app-member-listing-item [member]="item" />
+          }
+        </div>
+        <div class="mt-auto">
+          <app-pagination [pageNumber]="page()" [totalCount]="memberData.total" (pageChange)="onPageChange($event)" [size]="pageSize">
+          </app-pagination>
+        </div>
+      }
     }
   }
-}
+</div>

@@ -41,6 +41,7 @@ export type PageType = 'default' | 'sellListing' | 'wanted';
 export class FilterComponent implements OnInit {
   @Input() displayFilter: Array<ItemOf<typeof allFilters>['value']> = [];
   @Input() pageType: PageType = 'default';
+  @Input() defaultExcludeSold = true;
   @Input() customOptionValues: Record<ItemOf<typeof allFilters>['value'], any> = {};
   @Input() onlySearchBar: boolean = false;
   @Input() onlyFilter: boolean = false;
@@ -316,16 +317,18 @@ export class FilterComponent implements OnInit {
       result[key] = Array.isArray(value) ? value : [value];
     }
 
-    // if (!rawValue['soldListings'] && !rawValue['showFullfilledListing']) {
-    //   result['status'] = {
-    //     neq: 'sold',
-    //   };
-    // }
+    if (this.defaultExcludeSold && !rawValue['soldListings'] && !rawValue['showFullfilledListing']) {
+      result['status'] = {
+        neq: 'sold',
+      };
+    }
 
     delete result['searchTerm'];
 
     const checkboxResult = this.normalizeCheckboxFilter(rawValue);
     Object.assign(result, checkboxResult);
+    delete result['soldListings'];
+    delete result['showFullfilledListing'];
     const to = result['dateRequireTo'];
 
     if (to == null) {

@@ -38,6 +38,23 @@ export type ResponseMe = {
   };
 };
 
+export enum BannerType {
+  INCOMPLETE_ONBOARDING = 'incomplete_onboarding',
+  VERIFICATION_PENDING = 'verification_pending',
+  VERIFICATION_FAILED = 'verification_failed',
+}
+
+export type AccountStatus = {
+  bannerType: BannerType;
+  showBanner: boolean;
+};
+
+export type ResponseAccountStatus = {
+  status: string;
+  message: string;
+  data: AccountStatus;
+};
+
 export type ResquestGetCompanyLocationParams = {
   companyId: number;
   page: number;

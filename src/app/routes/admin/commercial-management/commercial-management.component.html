@@ -9,15 +9,8 @@
   </div>
 
   <mat-tab-group class="common-tab" [selectedIndex]="selectedIndex" (selectedTabChange)="onTabChange($event)" animationDuration="0ms">
-    <!-- <mat-tab label="MEMBERS"> </mat-tab>
-
-    <mat-tab label="SELLERS"> </mat-tab>
-
-    <mat-tab label="BUYERS"> </mat-tab>
-
-    <mat-tab label="WANTED"> </mat-tab> -->
     @for (item of listTabs; track $index) {
-      <mat-tab [label]="item.label"> </mat-tab>
+      <mat-tab labelClass="wrapper {{ needCheck()[item.path] ? 'warning' : '' }}" [label]="item.label"></mat-tab>
     }
   </mat-tab-group>
 
