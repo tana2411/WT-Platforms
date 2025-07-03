@@ -1,6 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
 import { AdminCommercialService } from 'app/services/admin/admin-commercial.service';
 import { PaginationComponent } from 'app/share/ui/listing/pagination/pagination.component';
 import { catchError, of, startWith, Subject, switchMap, tap } from 'rxjs';
@@ -9,7 +15,19 @@ import { MemberListingItemComponent } from '../member-listing-item/member-listin
 
 @Component({
   selector: 'app-admin-member',
-  imports: [MatSnackBarModule, SpinnerComponent, PaginationComponent, MemberListingItemComponent],
+  imports: [
+    MatSnackBarModule,
+    SpinnerComponent,
+    PaginationComponent,
+    MemberListingItemComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    TranslateModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
   templateUrl: './admin-member.component.html',
   styleUrl: './admin-member.component.scss',
 })
@@ -20,19 +38,38 @@ export class AdminMemberComponent {
   pageSize = 20;
   loading = signal(true);
   snackBar = inject(MatSnackBar);
+  fb = inject(FormBuilder);
 
+  form: FormGroup = this.fb.group({
+    searchTerm: [''],
+  });
   updator = new Subject<void>();
+
+  constructor() {}
 
   members = toSignal(
     this.updator.pipe(
-      startWith(null), // Trigger initial load
+      startWith(null),
       tap(() => this.loading.set(true)),
-      switchMap(() =>
-        this.adminCommercialService.getMembers({
+      switchMap(() => {
+        const searchTerm = this.form.get('searchTerm')?.value;
+        const params = !!searchTerm?.trim()
+          ? {
+              where: {
+                or: [
+                  { name: { ilike: `%${searchTerm}%` } },
+                  { country: { ilike: `%${searchTerm}%` } },
+                  { email: { ilike: `%${searchTerm}%` } },
+                ],
+              },
+            }
+          : {};
+        return this.adminCommercialService.getMembers({
           page: this.page(),
           pageSize: this.pageSize,
-        }),
-      ),
+          ...params,
+        });
+      }),
       catchError((error) => {
         this.snackBar.open('Unable to load new members data. Please try again');
         console.error('Error fetching members:', error);
@@ -52,5 +89,9 @@ export class AdminMemberComponent {
       top: 0,
       behavior: 'smooth',
     });
+  }
+
+  search() {
+    this.updator.next();
   }
 }

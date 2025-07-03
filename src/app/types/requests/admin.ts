@@ -79,6 +79,7 @@ export interface ListingActionParams {
 export interface GetMembersParams {
   page: number;
   pageSize: number;
+  [key: string]: any;
 }
 
 export type GetMembersResponse = {

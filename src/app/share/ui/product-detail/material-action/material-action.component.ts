@@ -6,7 +6,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
-import { ListingType } from 'app/models';
+import { ListingStatus, ListingType } from 'app/models';
 import { ListingMaterialDetail } from 'app/models/listing-material-detail.model';
 import { AuthService } from 'app/services/auth.service';
 import { ListingService } from 'app/services/listing.service';
@@ -42,6 +42,10 @@ export class MaterialActionComponent {
 
   canSold = computed(() => {
     return this.listingDetail()?.listing.status !== 'sold';
+  });
+
+  canFulfill = computed(() => {
+    return this.listingDetail()?.listing.status === ListingStatus.AVAILABLE;
   });
 
   onBid() {
