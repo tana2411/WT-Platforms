@@ -616,14 +616,6 @@ export const countries = [
     normalizedCode: '995',
   },
   {
-    isoCode: 'GG',
-    name: 'Guernsey',
-    flagClass: 'fi-gg',
-    inputMasking: '99999 999999',
-    code: '+44 ',
-    normalizedCode: '44',
-  },
-  {
     isoCode: 'GH',
     name: 'Ghana',
     flagClass: 'fi-gh',
@@ -776,14 +768,6 @@ export const countries = [
     normalizedCode: '972',
   },
   {
-    isoCode: 'IM',
-    name: 'Isle of Man',
-    flagClass: 'fi-im',
-    inputMasking: '99999 999999',
-    code: '+44 ',
-    normalizedCode: '44',
-  },
-  {
     isoCode: 'IN',
     name: 'India',
     flagClass: 'fi-in',
@@ -830,14 +814,6 @@ export const countries = [
     inputMasking: '999 999 9999',
     code: '+39 ',
     normalizedCode: '39',
-  },
-  {
-    isoCode: 'JE',
-    name: 'Jersey',
-    flagClass: 'fi-je',
-    inputMasking: '99999 999999',
-    code: '+44 ',
-    normalizedCode: '44',
   },
   {
     isoCode: 'JM',
