@@ -3,6 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { FilterParams, ListingMaterial } from 'app/models';
@@ -34,6 +35,7 @@ const PAGE_SIZE = 10;
     BiddingFormComponent,
     SpinnerComponent,
     UnsuccessfulSearchComponent,
+    TranslateModule,
   ],
 })
 export class MarketPlaceComponent {
@@ -118,7 +120,7 @@ export class MarketPlaceComponent {
       .subscribe((data) => {
         if (data) {
           this.items.set(data.results);
-          this.totalItem.set(data.totalCount);
+          this.totalItem.set(typeof data.totalCount == 'string' ? parseInt(data.totalCount) : data.totalCount);
         }
       });
   }

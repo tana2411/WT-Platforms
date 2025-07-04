@@ -122,7 +122,7 @@ export class WantedMaterialComponent implements OnInit {
       .subscribe((data) => {
         if (data) {
           this.items.set(data.results);
-          this.totalItem.set(data.totalCount);
+          this.totalItem.set(typeof data.totalCount == 'string' ? parseInt(data.totalCount) : data.totalCount);
         }
       });
   }

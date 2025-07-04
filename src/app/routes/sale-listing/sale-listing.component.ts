@@ -3,6 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Data, NavigationEnd, Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { FilterParams, ListingMaterial } from 'app/models';
@@ -31,6 +32,7 @@ import { PAGE_SIZE } from '../wanted-material/wanted-material.component';
     BiddingFormComponent,
     SpinnerComponent,
     UnsuccessfulSearchComponent,
+    TranslateModule,
   ],
   templateUrl: './sale-listing.component.html',
   styleUrl: './sale-listing.component.scss',
@@ -135,7 +137,7 @@ export class SaleListingComponent {
       .subscribe((data) => {
         if (data) {
           this.items.set(data.results);
-          this.totalItem.set(data.totalCount);
+          this.totalItem.set(typeof data.totalCount == 'string' ? parseInt(data.totalCount) : data.totalCount);
         }
       });
   }
