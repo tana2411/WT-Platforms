@@ -92,6 +92,6 @@ export interface ListingDocument {
 }
 
 export interface ListingResponse {
-  totalCount: number;
+  totalCount: string | number;
   results: ListingMaterial[];
 }
