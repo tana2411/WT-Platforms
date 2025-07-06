@@ -7,7 +7,7 @@
       [disabled]="submitting()"
       [class.overlay-spinner]="submitting() == 'accept'"
     >
-      Approve
+      {{ 'Approve' | translate }}
     </button>
 
     <button
@@ -17,7 +17,7 @@
       [disabled]="submitting()"
       [class.overlay-spinner]="submitting() == 'reject'"
     >
-      Reject
+      {{ 'Reject' | translate }}
     </button>
 
     @if (canRequestInformation()) {
@@ -29,7 +29,7 @@
         [disabled]="submitting()"
         [class.overlay-spinner]="submitting() == 'request'"
       >
-        Request more information
+        {{ 'Request more information' | translate }}
       </button>
     }
   </div>

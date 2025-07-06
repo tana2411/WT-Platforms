@@ -1,6 +1,8 @@
 import { Component, effect, signal } from '@angular/core';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { TableSellingOfferItem } from 'app/models/offer';
 import { OfferService } from 'app/services/offer.service';
@@ -15,7 +17,14 @@ import { LIST_TAB_OFFER, MAP_OFFER_TYPE_TO_EMPTY_OFFER_PROP, OfferType } from '.
 
 @Component({
   selector: 'app-my-offers-selling',
-  imports: [SellingOfferTableComponent, MatTabsModule, SpinnerComponent, CommonLayoutComponent, EmptyOfferComponent],
+  imports: [
+    SellingOfferTableComponent,
+    MatTabsModule,
+    SpinnerComponent,
+    CommonLayoutComponent,
+    EmptyOfferComponent,
+    TranslateModule,
+  ],
   providers: [OfferService],
   templateUrl: './my-offers-selling.component.html',
   styleUrl: './my-offers-selling.component.scss',
@@ -88,7 +97,7 @@ export class MyOffersSellingComponent {
       currency: offer.currency ? getCurrencySignal(offer.currency) : '',
       country: getLocationAddress(buyer.location),
       status: offer.status,
-      bidAmount: `${offer.offeredPricePerUnit}/MT`,
+      bidAmount: `${offer.offeredPricePerUnit}/${localized$('MT')}`,
     };
   }
 

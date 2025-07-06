@@ -6,6 +6,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 import { CompanyDocumentType } from 'app/models';
 import { CommercialDocument, CompanyDocumentStatus, MemberDetail } from 'app/models/admin/commercial.model';
 import { OfferStatus } from 'app/models/offer';
@@ -27,6 +28,7 @@ import { DocumentPreviewModalComponent } from '../admin-document-preview-modal/a
     MatTooltipModule,
     MatDialogModule,
     DatePipe,
+    TranslateModule,
   ],
   templateUrl: './admin-company-document.component.html',
   styleUrl: './admin-company-document.component.scss',

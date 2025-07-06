@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 import { colour, countries, finishing, materialTypes, packing } from '@app/statics';
 import { FileInfo, FileUploadComponent } from '@app/ui';
 import { noForbiddenPatternsValidator, pastDateValidator } from '@app/validators';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { AddCompanyLocationResponse, ListingImageType } from 'app/models';
 import { EditSiteComponent } from 'app/routes/my-sites/edit-site/edit-site.component';
@@ -36,7 +38,9 @@ import { catchError, filter, finalize, first, forkJoin, map, of, startWith, swit
     ReactiveFormsModule,
     MatButtonModule,
     MatDialogModule,
+    TranslateModule,
   ],
+  providers: [TranslatePipe],
   templateUrl: './sell-lising-material-form.component.html',
   styleUrl: './sell-lising-material-form.component.scss',
 })
@@ -58,6 +62,7 @@ export class SellLisingMaterialFormComponent {
   authService = inject(AuthService);
   router = inject(Router);
   dialog = inject(MatDialog);
+  translate = inject(TranslatePipe);
 
   // onGoingListing = signal<boolean | undefined>(undefined);
   // hasSpecialData = signal<boolean | undefined>(false);
@@ -306,7 +311,9 @@ export class SellLisingMaterialFormComponent {
     forkJoin(filesSources)
       .pipe(
         catchError((err) => {
-          this.snackBar.open('An error occurred while uploading the file. Please try again.');
+          this.snackBar.open(
+            this.translate.transform(localized$('An error occurred while uploading the file. Please try again.')),
+          );
           throw err;
         }),
         map(([featureImages, specialFiles, galleryImages]) => {
@@ -331,7 +338,7 @@ export class SellLisingMaterialFormComponent {
           return this.listingService.createListing({ ...payload, documents }).pipe(
             catchError((err) => {
               this.snackBar.open(
-                `${err.error?.error?.message ?? 'Failed to submit your listing. Please try again. If the problem persists, contact support.'}`,
+                `${err.error?.error?.message ?? this.translate.transform(localized$('Failed to submit your listing. Please try again. If the problem persists, contact support.'))}`,
               );
               throw err;
             }),
@@ -340,7 +347,7 @@ export class SellLisingMaterialFormComponent {
         finalize(() => this.submitting.set(false)),
       )
       .subscribe((result) => {
-        this.snackBar.open('Your listing is under review');
+        this.snackBar.open(this.translate.transform(localized$('Your listing is under review')));
         this.router.navigateByUrl(ROUTES_WITH_SLASH.buy);
       });
   }

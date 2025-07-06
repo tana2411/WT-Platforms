@@ -15,6 +15,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { FULL_PAGINATION_LIMIT } from 'app/constants/common';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { CompanyLocation } from 'app/models';
@@ -41,8 +43,9 @@ export type BiddingFormProps = {
     MatButtonModule,
     MatDatepickerModule,
     MatSnackBarModule,
+    TranslateModule,
   ],
-  providers: [OfferService],
+  providers: [OfferService, TranslatePipe],
   templateUrl: './bidding-form.component.html',
   styleUrl: './bidding-form.component.scss',
 })
@@ -52,6 +55,7 @@ export class BiddingFormComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<BiddingFormComponent>);
   readonly props = inject<BiddingFormProps>(MAT_DIALOG_DATA);
   private snackBar = inject(MatSnackBar);
+  private translate = inject(TranslatePipe);
 
   private validateRange = (group: AbstractControl): ValidationErrors | null => {
     const earliestDate = group.get('earliestDeliveryDate')?.value;
@@ -142,11 +146,15 @@ export class BiddingFormComponent implements OnInit {
       .createBid(params)
       .pipe(
         tap(() => {
-          this.snackBar.open('Your bid has been successfully created.');
+          this.snackBar.open(this.translate.transform(localized$('Your bid has been successfully created.')));
           this.dialogRef.close();
         }),
         catchError((err) => {
-          this.snackBar.open('Failed to submit your bid due to a system error. Please try again later.');
+          this.snackBar.open(
+            this.translate.transform(
+              localized$('Failed to submit your bid due to a system error. Please try again later.'),
+            ),
+          );
           throw err;
         }),
         finalize(() => {

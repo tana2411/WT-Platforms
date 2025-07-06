@@ -4,6 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { OfferListingItem, OfferStatus } from 'app/models/offer';
 import { OfferService } from 'app/services/offer.service';
 import {
@@ -18,7 +20,16 @@ import { RejectReasonComponent } from '../reject-reason/reject-reason.component'
 
 @Component({
   selector: 'app-offer-listing',
-  imports: [PaginationComponent, MatButtonModule, MatSnackBarModule, MatDialogModule, RouterModule, TitleCasePipe],
+  imports: [
+    PaginationComponent,
+    MatButtonModule,
+    MatSnackBarModule,
+    MatDialogModule,
+    RouterModule,
+    TitleCasePipe,
+    TranslateModule,
+  ],
+  providers: [TranslatePipe],
   templateUrl: './offer-listing.component.html',
   styleUrl: './offer-listing.component.scss',
 })
@@ -39,6 +50,7 @@ export class OfferListingComponent {
     private offerService: OfferService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
+    private translate: TranslatePipe,
   ) {}
 
   canAcceptReject(status: OfferStatus) {
@@ -64,11 +76,15 @@ export class OfferListingComponent {
       )
       .subscribe({
         next: () => {
-          this.snackBar.open('Bid accepted successfully.');
+          this.snackBar.open(this.translate.transform(localized$('Bid accepted successfully.')));
           this.refresh.emit();
         },
         error: () => {
-          this.snackBar.open('Failed to accept the bid. Please check your network connection and try again.');
+          this.snackBar.open(
+            this.translate.transform(
+              localized$('Failed to accept the bid. Please check your network connection and try again.'),
+            ),
+          );
         },
       });
   }
@@ -99,11 +115,13 @@ export class OfferListingComponent {
 
         this.offerService.rejectBid(item.id, reason).subscribe({
           next: () => {
-            this.snackBar.open('Bid rejected successfully.');
+            this.snackBar.open(this.translate.transform(localized$('Bid rejected successfully.')));
             this.refresh.emit();
           },
           error: () => {
-            this.snackBar.open('Failed to reject the bid. Please try again later.');
+            this.snackBar.open(
+              this.translate.transform(localized$('Failed to reject the bid. Please try again later.')),
+            );
           },
         });
       });

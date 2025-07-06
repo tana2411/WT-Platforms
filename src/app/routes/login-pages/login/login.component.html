@@ -27,7 +27,7 @@
       <div class="col-12 mb-3">
         <mat-label class="fw-bold mb-1">{{ 'PASSWORD' | translate }}</mat-label>
         <mat-form-field appearance="outline" class="w-100">
-          <input matInput type="password" placeholder="{{ '******' | translate }}" formControlName="password" />
+          <input matInput type="password" placeholder="******" formControlName="password" />
         </mat-form-field>
         @if (formGroup.get('password')?.hasError('required') && formGroup.get('password')?.touched) {
           <mat-error>{{ 'This is a required field.' | translate }}</mat-error>

@@ -1,4 +1,4 @@
-<app-common-layout [title]="'My ' + (listingType == 'sell' ? 'Sales' : 'Wanted') + ' Listings'">
+<app-common-layout [title]="listingType == 'sell' ? ('My Sales Listings' | translate) : ('My Wanted Listings' | translate)">
   <app-filter
     [displayFilter]="[
       'country',

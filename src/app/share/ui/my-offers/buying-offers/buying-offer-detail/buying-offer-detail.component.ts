@@ -4,6 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { mapCountryCodeToName } from '@app/statics';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { ListingImageType } from 'app/models';
 import { OfferStatus } from 'app/models/offer';
@@ -27,6 +29,7 @@ import { BidRejectedComponent } from '../offer-detail-status/bid-rejected/bid-re
     BidRejectedComponent,
     RouterModule,
     BidPendingComponent,
+    TranslateModule,
   ],
   templateUrl: './buying-offer-detail.component.html',
   styleUrl: './buying-offer-detail.component.scss',
@@ -51,32 +54,32 @@ export class BuyingOfferDetailComponent {
 
     return [
       {
-        label: 'Material',
+        label: localized$('Material'),
         icon: 'fitness_center',
         value: getMaterialTypeLabel(offer.listing.materialType),
       },
       {
-        label: 'Average Weight per Load',
+        label: localized$('Average Weight per Load'),
         icon: 'pages',
         value: `${offer.listing.materialWeightWanted / offer.listing.quantity} MT`,
       },
       {
-        label: `No. of Loads`,
+        label: localized$(`No. of Loads`),
         icon: 'sell',
         value: offer.listing.quantity,
       },
       {
-        label: 'Remaining Loads',
+        label: localized$('Remaining Loads'),
         icon: 'hourglass_top',
         value: `${offer.listing.remainingQuantity} of ${offer.listing.quantity}`,
       },
       {
-        label: 'Packaged',
+        label: localized$('Packaged'),
         icon: 'hourglass_top',
         value: offer.listing.materialPacking,
       },
       {
-        label: 'Material Location',
+        label: localized$('Material Location'),
         icon: 'hourglass_top',
         value: mapCountryCodeToName[offer.offer.sellerCountry!],
       },

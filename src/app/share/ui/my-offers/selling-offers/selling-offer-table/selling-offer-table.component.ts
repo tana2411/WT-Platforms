@@ -3,13 +3,22 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { FallbackImageDirective } from '@app/directives';
+import { TranslateModule } from '@ngx-translate/core';
 import { TableSellingOfferItem } from 'app/models/offer';
 import { getListingFeatureImage, getOfferStatusColor } from 'app/share/utils/offer';
 import { PaginationComponent } from '../../../listing/pagination/pagination.component';
 
 @Component({
   selector: 'app-selling-offer-table',
-  imports: [PaginationComponent, MatButtonModule, RouterModule, FallbackImageDirective, TitleCasePipe, DecimalPipe],
+  imports: [
+    PaginationComponent,
+    MatButtonModule,
+    RouterModule,
+    FallbackImageDirective,
+    TitleCasePipe,
+    DecimalPipe,
+    TranslateModule,
+  ],
   templateUrl: './selling-offer-table.component.html',
   styleUrl: './selling-offer-table.component.scss',
 })

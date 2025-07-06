@@ -13,6 +13,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { AdminCommercialService } from 'app/services/admin/admin-commercial.service';
 import { MemberRequestActionEnum } from 'app/types/requests/admin';
 import { catchError, EMPTY, finalize, switchMap, tap } from 'rxjs';
@@ -21,7 +23,8 @@ import { RejectModalComponent } from '../../reject-modal/reject-modal.component'
 
 @Component({
   selector: 'app-member-detail-actions',
-  imports: [MatButtonModule, MatSnackBarModule, MatDialogModule],
+  imports: [MatButtonModule, MatSnackBarModule, MatDialogModule, TranslateModule],
+  providers: [TranslatePipe],
   templateUrl: './member-detail-actions.component.html',
   styleUrl: './member-detail-actions.component.scss',
 })
@@ -29,6 +32,7 @@ export class MemberDetailActionsComponent {
   @Output() refresh = new EventEmitter<void>();
 
   dialogService = inject(MatDialog);
+  translate = inject(TranslatePipe);
   snackbar = inject(MatSnackBar);
   injector = inject(Injector);
   adminCommercialService = inject(AdminCommercialService);
@@ -53,11 +57,13 @@ export class MemberDetailActionsComponent {
         })
         .pipe(
           tap(() => {
-            this.snackbar.open('The approval action was sent successfully.');
+            this.snackbar.open(this.translate.transform(localized$('The approval action was sent successfully.')));
             this.refresh.emit();
           }),
           catchError(() => {
-            this.snackbar.open('Unable to process the approval action. Please try again.');
+            this.snackbar.open(
+              this.translate.transform(localized$('Unable to process the approval action. Please try again.')),
+            );
             return EMPTY;
           }),
           takeUntilDestroyed(),
@@ -99,10 +105,12 @@ export class MemberDetailActionsComponent {
           }),
           tap(() => {
             this.refresh.emit();
-            this.snackbar.open('The rejection action was sent successfully.');
+            this.snackbar.open(this.translate.transform(localized$('The rejection action was sent successfully.')));
           }),
           catchError(() => {
-            this.snackbar.open('Unable to process the rejection action. Please try again.');
+            this.snackbar.open(
+              this.translate.transform(localized$('Unable to process the rejection action. Please try again.')),
+            );
             return EMPTY;
           }),
           takeUntilDestroyed(),
@@ -147,10 +155,14 @@ export class MemberDetailActionsComponent {
           }),
           tap(() => {
             this.refresh.emit();
-            this.snackbar.open('The request information action was sent successfully.');
+            this.snackbar.open(
+              this.translate.transform(localized$('The request information action was sent successfully.')),
+            );
           }),
           catchError(() => {
-            this.snackbar.open('Unable to request more information. Please try again.');
+            this.snackbar.open(
+              this.translate.transform(localized$('Unable to request more information. Please try again.')),
+            );
             return EMPTY;
           }),
           takeUntilDestroyed(),

@@ -1,13 +1,13 @@
 @if (materials(); as materials) {
   <div class="col-12 overflow-hidden">
-    <h4 class="fw-bold mt-3 mb-4">Material Preference</h4>
+    <h4 class="fw-bold mt-3 mb-4">{{ 'Material Preference' | translate }}</h4>
     <div class="d-flex flex-column flex-lg-row gap-4">
       <div
         class="border border-primary rounded-4 p-3 p-md-4 p-lg-5 flex-column flex-md-row justify-content-between col-12 overflow-hidden gap-4"
       >
         @if (materials.length == 0) {
           <div class="d-flex justify-content-center align-items-center fs-24 mt-3">
-            <p class="text-muted">No materials found.</p>
+            <p class="text-muted">{{ 'No materials found.' | translate }}</p>
           </div>
         } @else {
           @for (type of materials; track $index) {
@@ -20,25 +20,6 @@
           }
         }
       </div>
-
-      <!-- <div>
-        <button
-          mat-stroked-button
-          class="d-flex align-items-center justify-content-center"
-          style="max-width: 200px"
-          (click)="openEditMaterialForm()"
-          
-        >
-          <img
-            src="assets/images/edit_24px.svg"
-            appFallbackImage
-            loading="lazy"
-            alt="Edit icon"
-            style="height: 1em; width: auto; vertical-align: baseline; margin-right: 5px"
-          />
-          <span class="fw-bold fs-16">EDIT</span>
-        </button>
-      </div> -->
     </div>
   </div>
 }

@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { AdminCommercialService } from 'app/services/admin/admin-commercial.service';
 import { catchError, map, of, startWith, Subject, switchMap, tap } from 'rxjs';
@@ -32,6 +33,7 @@ import { SpinnerComponent } from '../../../share/ui/spinner/spinner.component';
     MemberDetailActionsComponent,
     AdminCompanyDocumentComponent,
     AdminMemberLocationComponent,
+    TranslateModule,
   ],
   providers: [AdminCommercialService],
   templateUrl: './member-detail.component.html',

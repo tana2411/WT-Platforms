@@ -3,13 +3,14 @@ import { Component, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { mapCountryCodeToName } from '@app/statics';
+import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { ListingMemberItem } from 'app/models/admin/commercial.model';
 import { isNil } from 'lodash';
 
 @Component({
   selector: 'app-member-listing-item',
-  imports: [MatButtonModule, TitleCasePipe, DatePipe],
+  imports: [MatButtonModule, TitleCasePipe, DatePipe, TranslateModule],
   templateUrl: './member-listing-item.component.html',
   styleUrl: './member-listing-item.component.scss',
 })

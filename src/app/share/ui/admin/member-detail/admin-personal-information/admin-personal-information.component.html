@@ -1,6 +1,6 @@
 @if (userDetail(); as userDetail) {
   <div class="col-12 overflow-hidden">
-    <h4 class="fw-bold mb-4">Personal Information</h4>
+    <h4 class="fw-bold mb-4">{{ 'Personal Information' | translate }}</h4>
 
     <div class="d-flex flex-column flex-lg-row gap-4 overflow-hidden">
       <div
@@ -18,36 +18,36 @@
             </div>
           </div>
 
-          <div class="text-center text-md-start fw-500">Account ID: {{ userDetail.id }}</div>
+          <div class="text-center text-md-start fw-500">{{ 'Account ID' | translate }}: {{ userDetail.id }}</div>
         </div>
 
         <div class="col-12 col-md-8 col-lg-9 d-flex flex-column justify-content-between overflow-hidden flex-grow-1 min-w-0">
           <div class="row g-3 mb-4 mx-0">
             <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold text-uppercase small mb-1 text-truncate">PREFIX</div>
+              <div class="fw-bold text-uppercase small mb-1 text-truncate">{{ 'PREFIX' | translate }}</div>
               <div class="text-truncate fw-500">{{ userDetail.prefix | titlecase }}</div>
             </div>
             <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold text-uppercase small mb-1 text-truncate">FIRST NAME</div>
+              <div class="fw-bold text-uppercase small mb-1 text-truncate">{{ 'FIRST NAME' | translate }}</div>
               <div class="text-truncate fw-500">{{ userDetail.firstName }}</div>
             </div>
             <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold text-uppercase small mb-1 text-truncate">LAST NAME</div>
+              <div class="fw-bold text-uppercase small mb-1 text-truncate">{{ 'LAST NAME' | translate }}</div>
               <div class="text-truncate fw-500">{{ userDetail.lastName }}</div>
             </div>
           </div>
 
           <div class="row g-3 mx-0">
             <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold text-uppercase small mb-1 text-truncate">JOB TITLE</div>
+              <div class="fw-bold text-uppercase small mb-1 text-truncate">{{ 'JOB TITLE' | translate }}</div>
               <div class="text-truncate fw-500">{{ userDetail.jobTitle }}</div>
             </div>
             <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold text-uppercase small mb-1 text-truncate">EMAIL ADDRESS</div>
-              <div class="text-truncate fw-500" title="john.smith@example.com">{{ userDetail.email }}</div>
+              <div class="fw-bold text-uppercase small mb-1 text-truncate">{{ 'EMAIL ADDRESS' | translate }}</div>
+              <div class="text-truncate fw-500" title="{{ userDetail.email }}">{{ userDetail.email }}</div>
             </div>
             <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold text-uppercase small mb-1 text-truncate">TELEPHONE</div>
+              <div class="fw-bold text-uppercase small mb-1 text-truncate">{{ 'TELEPHONE' | translate }}</div>
               <div class="text-truncate fw-500">{{ userDetail.phoneNumber }}</div>
             </div>
           </div>

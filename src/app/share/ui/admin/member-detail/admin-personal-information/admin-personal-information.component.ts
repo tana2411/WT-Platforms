@@ -1,11 +1,12 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, computed, inject, input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
 import { MemberDetail } from 'app/models/admin/commercial.model';
 
 @Component({
   selector: 'app-admin-personal-information',
-  imports: [TitleCasePipe],
+  imports: [TitleCasePipe, TranslateModule],
   templateUrl: './admin-personal-information.component.html',
   styleUrl: './admin-personal-information.component.scss',
 })

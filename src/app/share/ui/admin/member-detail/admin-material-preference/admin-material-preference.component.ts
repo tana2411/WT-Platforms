@@ -1,10 +1,11 @@
 import { Component, computed, EventEmitter, inject, input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { materialTypes } from '@app/statics';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-material-preference',
-  imports: [],
+  imports: [TranslateModule],
   templateUrl: './admin-material-preference.component.html',
   styleUrl: './admin-material-preference.component.scss',
 })
@@ -30,24 +31,6 @@ export class AdminMaterialPreferenceComponent {
         };
       });
   });
-
-  // openEditMaterialForm() {
-  //   const dataConfig: MatDialogConfig = {
-  //     data: {
-  //       materials: this.materials().flatMap((type) => type.materials.map((m: any) => m.code)),
-  //       companyId: this.companyId,
-  //     },
-  //     width: '100%',
-  //     maxWidth: '960px',
-  //   };
-  //   const dialogRef = this.dialog.open(EditMaterialFormComponent, dataConfig);
-
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     if (result) {
-  //       this.refresh.emit();
-  //     }
-  //   });
-  // }
 
   getMaterials(type: any): string {
     return type.materials.map((m: any) => m.name).join(', ');

@@ -2,6 +2,7 @@ import { Component, computed, input } from '@angular/core';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { mapCountryCodeToName, materialTypes } from '@app/statics';
+import { TranslateModule } from '@ngx-translate/core';
 import { MemberDetail } from 'app/models/admin/commercial.model';
 import { getLocationAddress } from 'app/share/utils/offer';
 import { ItemOf } from 'app/types/utils';
@@ -15,7 +16,7 @@ const MAP_CONTAINER_TYPES_TO_NAME: Record<string, string> = {
 };
 @Component({
   selector: 'app-admin-member-location',
-  imports: [MatAccordion, MatExpansionModule, MatIconModule],
+  imports: [MatAccordion, MatExpansionModule, MatIconModule, TranslateModule],
   templateUrl: './admin-member-location.component.html',
   styleUrl: './admin-member-location.component.scss',
 })
