@@ -20,7 +20,7 @@ export class ProductExpiryComponent {
   isOwnListing = computed(() => this.userId() === this.listingDetail()?.listing.createdByUserId);
 
   expiringDate = computed(() => {
-    return moment(this.listingDetail()?.listing.endDate).diff(moment(), 'd');
+    return Math.abs(moment(this.listingDetail()?.listing.endDate).diff(moment(), 'd'));
   });
 
   isNearingExpiry = computed(() => {
