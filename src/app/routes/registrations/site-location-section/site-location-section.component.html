@@ -115,8 +115,8 @@
           <div class="col-md-12 mb-4">
             <label class="fw-bold">{{ 'STREET ADDRESS*' | translate }}</label>
             <mat-form-field appearance="outline" class="w-100" [class.disable-mat-form-field]="selectPreviousAddress()">
-              <input matInput placeholder="{{ 'Type here' | translate }}" type="text" formControlName="adressLine" />
-              @if (formGroup.get('adressLine')?.hasError('required')) {
+              <input matInput placeholder="{{ 'Type here' | translate }}" type="text" formControlName="addressLine" />
+              @if (formGroup.get('addressLine')?.hasError('required')) {
                 <mat-error>{{ 'This field is required' | translate }}</mat-error>
               }
             </mat-form-field>
