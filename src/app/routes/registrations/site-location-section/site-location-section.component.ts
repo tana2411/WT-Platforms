@@ -61,7 +61,7 @@ export class SiteLocationSectionComponent implements OnInit {
     lastName: new FormControl<string | null>(null, [Validators.required]),
     positionInCompany: new FormControl<string | null>(null, [Validators.required]),
     phoneNumber: new FormControl<string | null>(null, [Validators.required]),
-    adressLine: new FormControl<string | null>(null, [Validators.required]),
+    addressLine: new FormControl<string | null>(null, [Validators.required]),
     postcode: new FormControl<string | null>(null, [Validators.required]),
     city: new FormControl<string | null>(null, [Validators.required]),
     country: new FormControl<string | null>(null, [Validators.required]),
@@ -121,7 +121,7 @@ export class SiteLocationSectionComponent implements OnInit {
     effect(() => {
       const controls = this.formGroup.controls;
       const addressFields = [
-        controls.adressLine,
+        controls.addressLine,
         controls.postcode,
         controls.city,
         controls.country,
@@ -130,7 +130,7 @@ export class SiteLocationSectionComponent implements OnInit {
       if (this.selectPreviousAddress()) {
         this.formGroup.patchValue(
           {
-            adressLine: this.user()?.company.addressLine1,
+            addressLine: this.user()?.company.addressLine1,
             postcode: this.user()?.company.postalCode,
             city: this.user()?.company.city,
             country: this.user()?.company.country,
@@ -151,11 +151,11 @@ export class SiteLocationSectionComponent implements OnInit {
     });
 
     this.formGroup.valueChanges.pipe(takeUntilDestroyed()).subscribe((value) => {
-      const { adressLine, postcode, city, country, stateProvince } = value;
+      const { addressLine, postcode, city, country, stateProvince } = value;
       const previousAddress = this.user()?.company;
       if (previousAddress) {
         if (
-          previousAddress.addressLine1 !== adressLine ||
+          previousAddress.addressLine1 !== addressLine ||
           previousAddress.postalCode != postcode ||
           previousAddress.city != city ||
           previousAddress.country != country ||
@@ -223,9 +223,11 @@ export class SiteLocationSectionComponent implements OnInit {
   send(navigateTo: string) {
     if (this.formGroup.invalid) return;
 
-    const { toggleAccessRestriction, ...value } = this.formGroup.value;
+    const { toggleAccessRestriction, officeCloseTime, officeOpenTime, ...value } = this.formGroup.value;
     const payload: any = {
       ...value,
+      officeCloseTime: officeCloseTime?.toISOString().split('T')[1].split('.')[0],
+      officeOpenTime: officeOpenTime?.toISOString().split('T')[1].split('.')[0],
       companyId: this.user()?.companyId,
       accessRestrictions: value.accessRestrictions ?? 'N/a',
     };
