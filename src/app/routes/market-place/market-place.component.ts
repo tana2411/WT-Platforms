@@ -3,7 +3,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { FilterParams, ListingMaterial } from 'app/models';
@@ -37,6 +38,7 @@ const PAGE_SIZE = 10;
     UnsuccessfulSearchComponent,
     TranslateModule,
   ],
+  providers: [TranslatePipe],
 })
 export class MarketPlaceComponent {
   items = signal<ListingMaterial[]>([]);
@@ -52,6 +54,7 @@ export class MarketPlaceComponent {
   route = inject(ActivatedRoute);
   dialog = inject(MatDialog);
   private injector = inject(EnvironmentInjector);
+  private translate = inject(TranslatePipe);
 
   constructor() {
     this.filter.set({
@@ -111,9 +114,7 @@ export class MarketPlaceComponent {
       .pipe(
         finalize(() => this.loading.set(false)),
         catchError((err) => {
-          this.snackBar.open(`${err.error?.error?.message ?? 'Unknown error'}`, 'Ok', {
-            duration: 3000,
-          });
+          this.snackBar.open(`${err.error?.error?.message ?? this.translate.transform(localized$('Unknown error'))}`);
           return of(null);
         }),
       )
@@ -137,7 +138,7 @@ export class MarketPlaceComponent {
           width: '100%',
           panelClass: 'px-3',
           data: {
-            title: 'Are you sure you want to remove this listing? This action cannot be undone.',
+            title: localized$('Are you sure you want to remove this listing? This action cannot be undone.'),
           },
         })
         .afterClosed()
@@ -156,16 +157,16 @@ export class MarketPlaceComponent {
             //     duration: 3000,
             //   });
             // } else {
-            this.snackBar.open('Failed to remove the listing. Please try again later.', 'Ok', {
-              duration: 3000,
-            });
+            this.snackBar.open(
+              this.translate.transform(localized$('Failed to remove the listing. Please try again later.')),
+            );
 
             return EMPTY;
             // }
           }),
         )
         .subscribe(() => {
-          this.snackBar.open('Your listing has been successfully removed.');
+          this.snackBar.open(this.translate.transform(localized$('Your listing has been successfully removed.')));
           this.refresh();
         });
     });

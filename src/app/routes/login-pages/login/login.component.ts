@@ -6,7 +6,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router, RouterLink } from '@angular/router';
 import { strictEmailValidator } from '@app/validators';
-import { TranslateModule } from '@ngx-translate/core';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../../services/auth.service';
 import { CreateAccountModalComponent } from '../create-account-modal/create-account-modal.component';
 
@@ -25,6 +26,7 @@ export const EMAIL_PATTERN = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     MatDialogModule,
     TranslateModule,
   ],
+  providers: [TranslatePipe],
 })
 export class LoginComponent {
   formGroup = new FormGroup({
@@ -40,6 +42,7 @@ export class LoginComponent {
     private router: Router,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
+    private translate: TranslatePipe,
   ) {
     this.setupForm();
   }
@@ -90,9 +93,9 @@ export class LoginComponent {
       error: (err) => {
         console.log(err);
         if (err?.status === 401 || err?.status === 422) {
-          this.serverError.set('Invalid email address and/or password.');
+          this.serverError.set(this.translate.transform(localized$('Invalid email address and/or password.')));
         } else {
-          this.snackBar.open('Something went wrong.');
+          this.snackBar.open(this.translate.transform(localized$('Something went wrong.')));
         }
         this.submitting.set(false);
       },

@@ -1,4 +1,4 @@
-<app-admin-layout [title]="'Members Account'">
+<app-admin-layout [title]="'Members Account' | translate">
   @if (loadingUser()) {
     <app-spinner></app-spinner>
   } @else {
@@ -10,7 +10,7 @@
           (click)="onBack()"
         >
           <mat-icon class="icon">west</mat-icon>
-          <span>go back</span>
+          <span>{{ 'go back' | translate }}</span>
         </div>
 
         <app-member-detail-actions [user]="user" (refresh)="refresh()" />

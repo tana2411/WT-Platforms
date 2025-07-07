@@ -4,6 +4,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router, RouterModule } from '@angular/router';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { AuthService } from 'app/services/auth.service';
 import { ConfirmModalComponent, ConfirmModalProps } from 'app/share/ui/confirm-modal/confirm-modal.component';
@@ -12,7 +14,7 @@ import { IconComponent } from '../icon/icon.component';
 
 @Component({
   selector: 'app-avatar',
-  imports: [MatMenuModule, RouterModule, IconComponent, MatIconModule, MatDialogModule],
+  imports: [MatMenuModule, RouterModule, IconComponent, MatIconModule, MatDialogModule, TranslateModule],
   templateUrl: './avatar.component.html',
   styleUrl: './avatar.component.scss',
 })
@@ -49,7 +51,7 @@ export class AvatarComponent {
           width: '100%',
           panelClass: 'px-3',
           data: {
-            title: 'Are you sure you want to log out?',
+            title: localized$('Are you sure you want to log out?'),
           },
         })
         .afterClosed()

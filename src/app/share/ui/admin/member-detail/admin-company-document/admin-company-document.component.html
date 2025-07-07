@@ -3,7 +3,7 @@
     <p class="fw-bold mb-3">{{ type }}</p>
     @if (items.length == 0) {
       <div class="d-flex justify-content-center align-items-center fs-24 mt-3">
-        <p class="text-muted">No document found.</p>
+        <p class="text-muted">{{ 'No document found.' | translate }}</p>
       </div>
     } @else {
       @for (item of items; track $index) {
@@ -22,7 +22,7 @@
                     {{ item.document_name }}
                   </div>
                   <div>
-                    <span class="fw-bold">Expiry Date: </span>
+                    <span class="fw-bold">{{ 'Expiry Date' | translate }}: </span>
                     <span>{{ item.expiry_date }}</span>
                   </div>
                 </div>
@@ -41,7 +41,7 @@
             class="d-flex rounded gap-1 px-4 align-items-center border border-primary primary text-uppercase fw-bold custom-button"
             (click)="viewDocument(item)"
           >
-            Preview
+            {{ 'Preview' | translate }}
             <mat-icon>preview</mat-icon>
           </div>
 
@@ -50,7 +50,7 @@
             class="d-flex rounded gap-1 px-4 align-items-center border border-primary primary text-uppercase fw-bold custom-button"
             (click)="download(item.document_url)"
           >
-            Download
+            {{ 'Download' | translate }}
             <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clip-path="url(#clip0_19766_20097)">
                 <path
@@ -72,7 +72,7 @@
 </ng-template>
 
 <div class="col-12 overflow-hidden">
-  <h4 class="fw-bold mb-4">Company Documents</h4>
+  <h4 class="fw-bold mb-4">{{ 'Company Documents' | translate }}</h4>
   <div class="d-flex flex-column flex-lg-row gap-4">
     <div
       class="border border-primary rounded-4 p-3 p-md-4 p-lg-5 d-flex flex-column flex-md-row justify-content-between col-12 overflow-hidden gap-4"
@@ -81,12 +81,12 @@
         <div class="row g-3 mb-4 mx-0">
           <div class="col-12 px-2">
             <div class="mb-2">
-              <div class="fw-bold mb-3">WHICH PERMIT / LICENCE DO YOU HAVE?*</div>
+              <div class="fw-bold mb-3">{{ 'WHICH PERMIT / LICENCE DO YOU HAVE?*' | translate }}</div>
               @if (documentTypeUploaded.length > 0) {
                 <div>{{ documentTypeUploaded }}</div>
               } @else {
                 <div class="d-flex justify-content-center align-items-center fs-24 mt-3">
-                  <p class="text-muted">No document found.</p>
+                  <p class="text-muted">{{ 'No document found.' | translate }}</p>
                 </div>
               }
             </div>
@@ -97,7 +97,7 @@
                 document;
                 context: {
                   items: environmentPermitDocuments,
-                  type: 'ENVIRONMENTAL PERMIT UPLOAD',
+                  type: 'ENVIRONMENTAL PERMIT UPLOAD' | translate,
                 }
               "
             ></ng-container>
@@ -109,7 +109,7 @@
                 document;
                 context: {
                   items: wasteExemptionDocuments,
-                  type: 'WASTE EXEMPTIONS UPLOAD',
+                  type: 'WASTE EXEMPTIONS UPLOAD' | translate,
                 }
               "
             ></ng-container>
@@ -121,13 +121,13 @@
                 document;
                 context: {
                   items: otherDocuments,
-                  type: 'OTHER DOCUMENT UPLOAD',
+                  type: 'OTHER DOCUMENT UPLOAD' | translate,
                 }
               "
             ></ng-container>
           }
           <div class="mb-1 mt-3">
-            <p class="fw-bold mb-3">DO YOU HAVE A WASTE CARRIER LICENCE?</p>
+            <p class="fw-bold mb-3">{{ 'DO YOU HAVE A WASTE CARRIER LICENCE?' | translate }}</p>
             <div class="d-flex justify-content-between col-12 col-md-6" name="wasteLicence" style="pointer-events: none">
               {{ wasteCarrierLicenseDocuments.length > 0 ? 'Yes' : 'Not Applicable' }}
             </div>
@@ -138,7 +138,7 @@
                 document;
                 context: {
                   items: wasteCarrierLicenseDocuments,
-                  type: 'WASTE CARRIER LICENCE UPLOAD',
+                  type: 'WASTE CARRIER LICENCE UPLOAD' | translate,
                 }
               "
             ></ng-container>

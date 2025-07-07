@@ -1,16 +1,16 @@
-<app-admin-layout [title]="'Commercial Management'">
+<app-admin-layout [title]="'Commercial Management' | translate">
   <div
     mat-button
     class="d-inline-flex align-items-center py-1 rounded px-2 background-primary text-white text-uppercase fw-bold cursor-pointer button-wrapper"
     (click)="onBack()"
   >
     <mat-icon class="icon">west</mat-icon>
-    <span>go back</span>
+    <span>{{ 'go back' | translate }}</span>
   </div>
 
   <mat-tab-group class="common-tab" [selectedIndex]="selectedIndex" (selectedTabChange)="onTabChange($event)" animationDuration="0ms">
     @for (item of listTabs; track $index) {
-      <mat-tab labelClass="wrapper {{ needCheck()[item.path] ? 'warning' : '' }}" [label]="item.label"></mat-tab>
+      <mat-tab labelClass="wrapper {{ needCheck()[item.path] ? 'warning' : '' }}" [label]="item.label | translate"></mat-tab>
     }
   </mat-tab-group>
 

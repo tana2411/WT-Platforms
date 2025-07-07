@@ -6,6 +6,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { mapCodeToMaterialItem, mapCodeToPackaging, mapCountryCodeToName } from '@app/statics';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { AdminLayoutComponent } from 'app/layout/admin-layout/admin-layout.component';
 import { ListingType } from 'app/models';
@@ -28,16 +30,18 @@ import { catchError, EMPTY, map, startWith, Subject, switchMap, tap } from 'rxjs
     DateFormatPipe,
     TitleCasePipe,
     DecimalPipe,
+    TranslateModule,
   ],
   templateUrl: './detail-wanted-listing.component.html',
   styleUrl: './detail-wanted-listing.component.scss',
-  providers: [AdminListingService],
+  providers: [AdminListingService, TranslatePipe],
 })
 export class DetailWantedListingComponent {
   activeRoute = inject(ActivatedRoute);
   router = inject(Router);
   adminListingService = inject(AdminListingService);
   snackBar = inject(MatSnackBar);
+  translate = inject(TranslatePipe);
   listingId = this.activeRoute.snapshot.params['listingId'] as string;
   loadingListing = signal(true);
   listingDetailUpdator$ = new Subject<void>();
@@ -55,7 +59,7 @@ export class DetailWantedListingComponent {
       switchMap(() => this.adminListingService.getDetail(this.listingId)),
       map((res) => res.data),
       catchError((err) => {
-        this.snackBar.open('Something went wrong.');
+        this.snackBar.open(this.translate.transform(localized$('Something went wrong.')));
         return EMPTY;
       }),
       tap((value) => {

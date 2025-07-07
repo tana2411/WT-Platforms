@@ -2,6 +2,7 @@ import { Component, effect, signal } from '@angular/core';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { mapCodeToPackaging } from '@app/statics';
+import { TranslateModule } from '@ngx-translate/core';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { TableBuyingOfferItem } from 'app/models/offer';
 import { OfferService } from 'app/services/offer.service';
@@ -20,7 +21,14 @@ import { LIST_TAB_OFFER, MAP_OFFER_TYPE_TO_EMPTY_OFFER_PROP, OfferType } from '.
 
 @Component({
   selector: 'app-my-offers-buying',
-  imports: [BuyingOfferTableComponent, MatTabsModule, SpinnerComponent, CommonLayoutComponent, EmptyOfferComponent],
+  imports: [
+    BuyingOfferTableComponent,
+    MatTabsModule,
+    SpinnerComponent,
+    CommonLayoutComponent,
+    EmptyOfferComponent,
+    TranslateModule,
+  ],
   providers: [OfferService],
   templateUrl: './my-offers-buying.component.html',
   styleUrl: './my-offers-buying.component.scss',

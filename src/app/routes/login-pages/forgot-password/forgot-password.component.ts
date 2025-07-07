@@ -5,6 +5,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router, RouterLink } from '@angular/router';
 import { strictEmailValidator } from '@app/validators';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { FORGOT_PASSWORD_TIME_KEY, LocalStorageService } from 'app/services/local-storage.service';
 import { isNil } from 'lodash';
@@ -16,7 +18,8 @@ import { AuthService } from '../../../services/auth.service';
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.scss'],
-  imports: [RouterLink, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatSnackBarModule],
+  imports: [RouterLink, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatSnackBarModule, TranslateModule],
+  providers: [TranslatePipe],
 })
 export class ForgotPasswordComponent implements OnInit {
   formGroup: FormGroup;
@@ -49,6 +52,7 @@ export class ForgotPasswordComponent implements OnInit {
   // );
 
   router = inject(Router);
+  translate = inject(TranslatePipe);
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -108,6 +112,10 @@ export class ForgotPasswordComponent implements OnInit {
           const diff = Math.abs(forgotDateTime - now);
           const minutes = Math.floor(diff / 1000 / 60);
           const seconds = Math.floor((diff / 1000) % 60);
+
+          // localized$('Please wait {{minutes}} minute(s) {{seconds}} second(s) before resending forgotten password link.', {
+          //   pa
+          // })
           let msg = 'Please wait ';
           if (minutes > 0) msg += `${minutes} minute${minutes > 1 ? 's' : ''} `;
           msg += `${seconds} second${seconds !== 1 ? 's' : ''} before resending forgotten password link.`;
@@ -138,18 +146,28 @@ export class ForgotPasswordComponent implements OnInit {
     this.serverError.set('');
     this.authService.forgotPassword({ email }).subscribe({
       next: (res) => {
-        this.snackbar.open('Please check your email with instructions on how to reset your password.');
+        this.snackbar.open(
+          this.translate.transform(
+            localized$('Please check your email with instructions on how to reset your password.'),
+          ),
+        );
         this.submitting.set(false);
         this.router.navigateByUrl(ROUTES_WITH_SLASH.login);
         this.localStorageService.setItem(FORGOT_PASSWORD_TIME_KEY, moment().add(2, 'minutes').valueOf());
       },
       error: (err) => {
         if (err.status === 422) {
-          this.snackbar.open('Please check your email with instructions on how to reset your password.');
+          this.snackbar.open(
+            this.translate.transform(
+              localized$('Please check your email with instructions on how to reset your password.'),
+            ),
+          );
         } else if (err.error.error.statusCode === 429) {
-          this.snackbar.open('Please wait 24 hours before resending forgotten password link.');
+          this.snackbar.open(
+            this.translate.transform(localized$('Please wait 24 hours before resending forgotten password link.')),
+          );
         } else {
-          this.snackbar.open('Something went wrong.');
+          this.snackbar.open(this.translate.transform(localized$('Something went wrong.')));
         }
 
         this.submitting.set(false);

@@ -1,5 +1,6 @@
 import { Component, effect, input, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 import { ListingMaterial, ListingState, ListingType } from 'app/models';
 import { Listing } from 'app/models/listing-material-detail.model';
 import { ProductStatus } from 'app/models/product.model';
@@ -7,7 +8,7 @@ import moment from 'moment';
 
 @Component({
   selector: 'app-product-status',
-  imports: [MatIconModule],
+  imports: [MatIconModule, TranslateModule],
   templateUrl: './product-status.component.html',
   styleUrl: './product-status.component.scss',
 })

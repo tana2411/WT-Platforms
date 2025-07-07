@@ -8,6 +8,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { InputWithConfirmControlComponent } from '@app/ui';
 import { checkPasswordStrength, pwdStrengthValidator } from '@app/validators';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { RequestSetPasswordParams } from 'app/types/requests/auth';
 import { debounceTime } from 'rxjs';
@@ -25,7 +26,9 @@ import { AuthService } from '../../../services/auth.service';
     MatSnackBarModule,
     TitleCasePipe,
     InputWithConfirmControlComponent,
+    TranslateModule,
   ],
+  providers: [TranslatePipe],
 })
 export class SetPasswordComponent implements OnInit {
   token: string | null = null;
@@ -42,6 +45,7 @@ export class SetPasswordComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private snackbar: MatSnackBar,
+    private translate: TranslatePipe,
   ) {
     this.formGroup?.valueChanges.pipe(takeUntilDestroyed(), debounceTime(300)).subscribe((value) => {
       const { password } = value; // expiryDate: moment type
@@ -84,14 +88,14 @@ export class SetPasswordComponent implements OnInit {
     this.authService.setPassword(params).subscribe({
       next: () => {
         this.loading.set(false);
-        this.snackbar.open('Password set successfully.');
+        this.snackbar.open(this.translate.transform('Password set successfully.'));
         this.router.navigateByUrl(ROUTES_WITH_SLASH.login);
       },
       error: (error) => {
         if (error?.error?.error?.message === 'Error verifying token : jwt expired') {
-          this.snackbar.open('Token expired.');
+          this.snackbar.open(this.translate.transform('Token expired.'));
         } else {
-          this.snackbar.open('Something went wrong.');
+          this.snackbar.open(this.translate.transform('Something went wrong.'));
         }
         this.loading.set(false);
       },

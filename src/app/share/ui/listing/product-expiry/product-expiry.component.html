@@ -2,9 +2,9 @@
   @if (expiringDate()) {
     <div class="warning owner-warning">
       <mat-icon>info_outline</mat-icon>
-      Listing expired in {{ expiringDate() }} day(s)
+      {{ 'Listing expired in {{expiringDate}} day(s)' | translate: { expiringDate: expiringDate() } }}
     </div>
   }
 } @else if (isNearingExpiry()) {
-  <div class="warning guest-warning">Listing nearing expiry</div>
+  <div class="warning guest-warning">{{ 'Listing nearing expiry' | translate }}</div>
 }

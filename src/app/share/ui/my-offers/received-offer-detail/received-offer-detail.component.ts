@@ -16,6 +16,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { ListingImageType } from 'app/models';
 import { OfferListingItem, OfferState } from 'app/models/offer';
@@ -44,8 +46,9 @@ import { OfferListingComponent } from '../offer-listing/offer-listing.component'
     MatDialogModule,
     MatSnackBarModule,
     RouterModule,
+    TranslateModule,
   ],
-  providers: [DecimalPipe],
+  providers: [DecimalPipe, TranslatePipe],
   templateUrl: './received-offer-detail.component.html',
   styleUrl: './received-offer-detail.component.scss',
 })
@@ -82,32 +85,32 @@ export class ReceivedOfferDetailComponent implements OnInit {
     const offer = this.offer();
     return [
       {
-        label: 'Weight',
+        label: localized$('Weight'),
         // icon: 'fitness_center',
         value: `${this.decimalPipe.transform(formatDecimalNumber((offer?.listing.materialWeightPerUnit ?? 0) * (offer?.listing.quantity ?? 0), 4))} MT`,
       },
       {
-        label: 'Best Offer',
+        label: localized$('Best Offer'),
         // icon: 'pages',
         value: this.getBestOffer(),
       },
       {
-        label: `No. loads`,
+        label: localized$(`No. loads`),
         // icon: 'sell',
         value: this.decimalPipe.transform(offer?.listing.quantity),
       },
       {
-        label: 'No. offers',
+        label: localized$('No. offers'),
         // icon: 'list_alt',
         value: offer?.listing.numberOfOffers,
       },
       {
-        label: 'Remaining Loads',
+        label: localized$('Remaining Loads'),
         // icon: 'hourglass_top',
         value: this.decimalPipe.transform(offer?.listing.remainingQuantity),
       },
       {
-        label: 'Status',
+        label: localized$('Status'),
         // icon: 'hourglass_top',
         color: offer?.listing.status ? getListingStatusColor(offer.listing.status as any) : 'transparent',
         class: 'fw-bold',
@@ -133,6 +136,7 @@ export class ReceivedOfferDetailComponent implements OnInit {
     private listingService: ListingService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
+    private translate: TranslatePipe,
   ) {
     effect(async () => {
       const offer = this.offer();
@@ -215,7 +219,7 @@ export class ReceivedOfferDetailComponent implements OnInit {
           width: '100%',
           panelClass: 'px-3',
           data: {
-            title: 'Are you sure you want to remove this listing? This action cannot be undone.',
+            title: localized$('Are you sure you want to remove this listing? This action cannot be undone.'),
           },
         })
         .afterClosed()
@@ -229,16 +233,16 @@ export class ReceivedOfferDetailComponent implements OnInit {
             return this.listingService.delete(listingId);
           }),
           catchError(() => {
-            this.snackBar.open('Failed to remove the listing. Please try again later.', 'Ok', {
-              duration: 3000,
-            });
+            this.snackBar.open(
+              this.translate.transform(localized$('Failed to remove the listing. Please try again later.')),
+            );
 
             return EMPTY;
             // }
           }),
         )
         .subscribe(() => {
-          this.snackBar.open('Your listing has been successfully removed.');
+          this.snackBar.open(this.translate.transform(localized$('Your listing has been successfully removed.')));
           this.router.navigateByUrl(ROUTES_WITH_SLASH.myOffersSelling);
         });
     });

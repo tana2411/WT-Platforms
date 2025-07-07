@@ -5,6 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { ListingStatus, ListingType } from 'app/models';
 import { ListingMaterialDetail } from 'app/models/listing-material-detail.model';
@@ -20,7 +22,8 @@ import { RequestInformationComponent } from '../request-information/request-info
   selector: 'app-material-action',
   templateUrl: './material-action.component.html',
   styleUrl: './material-action.component.scss',
-  imports: [MatDialogModule, MatButtonModule, RouterModule, CommonModule],
+  imports: [MatDialogModule, MatButtonModule, RouterModule, CommonModule, TranslateModule],
+  providers: [TranslatePipe],
 })
 export class MaterialActionComponent {
   @Input({ required: true }) isSeller: boolean = false;
@@ -33,6 +36,7 @@ export class MaterialActionComponent {
   snackBar = inject(MatSnackBar);
   auth = inject(AuthService);
   activeRoute = inject(ActivatedRoute);
+  translate = inject(TranslatePipe);
 
   deleting = signal(false);
   fulfilling = signal(false);
@@ -108,19 +112,19 @@ export class MaterialActionComponent {
             }),
             catchError((err) => {
               if (err?.error?.error?.statusCode == 403) {
-                this.snackBar.open('You do not have permission to remove this listing.', 'Ok', {
-                  duration: 3000,
-                });
+                this.snackBar.open(
+                  this.translate.transform(localized$('You do not have permission to remove this listing.')),
+                );
               } else {
-                this.snackBar.open('Failed to remove the listing. Please try again later.', 'Ok', {
-                  duration: 3000,
-                });
+                this.snackBar.open(
+                  this.translate.transform(localized$('Failed to remove the listing. Please try again later.')),
+                );
               }
               return EMPTY;
             }),
           )
           .subscribe((result) => {
-            this.snackBar.open('Your listing has been successfully removed.');
+            this.snackBar.open(this.translate.transform(localized$('Your listing has been successfully removed.')));
 
             const isMySaleListing =
               this.isOwnListing() && this.listingDetail()?.listing.listingType === ListingType.SELL;
@@ -152,15 +156,19 @@ export class MaterialActionComponent {
         }),
         catchError((err) => {
           if (err?.error?.error?.statusCode == 403) {
-            this.snackBar.open('You do not have permission to mark fulfill this listing.');
+            this.snackBar.open(
+              this.translate.transform(localized$('You do not have permission to mark fulfill this listing.')),
+            );
           } else {
-            this.snackBar.open('Failed to mark fulfill the listing. Please try again later.');
+            this.snackBar.open(
+              this.translate.transform(localized$('Failed to mark fulfill the listing. Please try again later.')),
+            );
           }
           return EMPTY;
         }),
       )
       .subscribe(() => {
-        this.snackBar.open('Your listing has been successfully fulfilled.');
+        this.snackBar.open(this.translate.transform(localized$('Your listing has been successfully fulfilled.')));
         this.router.navigateByUrl(ROUTES_WITH_SLASH.wanted);
       });
   }
@@ -182,15 +190,19 @@ export class MaterialActionComponent {
         }),
         catchError((err) => {
           if (err?.error?.error?.statusCode == 403) {
-            this.snackBar.open('You do not have permission to mark sold this listing.');
+            this.snackBar.open(
+              this.translate.transform(localized$('You do not have permission to mark sold this listing.')),
+            );
           } else {
-            this.snackBar.open('Failed to mark sold the listing. Please try again later.');
+            this.snackBar.open(
+              this.translate.transform(localized$('Failed to mark sold the listing. Please try again later.')),
+            );
           }
           return EMPTY;
         }),
       )
       .subscribe(() => {
-        this.snackBar.open('Your listing has been successfully sold.');
+        this.snackBar.open(this.translate.transform(localized$('Your listing has been successfully sold.')));
         this.router.navigateByUrl(ROUTES_WITH_SLASH.wanted);
       });
   }

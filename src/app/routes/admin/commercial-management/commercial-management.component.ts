@@ -4,6 +4,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { ListingState } from 'app/models';
 import { OfferState } from 'app/models/offer';
@@ -17,7 +19,7 @@ import { AdminLayoutComponent } from '../../../layout/admin-layout/admin-layout.
   selector: 'app-commercial-management',
   templateUrl: './commercial-management.component.html',
   styleUrls: ['./commercial-management.component.scss'],
-  imports: [AdminLayoutComponent, MatTabsModule, MatIconModule, RouterModule],
+  imports: [AdminLayoutComponent, MatTabsModule, MatIconModule, RouterModule, TranslateModule],
   providers: [AdminCommercialService, OfferService],
 })
 export class CommercialManagementComponent {
@@ -42,10 +44,10 @@ export class CommercialManagementComponent {
   });
 
   listTabs = [
-    { label: 'MEMBERS', path: 'members' },
-    { label: 'LISTINGS', path: 'sellers' },
-    { label: 'OFFERS', path: 'buyers' },
-    { label: 'WANTED LISTINGS', path: 'wanted' },
+    { label: localized$('MEMBERS'), path: 'members' },
+    { label: localized$('LISTINGS'), path: 'sellers' },
+    { label: localized$('OFFERS'), path: 'buyers' },
+    { label: localized$('WANTED LISTINGS'), path: 'wanted' },
   ];
 
   ngOnInit() {

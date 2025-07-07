@@ -1,6 +1,6 @@
 @if (company(); as company) {
   <div class="col-12 overflow-hidden">
-    <h4 class="fw-bold mb-4">Company Information</h4>
+    <h4 class="fw-bold mb-4">{{ 'Company Information' | translate }}</h4>
     <div class="d-flex flex-column flex-lg-row gap-4">
       <div
         class="border border-primary rounded-4 p-3 p-md-4 p-lg-5 d-flex flex-column flex-md-row justify-content-between col-12 overflow-hidden gap-4"
@@ -8,12 +8,12 @@
         <div class="col-12 col-md-8 col-lg-9 d-flex flex-column justify-content-between overflow-hidden flex-grow-1 min-w-0">
           <div class="row g-3 mb-4 mx-0">
             <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold mb-1 text-uppercase">COMPANY NAME</div>
+              <div class="fw-bold mb-1 text-uppercase">{{ 'COMPANY NAME' | translate }}</div>
               <div class="">{{ company.name || '-' }}</div>
             </div>
 
             <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold mb-1 text-uppercase">COMPANY TYPE</div>
+              <div class="fw-bold mb-1 text-uppercase">{{ 'COMPANY TYPE' | translate }}</div>
               <div class="">{{ company.companyType || '-' | titlecase }}</div>
             </div>
 
@@ -32,171 +32,29 @@
 
           <div class="row g-3 mx-0 mb-4">
             <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold mb-1 text-uppercase">COMPANY REGISTRATION NUMBER</div>
+              <div class="fw-bold mb-1 text-uppercase">{{ 'COMPANY REGISTRATION NUMBER' | translate }}</div>
               <div class="">{{ company.registrationNumber || '-' }}</div>
             </div>
 
             <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold mb-1 text-uppercase">Company EMAIL</div>
+              <div class="fw-bold mb-1 text-uppercase">{{ 'Company EMAIL' | translate }}</div>
               <div class="">{{ company.email || '-' }}</div>
             </div>
 
             <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold mb-1 text-uppercase">Company Telephone</div>
+              <div class="fw-bold mb-1 text-uppercase">{{ 'Company Telephone' | translate }}</div>
               <div class="">{{ company.phoneNumber || '-' }}</div>
             </div>
           </div>
 
           <div class="w-100">
             <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold mb-1 text-uppercase">Business address</div>
+              <div class="fw-bold mb-1 text-uppercase">{{ 'Business address' | translate }}</div>
               <div class="">{{ location() }}</div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- <div>
-        <button
-          mat-stroked-button
-          class="d-flex align-items-center justify-content-center"
-          style="max-width: 200px"
-          (click)="openEditCompanyInfo()"
-          
-        >
-          <img
-            src="assets/images/edit_24px.svg"
-            appFallbackImage
-            loading="lazy"
-            alt="Edit icon"
-            style="height: 1em; width: auto; vertical-align: baseline; margin-right: 5px"
-          />
-          <span class="fw-bold fs-16">EDIT</span>
-        </button>
-      </div> -->
     </div>
-
-    <!-- <h4 class="fw-bold mt-5 mb-4" >Business Address</h4>
-    <div class="d-flex flex-column flex-lg-row gap-4">
-      <div
-        class="border border-primary rounded-4 p-3 p-md-4 p-lg-5 d-flex flex-column flex-md-row justify-content-between col-12 overflow-hidden gap-4"
-      >
-        <div class="col-12 col-md-8 col-lg-9 d-flex flex-column justify-content-between overflow-hidden flex-grow-1 min-w-0">
-          <div class="row g-3 mb-4 mx-0">
-            <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold mb-1" >STREET ADDRESS</div>
-              <div class="">{{ company.addressLine1 || '-' }}</div>
-            </div>
-            <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold mb-1" >ZIP / PORTAL CODE</div>
-              <div class="">{{ company.postalCode || '-' }}</div>
-            </div>
-            <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold mb-1" >CITY</div>
-              <div class="">{{ company.city || '-' }}</div>
-            </div>
-          </div>
-
-          <div class="row g-3 mx-0 mb-4">
-            <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold mb-1" >COUNTY / STATE / PROVINCE</div>
-              <div class="">{{ company.stateProvince || '-' }}</div>
-            </div>
-            <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold mb-1" >COUNTRY</div>
-              <div class="">{{ countryCodeToName(company.country) }}</div>
-            </div>
-            <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold mb-1" >EMAIL ADDRESS</div>
-              <div class="">{{ company.email || '-' }}</div>
-            </div>
-          </div>
-
-          <div class="row g-3 mx-0 mb-4">
-            <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold mb-1" >TELEPHONE</div>
-              <div class="">{{ company.phoneNumber || '-' }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <button
-          mat-stroked-button
-          class="d-flex align-items-center justify-content-center"
-          style="max-width: 200px"
-          (click)="openEditCompanyInfo()"
-          
-        >
-          <img
-            src="assets/images/edit_24px.svg"
-            appFallbackImage
-            loading="lazy"
-            alt="Edit icon"
-            style="height: 1em; width: auto; vertical-align: baseline; margin-right: 5px"
-          />
-          <span class="fw-bold fs-16">EDIT</span>
-        </button>
-      </div>
-    </div>
-
-    <h4 class="fw-bold mt-5 mb-4" >Social</h4>
-    <div class="d-flex flex-column flex-lg-row gap-4">
-      <div
-        class="border border-primary rounded-4 p-3 p-md-4 p-lg-5 d-flex flex-column flex-md-row justify-content-between col-12 overflow-hidden gap-4"
-      >
-        <div class="col-12 col-md-8 col-lg-9 d-flex flex-column justify-content-between overflow-hidden flex-grow-1 min-w-0">
-          <div class="row g-3 mb-4 mx-0">
-            <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold mb-1 d-flex align-items-center gap-2" >
-                <mat-icon class="error">info_rounded</mat-icon> FACEBOOK PROFILE URL
-              </div>
-              <div class="pl-2">{{ company.facebookUrl || '-' }}</div>
-            </div>
-            <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold mb-1 d-flex align-items-center gap-2" >
-                <mat-icon class="error">info_rounded</mat-icon>INSTAGRAM PROFILE URL
-              </div>
-              <div class="pl-2">{{ company.instagramUrl || '-' }}</div>
-            </div>
-            <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold mb-1 d-flex align-items-center gap-2" >
-                <mat-icon class="error">info_rounded</mat-icon> LINKED PROFILE URL
-              </div>
-              <div class="pl-5">{{ company.linkedinUrl || '-' }}</div>
-            </div>
-          </div>
-
-          <div class="row g-3 mx-0 mb-4">
-            <div class="col-12 col-sm-4 px-2">
-              <div class="fw-bold mb-1 d-flex align-items-center gap-2" >
-                <mat-icon class="error">info_rounded</mat-icon>X USERNAME (WITHOUT &#64;)
-              </div>
-              <div class="pl-2">{{ company.xUrl || '-' }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="d-flex justify-content-center justify-content-lg-start align-items-start">
-        <button
-          mat-stroked-button
-          class="d-flex align-items-center justify-content-center"
-          style="max-width: 200px"
-          (click)="openEditSocialUrl()"
-          
-        >
-          <img
-            src="assets/images/edit_24px.svg"
-            appFallbackImage
-            loading="lazy"
-            alt="Edit icon"
-            style="height: 1em; width: auto; vertical-align: baseline; margin-right: 5px"
-          />
-          <span class="fw-bold fs-16">EDIT</span>
-        </button>
-      </div>
-    </div> -->
   </div>
 }

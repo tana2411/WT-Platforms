@@ -6,7 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { TranslateModule } from '@ngx-translate/core';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { AdminCommercialService } from 'app/services/admin/admin-commercial.service';
 import { PaginationComponent } from 'app/share/ui/listing/pagination/pagination.component';
 import { catchError, of, startWith, Subject, switchMap, tap } from 'rxjs';
@@ -27,7 +28,9 @@ import { MemberListingItemComponent } from '../member-listing-item/member-listin
     TranslateModule,
     MatButtonModule,
     MatIconModule,
+    TranslateModule,
   ],
+  providers: [TranslatePipe],
   templateUrl: './admin-member.component.html',
   styleUrl: './admin-member.component.scss',
 })
@@ -39,6 +42,7 @@ export class AdminMemberComponent {
   loading = signal(true);
   snackBar = inject(MatSnackBar);
   fb = inject(FormBuilder);
+  translate = inject(TranslatePipe);
 
   form: FormGroup = this.fb.group({
     searchTerm: [''],
@@ -71,7 +75,7 @@ export class AdminMemberComponent {
         });
       }),
       catchError((error) => {
-        this.snackBar.open('Unable to load new members data. Please try again');
+        this.snackBar.open(this.translate.transform(localized$('Unable to load new members data. Please try again')));
         console.error('Error fetching members:', error);
         return of({
           data: [],
