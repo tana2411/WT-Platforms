@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { AccountStatusWarningComponent } from '../../share/ui/account-status-warning/account-status-warning.component';
 import { AvatarComponent } from '../common/avatar/avatar.component';
 import { IconComponent } from '../common/icon/icon.component';
@@ -21,6 +22,7 @@ import { HeaderComponent } from '../header/header.component';
     LanguageSelectorComponent,
     RouterModule,
     AccountStatusWarningComponent,
+    TranslateModule,
   ],
   templateUrl: './common-layout.component.html',
   styleUrl: './common-layout.component.scss',

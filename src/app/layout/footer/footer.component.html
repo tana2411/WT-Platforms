@@ -64,19 +64,19 @@
 
       <div class="col-md-6 col-lg-3">
         <div class="list-link d-flex flex-column gap-1">
-          <p class="sub-title fw-bold mb-1">Menu</p>
-          <a mat-button routerLink="/" target="_blank">Home</a>
-          <a mat-button routerLink="/buy" target="_blank">Marketplace</a>
+          <p class="sub-title fw-bold mb-1">{{ 'Menu' | translate }}</p>
+          <a mat-button routerLink="/" target="_blank">{{ 'Home' | translate }}</a>
+          <a mat-button routerLink="/buy" target="_blank">{{ 'Marketplace' | translate }}</a>
         </div>
       </div>
       <div class="col-md-6 col-lg-3">
         <div class="list-link d-flex flex-column gap-1">
-          <p class="sub-title fw-bold mb-1">Company</p>
+          <p class="sub-title fw-bold mb-1">{{ 'Company' | translate }}</p>
           <!-- <a  mat-button routerLink="/" target="_blank" >About</a>
     <a  mat-button routerLink="/buy" target="_blank">Vacancies</a>
     <a  mat-button routerLink="/buy" target="_blank">News</a> -->
-          <a mat-button routerLink="/privacy-policy" target="_blank">Privacy Policy</a>
-          <a mat-button routerLink="/termsandconditions" target="_blank">Terms and Conditions</a>
+          <a mat-button routerLink="/privacy-policy" target="_blank">{{ 'Privacy Policy' | translate }}</a>
+          <a mat-button routerLink="/termsandconditions" target="_blank">{{ 'Terms and Conditions' | translate }}</a>
         </div>
       </div>
 
@@ -102,7 +102,7 @@
 
     <div class="bottom-content mt-4">
       <div class="text-center text-white" style="font-size: 18px">
-        © {{ now.getFullYear() }} WasteTrade, All rights reserved. Disclaimer.
+        © {{ now.getFullYear() }} {{ 'WasteTrade, All rights reserved. Disclaimer.' | translate }}
       </div>
     </div>
   </div>

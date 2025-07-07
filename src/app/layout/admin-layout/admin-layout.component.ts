@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 import { AvatarComponent } from '../common/avatar/avatar.component';
 import { IconComponent } from '../common/icon/icon.component';
 import { LanguageSelectorComponent } from '../common/language-selector/language-selector.component';
@@ -19,6 +20,7 @@ import { HeaderComponent } from '../header/header.component';
     AvatarComponent,
     NotificationComponent,
     LanguageSelectorComponent,
+    TranslateModule,
   ],
 })
 export class AdminLayoutComponent implements OnInit {
