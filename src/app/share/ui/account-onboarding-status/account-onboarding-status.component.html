@@ -67,7 +67,7 @@
               <div class="col-md-1 col-2 d-flex justify-content-center me-3">
                 <mat-icon class="error" style="font-size: 40px; height: 40px; width: 40px">error</mat-icon>
               </div>
-              <div class="text-dark fw-500 fs-16 col-md-10 col-10">
+              <div class="text-dark fw-500 fs-24 col-md-10 col-10">
                 {{ 'You can browse the portal, but bids will not be approved until your documents have been verified' | translate }}
               </div>
             </div>
@@ -77,7 +77,7 @@
             >
               <div class="text-center error fs-16 fw-bold">
                 {{
-                  'You can start buying and selling materials now, but please note that all transactions will be pending until you upload your company documents.'
+                  'Thank you for completing your account. You can now begin bidding and selling. Meanwhile, our admin team is in the process of verifying your account details. We will send you an email once the account is verified.'
                     | translate
                 }}
               </div>
@@ -94,15 +94,20 @@
             </div>
           </div>
         } @else {
-          <div class="w-100 row mt-4 g-3 mx-auto d-flex justify-content-center flex-column flex-md-row align-items-center">
-            <div class="col-md-4 col-8">
-              <button class="w-100 primary white-btn fw-bold" mat-flat-button [routerLink]="['/company-information']">
-                {{ 'COMPLETE ACCOUNT' | translate }}
+          <div class="w-100 mt-4 g-3 mx-auto d-flex justify-content-center flex-column align-items-center">
+            <div class="col-md-4 col-12 mb-4">
+              <button
+                class="w-100 primary white-btn fw-bold p-4"
+                mat-flat-button
+                [routerLink]="['/company-information']"
+                style="white-space: nowrap"
+              >
+                {{ 'UPLOAD YOUR COMPANY DOCUMENTATION' | translate }}
               </button>
             </div>
-            <div class="col-md-4 col-8">
-              <button class="w-100 dark-btn fw-bold" mat-flat-button (click)="goToPlatform()">
-                {{ 'GO TO THE PLATFORM' | translate }}
+            <div class="col-md-4 col-12">
+              <button class="w-100 dark-btn fw-bold p-4" mat-flat-button (click)="goToPlatform()">
+                {{ 'GO TO THE MARKETPLACE' | translate }}
               </button>
             </div>
           </div>
