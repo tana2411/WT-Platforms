@@ -98,4 +98,12 @@ export class AdminMemberComponent {
   search() {
     this.updator.next();
   }
+
+  onChangeKeyword(e: any) {
+    debugger;
+    const value = e.target.value.trim();
+    if (!value) {
+      this.updator.next();
+    }
+  }
 }

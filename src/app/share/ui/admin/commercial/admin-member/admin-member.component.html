@@ -12,6 +12,7 @@
               matInput
               type="text"
               maxlength="50"
+              (keyup)="onChangeKeyword($event)"
               placeholder="{{ 'What are you looking for?' | translate }}"
               formControlName="searchTerm"
             />
