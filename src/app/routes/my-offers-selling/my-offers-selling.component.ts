@@ -1,6 +1,7 @@
 import { Component, effect, signal } from '@angular/core';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
+import { mapCountryCodeToName } from '@app/statics';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
@@ -9,7 +10,7 @@ import { OfferService } from 'app/services/offer.service';
 import { EmptyOfferButton, EmptyOfferComponent } from 'app/share/ui/my-offers/empty-offer/empty-offer.component';
 import { SellingOfferTableComponent } from 'app/share/ui/my-offers/selling-offers/selling-offer-table/selling-offer-table.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
-import { getCurrencySignal, getListingFeatureImage, getListingTitle, getLocationAddress } from 'app/share/utils/offer';
+import { getCurrencySignal, getListingFeatureImage, getListingTitle } from 'app/share/utils/offer';
 import { OfferDetail } from 'app/types/requests/offer';
 import moment from 'moment';
 import { finalize } from 'rxjs';
@@ -95,7 +96,7 @@ export class MyOffersSellingComponent {
       materialName: getListingTitle(listing),
       quantity: offer.quantity,
       currency: offer.currency ? getCurrencySignal(offer.currency) : '',
-      country: getLocationAddress(buyer.location),
+      country: mapCountryCodeToName[buyer.location.country],
       status: offer.status,
       bidAmount: `${offer.offeredPricePerUnit}/${localized$('MT')}`,
     };
