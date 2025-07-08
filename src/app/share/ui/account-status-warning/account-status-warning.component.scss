@@ -1,11 +1,12 @@
 .warning-bar {
-  height: 49px;
+  padding: 10px 0;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 500;
   line-height: 22px;
   color: #1d1d1b;
+  flex-wrap: wrap;
 }
 
 mat-icon {
