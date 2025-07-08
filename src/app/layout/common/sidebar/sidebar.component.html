@@ -31,7 +31,7 @@
             [class.has-children]="item.children"
             [class.open]="openChildMenuIndex() === $index"
           >
-            <app-icon iconName="{{ item.icon }}" className="{{ item.iconClass }}"></app-icon>
+            <app-icon iconName="{{ item.icon }}" className="{{ item.iconClass }}" backgroundColor="{{ item.backgroundColor }}"></app-icon>
             <p class="fw-bold mb-0">{{ item.title | translate }}</p>
             @if (item.children) {
               <mat-icon class="more-icon">

@@ -23,7 +23,7 @@ export class ProductExpiryComponent {
   canShow = computed(() => this.listingDetail()?.listing?.status !== 'sold');
 
   expiringDate = computed(() => {
-    return moment(this.listingDetail()?.listing.endDate).diff(moment(), 'd');
+    return Math.abs(moment(this.listingDetail()?.listing.endDate).diff(moment(), 'd'));
   });
 
   isNearingExpiry = computed(() => {

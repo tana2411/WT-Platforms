@@ -14,14 +14,12 @@
   <mat-dialog-content>
     <form [formGroup]="formGroup">
       <div class="col-12 mb-4 flex-column">
-        <mat-checkbox class="bold-label w-100 fs-16" formControlName="requestPictures">{{
-          'Request more picture' | translate
-        }}</mat-checkbox>
+        <mat-checkbox class="bold-label w-100 fs-16" formControlName="requestPictures">{{ 'More pictures' | translate }}</mat-checkbox>
         <mat-checkbox class="bold-label w-100 fs-16" formControlName="requestSpecSheets">{{
-          'Request specification data sheets' | translate
+          'Specification data sheets' | translate
         }}</mat-checkbox>
         <mat-checkbox class="bold-label w-100 fs-16" formControlName="requestDescription">{{
-          'Request description' | translate
+          'Additional description' | translate
         }}</mat-checkbox>
       </div>
       <div class="col-12 mb-4">

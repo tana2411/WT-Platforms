@@ -40,27 +40,30 @@ export class SidebarComponent {
             link: ROUTES_WITH_SLASH.buy,
             icon: 'recycling',
             iconClass: 'highlight',
+            backgroundColor: '#03985c',
           },
           {
             title: localized$('Wanted Materials'),
             link: ROUTES_WITH_SLASH.wanted,
             icon: 'notification_important',
             iconClass: 'highlight',
+            backgroundColor: '#03985c',
           },
           {
             title: localized$('Create Listing'),
             icon: 'library_add',
+            backgroundColor: '#03985c',
             children: [
               {
                 title: localized$('Sell Material'),
                 link: ROUTES_WITH_SLASH.sell,
-                disabled: notCompletedAccount,
+                disabled: false,
                 icon: 'ballot',
               },
               {
                 title: localized$('List Wanted Material'),
                 link: `${ROUTES_WITH_SLASH.sell}/wanted`,
-                disabled: notCompletedAccount,
+                disabled: false,
                 icon: 'ballot',
               },
             ],
