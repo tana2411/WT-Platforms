@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { AuthService } from 'app/services/auth.service';
+import { BannerType } from 'app/types/requests/auth';
 import { filter, map, switchMap, tap } from 'rxjs';
 import { ListWantedMaterialFormComponent } from './list-wanted-material-form/list-wanted-material-form.component';
 import { SellLisingMaterialFormComponent } from './sell-lising-material-form/sell-lising-material-form.component';
@@ -40,7 +41,7 @@ export class CreateListingComponent implements OnInit {
       .pipe(
         filter((accountStatus) => !!accountStatus),
         tap((value) => {
-          if (value.showBanner) {
+          if (value.showBanner && !(BannerType as any)[value.bannerType]) {
             this.router.navigateByUrl(ROUTES_WITH_SLASH.buy);
             this.snackbar.open('Complete account to be able to sell and buy material seamlessly');
           } else {

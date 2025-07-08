@@ -9,6 +9,7 @@ import { User } from 'app/models/auth.model';
 import { AuthService } from 'app/services/auth.service';
 import { HeaderService } from 'app/services/header.service';
 import { Role } from 'app/types/auth';
+import { BannerType } from 'app/types/requests/auth';
 import { isNil } from 'lodash';
 import { first, map, startWith } from 'rxjs';
 import { IconComponent } from '../icon/icon.component';
@@ -31,7 +32,7 @@ export class SidebarComponent {
     this.authService.accountStatus.pipe(
       startWith(null),
       map((accountStatus) => {
-        const notCompletedAccount = !!accountStatus?.showBanner;
+        const notCompletedAccount = !!accountStatus?.showBanner && !(BannerType as any)[accountStatus.bannerType];
 
         return [
           {
