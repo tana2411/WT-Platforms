@@ -25,7 +25,7 @@ interface Offer {
   buyerUserId: number | null;
   buyerCountry: string | null;
   sellerCompanyId: number;
-  sellerLocationId: number | null;
+  sellerLocationId: number;
   sellerUserId: number;
   sellerCountry: string | null;
   acceptedByUserId: number | null;
@@ -52,6 +52,7 @@ interface Listing {
   bestOffer?: number;
   bestOfferCurrency?: string;
   documents?: ListingDocument[];
+  location: CompanyLocationDetail;
 }
 
 export interface OfferLocation {

@@ -95,7 +95,9 @@
                         class="fw-bold"
                       >
                         @if (item.value !== 'sortBy') {
-                          <mat-option [value]="null" class="option-bold-label">{{ 'All' | translate }}</mat-option>
+                          <mat-option [value]="null" class="option-bold-label">{{
+                            item.value === 'country' ? ('All Countries' | translate) : ('All' | translate)
+                          }}</mat-option>
                         }
                         @for (option of item.options; track $index) {
                           <mat-option [value]="getOptionValue(item, option)" class="option-bold-label">

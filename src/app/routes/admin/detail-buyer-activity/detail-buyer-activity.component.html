@@ -21,7 +21,7 @@
           </div>
           <div class="col-4">
             <p class="text-uppercase fw-bold mb-2">{{ 'Full name' | translate }}</p>
-            <p class="mb-0">{{ offerDetail.seller.user.firstName }}{{ offerDetail.seller.user.lastName }}</p>
+            <p class="mb-0">{{ offerDetail.seller.user.firstName }} {{ offerDetail.seller.user.lastName }}</p>
           </div>
           <div class="col-4">
             <p class="text-uppercase fw-bold mb-2">{{ 'Company' | translate }}</p>
@@ -37,7 +37,7 @@
           </div>
           <div class="col-4">
             <p class="text-uppercase fw-bold mb-2">{{ 'Full name' | translate }}</p>
-            <p class="mb-0">{{ offerDetail.buyer.user.firstName }}{{ offerDetail.buyer.user.lastName }}</p>
+            <p class="mb-0">{{ offerDetail.buyer.user.firstName }} {{ offerDetail.buyer.user.lastName }}</p>
           </div>
           <div class="col-4">
             <p class="text-uppercase fw-bold mb-2">{{ 'Company' | translate }}</p>
@@ -71,13 +71,13 @@
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'pick-up location' | translate }}</p>
             <p class="mb-0 fw-500">
-              {{ mapCountryCodeToName[offerDetail.seller.company.country ?? ''] }}
+              {{ mapCountryCodeToName[offerDetail.listing.location.country] }}
             </p>
           </div>
 
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'weight per load' | translate }}</p>
-            <p class="mb-0 fw-500">{{ weightPerUnit() }}</p>
+            <p class="mb-0 fw-500">{{ offerDetail.listing.materialWeightPerUnit }}</p>
           </div>
 
           <div class="col-6 col-md-4 material-item mb-4">
@@ -90,7 +90,7 @@
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'destination' | translate }}</p>
             <p class="mb-0 fw-500">
-              {{ mapCountryCodeToName[offerDetail.buyer.company.country ?? ''] }}
+              {{ mapCountryCodeToName[offerDetail.buyer.location.country] }}
             </p>
           </div>
 

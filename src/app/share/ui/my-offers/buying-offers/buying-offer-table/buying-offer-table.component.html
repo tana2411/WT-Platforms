@@ -1,4 +1,4 @@
-<p class="fw-bold mb-4 mb-lg-5">{{ '{{ items }} RESULT OF {{ total }}' | translate: { items: items.length, total: totalItems} }}</p>
+<p class="fw-bold mb-4 mb-lg-5">{{ '{{ items }} RESULT(S) OF {{ total }}' | translate: { items: items.length, total: totalItems} }}</p>
 
 @for (item of items; track item.id) {
   <div class="wrapper w-100 overflow-auto mb-4 mb-md-5" routerLink="/my-account/my-buying-offers-details/{{ item.id }}">

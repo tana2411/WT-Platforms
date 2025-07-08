@@ -7,9 +7,9 @@
             <div class="fw-500 fs-18 w-100 d-flex justify-content-center align-items-center gap-1 item-content">
               <mat-icon class="icon">lens</mat-icon>
               @if (fromDate()) {
-                <span>Available From</span> <span>{{ fromDate() }}</span>
+                <span>{{ 'Available From' | translate }}</span> <span>{{ fromDate() }}</span>
               } @else {
-                <span>Available Now</span>
+                <span>{{ 'Available Now' | translate }}</span>
               }
             </div>
           </div>
@@ -20,9 +20,9 @@
             <div class="fw-500 fs-18 w-100 d-flex justify-content-center align-items-center gap-1 item-content">
               <mat-icon class="icon">lens</mat-icon>
               @if (fromDate()) {
-                <span>Required From</span> <span>{{ fromDate() }}</span>
+                <span>{{ 'Required From' | translate }}</span> <span>{{ fromDate() }}</span>
               } @else {
-                <span>Required Now</span>
+                <span>{{ 'Required Now' | translate }}</span>
               }
             </div>
           </div>
@@ -31,7 +31,7 @@
         @case (ProductStatus.Sold) {
           <div class="border rounded rounded-pill mb-2 sold h-100 d-flex align-items-center">
             <div class="fw-500 fs-18 w-100 d-flex justify-content-center align-items-center gap-1 item-content">
-              {{ product.listingType === 'sell' ? 'Sold' : 'Fulfilled' }}
+              {{ product.listingType === 'sell' ? ('Sold' | translate) : ('Fulfilled' | translate) }}
             </div>
           </div>
         }
@@ -39,7 +39,7 @@
         @case (ProductStatus.Expired) {
           <div class="border rounded py-1 rounded-pill mb-2 expired h-100 d-flex align-items-center">
             <div class="fw-500 fs-18 w-100 d-flex justify-content-center align-items-center gap-1 item-content">
-              <mat-icon class="icon">lens</mat-icon>Expired
+              <mat-icon class="icon">lens</mat-icon>{{ 'Expired' | translate }}
             </div>
           </div>
         }
@@ -47,7 +47,7 @@
         @case (ProductStatus.Pending) {
           <div class="border rounded rounded-pill mb-2 h-100 d-flex align-items-center pending">
             <div class="fw-500 fs-18 w-100 d-flex justify-content-center align-items-center gap-1 item-content">
-              <mat-icon class="icon">lens</mat-icon>Pending
+              <mat-icon class="icon">lens</mat-icon>{{ 'Pending' | translate }}
             </div>
           </div>
         }
@@ -55,7 +55,7 @@
         @case (ProductStatus.Ongoing) {
           <div class="border rounded rounded-pill mb-2 ongoing h-100 d-flex align-items-center">
             <div class="fw-500 fs-18 w-100 d-flex justify-content-center align-items-center gap-1 item-content">
-              <mat-icon class="icon">lens</mat-icon>Ongoing
+              <mat-icon class="icon">lens</mat-icon>{{ 'Ongoing' | translate }}
             </div>
           </div>
         }
