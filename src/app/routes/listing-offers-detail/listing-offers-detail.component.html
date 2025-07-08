@@ -42,7 +42,7 @@
             <app-product-expiry [listingDetail]="listingDetail" />
           }
 
-          <app-material-action [isSeller]="isSeller()" [listingDetail]="listingDetail" />
+          <app-material-action (refresh)="setup()" [isSeller]="isSeller()" [listingDetail]="listingDetail" />
         </div>
       </div>
       <div class="mt-5">

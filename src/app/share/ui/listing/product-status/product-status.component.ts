@@ -32,7 +32,7 @@ export class ProductStatusComponent {
       const isPending = product.state === ListingState.PENDING;
       const isFutureProduct = startDate ? moment(startDate).isAfter(now) : undefined;
       const isExpired = endDate ? moment(endDate).isBefore(now) : undefined;
-      const isSold = product.remainingQuantity === 0;
+      const isSold = product.status === 'sold';
       const isOnGoing = (product.remainingQuantity ?? 0) < (product.quantity ?? 0);
 
       if (isExpired) {

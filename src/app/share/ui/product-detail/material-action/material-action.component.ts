@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, DestroyRef, inject, input, Input, signal } from '@angular/core';
+import { Component, computed, DestroyRef, EventEmitter, inject, input, Input, Output, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -27,6 +27,7 @@ import { RequestInformationComponent } from '../request-information/request-info
 })
 export class MaterialActionComponent {
   @Input({ required: true }) isSeller: boolean = false;
+  @Output() refresh = new EventEmitter<void>();
   listingDetail = input<ListingMaterialDetail | undefined>();
 
   dialog = inject(MatDialog);
@@ -169,7 +170,7 @@ export class MaterialActionComponent {
       )
       .subscribe(() => {
         this.snackBar.open(this.translate.transform(localized$('Your listing has been successfully fulfilled.')));
-        this.router.navigateByUrl(ROUTES_WITH_SLASH.wanted);
+        this.refresh.emit();
       });
   }
 
@@ -203,7 +204,7 @@ export class MaterialActionComponent {
       )
       .subscribe(() => {
         this.snackBar.open(this.translate.transform(localized$('Your listing has been successfully sold.')));
-        this.router.navigateByUrl(ROUTES_WITH_SLASH.wanted);
+        this.refresh.emit();
       });
   }
 }
