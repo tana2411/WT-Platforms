@@ -30,6 +30,7 @@ export const allFilters: Filter[] = [
     name: 'LOCATION',
     value: 'country',
     type: 'select',
+    placeholder: 'All Countries',
     options: countries,
   },
   {

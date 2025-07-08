@@ -31,7 +31,7 @@ export class ProductCardComponent {
   constructor() {}
 
   get featureImage() {
-    return this.product?.documents.find((i) => i.documentType === ListingImageType.FEATURE_IMAGE)?.documentUrl ?? '';
+    return this.product?.documents?.find((i) => i.documentType === ListingImageType.FEATURE_IMAGE)?.documentUrl ?? '';
   }
 
   onDelete(e: MouseEvent) {

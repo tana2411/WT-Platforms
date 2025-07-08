@@ -234,6 +234,18 @@
     }
   }
 
+  @media screen and (min-width: 1440px) {
+    position: relative;
+
+    .select-item {
+      max-width: 160px;
+    }
+
+    .input-item {
+      max-width: 160px;
+    }
+  }
+
   .input-item {
     input[matInput] {
       &::placeholder {
