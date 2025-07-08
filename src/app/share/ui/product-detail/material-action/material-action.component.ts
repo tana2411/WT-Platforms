@@ -60,7 +60,7 @@ export class MaterialActionComponent {
       panelClass: 'px-3',
       data: {
         listingId: this.listingDetail()?.listing?.id,
-        availableQuantity: this.listingDetail()?.listing?.quantity,
+        availableQuantity: this.listingDetail()?.listing?.remainingQuantity,
       } as BiddingFormProps,
     });
   }
