@@ -71,7 +71,7 @@
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'pick-up location' | translate }}</p>
             <p class="mb-0 fw-500">
-              {{ mapCountryCodeToName[offerDetail.seller.company.country ?? ''] }}
+              {{ mapCountryCodeToName[offerDetail.listing.location.country] }}
             </p>
           </div>
 
@@ -90,7 +90,7 @@
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'destination' | translate }}</p>
             <p class="mb-0 fw-500">
-              {{ mapCountryCodeToName[offerDetail.buyer.company.country ?? ''] }}
+              {{ mapCountryCodeToName[offerDetail.buyer.location.country] }}
             </p>
           </div>
 
