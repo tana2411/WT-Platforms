@@ -1,3 +1,12 @@
+export enum OnboardingStatus {
+  COMPANY_INFORMATION_COMPLETE = 'company_information_complete',
+  COMPANY_INFORMATION_IN_PROGRESS = 'company_information_in_progress',
+  COMPANY_DOCUMENTS_ADDED = 'company_documents_added',
+  COMPANY_DOCUMENTS_IN_PROGRESS = 'company_documents_in_progress',
+  SITE_LOCATION_ADDED = 'site_location_added',
+  SITE_LOCATION_IN_PROGRESS = 'site_location_in_progress',
+}
+
 export type ListingMemberItem = {
   user: {
     userId: number;
@@ -10,7 +19,7 @@ export type ListingMemberItem = {
   };
   documents: CommercialDocument[]; // Updated type
   locations: Location[]; // Updated type
-  onboardingStatus: string;
+  onboardingStatus: OnboardingStatus;
   registrationStatus: string;
   overallStatus: string;
 };

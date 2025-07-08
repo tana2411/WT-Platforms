@@ -102,7 +102,7 @@ export class ReceivedOfferDetailComponent implements OnInit {
       {
         label: localized$('No. offers'),
         // icon: 'list_alt',
-        value: offer?.listing.numberOfOffers,
+        value: this.decimalPipe.transform(offer?.listing.numberOfOffers ?? 0),
       },
       {
         label: localized$('Remaining Loads'),

@@ -16,6 +16,7 @@ import { ShareListingComponent } from 'app/share/ui/product-detail/share-listing
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
 import { catchError, EMPTY, filter, finalize, map, switchMap, tap } from 'rxjs';
 
+import { DecimalPipe } from '@angular/common';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule } from '@ngx-translate/core';
@@ -49,6 +50,7 @@ import { isNil } from 'lodash';
     ProductGridComponent,
     TranslateModule,
   ],
+  providers: [DecimalPipe],
   templateUrl: './listing-offers-detail.component.html',
   styleUrl: './listing-offers-detail.component.scss',
 })
@@ -61,6 +63,7 @@ export class ListingOffersDetailComponent {
   router = inject(Router);
   destroyRef = inject(DestroyRef);
   auth = inject(AuthService);
+  decimal = inject(DecimalPipe);
 
   offerId = signal<number | undefined>(undefined);
   listingDetail = signal<ListingMaterialDetail | undefined>(undefined);
@@ -88,14 +91,14 @@ export class ListingOffersDetailComponent {
       {
         label: `No. of Loads`,
         icon: 'view_module',
-        value: detail?.listing.quantity,
+        value: this.decimal.transform(detail?.listing.quantity ?? 0),
       },
       {
         label: 'Remaining Loads',
         icon: 'hourglass_top',
         value:
           detail?.listing.remainingQuantity != null
-            ? `${detail.listing.remainingQuantity} of ${detail.listing.quantity}`
+            ? `${this.decimal.transform(detail.listing.remainingQuantity ?? 0)} of ${this.decimal.transform(detail.listing.quantity ?? 0)}`
             : '',
       },
       {

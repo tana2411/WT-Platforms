@@ -47,7 +47,7 @@ export class AdminCommercialService {
   }) {
     if (action === MemberRequestActionEnum.REJECT) {
       return this.http.patch(`/users/admin/${id}/${action}`, {
-        reject_reason: rejectionReason,
+        rejectReason: rejectionReason,
         message: !message?.trim() ? undefined : message,
       });
     }

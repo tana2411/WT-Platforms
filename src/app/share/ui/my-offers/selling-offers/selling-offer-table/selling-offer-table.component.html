@@ -1,4 +1,4 @@
-<p class="fw-bold mb-4 mb-lg-5">{{ '{{ items }} RESULT(S) OF {{ total }}' | translate: { item: items.length, total: totalItems } }}</p>
+<p class="fw-bold mb-4 mb-lg-5">{{ '{{ items }} RESULT(S) OF {{ total }}' | translate: { items: items.length, total: totalItems } }}</p>
 
 @for (item of items; track item.id) {
   <div class="wrapper w-100 overflow-auto mb-4 mb-md-5" routerLink="/offer-detail/{{ item.id }}">
@@ -12,7 +12,7 @@
 
       <div class="column-item">
         <p class="label">{{ 'Quantity' | translate }}</p>
-        <p class="content">{{ item.quantity | number }}</p>
+        <p class="content">{{ item.quantity | number }} {{ 'MT' | translate }}</p>
       </div>
 
       <div class="column-item">
@@ -36,7 +36,9 @@
       </div>
 
       <div class="column-item d-flex align-items-center">
-        <button mat-stroked-button type="button" class="view-detail-btn primary border-primary text-uppercase fw-bold">View details</button>
+        <button mat-stroked-button type="button" class="view-detail-btn primary border-primary text-uppercase fw-bold text-nowrap">
+          View details
+        </button>
       </div>
     </div>
   </div>

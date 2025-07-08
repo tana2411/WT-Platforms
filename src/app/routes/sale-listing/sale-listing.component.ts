@@ -14,7 +14,6 @@ import { FilterComponent } from 'app/share/ui/listing/filter/filter.component';
 import { ListingFooterComponent } from 'app/share/ui/listing/listing-footer/listing-footer.component';
 import { PaginationComponent } from 'app/share/ui/listing/pagination/pagination.component';
 import { ProductGridComponent } from 'app/share/ui/listing/product-grid/product-grid.component';
-import { BiddingFormComponent } from 'app/share/ui/product-detail/bidding-form/bidding-form.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
 import { UnsuccessfulSearchComponent } from 'app/share/ui/unsuccessful-search/unsuccessful-search.component';
 import { scrollTop } from 'app/share/utils/common';
@@ -30,7 +29,6 @@ import { PAGE_SIZE } from '../wanted-material/wanted-material.component';
     PaginationComponent,
     ListingFooterComponent,
     MatDialogModule,
-    BiddingFormComponent,
     SpinnerComponent,
     UnsuccessfulSearchComponent,
     TranslateModule,

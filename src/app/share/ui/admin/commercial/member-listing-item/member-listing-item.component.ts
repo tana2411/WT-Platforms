@@ -6,6 +6,7 @@ import { mapCountryCodeToName } from '@app/statics';
 import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { ListingMemberItem } from 'app/models/admin/commercial.model';
+import { MapOnboardingStatusToLabel } from 'app/share/utils/admin';
 import { isNil } from 'lodash';
 
 @Component({
@@ -20,6 +21,7 @@ export class MemberListingItemComponent {
   member = input<ListingMemberItem>();
 
   mapCountryCodeToName = mapCountryCodeToName;
+  MapOnboardingStatusToLabel = MapOnboardingStatusToLabel;
 
   onViewDetail() {
     const userId = this.member()?.user.userId;

@@ -8,7 +8,12 @@
     <span>{{ 'go back' | translate }}</span>
   </div>
 
-  <mat-tab-group class="common-tab" [selectedIndex]="selectedIndex" (selectedTabChange)="onTabChange($event)" animationDuration="0ms">
+  <mat-tab-group
+    class="common-tab admin-tab"
+    [selectedIndex]="selectedIndex"
+    (selectedTabChange)="onTabChange($event)"
+    animationDuration="0ms"
+  >
     @for (item of listTabs; track $index) {
       <mat-tab labelClass="wrapper {{ needCheck()[item.path] ? 'warning' : '' }}" [label]="item.label | translate"></mat-tab>
     }

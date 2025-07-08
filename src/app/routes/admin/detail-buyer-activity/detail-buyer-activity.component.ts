@@ -1,5 +1,5 @@
 import { DecimalPipe, TitleCasePipe } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,7 +11,7 @@ import { AdminLayoutComponent } from 'app/layout/admin-layout/admin-layout.compo
 import { AdminOfferService } from 'app/services/admin/admin-offer.service';
 import { OfferDetailActionsComponent } from 'app/share/ui/admin/offer-detail-actions/offer-detail-actions.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
-import { formatDecimalNumber, getCurrencyLabel, getCurrencySignal, getOfferStatusColor } from 'app/share/utils/offer';
+import { getCurrencyLabel, getCurrencySignal, getOfferStatusColor } from 'app/share/utils/offer';
 import { catchError, EMPTY, map, startWith, Subject, switchMap, tap } from 'rxjs';
 
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
@@ -65,16 +65,6 @@ export class DetailBuyerActivityComponent {
       takeUntilDestroyed(),
     ),
   );
-
-  weightPerUnit = computed(() => {
-    const offerDetail = this.offerDetail();
-
-    if (!offerDetail) {
-      return '';
-    }
-
-    return formatDecimalNumber(offerDetail.listing.materialWeightWanted / offerDetail.listing.quantity);
-  });
 
   reloadOfferDetail() {
     this.offerDetailUpdator$.next();

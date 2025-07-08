@@ -20,6 +20,8 @@ export class ProductExpiryComponent {
   userId = toSignal(this.auth.user$.pipe(map((user) => user?.userId)));
   isOwnListing = computed(() => this.userId() === this.listingDetail()?.listing.createdByUserId);
 
+  canShow = computed(() => this.listingDetail()?.listing?.status !== 'sold');
+
   expiringDate = computed(() => {
     return Math.abs(moment(this.listingDetail()?.listing.endDate).diff(moment(), 'd'));
   });
