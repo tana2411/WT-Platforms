@@ -1,6 +1,6 @@
 @if (canShow()) {
   @if (isOwnListing()) {
-    @if (expiringDate()) {
+    @if (expiringDate() <= 7) {
       <div class="warning owner-warning">
         <mat-icon>info_outline</mat-icon>
         {{ 'Listing expired in {{expiringDate}} day(s)' | translate: { expiringDate: expiringDate() } }}

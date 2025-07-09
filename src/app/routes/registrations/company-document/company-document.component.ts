@@ -12,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
 import { AccountOnboardingStatusComponent, DocumentFileInfo, FileInfo, FileUploadComponent } from '@app/ui';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { CompanyDocument, CompanyDocumentType } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
@@ -42,6 +42,7 @@ import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
     TranslateModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [TranslatePipe],
 })
 export class CompanyDocumentComponent implements OnInit {
   CompanyDocumentType = CompanyDocumentType;
@@ -74,6 +75,7 @@ export class CompanyDocumentComponent implements OnInit {
   router = inject(Router);
   cd = inject(ChangeDetectorRef);
   uploadService = inject(UploadService);
+  translate = inject(TranslatePipe);
 
   constructor() {
     effect(() => {
@@ -96,10 +98,12 @@ export class CompanyDocumentComponent implements OnInit {
         catchError((err) => {
           if (err) {
             this.snackBar.open(
-              localized$(
-                'An error occurred while retrieving your information. Please refresh the page or contact support if the problem persists.',
+              this.translate.transform(
+                localized$(
+                  'An error occurred while retrieving your information. Please refresh the page or contact support if the problem persists.',
+                ),
               ),
-              localized$('Ok'),
+              this.translate.transform(localized$('Ok')),
               { duration: 3000 },
             );
           }
@@ -282,8 +286,8 @@ export class CompanyDocumentComponent implements OnInit {
           finalize(() => this.submitting.set(false)),
           catchError((err) => {
             this.snackBar.open(
-              localized$('An error occurred while uploading the file. Please try again.'),
-              localized$('Ok'),
+              this.translate.transform(localized$('An error occurred while uploading the file. Please try again.')),
+              this.translate.transform(localized$('Ok')),
               {
                 duration: 3000,
               },
@@ -336,9 +340,13 @@ export class CompanyDocumentComponent implements OnInit {
       .pipe(
         finalize(() => this.submitting.set(false)),
         catchError((err) => {
-          this.snackBar.open(localized$(`${err.error?.error?.message ?? 'Unknown error'}`), localized$('Ok'), {
-            duration: 3000,
-          });
+          this.snackBar.open(
+            this.translate.transform(localized$(`${err.error?.error?.message ?? 'Unknown error'}`)),
+            this.translate.transform(localized$('Ok')),
+            {
+              duration: 3000,
+            },
+          );
           return of(null);
         }),
         concatMap((result) => {
@@ -355,9 +363,13 @@ export class CompanyDocumentComponent implements OnInit {
       .pipe(
         finalize(() => this.submitting.set(false)),
         catchError((err) => {
-          this.snackBar.open(localized$(`${err.error?.error?.message ?? 'Unknown error'}`), localized$('Ok'), {
-            duration: 3000,
-          });
+          this.snackBar.open(
+            this.translate.transform(localized$(`${err.error?.error?.message ?? 'Unknown error'}`)),
+            this.translate.transform(localized$('Ok')),
+            {
+              duration: 3000,
+            },
+          );
           return of(null);
         }),
       )

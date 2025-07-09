@@ -19,7 +19,7 @@ import {
   TelephoneFormControlComponent,
 } from '@app/ui';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { AuthService } from 'app/services/auth.service';
 import { RegistrationsService } from 'app/services/registrations.service';
@@ -46,6 +46,7 @@ import { catchError, concatMap, debounceTime, finalize, of } from 'rxjs';
     TitleCasePipe,
     TranslateModule,
   ],
+  providers: [TranslatePipe],
 })
 export class HaulageFormComponent {
   countryList = countries.slice().sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
@@ -127,6 +128,7 @@ export class HaulageFormComponent {
   snackBar = inject(MatSnackBar);
   cd = inject(ChangeDetectorRef);
   authService = inject(AuthService);
+  translate = inject(TranslatePipe);
 
   constructor() {
     effect(() => {
@@ -235,16 +237,20 @@ export class HaulageFormComponent {
                 if (err) {
                   if (err?.error?.error?.statusCode == 422 && err?.error?.error?.message == 'existed-user') {
                     this.snackBar.open(
-                      localized$(`This email already exists. Please enter an alternative email address`),
-                      localized$('Ok'),
+                      this.translate.transform(
+                        localized$(`This email already exists. Please enter an alternative email address`),
+                      ),
+                      this.translate.transform(localized$('Ok')),
                       {
                         duration: 3000,
                       },
                     );
                   } else {
                     this.snackBar.open(
-                      localized$(`${err?.error?.error?.message ?? 'Some thing went wrong. Please try again.'}`),
-                      localized$('Ok'),
+                      this.translate.transform(
+                        localized$(`${err?.error?.error?.message ?? 'Some thing went wrong. Please try again.'}`),
+                      ),
+                      this.translate.transform(localized$('Ok')),
                       {
                         duration: 3000,
                       },
@@ -257,8 +263,8 @@ export class HaulageFormComponent {
           }),
           catchError((err) => {
             this.snackBar.open(
-              localized$(`An error occurred while uploading the file. Please try again.`),
-              localized$('Ok'),
+              this.translate.transform(localized$(`An error occurred while uploading the file. Please try again.`)),
+              this.translate.transform(localized$('Ok')),
               {
                 duration: 3000,
               },

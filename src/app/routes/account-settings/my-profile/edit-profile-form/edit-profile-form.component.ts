@@ -11,7 +11,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TelephoneFormControlComponent } from '@app/ui';
 import { strictEmailValidator } from '@app/validators';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { User } from 'app/models';
 import { SettingsService } from 'app/services/settings.service';
@@ -36,6 +36,7 @@ import { catchError, EMPTY, finalize } from 'rxjs';
     MatDialogModule,
     TranslateModule,
   ],
+  providers: [TranslatePipe],
 })
 export class EditProfileFormComponent implements OnInit {
   formGroup = new FormGroup({
@@ -59,6 +60,7 @@ export class EditProfileFormComponent implements OnInit {
   snackBar = inject(MatSnackBar);
   dialog = inject(MatDialog);
   destroyRef = inject(DestroyRef);
+  translate = inject(TranslatePipe);
 
   constructor() {}
 
@@ -107,8 +109,8 @@ export class EditProfileFormComponent implements OnInit {
   submit() {
     if (this.formGroup.pristine) {
       this.snackBar.open(
-        localized$('No changes detected. Please modify your profile details before saving.'),
-        localized$('OK'),
+        this.translate.transform(localized$('No changes detected. Please modify your profile details before saving.')),
+        this.translate.transform(localized$('OK')),
         {
           duration: 3000,
         },
@@ -147,9 +149,13 @@ export class EditProfileFormComponent implements OnInit {
           .updateProfile(payload)
           .pipe(
             catchError((err) => {
-              this.snackBar.open(localized$('Profile update failed. Please try again later.'), localized$('OK'), {
-                duration: 3000,
-              });
+              this.snackBar.open(
+                this.translate.transform(localized$('Profile update failed. Please try again later.')),
+                this.translate.transform(localized$('OK')),
+                {
+                  duration: 3000,
+                },
+              );
               return EMPTY;
             }),
             finalize(() => {
@@ -157,9 +163,13 @@ export class EditProfileFormComponent implements OnInit {
             }),
           )
           .subscribe((res) => {
-            this.snackBar.open(localized$('Your profile has been updated successfully.'), localized$('OK'), {
-              duration: 3000,
-            });
+            this.snackBar.open(
+              this.translate.transform(localized$('Your profile has been updated successfully.')),
+              this.translate.transform(localized$('OK')),
+              {
+                duration: 3000,
+              },
+            );
             this.dialogRef.close(true);
           });
       });

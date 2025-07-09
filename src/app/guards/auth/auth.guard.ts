@@ -9,6 +9,8 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateService } from '@ngx-translate/core';
 import { ROUTES } from 'app/constants/route.const';
 import { User } from 'app/models/auth.model';
 import { filter, first, map, of, pipe, tap } from 'rxjs';
@@ -21,6 +23,7 @@ export class CanActivateAuthPage implements CanActivate {
     private authService: AuthService,
     private router: Router,
     private snackbar: MatSnackBar,
+    private translate: TranslateService,
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): MaybeAsync<GuardResult> {
@@ -37,7 +40,7 @@ export class CanActivateAuthPage implements CanActivate {
         if (user && requireAuthParams) {
           const isValid = checkAllowAccessAuthPage(user, requireAuthParams);
           if (!isValid) {
-            this.snackbar.open('You do not have access to this platform.');
+            this.snackbar.open(this.translate.instant(localized$('You do not have access to this platform.')));
             // invalid allowed access => redirect to login
             this.router.navigateByUrl(ROUTES.login);
           }

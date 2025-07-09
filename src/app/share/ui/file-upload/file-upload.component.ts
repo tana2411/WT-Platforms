@@ -19,7 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { isNil } from 'lodash';
 import moment, { Moment } from 'moment';
 
@@ -50,6 +50,7 @@ export interface DocumentFileInfo {
     MatSnackBarModule,
     TranslateModule,
   ],
+  providers: [TranslatePipe],
 })
 export class FileUploadComponent implements OnInit, OnChanges {
   @Input() maxFile: number = 1;
@@ -74,6 +75,7 @@ export class FileUploadComponent implements OnInit, OnChanges {
   });
 
   snackBar = inject(MatSnackBar);
+  translate = inject(TranslatePipe);
 
   get documents(): FormArray {
     return this.formGroup.get('documents') as FormArray;
@@ -184,7 +186,7 @@ export class FileUploadComponent implements OnInit, OnChanges {
 
   private processFiles(files: FileList | null): void {
     if (this.documents.length >= this.maxFile) {
-      this.snackBar.open(localized$(`Only accept ${this.maxFile} file(s) upload`));
+      this.snackBar.open(this.translate.transform(localized$(`Only accept ${this.maxFile} file(s) upload`)));
       return;
     }
 
@@ -208,14 +210,20 @@ export class FileUploadComponent implements OnInit, OnChanges {
       const file = files[i];
       if (!allowedMimeType.includes(file.type)) {
         this.snackBar.open(
-          localized$(`Invalid file type uploaded. Please upload the document in one of the supported formats`),
+          this.translate.transform(
+            localized$(`Invalid file type uploaded. Please upload the document in one of the supported formats`),
+          ),
         );
         continue;
       }
 
       if (file.size > this.maxFileSize) {
         this.snackBar.open(
-          localized$(`File size is too large. Please upload a file smaller than ${this.maxFileSize / 1024 / 1024}MB.`),
+          this.translate.transform(
+            localized$(
+              `File size is too large. Please upload a file smaller than ${this.maxFileSize / 1024 / 1024}MB.`,
+            ),
+          ),
         );
         continue;
       }

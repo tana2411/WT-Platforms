@@ -11,7 +11,7 @@ import { Router, RouterModule } from '@angular/router';
 import { countries } from '@app/statics';
 import { AccountOnboardingStatusComponent, TelephoneFormControlComponent } from '@app/ui';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { AuthService } from 'app/services/auth.service';
 import { RegistrationsService } from 'app/services/registrations.service';
@@ -35,6 +35,7 @@ import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
     TelephoneFormControlComponent,
     TranslateModule,
   ],
+  providers: [TranslatePipe],
 })
 export class CompanyInformationSectionComponent implements OnInit {
   countryList = countries.slice().sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
@@ -57,6 +58,7 @@ export class CompanyInformationSectionComponent implements OnInit {
   snackBar = inject(MatSnackBar);
   router = inject(Router);
   companyId: number | undefined;
+  translate = inject(TranslatePipe);
 
   ngOnInit() {
     this.authService.user$
@@ -66,10 +68,12 @@ export class CompanyInformationSectionComponent implements OnInit {
         catchError((err) => {
           if (err) {
             this.snackBar.open(
-              localized$(
-                `An error occurred while retrieving your information. Please refresh the page or contact support if the problem persists.`,
+              this.translate.transform(
+                localized$(
+                  `An error occurred while retrieving your information. Please refresh the page or contact support if the problem persists.`,
+                ),
               ),
-              localized$('Ok'),
+              this.translate.transform(localized$('Ok')),
               { duration: 3000 },
             );
           }
@@ -116,8 +120,10 @@ export class CompanyInformationSectionComponent implements OnInit {
         catchError((err) => {
           if (err) {
             this.snackBar.open(
-              localized$(`Failed to submit your information due to a network error. Please try again.`),
-              localized$('Ok'),
+              this.translate.transform(
+                localized$(`Failed to submit your information due to a network error. Please try again.`),
+              ),
+              this.translate.transform(localized$('Ok')),
               {
                 duration: 3000,
               },

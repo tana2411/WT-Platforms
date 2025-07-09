@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { User } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
@@ -48,6 +48,7 @@ type TabKey = ItemOf<typeof ListTab>['title'];
   imports: [CommonLayoutComponent, MatIconModule, MatTabsModule, RouterModule, TabContainerComponent, TranslateModule],
   templateUrl: './account-setting.component.html',
   styleUrl: './account-setting.component.scss',
+  providers: [TranslatePipe],
 })
 export class AccountSettingComponent implements OnInit {
   activeTab = signal<number | undefined>(undefined);
@@ -59,6 +60,7 @@ export class AccountSettingComponent implements OnInit {
   router = inject(Router);
   activatedRoute = inject(ActivatedRoute);
   destroyRef = inject(DestroyRef);
+  translate = inject(TranslatePipe);
 
   user: Signal<User | undefined | null>;
   loading = computed(() => !this.user());
@@ -67,9 +69,13 @@ export class AccountSettingComponent implements OnInit {
     this.user = toSignal(this.authService.user$);
 
     if (!this.user) {
-      this.snackBar.open(localized$('Failed to load profile details. Please try again later.'), localized$('OK'), {
-        duration: 3000,
-      });
+      this.snackBar.open(
+        this.translate.transform(localized$('Failed to load profile details. Please try again later.')),
+        this.translate.transform(localized$('OK')),
+        {
+          duration: 3000,
+        },
+      );
     }
   }
 

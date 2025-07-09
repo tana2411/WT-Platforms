@@ -1,7 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { PurchaseFilterParams, PurchaseResponse } from 'app/models/purchases.model';
+
+import { TranslateService } from '@ngx-translate/core';
 import {
   RequestCreateBidParams,
   RequestGetBuyingOffersResponse,
@@ -17,12 +20,15 @@ export class OfferService {
   constructor(
     private http: HttpClient,
     private snackbar: MatSnackBar,
+    private translate: TranslateService,
   ) {}
 
   getOfferDetail(id: number) {
     return this.http.get<RequestGetOfferDetailResponse>(`/offers/${id}`).pipe(
       catchError((err) => {
-        this.snackbar.open('Unable to load offer details. Please refresh the page and try again.');
+        this.snackbar.open(
+          this.translate.instant(localized$('Unable to load offer details. Please refresh the page and try again.')),
+        );
 
         throw err;
       }),
@@ -49,7 +55,9 @@ export class OfferService {
       })
       .pipe(
         catchError((err) => {
-          this.snackbar.open('Unable to load offer details. Please refresh the page and try again.');
+          this.snackbar.open(
+            this.translate.instant(localized$('Unable to load offer details. Please refresh the page and try again.')),
+          );
 
           throw err;
         }),
@@ -76,7 +84,9 @@ export class OfferService {
       })
       .pipe(
         catchError((err) => {
-          this.snackbar.open('Unable to load offer details. Please refresh the page and try again.');
+          this.snackbar.open(
+            this.translate.instant(localized$('Unable to load offer details. Please refresh the page and try again.')),
+          );
 
           throw err;
         }),
@@ -90,7 +100,11 @@ export class OfferService {
   createBid(params: RequestCreateBidParams) {
     return this.http.post(`/offers`, params).pipe(
       catchError((err) => {
-        this.snackbar.open('Failed to accept the bid. Please check your network connection and try again.');
+        this.snackbar.open(
+          this.translate.instant(
+            localized$('Failed to accept the bid. Please check your network connection and try again.'),
+          ),
+        );
 
         throw err;
       }),
@@ -100,7 +114,11 @@ export class OfferService {
   acceptBid(id: number) {
     return this.http.patch(`/offers/${id}/accept`, undefined).pipe(
       catchError((err) => {
-        this.snackbar.open('Failed to accept the bid. Please check your network connection and try again.');
+        this.snackbar.open(
+          this.translate.instant(
+            localized$('Failed to accept the bid. Please check your network connection and try again.'),
+          ),
+        );
 
         throw err;
       }),
@@ -114,7 +132,7 @@ export class OfferService {
       })
       .pipe(
         catchError((err) => {
-          this.snackbar.open('Failed to reject the bid. Please try again later.');
+          this.snackbar.open(this.translate.instant(localized$('Failed to reject the bid. Please try again later.')));
 
           throw err;
         }),

@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { User } from 'app/models';
 import { SettingsService } from 'app/services/settings.service';
@@ -28,6 +28,7 @@ import { catchError, EMPTY, finalize } from 'rxjs';
     MatDialogModule,
     TranslateModule,
   ],
+  providers: [TranslatePipe],
 })
 export class EditNotificationFormComponent implements OnInit {
   formGroup = new FormGroup({
@@ -43,6 +44,7 @@ export class EditNotificationFormComponent implements OnInit {
   dialog = inject(MatDialog);
   settingsService = inject(SettingsService);
   snackBar = inject(MatSnackBar);
+  translate = inject(TranslatePipe);
 
   constructor() {}
 
@@ -88,8 +90,8 @@ export class EditNotificationFormComponent implements OnInit {
   submit() {
     if (this.formGroup.pristine) {
       this.snackBar.open(
-        localized$('No changes detected. Please modify your profile details before saving.'),
-        localized$('OK'),
+        this.translate.transform(localized$('No changes detected. Please modify your profile details before saving.')),
+        this.translate.transform(localized$('OK')),
         {
           duration: 3000,
         },
@@ -129,8 +131,10 @@ export class EditNotificationFormComponent implements OnInit {
           .pipe(
             catchError((err) => {
               this.snackBar.open(
-                localized$('Failed to save notification settings. Please check your selections and try again.'),
-                localized$('OK'),
+                this.translate.transform(
+                  localized$('Failed to save notification settings. Please check your selections and try again.'),
+                ),
+                this.translate.transform(localized$('OK')),
                 { duration: 3000 },
               );
               return EMPTY;
@@ -140,9 +144,13 @@ export class EditNotificationFormComponent implements OnInit {
             }),
           )
           .subscribe((res) => {
-            this.snackBar.open(localized$('Your notification has been updated successfully.'), localized$('OK'), {
-              duration: 3000,
-            });
+            this.snackBar.open(
+              this.translate.transform(localized$('Your notification has been updated successfully.')),
+              this.translate.transform(localized$('OK')),
+              {
+                duration: 3000,
+              },
+            );
             this.dialogRef.close(true);
           });
       });

@@ -4,7 +4,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { AdminCommercialService } from 'app/services/admin/admin-commercial.service';
 import { catchError, map, of, startWith, Subject, switchMap, tap } from 'rxjs';
@@ -35,7 +36,7 @@ import { SpinnerComponent } from '../../../share/ui/spinner/spinner.component';
     AdminMemberLocationComponent,
     TranslateModule,
   ],
-  providers: [AdminCommercialService],
+  providers: [AdminCommercialService, TranslatePipe],
   templateUrl: './member-detail.component.html',
   styleUrl: './member-detail.component.scss',
 })
@@ -47,6 +48,7 @@ export class MemberDetailComponent {
   commercialService = inject(AdminCommercialService);
   snackBar = inject(MatSnackBar);
   updator = new Subject<void>();
+  translate = inject(TranslatePipe);
 
   user = toSignal(
     this.updator.pipe(
@@ -54,7 +56,9 @@ export class MemberDetailComponent {
       tap(() => this.loadingUser.set(true)),
       switchMap(() => this.commercialService.getMemberDetail(this.memberId)),
       catchError((error) => {
-        this.snackBar.open('Unable to load member profile data. Please try again');
+        this.snackBar.open(
+          this.translate.transform(localized$('Unable to load member profile data. Please try again')),
+        );
         console.error('Error fetching member detail:', error);
         return of({
           data: null,

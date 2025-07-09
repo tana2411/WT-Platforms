@@ -11,7 +11,7 @@ import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { DocumentFileInfo, FileInfo, FileUploadComponent } from '@app/ui';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { CompanyDocument, CompanyDocumentType } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
@@ -39,6 +39,7 @@ import { catchError, concatMap, finalize, of } from 'rxjs';
     FileUploadComponent,
     TranslateModule,
   ],
+  providers: [TranslatePipe],
 })
 export class EditDocumentFormComponent implements OnInit {
   formGroup = new FormGroup({
@@ -68,6 +69,7 @@ export class EditDocumentFormComponent implements OnInit {
   authService = inject(AuthService);
   dialog = inject(MatDialog);
   destroyRef = inject(DestroyRef);
+  translate = inject(TranslatePipe);
 
   get documentType() {
     return this.formGroup.get('documentType') as FormControl;
@@ -370,8 +372,10 @@ export class EditDocumentFormComponent implements OnInit {
               finalize(() => this.submitting.set(false)),
               catchError((err) => {
                 this.snackBar.open(
-                  localized$('Document upload failed. Please check the file size and format and try again.'),
-                  localized$('Ok'),
+                  this.translate.transform(
+                    localized$('Document upload failed. Please check the file size and format and try again.'),
+                  ),
+                  this.translate.transform(localized$('Ok')),
                   {
                     duration: 3000,
                   },
@@ -404,8 +408,8 @@ export class EditDocumentFormComponent implements OnInit {
             .subscribe((result) => {
               if (result) {
                 this.snackBar.open(
-                  localized$('Your Company Document has been updated successfully.'),
-                  localized$('OK'),
+                  this.translate.transform(localized$('Your Company Document has been updated successfully.')),
+                  this.translate.transform(localized$('OK')),
                   {
                     duration: 3000,
                   },
@@ -416,9 +420,13 @@ export class EditDocumentFormComponent implements OnInit {
         } else {
           this.submitWithDocument([...alreadyUpload]).subscribe((result) => {
             if (result) {
-              this.snackBar.open(localized$('Your Company Document has been updated successfully.'), localized$('OK'), {
-                duration: 3000,
-              });
+              this.snackBar.open(
+                this.translate.transform(localized$('Your Company Document has been updated successfully.')),
+                this.translate.transform(localized$('OK')),
+                {
+                  duration: 3000,
+                },
+              );
               this.dialogRef.close(true);
             }
           });
@@ -430,9 +438,13 @@ export class EditDocumentFormComponent implements OnInit {
     return this.settingsService.updateCompanyDocument(documents).pipe(
       finalize(() => this.submitting.set(false)),
       catchError((err) => {
-        this.snackBar.open(localized$('Company Document update failed. Please try again later.'), localized$('Ok'), {
-          duration: 3000,
-        });
+        this.snackBar.open(
+          this.translate.transform(localized$('Company Document update failed. Please try again later.')),
+          this.translate.transform(localized$('Ok')),
+          {
+            duration: 3000,
+          },
+        );
         return of(null);
       }),
       concatMap((result: any) => {

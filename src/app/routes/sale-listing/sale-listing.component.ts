@@ -131,7 +131,7 @@ export class SaleListingComponent {
         catchError((err) => {
           this.snackBar.open(
             `${err.error?.error?.message ?? this.translate.transform(localized$('Unknown error'))}`,
-            'Ok',
+            this.translate.transform(localized$('Ok')),
             {
               duration: 3000,
             },
