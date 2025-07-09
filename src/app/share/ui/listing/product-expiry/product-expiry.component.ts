@@ -27,6 +27,6 @@ export class ProductExpiryComponent {
   });
 
   isNearingExpiry = computed(() => {
-    return this.expiringDate() <= 10;
+    return this.expiringDate() <= 7;
   });
 }
