@@ -3,7 +3,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Data, NavigationEnd, Router, RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { AuthService } from 'app/services/auth.service';
@@ -25,6 +26,7 @@ import { SellLisingMaterialFormComponent } from './sell-lising-material-form/sel
     SellLisingMaterialFormComponent,
     ListWantedMaterialFormComponent,
   ],
+  providers: [TranslatePipe],
 })
 export class CreateListingComponent implements OnInit {
   type: 'sell' | 'wanted' = 'sell';
@@ -33,6 +35,7 @@ export class CreateListingComponent implements OnInit {
   route = inject(ActivatedRoute);
   authService = inject(AuthService);
   snackbar = inject(MatSnackBar);
+  translate = inject(TranslatePipe);
 
   loading = signal(true);
 
@@ -43,7 +46,9 @@ export class CreateListingComponent implements OnInit {
         tap((value) => {
           if (value.showBanner && !(BannerType as any)[value.bannerType]) {
             this.router.navigateByUrl(ROUTES_WITH_SLASH.buy);
-            this.snackbar.open('Complete account to be able to sell and buy material seamlessly');
+            this.snackbar.open(
+              this.translate.transform(localized$('Complete account to be able to sell and buy material seamlessly')),
+            );
           } else {
             this.loading.set(!!value);
           }

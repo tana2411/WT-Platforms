@@ -14,7 +14,7 @@ import { colour, countries, finishing, materialTypes, packing } from '@app/stati
 import { FileInfo, FileUploadComponent } from '@app/ui';
 import { noForbiddenPatternsValidator, pastDateValidator } from '@app/validators';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from 'app/services/auth.service';
 import { ListingService } from 'app/services/listing.service';
 import { UploadService } from 'app/share/services/upload.service';
@@ -36,6 +36,7 @@ import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
     MatButtonModule,
     TranslateModule,
   ],
+  providers: [TranslatePipe],
 })
 export class ListWantedMaterialFormComponent implements OnInit {
   countryOption = countries.slice().sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
@@ -60,6 +61,7 @@ export class ListWantedMaterialFormComponent implements OnInit {
   listingService = inject(ListingService);
   authService = inject(AuthService);
   router = inject(Router);
+  translate = inject(TranslatePipe);
 
   formGroup = new FormGroup({
     country: new FormControl<string | null>(null, [Validators.required]),
@@ -144,8 +146,10 @@ export class ListWantedMaterialFormComponent implements OnInit {
         catchError((err) => {
           if (err) {
             this.snackBar.open(
-              localized$(
-                'An error occurred while retrieving your information. Please refresh the page or contact support if the problem persists.',
+              this.translate.transform(
+                localized$(
+                  'An error occurred while retrieving your information. Please refresh the page or contact support if the problem persists.',
+                ),
               ),
               localized$('Ok'),
               { duration: 3000 },
@@ -228,8 +232,8 @@ export class ListWantedMaterialFormComponent implements OnInit {
         finalize(() => this.submitting.set(false)),
         catchError((err) => {
           this.snackBar.open(
-            localized$('An error occurred while uploading the file. Please try again.'),
-            localized$('Ok'),
+            this.translate.transform(localized$('An error occurred while uploading the file. Please try again.')),
+            this.translate.transform(localized$('Ok')),
             {
               duration: 3000,
             },
@@ -249,9 +253,13 @@ export class ListWantedMaterialFormComponent implements OnInit {
           return this.listingService.createListing({ ...payload, documents }).pipe(
             finalize(() => this.submitting.set(false)),
             catchError((err) => {
-              this.snackBar.open(localized$(`${err.error?.error?.message ?? 'Unknown error'}`), localized$('Ok'), {
-                duration: 3000,
-              });
+              this.snackBar.open(
+                this.translate.transform(localized$(`${err.error?.error?.message ?? 'Unknown error'}`)),
+                this.translate.transform(localized$('Ok')),
+                {
+                  duration: 3000,
+                },
+              );
               return of(null);
             }),
           );
@@ -259,9 +267,13 @@ export class ListWantedMaterialFormComponent implements OnInit {
       )
       .subscribe((result) => {
         if (result) {
-          this.snackBar.open(localized$('Your listing is under review'), localized$('Ok'), {
-            duration: 3000,
-          });
+          this.snackBar.open(
+            this.translate.transform(localized$('Your listing is under review')),
+            this.translate.transform(localized$('Ok')),
+            {
+              duration: 3000,
+            },
+          );
           this.router.navigate(['/wanted']);
         }
       });

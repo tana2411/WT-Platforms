@@ -13,6 +13,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslatePipe } from '@ngx-translate/core';
 import { OfferRequestActionEnum, OfferState } from 'app/models/offer';
 import { AdminOfferService } from 'app/services/admin/admin-offer.service';
 import { OfferDetail } from 'app/types/requests/offer';
@@ -24,6 +26,7 @@ import { RejectModalComponent } from '../reject-modal/reject-modal.component';
   imports: [MatButtonModule, MatSnackBarModule],
   templateUrl: './offer-detail-actions.component.html',
   styleUrl: './offer-detail-actions.component.scss',
+  providers: [TranslatePipe],
 })
 export class OfferDetailActionsComponent {
   offerId = input<string | undefined>(undefined);
@@ -36,6 +39,7 @@ export class OfferDetailActionsComponent {
   dialogService = inject(MatDialog);
   snackbar = inject(MatSnackBar);
   injector = inject(Injector);
+  translate = inject(TranslatePipe);
 
   canAction = computed(() => this.offer()?.offer.state === OfferState.PENDING);
 
@@ -51,11 +55,13 @@ export class OfferDetailActionsComponent {
         .callAction(offerId, OfferRequestActionEnum.ACCEPT, {})
         .pipe(
           tap(() => {
-            this.snackbar.open('The approval action was sent successfully.');
+            this.snackbar.open(this.translate.transform(localized$('The approval action was sent successfully.')));
             this.refresh.emit();
           }),
           catchError(() => {
-            this.snackbar.open('Unable to process the approval action. Please try again.');
+            this.snackbar.open(
+              this.translate.transform(localized$('Unable to process the approval action. Please try again.')),
+            );
             return EMPTY;
           }),
           takeUntilDestroyed(),
@@ -93,10 +99,12 @@ export class OfferDetailActionsComponent {
           }),
           tap(() => {
             this.refresh.emit();
-            this.snackbar.open('The rejection action was sent successfully.');
+            this.snackbar.open(this.translate.transform(localized$('The rejection action was sent successfully.')));
           }),
           catchError(() => {
-            this.snackbar.open('Unable to process the rejection action. Please try again.');
+            this.snackbar.open(
+              this.translate.transform(localized$('Unable to process the rejection action. Please try again.')),
+            );
             return EMPTY;
           }),
           takeUntilDestroyed(),

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateService } from '@ngx-translate/core';
 import { SellerCompaniesResponse } from 'app/models';
 import { Companies, CompaniesResponse } from 'app/models/purchases.model';
 import { WantedCompanies, WantedCompaniesResponse } from 'app/models/wanted.model';
@@ -15,6 +16,7 @@ export class CompaniesService {
   wantedCompanies$?: Observable<WantedCompanies[]>;
   http = inject(HttpClient);
   snackBar = inject(MatSnackBar);
+  translate = inject(TranslateService);
 
   getOfferCompanies(): Observable<{ buyer: Companies[]; seller: Companies[] }> {
     if (!this.companies$) {
@@ -26,9 +28,13 @@ export class CompaniesService {
         shareReplay({ bufferSize: 1, refCount: true }),
         catchError((err) => {
           this.companies$ = undefined;
-          this.snackBar.open(localized$(`Failed to load companies. Please try again.`), localized$('OK'), {
-            duration: 3000,
-          });
+          this.snackBar.open(
+            this.translate.instant(localized$(`Failed to load companies. Please try again.`)),
+            this.translate.instant(localized$('OK')),
+            {
+              duration: 3000,
+            },
+          );
           return of({ buyer: [], seller: [] });
         }),
       );
@@ -47,9 +53,13 @@ export class CompaniesService {
           shareReplay({ bufferSize: 1, refCount: true }),
           catchError((err) => {
             this.sellerCompanies$ = undefined;
-            this.snackBar.open(localized$(`Failed to load companies. Please try again.`), localized$('OK'), {
-              duration: 3000,
-            });
+            this.snackBar.open(
+              this.translate.instant(localized$(`Failed to load companies. Please try again.`)),
+              this.translate.instant(localized$('OK')),
+              {
+                duration: 3000,
+              },
+            );
             return of([]);
           }),
         );
@@ -68,9 +78,13 @@ export class CompaniesService {
           shareReplay({ bufferSize: 1, refCount: true }),
           catchError((err) => {
             this.wantedCompanies$ = undefined;
-            this.snackBar.open(localized$(`Failed to load companies. Please try again.`), localized$('OK'), {
-              duration: 3000,
-            });
+            this.snackBar.open(
+              this.translate.instant(localized$(`Failed to load companies. Please try again.`)),
+              this.translate.instant(localized$('OK')),
+              {
+                duration: 3000,
+              },
+            );
             return of([]);
           }),
         );

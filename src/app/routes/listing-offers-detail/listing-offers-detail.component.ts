@@ -19,7 +19,7 @@ import { catchError, EMPTY, filter, finalize, map, switchMap, tap } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { AuthService } from 'app/services/auth.service';
@@ -50,7 +50,7 @@ import { isNil } from 'lodash';
     ProductGridComponent,
     TranslateModule,
   ],
-  providers: [DecimalPipe],
+  providers: [DecimalPipe, TranslatePipe],
   templateUrl: './listing-offers-detail.component.html',
   styleUrl: './listing-offers-detail.component.scss',
 })
@@ -64,6 +64,7 @@ export class ListingOffersDetailComponent {
   destroyRef = inject(DestroyRef);
   auth = inject(AuthService);
   decimal = inject(DecimalPipe);
+  translate = inject(TranslatePipe);
 
   offerId = signal<number | undefined>(undefined);
   listingDetail = signal<ListingMaterialDetail | undefined>(undefined);
@@ -163,8 +164,10 @@ export class ListingOffersDetailComponent {
 
         catchError((err) => {
           this.snackBar.open(
-            localized$(`${err.error?.error?.message || 'Failed to load details. Please refresh the page.'}`),
-            localized$('OK'),
+            this.translate.transform(
+              localized$(`${err.error?.error?.message || 'Failed to load details. Please refresh the page.'}`),
+            ),
+            this.translate.transform(localized$('OK')),
             {
               duration: 3000,
             },

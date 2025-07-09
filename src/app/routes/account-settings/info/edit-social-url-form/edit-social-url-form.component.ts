@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { AdditionalUrl } from 'app/models';
 import { SettingsService } from 'app/services/settings.service';
@@ -35,6 +35,7 @@ const SOCIAL_URL_PATTERN =
     MatIconModule,
     TranslateModule,
   ],
+  providers: [TranslatePipe],
 })
 export class EditSocialUrlFormComponent implements OnInit {
   formGroup = new FormGroup({
@@ -61,6 +62,7 @@ export class EditSocialUrlFormComponent implements OnInit {
   submitting = signal(false);
   dialog = inject(MatDialog);
   destroyRef = inject(DestroyRef);
+  translate = inject(TranslatePipe);
 
   get additionalUrls() {
     return this.formGroup.get('additionalSocialMediaUrls') as FormArray;
@@ -146,8 +148,8 @@ export class EditSocialUrlFormComponent implements OnInit {
   submit() {
     if (this.formGroup.pristine) {
       this.snackBar.open(
-        localized$('No changes detected. Please modify your profile details before saving.'),
-        localized$('OK'),
+        this.translate.transform(localized$('No changes detected. Please modify your profile details before saving.')),
+        this.translate.transform(localized$('OK')),
         {
           duration: 3000,
         },
@@ -184,9 +186,13 @@ export class EditSocialUrlFormComponent implements OnInit {
           .updateCompany(this.data.companyId, payload)
           .pipe(
             catchError((err) => {
-              this.snackBar.open(localized$('Social Url update failed. Please try again later.'), localized$('OK'), {
-                duration: 3000,
-              });
+              this.snackBar.open(
+                this.translate.transform(localized$('Social Url update failed. Please try again later.')),
+                this.translate.transform(localized$('OK')),
+                {
+                  duration: 3000,
+                },
+              );
               return EMPTY;
             }),
             finalize(() => {
@@ -194,9 +200,13 @@ export class EditSocialUrlFormComponent implements OnInit {
             }),
           )
           .subscribe((res) => {
-            this.snackBar.open(localized$('Your Social Url has been updated successfully.'), localized$('OK'), {
-              duration: 3000,
-            });
+            this.snackBar.open(
+              this.translate.transform(localized$('Your Social Url has been updated successfully.')),
+              this.translate.transform(localized$('OK')),
+              {
+                duration: 3000,
+              },
+            );
             this.dialogRef.close(true);
           });
       });

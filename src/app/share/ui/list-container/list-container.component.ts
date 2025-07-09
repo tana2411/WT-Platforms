@@ -3,7 +3,7 @@ import { Component, ContentChild, inject, Input, OnInit, signal, TemplateRef } f
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { mapCountryCodeToName } from '@app/statics';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { scrollTop } from 'app/share/utils/common';
 import { ItemOf } from 'app/types/utils';
 import { catchError, finalize, of } from 'rxjs';
@@ -22,6 +22,7 @@ export interface PageResult {
   templateUrl: './list-container.component.html',
   styleUrls: ['./list-container.component.scss'],
   imports: [FilterComponent, PaginationComponent, SpinnerComponent, NgTemplateOutlet, TranslateModule],
+  providers: [TranslatePipe],
 })
 export class ListContainerComponent implements OnInit {
   mapCountryCodeToName = mapCountryCodeToName;
@@ -47,6 +48,7 @@ export class ListContainerComponent implements OnInit {
   invalidPage = signal(false);
 
   snackBar = inject(MatSnackBar);
+  translate = inject(TranslatePipe);
 
   constructor() {
     this.loading.set(true);
@@ -129,7 +131,11 @@ export class ListContainerComponent implements OnInit {
         finalize(() => this.loading.set(false)),
         catchError((err) => {
           if (err) {
-            this.snackBar.open(localized$(`${err.message}`), localized$('OK'), { duration: 3000 });
+            this.snackBar.open(
+              this.translate.transform(localized$(`${err.message}`)),
+              this.translate.transform(localized$('OK')),
+              { duration: 3000 },
+            );
           }
           return of(null);
         }),

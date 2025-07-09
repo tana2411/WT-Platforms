@@ -12,7 +12,7 @@ import { countries } from '@app/statics';
 import { TelephoneFormControlComponent } from '@app/ui';
 import { strictEmailValidator } from '@app/validators';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { Company } from 'app/models';
 import { SettingsService } from 'app/services/settings.service';
@@ -36,6 +36,7 @@ import { catchError, EMPTY, finalize } from 'rxjs';
     TranslateModule,
     TelephoneFormControlComponent,
   ],
+  providers: [TranslatePipe],
 })
 export class EditBusinessAddressFormComponent implements OnInit {
   countryList = countries.slice().sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
@@ -57,6 +58,7 @@ export class EditBusinessAddressFormComponent implements OnInit {
   submitting = signal(false);
   dialog = inject(MatDialog);
   destroyRef = inject(DestroyRef);
+  translate = inject(TranslatePipe);
 
   constructor() {}
 
@@ -115,8 +117,8 @@ export class EditBusinessAddressFormComponent implements OnInit {
   submit() {
     if (this.formGroup.pristine) {
       this.snackBar.open(
-        localized$(`No changes detected. Please modify your profile details before saving.`),
-        localized$(`OK`),
+        this.translate.transform(localized$(`No changes detected. Please modify your profile details before saving.`)),
+        this.translate.transform(localized$(`OK`)),
         {
           duration: 3000,
         },
@@ -155,9 +157,13 @@ export class EditBusinessAddressFormComponent implements OnInit {
           .updateCompany(this.data.companyInfo?.id, payload)
           .pipe(
             catchError((err) => {
-              this.snackBar.open(`Failed to save changes. Please check your inputs and try again.`, `OK`, {
-                duration: 3000,
-              });
+              this.snackBar.open(
+                this.translate.transform(localized$(`Failed to save changes. Please check your inputs and try again.`)),
+                this.translate.transform(localized$(`OK`)),
+                {
+                  duration: 3000,
+                },
+              );
               return EMPTY;
             }),
             finalize(() => {
@@ -165,9 +171,13 @@ export class EditBusinessAddressFormComponent implements OnInit {
             }),
           )
           .subscribe((res) => {
-            this.snackBar.open(`Your Company Information has been updated successfully.`, `OK`, {
-              duration: 3000,
-            });
+            this.snackBar.open(
+              this.translate.transform(localized$(`Your Company Information has been updated successfully.`)),
+              this.translate.transform(localized$(`OK`)),
+              {
+                duration: 3000,
+              },
+            );
             this.dialogRef.close(true);
           });
       });

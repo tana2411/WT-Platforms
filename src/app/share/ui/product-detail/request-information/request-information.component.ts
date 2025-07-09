@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { ListingService } from 'app/services/listing.service';
 import { catchError, finalize, of } from 'rxjs';
@@ -41,6 +41,7 @@ export class RequestInformationComponent implements OnInit {
   snackBar = inject(MatSnackBar);
   listingService = inject(ListingService);
   destroyRef = inject(DestroyRef);
+  translate = inject(TranslatePipe);
 
   readonly dialogRef = inject(MatDialogRef<{ [key: string]: number }>);
   readonly data = inject<{ listingId: number }>(MAT_DIALOG_DATA);
@@ -71,8 +72,8 @@ export class RequestInformationComponent implements OnInit {
         finalize(() => this.submitting.set(false)),
         catchError((err) => {
           this.snackBar.open(
-            localized$('Failed to send request. Please try again or contact support.'),
-            localized$('Ok'),
+            this.translate.transform(localized$('Failed to send request. Please try again or contact support.')),
+            this.translate.transform(localized$('Ok')),
             {
               duration: 3000,
             },
@@ -83,9 +84,13 @@ export class RequestInformationComponent implements OnInit {
       )
       .subscribe((res) => {
         if (res) {
-          this.snackBar.open(localized$('Your request has been successfully sent'), localized$('Ok'), {
-            duration: 3000,
-          });
+          this.snackBar.open(
+            this.translate.transform(localized$('Your request has been successfully sent')),
+            this.translate.transform(localized$('Ok')),
+            {
+              duration: 3000,
+            },
+          );
           this.dialogRef.close(true);
         }
       });

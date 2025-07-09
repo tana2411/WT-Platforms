@@ -17,7 +17,7 @@ import { Router, RouterModule } from '@angular/router';
 import { countries, materialTypes } from '@app/statics';
 import { TelephoneFormControlComponent } from '@app/ui';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { UnAuthLayoutComponent } from 'app/layout/un-auth-layout/un-auth-layout.component';
 import { User } from 'app/models/auth.model';
 import { AuthService } from 'app/services/auth.service';
@@ -29,7 +29,7 @@ import { catchError, filter, finalize, of, take } from 'rxjs';
   selector: 'app-site-location-section',
   templateUrl: './site-location-section.component.html',
   styleUrls: ['./site-location-section.component.scss'],
-  providers: [provideNativeDateAdapter()],
+  providers: [provideNativeDateAdapter(), TranslatePipe],
   imports: [
     MatFormFieldModule,
     MatInputModule,
@@ -89,6 +89,7 @@ export class SiteLocationSectionComponent implements OnInit {
   snackBar = inject(MatSnackBar);
   registrationService = inject(RegistrationsService);
   router = inject(Router);
+  translate = inject(TranslatePipe);
 
   materialsAccept = computed(() => {
     const userMaterial = this.user()?.company?.favoriteMaterials || [];
@@ -175,10 +176,12 @@ export class SiteLocationSectionComponent implements OnInit {
         catchError((err) => {
           if (err) {
             this.snackBar.open(
-              localized$(
-                `An error occurred while retrieving your information. Please refresh the page or contact support if the problem persists.`,
+              this.translate.transform(
+                localized$(
+                  `An error occurred while retrieving your information. Please refresh the page or contact support if the problem persists.`,
+                ),
               ),
-              localized$('Ok'),
+              this.translate.transform(localized$('Ok')),
               { duration: 3000 },
             );
           }
@@ -241,8 +244,10 @@ export class SiteLocationSectionComponent implements OnInit {
         catchError((err) => {
           if (err) {
             this.snackBar.open(
-              localized$(`${err?.error?.error?.message ?? 'Some thing went wrong. Please try again.'}`),
-              localized$('Ok'),
+              this.translate.transform(
+                localized$(`${err?.error?.error?.message ?? 'Some thing went wrong. Please try again.'}`),
+              ),
+              this.translate.transform(localized$('Ok')),
               {
                 duration: 3000,
               },
