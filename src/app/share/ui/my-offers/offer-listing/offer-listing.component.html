@@ -38,7 +38,7 @@
         </p>
       </div>
 
-      @if ($index === 0) {
+      @if (canAcceptReject(item.status)) {
         <div class="d-flex flex-column gap-2">
           <button
             mat-flat-button

@@ -97,17 +97,17 @@ export class ReceivedOfferDetailComponent implements OnInit {
       {
         label: localized$(`No. loads`),
         // icon: 'sell',
-        value: this.decimalPipe.transform(offer?.listing.quantity),
+        value: this.decimalPipe.transform(offer?.listing?.quantity ?? 0),
       },
       {
         label: localized$('No. offers'),
         // icon: 'list_alt',
-        value: this.decimalPipe.transform(offer?.listing.numberOfOffers ?? 0),
+        value: this.decimalPipe.transform(offer?.listing?.numberOfOffers ?? 0),
       },
       {
         label: localized$('Remaining Loads'),
         // icon: 'hourglass_top',
-        value: this.decimalPipe.transform(offer?.listing.remainingQuantity),
+        value: this.decimalPipe.transform(offer?.listing?.remainingQuantity),
       },
       {
         label: localized$('Status'),

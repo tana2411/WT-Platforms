@@ -100,7 +100,6 @@ export class AdminMemberComponent {
   }
 
   onChangeKeyword(e: any) {
-    debugger;
     const value = e.target.value.trim();
     if (!value) {
       this.updator.next();

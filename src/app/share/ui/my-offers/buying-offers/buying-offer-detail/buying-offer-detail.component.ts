@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
@@ -31,6 +32,7 @@ import { BidRejectedComponent } from '../offer-detail-status/bid-rejected/bid-re
     BidPendingComponent,
     TranslateModule,
   ],
+  providers: [DecimalPipe],
   templateUrl: './buying-offer-detail.component.html',
   styleUrl: './buying-offer-detail.component.scss',
 })
@@ -39,6 +41,7 @@ export class BuyingOfferDetailComponent {
   route = inject(ActivatedRoute);
   router = inject(Router);
   OfferStatus = OfferStatus;
+  decimal = inject(DecimalPipe);
 
   getListingTitle = getListingTitle;
 
@@ -61,17 +64,17 @@ export class BuyingOfferDetailComponent {
       {
         label: localized$('Average Weight per Load'),
         icon: 'pages',
-        value: `${offer.listing.materialWeightWanted / offer.listing.quantity} MT`,
+        value: `${this.decimal.transform(offer.listing.materialWeightWanted / offer.listing.quantity)} MT`,
       },
       {
         label: localized$(`No. of Loads`),
         icon: 'sell',
-        value: offer.listing.quantity,
+        value: this.decimal.transform(offer.listing.quantity),
       },
       {
         label: localized$('Remaining Loads'),
         icon: 'hourglass_top',
-        value: `${offer.listing.remainingQuantity} of ${offer.listing.quantity}`,
+        value: `${this.decimal.transform(offer.listing.remainingQuantity)} of ${this.decimal.transform(offer.listing.quantity)}`,
       },
       {
         label: localized$('Packaged'),

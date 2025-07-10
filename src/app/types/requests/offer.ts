@@ -95,6 +95,7 @@ export type RequestGetOffersParams = {
   listingId?: number;
   page: number;
   isSeller?: boolean;
+  materialItem?: string;
 };
 
 export type RequestGetBuyingOffersResponse = {

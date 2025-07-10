@@ -1,4 +1,9 @@
-import { Component, effect, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { mapCountryCodeToName } from '@app/statics';
@@ -13,7 +18,7 @@ import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
 import { getCurrencySignal, getListingFeatureImage, getListingTitle } from 'app/share/utils/offer';
 import { OfferDetail } from 'app/types/requests/offer';
 import moment from 'moment';
-import { finalize } from 'rxjs';
+import { startWith, Subject, switchMap, tap } from 'rxjs';
 import { LIST_TAB_OFFER, MAP_OFFER_TYPE_TO_EMPTY_OFFER_PROP, OfferType } from './constants';
 
 @Component({
@@ -25,6 +30,12 @@ import { LIST_TAB_OFFER, MAP_OFFER_TYPE_TO_EMPTY_OFFER_PROP, OfferType } from '.
     CommonLayoutComponent,
     EmptyOfferComponent,
     TranslateModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
   ],
   providers: [OfferService],
   templateUrl: './my-offers-selling.component.html',
@@ -34,8 +45,13 @@ export class MyOffersSellingComponent {
   listTabOffer = LIST_TAB_OFFER;
   listEmptyProps = signal<ReturnType<typeof MAP_OFFER_TYPE_TO_EMPTY_OFFER_PROP>>({} as any);
 
+  updator = new Subject<void>();
   totalItems = signal(0);
   page = signal(1);
+  fb = inject(FormBuilder);
+  form: FormGroup = this.fb.group({
+    searchTerm: [''],
+  });
 
   items = signal<TableSellingOfferItem[] | null>(null);
   loading = signal(false);
@@ -70,11 +86,15 @@ export class MyOffersSellingComponent {
         return;
       }
 
-      this.loading.set(true);
-      this.offerService
-        .getSellingOffers({ page: this.page() })
+      this.updator
         .pipe(
-          finalize(() => {
+          startWith(null),
+          tap(() => this.loading.set(true)),
+          switchMap(() => {
+            const searchTerm = this.form.get('searchTerm')?.value;
+            return this.offerService.getSellingOffers({ page: this.page(), materialItem: searchTerm || undefined });
+          }),
+          tap(() => {
             this.loading.set(false);
           }),
         )
@@ -84,6 +104,17 @@ export class MyOffersSellingComponent {
           this.totalItems.set(res.totalCount);
         });
     });
+  }
+
+  onChangeKeyword(e: any) {
+    const value = e.target.value.trim();
+    if (!value) {
+      this.updator.next();
+    }
+  }
+
+  search() {
+    this.updator.next();
   }
 
   mapOfferToTableItem(offerDetail: OfferDetail): TableSellingOfferItem {

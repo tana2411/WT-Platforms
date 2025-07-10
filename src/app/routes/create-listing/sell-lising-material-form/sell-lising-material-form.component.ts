@@ -63,6 +63,7 @@ export class SellLisingMaterialFormComponent {
   router = inject(Router);
   dialog = inject(MatDialog);
   translate = inject(TranslatePipe);
+  ref = inject(ChangeDetectorRef);
 
   // onGoingListing = signal<boolean | undefined>(undefined);
   // hasSpecialData = signal<boolean | undefined>(false);
@@ -178,6 +179,7 @@ export class SellLisingMaterialFormComponent {
         materialItem.setValidators(Validators.required);
       } else {
         materialItem.clearValidators();
+        materialItem.setValue('N/A', { emitEvent: false });
       }
 
       materialItem.updateValueAndValidity();
