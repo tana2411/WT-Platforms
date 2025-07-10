@@ -22,11 +22,11 @@
           color: $primary !important;
         }
       }
+    }
 
-      .mdc-tab__text-label {
-        text-transform: uppercase;
-        font-weight: bold;
-      }
+    .mdc-tab__text-label {
+      text-transform: uppercase;
+      font-weight: bold;
     }
   }
 }
