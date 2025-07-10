@@ -35,7 +35,7 @@ export class OfferService {
     );
   }
 
-  getSellingOffers({ listingId, page }: Omit<RequestGetOffersParams, 'isSeller'>) {
+  getSellingOffers({ listingId, page, materialItem }: Omit<RequestGetOffersParams, 'isSeller'>) {
     const params = new HttpParams({
       fromObject: {
         filter: JSON.stringify({
@@ -44,6 +44,7 @@ export class OfferService {
           where: {
             isSeller: true,
             listingId,
+            materialItem,
           },
         }),
       },
