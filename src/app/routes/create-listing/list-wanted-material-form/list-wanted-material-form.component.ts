@@ -129,6 +129,7 @@ export class ListWantedMaterialFormComponent implements OnInit {
         materialItem.setValidators(Validators.required);
       } else {
         materialItem.clearValidators();
+        materialItem.setValue('N/A', { emitEvent: false });
       }
 
       materialItem.updateValueAndValidity();

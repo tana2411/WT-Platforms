@@ -144,8 +144,12 @@
                 <div class="mb-2 text-uppercase fw-bold">{{ 'ITEM*' | translate }}</div>
                 <mat-form-field appearance="outline" class="w-100">
                   <mat-select formControlName="materialItem" placeholder="Please Select">
-                    @for (item of itemOption(); track $index) {
-                      <mat-option [value]="item.code">{{ item.name }}</mat-option>
+                    @if (itemOption().length == 0 && formGroup.get('materialType')?.touched) {
+                      <mat-option value="N/A">{{ 'N/A' | translate }}</mat-option>
+                    } @else {
+                      @for (item of itemOption(); track $index) {
+                        <mat-option [value]="item.code">{{ item.name }}</mat-option>
+                      }
                     }
                   </mat-select>
                   @if (formGroup.get('materialItem')?.hasError('required')) {
