@@ -57,13 +57,13 @@ export class SidebarComponent {
               {
                 title: localized$('Sell Material'),
                 link: ROUTES_WITH_SLASH.sell,
-                disabled: false,
+                disabled: notCompletedAccount,
                 icon: 'ballot',
               },
               {
                 title: localized$('List Wanted Material'),
                 link: `${ROUTES_WITH_SLASH.sell}/wanted`,
-                disabled: false,
+                disabled: notCompletedAccount,
                 icon: 'ballot',
               },
             ],
