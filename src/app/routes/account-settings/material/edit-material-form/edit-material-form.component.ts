@@ -6,6 +6,7 @@ import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { materialTypes } from '@app/statics';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
@@ -29,6 +30,7 @@ import { catchError, EMPTY, finalize } from 'rxjs';
     IconComponent,
     MatExpansionModule,
     TranslateModule,
+    MatInputModule,
   ],
   providers: [TranslatePipe],
 })
@@ -36,9 +38,11 @@ export class EditMaterialFormComponent implements OnInit, AfterViewInit {
   materialType = materialTypes;
   selectAllMaterial = signal(false);
   submitting = signal(false);
+  showOtherMaterial = signal(false);
 
   formGroup = new FormGroup({
     favoriteMaterials: new FormArray([], [Validators.required]),
+    otherMaterial: new FormControl<string>(''),
   });
 
   readonly dialogRef = inject(MatDialogRef<string[]>);
@@ -81,6 +85,22 @@ export class EditMaterialFormComponent implements OnInit, AfterViewInit {
 
       this.favoriteMaterials.updateValueAndValidity();
       this.favoriteMaterials.markAsDirty();
+    });
+
+    effect(() => {
+      const { favoriteMaterials, otherMaterial } = this.formGroup.controls;
+      if (this.showOtherMaterial()) {
+        otherMaterial.setValidators([Validators.required]);
+        favoriteMaterials.clearValidators();
+      } else {
+        otherMaterial.clearValidators();
+        otherMaterial.setValue(null);
+        otherMaterial.markAsUntouched();
+        favoriteMaterials.setValidators([Validators.required]);
+      }
+
+      favoriteMaterials.updateValueAndValidity();
+      otherMaterial.updateValueAndValidity();
     });
   }
 
@@ -148,7 +168,10 @@ export class EditMaterialFormComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const payload: string[] = this.favoriteMaterials.value;
+    const payload: any = {
+      favoriteMaterials: this.favoriteMaterials.value,
+      otherMaterial: this.formGroup.get('otherMaterial')?.value ?? '',
+    };
 
     this.dialog
       .open(ConfirmModalComponent, {

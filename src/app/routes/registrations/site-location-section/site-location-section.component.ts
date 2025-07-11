@@ -74,6 +74,8 @@ export class SiteLocationSectionComponent implements OnInit {
     selfLoadUnLoadCapability: new FormControl<string | null>(null, [Validators.required]),
     accessRestrictions: new FormControl<string | null>(null, []),
     toggleAccessRestriction: new FormControl<boolean | null>(null, [Validators.required]),
+    acceptedMaterials: new FormArray([], [Validators.required]),
+    otherMaterial: new FormControl<string | null>(null),
   });
 
   submitting = signal<boolean>(false);
@@ -151,6 +153,41 @@ export class SiteLocationSectionComponent implements OnInit {
       this.formGroup.updateValueAndValidity();
     });
 
+    effect(() => {
+      if (this.selectAllMaterial()) {
+        this.materials.clear();
+        this.materialTypes
+          .map((m) => m.materials)
+          .forEach((items) => {
+            if (items.length > 0) {
+              items.forEach((item) => {
+                this.materials.push(new FormControl(item.code));
+              });
+            }
+          });
+        this.materials.markAsTouched();
+      } else {
+        this.materials.clear();
+      }
+      this.materials.updateValueAndValidity();
+    });
+
+    effect(() => {
+      const { acceptedMaterials, otherMaterial } = this.formGroup.controls;
+      if (this.showOtherMaterial()) {
+        otherMaterial.setValidators([Validators.required]);
+        acceptedMaterials.clearValidators();
+      } else {
+        otherMaterial.clearValidators();
+        otherMaterial.setValue(null);
+        otherMaterial.markAsUntouched();
+        acceptedMaterials.setValidators([Validators.required]);
+      }
+
+      acceptedMaterials.updateValueAndValidity();
+      otherMaterial.updateValueAndValidity();
+    });
+
     this.formGroup.valueChanges.pipe(takeUntilDestroyed()).subscribe((value) => {
       const { addressLine, postcode, city, country, stateProvince } = value;
       const previousAddress = this.user()?.company;
@@ -198,6 +235,16 @@ export class SiteLocationSectionComponent implements OnInit {
             lastName: user.user.lastName ?? '',
             phoneNumber: user.user.phoneNumber ?? '',
           });
+
+          if (user.company.favoriteMaterials && user.company.favoriteMaterials.length > 0) {
+            const { favoriteMaterials } = user.company;
+            favoriteMaterials.forEach((m) => {
+              this.materials.push(new FormControl(m));
+            });
+            this.materials.updateValueAndValidity();
+          }
+
+          this.formGroup.updateValueAndValidity();
         }
       });
   }
@@ -206,9 +253,13 @@ export class SiteLocationSectionComponent implements OnInit {
     return this.formGroup.get('containerType') as FormArray;
   }
 
-  // get materials(): FormArray {
-  //   return this.formGroup.get('favoriteMaterials') as FormArray;
-  // }
+  get materials(): FormArray {
+    return this.formGroup.get('acceptedMaterials') as FormArray;
+  }
+
+  isCheckedSelectAllMaterial = computed(() => {
+    return this.materials.length === this.materialTypes.flatMap((m) => m.materials).length;
+  });
 
   onSelectedItem(event: MatCheckboxChange, item: string) {
     if (event.checked) {
@@ -220,6 +271,20 @@ export class SiteLocationSectionComponent implements OnInit {
       }
     }
     this.containerType.updateValueAndValidity();
+    this.formGroup.updateValueAndValidity();
+  }
+
+  onSelectedMaterial(event: MatCheckboxChange, item: string) {
+    if (event.checked) {
+      this.materials.push(new FormControl(item));
+    } else {
+      const idx = this.materials.controls.findIndex((control) => control.value === item);
+      if (idx !== -1) {
+        this.materials.removeAt(idx);
+      }
+    }
+    this.materials.markAsTouched();
+    this.materials.updateValueAndValidity();
     this.formGroup.updateValueAndValidity();
   }
 
@@ -264,6 +329,6 @@ export class SiteLocationSectionComponent implements OnInit {
   }
 
   isOpenGroup(materials: any[]) {
-    return materials.some((m) => this.materialsAccept().includes(m.code));
+    return materials.some((m) => this.materials.value.includes(m.code));
   }
 }
