@@ -1,3 +1,4 @@
+import { TitleCasePipe } from '@angular/common';
 import { Component, effect, inject, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -15,10 +16,11 @@ import { EditMaterialFormComponent } from './edit-material-form/edit-material-fo
   selector: 'app-material',
   templateUrl: './material.component.html',
   styleUrls: ['./material.component.scss'],
-  imports: [MatIconModule, MatButtonModule, MatCheckboxModule, FormsModule, TranslateModule],
+  imports: [MatIconModule, MatButtonModule, MatCheckboxModule, FormsModule, TranslateModule, TitleCasePipe],
 })
 export class MaterialComponent {
   favoriteMaterials: string[] | undefined = [];
+  otherMaterial: string | null = null;
   companyId: number | undefined;
 
   materialType = materialTypes;
@@ -34,6 +36,7 @@ export class MaterialComponent {
     effect(() => {
       if (this.user()?.company) {
         this.favoriteMaterials = this.user()?.company?.favoriteMaterials;
+        this.otherMaterial = this.user()?.company?.otherMaterial ?? null;
         this.companyId = this.user()?.company.id;
 
         this.showMaterial();
@@ -59,6 +62,7 @@ export class MaterialComponent {
     const dataConfig: MatDialogConfig = {
       data: {
         materials: this.materials.flatMap((type) => type.materials.map((m: any) => m.code)),
+        otherMaterial: this.otherMaterial,
         companyId: this.companyId,
       },
       width: '100%',

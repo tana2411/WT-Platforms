@@ -6,6 +6,7 @@ import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { materialTypes } from '@app/statics';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
@@ -29,6 +30,7 @@ import { catchError, EMPTY, finalize } from 'rxjs';
     IconComponent,
     MatExpansionModule,
     TranslateModule,
+    MatInputModule,
   ],
   providers: [TranslatePipe],
 })
@@ -36,13 +38,15 @@ export class EditMaterialFormComponent implements OnInit, AfterViewInit {
   materialType = materialTypes;
   selectAllMaterial = signal(false);
   submitting = signal(false);
+  showOtherMaterial = signal(false);
 
   formGroup = new FormGroup({
     favoriteMaterials: new FormArray([], [Validators.required]),
+    otherMaterial: new FormControl<string | null>(null),
   });
 
   readonly dialogRef = inject(MatDialogRef<string[]>);
-  readonly data = inject<{ materials: string[]; companyId: number }>(MAT_DIALOG_DATA);
+  readonly data = inject<{ materials: string[]; otherMaterial: string | null; companyId: number }>(MAT_DIALOG_DATA);
   snackBar = inject(MatSnackBar);
   settingsService = inject(SettingsService);
   dialog = inject(MatDialog);
@@ -82,6 +86,22 @@ export class EditMaterialFormComponent implements OnInit, AfterViewInit {
       this.favoriteMaterials.updateValueAndValidity();
       this.favoriteMaterials.markAsDirty();
     });
+
+    effect(() => {
+      const { favoriteMaterials, otherMaterial } = this.formGroup.controls;
+      if (this.showOtherMaterial()) {
+        otherMaterial.setValidators([Validators.required]);
+        favoriteMaterials.clearValidators();
+      } else {
+        otherMaterial.clearValidators();
+        otherMaterial.setValue(null);
+        otherMaterial.markAsUntouched();
+        favoriteMaterials.setValidators([Validators.required]);
+      }
+
+      favoriteMaterials.updateValueAndValidity();
+      otherMaterial.updateValueAndValidity();
+    });
   }
 
   ngOnInit() {
@@ -89,9 +109,15 @@ export class EditMaterialFormComponent implements OnInit, AfterViewInit {
       this.data.materials.forEach((material) => {
         this.favoriteMaterials.push(new FormControl(material));
       });
-      this.favoriteMaterials.updateValueAndValidity();
-      this.formGroup.updateValueAndValidity();
     }
+    if (this.data.otherMaterial) {
+      this.formGroup.patchValue({
+        otherMaterial: this.data.otherMaterial,
+      });
+      this.showOtherMaterial.set(true);
+    }
+    this.favoriteMaterials.updateValueAndValidity();
+    this.formGroup.updateValueAndValidity();
   }
 
   ngAfterViewInit(): void {
@@ -148,7 +174,10 @@ export class EditMaterialFormComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const payload: string[] = this.favoriteMaterials.value;
+    const payload: any = {
+      favoriteMaterials: this.favoriteMaterials.value,
+      otherMaterial: this.formGroup.get('otherMaterial')?.value ?? '',
+    };
 
     this.dialog
       .open(ConfirmModalComponent, {
