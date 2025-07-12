@@ -25,6 +25,7 @@ export type Company = {
   mobileNumber: string;
   companyType: string | null;
   favoriteMaterials: string[];
+  otherMaterial: string | null;
   materialInterest: string | null;
   companyInterest: string;
   description: string;

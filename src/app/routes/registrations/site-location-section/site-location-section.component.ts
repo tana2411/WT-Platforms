@@ -234,7 +234,10 @@ export class SiteLocationSectionComponent implements OnInit {
             firstName: user.user.firstName ?? '',
             lastName: user.user.lastName ?? '',
             phoneNumber: user.user.phoneNumber ?? '',
+            otherMaterial: user.company.otherMaterial ?? '',
           });
+
+          if (user.company.otherMaterial) this.showOtherMaterial.set(true);
 
           if (user.company.favoriteMaterials && user.company.favoriteMaterials.length > 0) {
             const { favoriteMaterials } = user.company;

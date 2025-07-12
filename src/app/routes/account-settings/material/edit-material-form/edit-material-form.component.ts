@@ -42,11 +42,11 @@ export class EditMaterialFormComponent implements OnInit, AfterViewInit {
 
   formGroup = new FormGroup({
     favoriteMaterials: new FormArray([], [Validators.required]),
-    otherMaterial: new FormControl<string>(''),
+    otherMaterial: new FormControl<string | null>(null),
   });
 
   readonly dialogRef = inject(MatDialogRef<string[]>);
-  readonly data = inject<{ materials: string[]; companyId: number }>(MAT_DIALOG_DATA);
+  readonly data = inject<{ materials: string[]; otherMaterial: string | null; companyId: number }>(MAT_DIALOG_DATA);
   snackBar = inject(MatSnackBar);
   settingsService = inject(SettingsService);
   dialog = inject(MatDialog);
@@ -109,9 +109,15 @@ export class EditMaterialFormComponent implements OnInit, AfterViewInit {
       this.data.materials.forEach((material) => {
         this.favoriteMaterials.push(new FormControl(material));
       });
-      this.favoriteMaterials.updateValueAndValidity();
-      this.formGroup.updateValueAndValidity();
     }
+    if (this.data.otherMaterial) {
+      this.formGroup.patchValue({
+        otherMaterial: this.data.otherMaterial,
+      });
+      this.showOtherMaterial.set(true);
+    }
+    this.favoriteMaterials.updateValueAndValidity();
+    this.formGroup.updateValueAndValidity();
   }
 
   ngAfterViewInit(): void {
