@@ -27,6 +27,7 @@ import { catchError, finalize, of } from 'rxjs';
     MatInputModule,
     TranslateModule,
   ],
+  providers: [TranslatePipe],
 })
 export class RequestInformationComponent implements OnInit {
   formGroup = new FormGroup({
