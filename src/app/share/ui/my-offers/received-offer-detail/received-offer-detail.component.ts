@@ -146,7 +146,7 @@ export class ReceivedOfferDetailComponent implements OnInit {
 
         this.offerService.getSellingOffers({ page: this.page(), listingId: offer.listing.id }).subscribe({
           next: (res) => {
-            const tableData = res.results.map(this.mapOfferToTableItem);
+            const tableData = res.results.map((item) => this.mapOfferToTableItem(item));
             this.listingItems.set(tableData);
             this.totalItems.set(res.totalCount);
             this.loadingListing.set(false);
@@ -168,7 +168,7 @@ export class ReceivedOfferDetailComponent implements OnInit {
       buyerId: offer.buyerCompanyId,
       status: offer.status,
       state: offer.state as any,
-      bidAmount: `${getCurrencySignal(offer.currency)}${offer.offeredPricePerUnit}/MT`,
+      bidAmount: `${getCurrencySignal(offer.currency)}${this.decimalPipe.transform(offer.offeredPricePerUnit)}/MT`,
       totalPrice: `${getCurrencySignal(offer.currency)}${formatDecimalNumber(offer.offeredPricePerUnit * offer.quantity)}`,
       buyerStatus: buyer.company.status,
     };
