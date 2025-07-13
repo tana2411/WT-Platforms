@@ -64,7 +64,7 @@ export class BuyingOfferDetailComponent {
       {
         label: localized$('Average Weight per Load'),
         icon: 'pages',
-        value: `${this.decimal.transform(offer.listing.materialWeightWanted / offer.listing.quantity)} MT`,
+        value: `${this.decimal.transform(offer.listing.materialWeightPerUnit)} MT`,
       },
       {
         label: localized$(`No. of Loads`),
