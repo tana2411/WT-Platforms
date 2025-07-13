@@ -12,7 +12,6 @@ import { AdminAuditTrailService } from 'app/services/admin/admin-audit-trail.ser
 import { FilterComponent } from 'app/share/ui/listing/filter/filter.component';
 import { PaginationComponent } from 'app/share/ui/listing/pagination/pagination.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
-import { UnsuccessfulSearchComponent } from 'app/share/ui/unsuccessful-search/unsuccessful-search.component';
 import { scrollTop } from 'app/share/utils/common';
 import { catchError, finalize, of } from 'rxjs';
 import { AuditTrailDetailComponent } from './audit-trail-detail/audit-trail-detail.component';
@@ -28,7 +27,6 @@ import { AuditTrailDetailComponent } from './audit-trail-detail/audit-trail-deta
     MatButtonModule,
     FilterComponent,
     SpinnerComponent,
-    UnsuccessfulSearchComponent,
     PaginationComponent,
     AuditTrailDetailComponent,
   ],
