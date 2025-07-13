@@ -1,4 +1,4 @@
-<div class="w-100 mt-4 position-relative" [formGroup]="filterForm">
+<div class="w-100 mt-4" [formGroup]="filterForm">
   @if (!onlyFilter) {
     <!-- Search Bar Section -->
     <div class="row mb-4">
@@ -16,16 +16,15 @@
     </div>
   }
 
-  <!-- clean filter button for desktop  -->
-  @if (hasFilterParams && !openMobileFilter()) {
-    <div class="clear-all-btn d-none d-md-block fw-bold rounded border" (click)="clearFilter(); $event.stopPropagation()">
-      {{ 'Clear Filter' | translate }}
-    </div>
-  }
-
   @if (!onlySearchBar) {
     <!-- Filter Section -->
     <div class="mt-lg-3 border background-on-primary border-radius filter-wrapper" [class.open-mobile-filter]="openMobileFilter()">
+      <!-- clean filter button for desktop  -->
+      @if (hasFilterParams && !openMobileFilter()) {
+        <div class="clear-all-btn d-none d-md-block fw-bold rounded border" (click)="clearFilter(); $event.stopPropagation()">
+          {{ 'Clear Filter' | translate }}
+        </div>
+      }
       <div class="d-flex flex-wrap p-4 justify-content-between align-items-end">
         <div class="d-md-none pt-4 pb-4 w-100 position-relative">
           <h2 style="font-size: 28px" class="fw-bold">{{ 'Filter' | translate }}</h2>
@@ -136,6 +135,7 @@
                   <div class="small-mat-form-field input-item d-flex flex-column align-items-start {{ item.value }}">
                     <div class="filter-select-item-label d-flex align-items-start">{{ item.name | translate }}</div>
                     <mat-form-field appearance="outline" class="w-100 bg-white">
+                      <mat-icon matPrefix>search</mat-icon>
                       <input matInput [formControlName]="item.value" placeholder="{{ 'Type here' | translate }}" />
                     </mat-form-field>
                   </div>

@@ -1,4 +1,5 @@
 import { countries, materialTypes, packing } from '@app/statics';
+import { AuditTrailUserRoleEnum } from 'app/models/admin/audit-trail.model';
 
 export interface Filter {
   name: string;
@@ -24,6 +25,15 @@ export enum ListingSortBy {
   AVAILABLE_LISTINGS_ASC = 'availableListingsAsc',
   AVAILABLE_LISTINGS_DESC = 'availableListingsDesc',
 }
+
+export const roleOption = [
+  { name: 'Super Admin', code: AuditTrailUserRoleEnum.SUPER_ADMIN },
+  { name: 'Admin', code: AuditTrailUserRoleEnum.ADMIN },
+  { name: 'Haulier', code: AuditTrailUserRoleEnum.HAULIER },
+  { name: 'Trader', code: AuditTrailUserRoleEnum.TRADER },
+  { name: 'Seller', code: AuditTrailUserRoleEnum.SELLER },
+  { name: 'Buyer', code: AuditTrailUserRoleEnum.BUYER },
+];
 
 export const allFilters: Filter[] = [
   {
@@ -75,6 +85,22 @@ export const allFilters: Filter[] = [
     name: 'SELLER',
     value: 'name',
     type: 'input',
+  },
+  {
+    name: 'USER',
+    value: 'loggedUserName',
+    type: 'input',
+  },
+  {
+    name: 'ORGANISATION',
+    value: 'loggedCompanyName',
+    type: 'input',
+  },
+  {
+    name: 'ROLE',
+    value: 'loggedUserRole',
+    type: 'select',
+    options: roleOption,
   },
   {
     name: 'COMPANY',

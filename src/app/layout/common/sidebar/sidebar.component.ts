@@ -154,6 +154,12 @@ export class SidebarComponent {
       icon: undefined,
       iconClass: 'highlight',
     },
+    {
+      title: localized$('Audit Trail'),
+      link: ROUTES_WITH_SLASH.auditTrail,
+      icon: undefined,
+      iconClass: 'highlight',
+    },
   ];
 
   toggleChildMenu(index: number, item: any, event: any) {

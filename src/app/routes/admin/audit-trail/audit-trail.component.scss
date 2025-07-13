@@ -1,0 +1,10 @@
+.button-wrapper {
+  margin-bottom: 33px;
+  height: 42px;
+  width: 120px;
+  justify-content: center;
+
+  @media screen and (min-width: 992px) {
+    margin-bottom: 40px;
+  }
+}

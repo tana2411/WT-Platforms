@@ -166,7 +166,7 @@
 }
 
 .filter-wrapper {
-  position: fixed;
+  position: relative;
   z-index: 1;
   left: 0;
   top: 0;
@@ -272,7 +272,7 @@
 .clear-all-btn {
   position: absolute;
   right: 0px;
-  top: 65px;
+  top: -15px;
   font-size: var(--fs-14);
   padding: 2px 8px;
   border-radius: $border-radius-tiny;

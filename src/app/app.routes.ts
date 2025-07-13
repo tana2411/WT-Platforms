@@ -314,6 +314,14 @@ export const routes: Routes = [
     ],
   },
   {
+    path: ROUTES.auditTrail,
+    canActivate: [CanActivateAuthPage],
+    data: {
+      requireAuthParams: [GuardRequireRole.SuperAdmin],
+    },
+    loadComponent: () => import('./routes/admin/audit-trail/audit-trail.component').then((m) => m.AuditTrailComponent),
+  },
+  {
     path: `${ROUTES.adminSaleListingDetail}/:listingId`,
     canActivate: [CanActivateAuthPage],
     data: {
