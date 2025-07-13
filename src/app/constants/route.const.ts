@@ -17,6 +17,7 @@ export const ROUTES = {
   listingOfferDetail: 'wt_waste_listing',
   liveActiveTable: 'live-activity',
   commercialManagement: 'commercial-management',
+  auditTrail: 'audit-trail',
   adminSaleListingDetail: 'admin/listing',
   adminWantedListingDetail: 'admin/wanted-listing',
   adminBuyerActivityDetail: 'admin/buyer-activity',
@@ -43,6 +44,7 @@ export const ROUTES_WITH_SLASH = {
   listingOfferDetail: '/wt_waste_listing',
   liveActiveTable: '/live-activity',
   commercialManagement: '/commercial-management',
+  auditTrail: '/audit-trail',
 
   adminSaleListingDetail: '/admin/listing',
   adminBuyerActivityDetail: '/admin/buyer-activity',
