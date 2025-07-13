@@ -71,7 +71,7 @@ export class ReceivedOfferDetailComponent implements OnInit {
       return '-';
     }
 
-    return `${getCurrencySignal(offer.listing.bestOfferCurrency)}${offer.listing.bestOffer}`;
+    return `${getCurrencySignal(offer.listing.bestOfferCurrency)}${this.decimalPipe.transform(offer.listing.bestOffer ?? 0)}`;
   }
 
   galleryImages = computed(
