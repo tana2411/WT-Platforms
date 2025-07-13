@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class LanguageSelectorComponent {
   languages = [
     { code: 'en', label: 'English', flag: 'fi-gb' },
-    { code: 'fr', label: 'Français', flag: 'fi-fr' },
+    { code: 'es', label: 'Spain', flag: 'fi-es' },
   ];
 
   currentLanguageFlag: string;
