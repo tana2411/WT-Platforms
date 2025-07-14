@@ -23,6 +23,7 @@
     [displayFilter]="['dateRange', 'loggedUserName', 'loggedCompanyName', 'loggedUserRole']"
     (filterChanged)="onFilterChange($event)"
     [defaultExcludeSold]="false"
+    [customFilterLabels]="customFilterLabel"
   ></app-filter>
   <div class="flex-grow-1 position-relative overflow-y-auto overflow-x-hidden">
     @if (loading()) {

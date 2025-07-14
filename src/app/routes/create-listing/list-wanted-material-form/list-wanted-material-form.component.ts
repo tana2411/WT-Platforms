@@ -255,7 +255,9 @@ export class ListWantedMaterialFormComponent implements OnInit {
             finalize(() => this.submitting.set(false)),
             catchError((err) => {
               this.snackBar.open(
-                this.translate.transform(localized$(`${err.error?.error?.message ?? 'Unknown error'}`)),
+                this.translate.transform(
+                  localized$(`${err.error?.error?.message ?? 'Failed to submit your listing. Please try again.'}`),
+                ),
                 this.translate.transform(localized$('Ok')),
                 {
                   duration: 3000,
