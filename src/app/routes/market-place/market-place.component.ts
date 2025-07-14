@@ -112,7 +112,9 @@ export class MarketPlaceComponent {
       .pipe(
         finalize(() => this.loading.set(false)),
         catchError((err) => {
-          this.snackBar.open(`${err.error?.error?.message ?? this.translate.transform(localized$('Unknown error'))}`);
+          this.snackBar.open(
+            `${err.error?.error?.message ?? this.translate.transform(localized$('Failed to apply filters. Please try again.'))}`,
+          );
           return of(null);
         }),
       )

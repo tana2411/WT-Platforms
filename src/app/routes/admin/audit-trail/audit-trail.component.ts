@@ -87,8 +87,8 @@ export class AuditTrailComponent implements OnInit {
     });
 
     if ('dateRequireFrom' in cleanedParams && 'dateRequireTo' in cleanedParams) {
-      cleanedParams['startDate'] = cleanedParams['dateRequireFrom'];
-      cleanedParams['endDate'] = cleanedParams['dateRequireTo'];
+      cleanedParams['startDate'] = (cleanedParams['dateRequireFrom'] as moment.Moment).format('YYYY-MM-DD');
+      cleanedParams['endDate'] = (cleanedParams['dateRequireTo'] as moment.Moment).format('YYYY-MM-DD');
 
       delete cleanedParams['dateRequireFrom'];
       delete cleanedParams['dateRequireTo'];
@@ -149,8 +149,14 @@ export class AuditTrailComponent implements OnInit {
 
   exportAuditTrail() {
     this.exporting.set(true);
+    const currentFilter = this.filter();
+    const filter: AuditTrailFilterParams = {
+      skip: currentFilter?.skip ?? 0,
+      limit: this.totalItem(),
+      where: currentFilter?.where ?? {},
+    };
     this.auditTrailService
-      .exportAuditTrail(this.filter())
+      .exportAuditTrail(filter)
       .pipe(
         finalize(() => {
           this.loading.set(false);

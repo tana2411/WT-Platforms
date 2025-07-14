@@ -341,7 +341,11 @@ export class CompanyDocumentComponent implements OnInit {
         finalize(() => this.submitting.set(false)),
         catchError((err) => {
           this.snackBar.open(
-            this.translate.transform(localized$(`${err.error?.error?.message ?? 'Unknown error'}`)),
+            this.translate.transform(
+              localized$(
+                `${err.error?.error?.message ?? 'An error occurred while submitting. Please try again later.'}`,
+              ),
+            ),
             this.translate.transform(localized$('Ok')),
             {
               duration: 3000,
@@ -364,7 +368,11 @@ export class CompanyDocumentComponent implements OnInit {
         finalize(() => this.submitting.set(false)),
         catchError((err) => {
           this.snackBar.open(
-            this.translate.transform(localized$(`${err.error?.error?.message ?? 'Unknown error'}`)),
+            this.translate.transform(
+              localized$(
+                `${err.error?.error?.message ?? 'An error occurred while submitting. Please try again later.'}`,
+              ),
+            ),
             this.translate.transform(localized$('Ok')),
             {
               duration: 3000,
