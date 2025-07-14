@@ -33,6 +33,12 @@ import { AuditTrailDetailComponent } from './audit-trail-detail/audit-trail-deta
   providers: [TranslatePipe],
 })
 export class AuditTrailComponent implements OnInit {
+  customFilterLabel = {
+    dateRange: {
+      name: 'Date Range',
+    },
+  };
+
   filter = signal<AuditTrailFilterParams | undefined>(undefined);
   items = signal<AuditTrailDetail[]>([]);
   loading = signal<boolean>(false);
@@ -79,6 +85,15 @@ export class AuditTrailComponent implements OnInit {
         cleanedParams[key] = val[0];
       }
     });
+
+    if ('dateRequireFrom' in cleanedParams && 'dateRequireTo' in cleanedParams) {
+      cleanedParams['startDate'] = cleanedParams['dateRequireFrom'];
+      cleanedParams['endDate'] = cleanedParams['dateRequireTo'];
+
+      delete cleanedParams['dateRequireFrom'];
+      delete cleanedParams['dateRequireTo'];
+    }
+
     this.updateFilter({
       skip: 0,
       where: Object.keys(cleanedParams).length > 0 ? { ...cleanedParams } : {},

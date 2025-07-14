@@ -43,6 +43,7 @@ export class FilterComponent implements OnInit {
   @Input() pageType: PageType = 'default';
   @Input() defaultExcludeSold = true;
   @Input() customOptionValues: Record<ItemOf<typeof allFilters>['value'], any> = {};
+  @Input() customFilterLabels: { [key: string]: { name: string } } = {};
   @Input() onlySearchBar: boolean = false;
   @Input() onlyFilter: boolean = false;
   @Output() filterChanged = new EventEmitter<any>();
@@ -160,7 +161,16 @@ export class FilterComponent implements OnInit {
 
   private initializeFilters() {
     this.activeFilter = this.displayFilter
-      .map((val) => this.allFilters.find((f) => f.value === val))
+      .map((val) => {
+        const f = this.allFilters.find((f) => f.value === val);
+        if (f && this.customFilterLabels && this.customFilterLabels[f.value]) {
+          return {
+            ...f,
+            name: this.customFilterLabels[f.value].name,
+          };
+        }
+        return f;
+      })
       .filter((f): f is typeof f => !!f);
 
     this.activeFilter.map((filter) => {

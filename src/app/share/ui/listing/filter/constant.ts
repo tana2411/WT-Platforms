@@ -29,8 +29,8 @@ export enum ListingSortBy {
 export const roleOption = [
   { name: 'Super Admin', code: AuditTrailUserRoleEnum.SUPER_ADMIN },
   { name: 'Admin', code: AuditTrailUserRoleEnum.ADMIN },
-  { name: 'Haulier', code: AuditTrailUserRoleEnum.HAULIER },
-  { name: 'Trader', code: AuditTrailUserRoleEnum.TRADER },
+  // { name: 'Haulier', code: AuditTrailUserRoleEnum.HAULIER },
+  // { name: 'Trader', code: AuditTrailUserRoleEnum.TRADER },
   { name: 'Seller', code: AuditTrailUserRoleEnum.SELLER },
   { name: 'Buyer', code: AuditTrailUserRoleEnum.BUYER },
 ];
