@@ -1,4 +1,4 @@
-import { TitleCasePipe } from '@angular/common';
+import { DecimalPipe, TitleCasePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -28,6 +28,7 @@ import { RejectReasonComponent } from '../reject-reason/reject-reason.component'
     RouterModule,
     TitleCasePipe,
     TranslateModule,
+    DecimalPipe,
   ],
   providers: [TranslatePipe],
   templateUrl: './offer-listing.component.html',

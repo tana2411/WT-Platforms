@@ -93,6 +93,7 @@ export class AuthService {
           return this.getMe();
         }),
         tap((user) => {
+          debugger;
           this._user$.next(user);
         }),
       );

@@ -100,7 +100,7 @@ export class MyOffersBuyingComponent {
       destination: getLocationAddress(buyer.location),
       packaging: listing.materialPacking ? mapCodeToPackaging[listing.materialPacking] : '',
       quantity: offer.quantity,
-      weightPerLoad: formatDecimalNumber(listing.materialWeightWanted / listing.quantity),
+      weightPerLoad: formatDecimalNumber(listing.materialWeightPerUnit),
       status: offer.status,
     };
   }

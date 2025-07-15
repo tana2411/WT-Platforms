@@ -105,7 +105,7 @@ export class ListingOffersDetailComponent {
       {
         label: 'Average Weight per Load',
         icon: 'fitness_center',
-        value: detail?.listing.materialWeightPerUnit,
+        value: `${detail?.listing.materialWeightPerUnit ?? 0} MT`,
       },
       {
         label: 'Material Location',

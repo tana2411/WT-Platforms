@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import { Component, computed, EventEmitter, inject, Input, Output } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,7 +13,7 @@ import { ProductStatusComponent } from '../product-status/product-status.compone
 
 @Component({
   selector: 'app-product-card',
-  imports: [MatIconModule, ProductStatusComponent, FallbackImageDirective, TranslateModule],
+  imports: [MatIconModule, ProductStatusComponent, FallbackImageDirective, TranslateModule, DecimalPipe],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
 })

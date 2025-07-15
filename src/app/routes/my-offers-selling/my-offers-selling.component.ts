@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import { Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -37,7 +38,7 @@ import { LIST_TAB_OFFER, MAP_OFFER_TYPE_TO_EMPTY_OFFER_PROP, OfferType } from '.
     MatIconModule,
     MatButtonModule,
   ],
-  providers: [OfferService],
+  providers: [OfferService, DecimalPipe],
   templateUrl: './my-offers-selling.component.html',
   styleUrl: './my-offers-selling.component.scss',
 })
@@ -68,6 +69,7 @@ export class MyOffersSellingComponent {
   constructor(
     private router: Router,
     private offerService: OfferService,
+    private decimal: DecimalPipe,
   ) {
     this.listEmptyProps.set(MAP_OFFER_TYPE_TO_EMPTY_OFFER_PROP(this.router));
 
@@ -99,7 +101,7 @@ export class MyOffersSellingComponent {
           }),
         )
         .subscribe((res) => {
-          const tableData = res.results.map(this.mapOfferToTableItem);
+          const tableData = res.results.map((item) => this.mapOfferToTableItem(item));
           this.items.set(tableData);
           this.totalItems.set(res.totalCount);
         });
@@ -129,7 +131,7 @@ export class MyOffersSellingComponent {
       currency: offer.currency ? getCurrencySignal(offer.currency) : '',
       country: mapCountryCodeToName[buyer.location.country],
       status: offer.status,
-      bidAmount: `${offer.offeredPricePerUnit}/${localized$('MT')}`,
+      bidAmount: `${this.decimal.transform(offer.offeredPricePerUnit)}/${localized$('MT')}`,
     };
   }
 

@@ -4,6 +4,7 @@ import { Companies } from './purchases.model';
 export interface CreatedBy {
   user: {
     id: number;
+    username: number;
     firstName: string;
     lastName: string;
     email: string;

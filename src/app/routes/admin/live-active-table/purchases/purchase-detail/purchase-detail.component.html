@@ -4,7 +4,7 @@
       <!-- BUYER Section -->
       <div class="col-12 col-md-6 col-lg-2 mb-md-0 mb-3">
         <div class="fw-bold mb-3">{{ 'BUYER' | translate }}</div>
-        <p class="mb-1">{{ purchase?.buyer?.user?.id }}</p>
+        <p class="mb-1">{{ purchase?.buyer?.user?.username || '-' }}</p>
         <p class="mb-1">{{ purchase?.buyer?.user?.firstName }} {{ purchase?.buyer?.user?.lastName }}</p>
         <p class="mb-1">{{ purchase?.buyer?.company?.name }}</p>
         <p class="mb-1">{{ countryCodeToName(purchase?.buyer?.country) }}</p>
@@ -13,7 +13,7 @@
       <!-- SELLER Section -->
       <div class="col-12 col-md-6 col-lg-2">
         <div class="fw-bold mb-3">{{ 'SELLER' | translate }}</div>
-        <p class="mb-1">{{ purchase?.seller?.user?.id }}</p>
+        <p class="mb-1">{{ purchase?.seller?.user?.username }}</p>
         <p class="mb-1">{{ purchase?.seller?.user?.firstName }} {{ purchase?.seller?.user?.lastName }}</p>
         <p class="mb-1">{{ purchase?.seller?.company?.name }}</p>
         <p class="mb-1">{{ countryCodeToName(purchase?.seller?.country) }}</p>

@@ -1,5 +1,6 @@
 import { Component, computed, Input, signal } from '@angular/core';
 import { mapCountryCodeToName } from '@app/statics';
+import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { ListingType } from 'app/models';
 import { ListingMaterialDetail } from 'app/models/listing-material-detail.model';
@@ -7,7 +8,7 @@ import moment from 'moment';
 
 @Component({
   selector: 'app-material-owner',
-  imports: [IconComponent],
+  imports: [IconComponent, TranslateModule],
   templateUrl: './material-owner.component.html',
   styleUrl: './material-owner.component.scss',
 })

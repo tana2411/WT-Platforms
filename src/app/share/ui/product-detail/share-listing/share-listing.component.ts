@@ -10,8 +10,11 @@ import { Router } from '@angular/router';
 })
 export class ShareListingComponent {
   router = inject(Router);
-  @Input() url: string = this.router.url;
   @Input() title: string = 'Check out this listing';
+
+  get url() {
+    return window.location.origin;
+  }
 
   shareToFacebook() {
     const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.url)}`;
@@ -19,7 +22,7 @@ export class ShareListingComponent {
   }
 
   shareToLinkedIn() {
-    const url = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(this.url)}&title=${encodeURIComponent(this.title)}`;
+    const url = `https://www.linkedin.com/shareArticle?mini=true&url=${this.url}&title=${encodeURIComponent(this.title)}`;
     window.open(url, '_blank');
   }
 

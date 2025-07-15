@@ -19,7 +19,9 @@
 
           <app-product-description [items]="descriptionItems()">
             @if (isSeller(); as isSeller) {
-              <button mat-flat-button class="text-uppercase fw-bold w-100 request-button">{{ 'request sample' | translate }}</button>
+              @if (!isOwnListing()) {
+                <button mat-flat-button class="text-uppercase fw-bold w-100 request-button">{{ 'request sample' | translate }}</button>
+              }
             } @else {
               <button mat-flat-button class="text-uppercase fw-bold w-100 request-button" [routerLink]="['/sell']">
                 {{ 'Sell material' | translate }}

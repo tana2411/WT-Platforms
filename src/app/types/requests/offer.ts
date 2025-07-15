@@ -72,6 +72,7 @@ interface Company extends OfferLocation {
 
 interface User {
   id: number;
+  username: number;
   firstName: string;
   lastName: string;
 }

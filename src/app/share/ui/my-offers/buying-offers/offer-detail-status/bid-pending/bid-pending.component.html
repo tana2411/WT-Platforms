@@ -3,7 +3,7 @@
 
   <div class="background-primary py-4 text-white fw-500 text-center mb-5">
     <p class="mb-1">{{ 'Bid Amount' | translate }}</p>
-    <h2 class="mb-1 fw-bold">{{ getCurrencySignal(offerDetail.offer.currency) }}{{ offerDetail.offer.offeredPricePerUnit }}/MT</h2>
+    <h2 class="mb-1 fw-bold">{{ getCurrencySignal(offerDetail.offer.currency) }}{{ offerDetail.offer.offeredPricePerUnit | number }}/MT</h2>
     <p class="mb-0">
       ({{ getCurrencySignal(offerDetail.offer.currency) }}{{ offerDetail.offer.offeredPricePerUnit * offerDetail.offer.quantity | number }})
     </p>
@@ -17,12 +17,12 @@
 
     <div class="cell">
       <p class="label">{{ 'load quantity' | translate }}</p>
-      <p class="content quantity">{{ offerDetail.offer.quantity }}/{{ offerDetail.listing.quantity }}</p>
+      <p class="content quantity">{{ offerDetail.offer.quantity | number }}/{{ offerDetail.listing.quantity | number }}</p>
     </div>
 
     <div class="cell">
       <p class="label">{{ 'weight per load' | translate }}</p>
-      <p class="content">{{ offerDetail.listing.materialWeightPerUnit }} MT</p>
+      <p class="content">{{ offerDetail.listing.materialWeightPerUnit | number }} MT</p>
     </div>
 
     <div class="cell">

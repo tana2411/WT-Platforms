@@ -54,6 +54,7 @@ export interface AdditionalUrl {
 
 type UserInfor = {
   id: number;
+  username: number;
   email: string;
   firstName: string;
   lastName: string;

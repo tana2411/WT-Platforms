@@ -75,6 +75,7 @@ interface Listing {
 interface Buyer {
   user: {
     id: number;
+    username: number;
     firstName: string;
     lastName: string;
     email: string;
