@@ -92,11 +92,37 @@ export interface Company {
 }
 
 // Response model
+type UserInfo = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  username: string;
+  phoneNumber: string;
+};
 export interface ListingMaterialDetailResponse {
   status: string;
   data: {
     listing: Listing;
     company: Company;
+    createdBy?: {
+      user: UserInfo;
+    };
+    buyerDetails?: {
+      contactPerson: {
+        user: UserInfo;
+      };
+    };
+    locationDetails: {
+      address: {
+        addressLine: string;
+        street: string;
+        postcode: string;
+        city: string;
+        country: string;
+        stateProvince: string;
+      };
+    };
   };
   message: string;
 }

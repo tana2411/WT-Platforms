@@ -62,9 +62,7 @@
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'number of loads' | translate }}</p>
             <p class="mb-0 primary fw-bold">
-              {{ listingDetail.materialInformation.quantity | number }}/{{
-                listingDetail.materialInformation.quantity + (listingDetail.materialInformation.remainingQuantity ?? 0) | number
-              }}
+              {{ listingDetail.materialInformation.remainingQuantity | number }}/{{ listingDetail.materialInformation.quantity | number }}
             </p>
           </div>
 

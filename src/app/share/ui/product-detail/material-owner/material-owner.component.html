@@ -40,17 +40,17 @@
 
     <div class="d-flex flex-column fw-600" style="gap: 4px">
       <p class="mb-0">
-        <span>{{ isSeller() ? ('Seller ID' | translate) : ('Buyer ID' | translate) }}:</span> <span>{{ company.id }}</span>
+        <span>{{ isSeller() ? ('Seller ID' | translate) : ('Buyer ID' | translate) }}: </span> <span>{{ username() }}</span>
       </p>
 
       <p class="mb-0">
-        <span>{{ isSeller() ? ('Seller Location' | translate) : ('Buyer Location' | translate) }}:</span>
+        <span>{{ isSeller() ? ('Seller Location' | translate) : ('Buyer Location' | translate) }}: </span>
         <span>{{ mapCountryCodeToName[company.country!] }}</span>
       </p>
 
       @if (listing(); as listing) {
         <p class="mb-0">
-          <span>{{ 'Listed on' | translate }}:</span> <span>{{ formatListedOn(listing.createdAt) }}</span>
+          <span>{{ 'Listed on' | translate }}: </span> <span>{{ formatListedOn(listing.createdAt) }}</span>
         </p>
       }
     </div>

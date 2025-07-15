@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { mapCountryCodeToName } from '@app/statics';
+import { mapCodeToPackaging, mapCountryCodeToName } from '@app/statics';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { ListingImageType, ListingMaterial, ListingType } from 'app/models';
 import { ListingMaterialDetail } from 'app/models/listing-material-detail.model';
@@ -27,7 +27,7 @@ import { ProductExpiryComponent } from 'app/share/ui/listing/product-expiry/prod
 import { ProductGridComponent } from 'app/share/ui/listing/product-grid/product-grid.component';
 import { ProductStatusComponent } from 'app/share/ui/listing/product-status/product-status.component';
 import { ReviewStatusComponent } from 'app/share/ui/product-detail/review-status/review-status.component';
-import { getListingTitle } from 'app/share/utils/offer';
+import { getListingTitle, getLocationAddress, getMaterialTypeLabel } from 'app/share/utils/offer';
 import { isNil } from 'lodash';
 
 @Component({
@@ -78,24 +78,55 @@ export class ListingOffersDetailComponent {
   images: string[] = [];
   descriptionItems = computed(() => {
     const detail = this.listingDetail();
+
+    if (detail?.listing?.listingType === ListingType.WANTED) {
+      return [
+        {
+          label: this.translate.transform('Material Type'),
+          icon: 'recycling',
+          value: getMaterialTypeLabel(detail?.listing?.materialType ?? ''),
+        },
+        {
+          label: this.translate.transform(localized$('Material Location')),
+          icon: 'location_on',
+          value: detail?.listing.country ? mapCountryCodeToName[detail?.listing.country] : '-',
+        },
+        {
+          label: this.translate.transform(localized$(`Quantity`)),
+          customIcon: '/assets/images/icons/dumbbell.svg',
+          value: `${this.decimal.transform(detail?.listing.materialWeightWanted ?? 0)} ${this.translate.transform(localized$('MT'))}`,
+        },
+        {
+          label: this.translate.transform(localized$(`Packaging`)),
+          customIcon: '/assets/images/icons/cube.svg',
+          value: `${detail?.listing?.materialPacking ? mapCodeToPackaging[detail?.listing?.materialPacking] : '-'}`,
+        },
+        {
+          label: this.translate.transform(localized$(`Description`)),
+          icon: 'article',
+          value: `${detail?.listing?.description ?? '-'}`,
+        },
+      ];
+    }
+
     return [
       {
-        label: 'Material',
+        label: this.translate.transform(localized$('Material')),
         icon: 'recycling',
         value: detail?.listing.materialType,
       },
       {
-        label: 'Price per Load',
+        label: this.translate.transform(localized$('Price per Load')),
         icon: 'sell',
-        value: 'Inviting Bids',
+        value: this.translate.transform(localized$('Inviting Bids')),
       },
       {
-        label: `No. of Loads`,
+        label: this.translate.transform(localized$(`No. of Loads`)),
         icon: 'view_module',
         value: this.decimal.transform(detail?.listing.quantity ?? 0),
       },
       {
-        label: 'Remaining Loads',
+        label: this.translate.transform(localized$('Remaining Loads')),
         icon: 'hourglass_top',
         value:
           detail?.listing.remainingQuantity != null
@@ -103,14 +134,14 @@ export class ListingOffersDetailComponent {
             : '',
       },
       {
-        label: 'Average Weight per Load',
+        label: this.translate.transform(localized$('Average Weight per Load')),
         icon: 'fitness_center',
         value: `${detail?.listing.materialWeightPerUnit ?? 0} MT`,
       },
       {
-        label: 'Material Location',
+        label: this.translate.transform(localized$('Material Location')),
         icon: 'location_on',
-        value: detail?.listing.country ? mapCountryCodeToName[detail?.listing.country] : '',
+        value: getLocationAddress(detail?.locationDetails.address as any),
       },
     ];
   });
