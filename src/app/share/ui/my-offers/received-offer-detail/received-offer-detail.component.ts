@@ -165,7 +165,7 @@ export class ReceivedOfferDetailComponent implements OnInit {
     return {
       id: offer.id,
       date: moment(offer.createdAt).format('YYYY-MM-DD'),
-      buyerId: offer.buyerCompanyId,
+      buyerId: buyer.user.username,
       status: offer.status,
       state: offer.state as any,
       bidAmount: `${getCurrencySignal(offer.currency)}${this.decimalPipe.transform(offer.offeredPricePerUnit)}/MT`,
