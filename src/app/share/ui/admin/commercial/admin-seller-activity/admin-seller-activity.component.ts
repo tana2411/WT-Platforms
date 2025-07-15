@@ -25,7 +25,7 @@ export class AdminSellerActivityComponent {
   // }
   // onFilterChange(filterParams: any) {
   //   const cleanedParams = Object.fromEntries(
-  //     Object.entries(filterParams).filter(([_, value]) => value != null && value != '' && value != 'createAtDesc'),
+  //     Object.entries(filterParams).filter(([_, value]) => value != null && value != '' && value != 'createdAtDesc'),
   //   );
   //   if ('country' in cleanedParams) {
   //     // if (!this.isCountryFilter) {
