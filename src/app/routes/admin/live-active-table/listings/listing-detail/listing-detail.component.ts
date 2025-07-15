@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { SellListingDetail } from 'app/models';
 import {
+  getCurrencySignal,
   getListingStateColor,
   getListingStatusColor,
   getOfferStateColor,
@@ -27,6 +28,7 @@ export class ListingDetailComponent implements OnInit {
   getOfferStateColor = getOfferStateColor;
   getListingStatusColor = getListingStatusColor;
   getListingStateColor = getListingStateColor;
+  getCurrencySignal = getCurrencySignal;
   router = inject(Router);
 
   @Input() listing: SellListingDetail | undefined = undefined;

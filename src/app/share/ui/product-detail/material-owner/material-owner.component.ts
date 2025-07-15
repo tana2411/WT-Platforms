@@ -19,6 +19,14 @@ export class MaterialOwnerComponent {
   }
 
   company = computed(() => this.listingDetail$()?.company);
+  username = computed(() => {
+    const listingDetail = this.listingDetail$();
+    if (listingDetail?.listing?.listingType === ListingType.SELL) {
+      return listingDetail.createdBy?.user?.username;
+    }
+
+    return listingDetail?.buyerDetails?.contactPerson?.user?.username;
+  });
   listing = computed(() => this.listingDetail$()?.listing);
   isSeller = computed(() => this.listing()?.listingType === ListingType.SELL);
 
