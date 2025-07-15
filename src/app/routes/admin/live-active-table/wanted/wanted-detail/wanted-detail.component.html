@@ -4,7 +4,7 @@
       <!-- SELLER Section -->
       <div class="col-12 col-md-6 col-lg-2">
         <div class="fw-bold mb-3">{{ 'BUYER' | translate }}</div>
-        <p class="mb-1">{{ wanted?.createdBy?.user?.id || '-' }}</p>
+        <p class="mb-1">{{ wanted?.createdBy?.user?.username || '-' }}</p>
         <p class="mb-1">{{ wanted?.createdBy?.user?.firstName || '-' }} {{ wanted?.createdBy?.user?.lastName || '-' }}</p>
         <p class="mb-1">{{ wanted?.createdBy?.company?.name || '-' }}</p>
         <p class="mb-1">{{ countryCodeToName(wanted?.createdBy?.location?.country) || '-' }}</p>
