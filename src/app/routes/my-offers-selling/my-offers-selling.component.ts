@@ -101,7 +101,7 @@ export class MyOffersSellingComponent {
           }),
         )
         .subscribe((res) => {
-          const tableData = res.results.map(this.mapOfferToTableItem);
+          const tableData = res.results.map((item) => this.mapOfferToTableItem(item));
           this.items.set(tableData);
           this.totalItems.set(res.totalCount);
         });
