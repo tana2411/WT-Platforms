@@ -11,7 +11,7 @@ export interface Filter {
 }
 
 export enum ListingSortBy {
-  DEFAULT = 'createAtDesc',
+  DEFAULT = 'createdAtDesc',
   COMPANY_NAME_ASC = 'companyNameAsc',
   COMPANY_NAME_DESC = 'companyNameDesc',
   MATERIAL_TYPE_ASC = 'materialTypeAsc',
