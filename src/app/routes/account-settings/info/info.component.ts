@@ -9,6 +9,7 @@ import { mapCountryCodeToName } from '@app/statics';
 import { TranslateModule } from '@ngx-translate/core';
 import { Company, User } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
+import { MAP_COMPANY_TYPE_TO_LABEL } from 'app/share/utils/account-setting';
 import { EditBusinessAddressFormComponent } from './edit-business-address-form/edit-business-address-form.component';
 import { EditCompanyInformationFormComponent } from './edit-company-information-form/edit-company-information-form.component';
 import { EditSocialUrlFormComponent } from './edit-social-url-form/edit-social-url-form.component';
@@ -27,6 +28,8 @@ export class InfoComponent {
   dialog = inject(MatDialog);
   snackBar = inject(MatSnackBar);
   authService = inject(AuthService);
+
+  readonly MAP_COMPANY_TYPE_TO_LABEL = MAP_COMPANY_TYPE_TO_LABEL as any;
 
   constructor() {
     this.user = toSignal(this.authService.user$);

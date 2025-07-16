@@ -23,7 +23,7 @@ export type Company = {
   website: string | null;
   phoneNumber: string;
   mobileNumber: string;
-  companyType: string | null;
+  companyType?: string;
   favoriteMaterials: string[];
   otherMaterial: string | null;
   materialInterest: string | null;

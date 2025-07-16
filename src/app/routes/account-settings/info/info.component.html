@@ -23,7 +23,7 @@
         <div class="row g-3 mx-0 mb-4">
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1">{{ 'COMPANY TYPE' | translate }}</div>
-            <div class="">{{ company?.companyType || '-' | titlecase }}</div>
+            <div class="">{{ company?.companyType ? (MAP_COMPANY_TYPE_TO_LABEL[company!.companyType!] | translate) : '-' }}</div>
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold d-flex align-items-center gap-2 mb-1">

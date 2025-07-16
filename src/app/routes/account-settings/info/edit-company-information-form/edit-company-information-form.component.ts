@@ -15,6 +15,7 @@ import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { Company } from 'app/models';
 import { SettingsService } from 'app/services/settings.service';
 import { ConfirmModalComponent } from 'app/share/ui/confirm-modal/confirm-modal.component';
+import { MAP_COMPANY_TYPE_TO_LABEL } from 'app/share/utils/account-setting';
 import { catchError, EMPTY, finalize } from 'rxjs';
 
 @Component({
@@ -51,6 +52,8 @@ export class EditCompanyInformationFormComponent implements OnInit {
     companyInterest: new FormControl<string | null>(null, [Validators.required]),
     description: new FormControl<string | null>(null, [Validators.maxLength(500)]),
   });
+
+  readonly MAP_COMPANY_TYPE_TO_LABEL = MAP_COMPANY_TYPE_TO_LABEL;
 
   readonly dialogRef = inject(MatDialogRef<Company>);
   readonly data = inject<{ companyInfo: Company }>(MAT_DIALOG_DATA);
