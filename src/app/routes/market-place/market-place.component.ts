@@ -103,6 +103,7 @@ export class MarketPlaceComponent {
 
   refresh() {
     const currentFilter = this.filter();
+    debugger;
     this.loading.set(true);
 
     scrollTop();
