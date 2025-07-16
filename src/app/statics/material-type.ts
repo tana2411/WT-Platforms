@@ -410,6 +410,15 @@ export const mapCodeToMaterialItem = materialTypes.reduce(
   {} as Record<string, string>,
 );
 
+export const mapCodeToMaterialGrading = fibreGrading.reduce(
+  (memo, item) => {
+    memo[item.code] = item.name;
+
+    return memo;
+  },
+  {} as Record<string, string>,
+);
+
 export const mapCodeToPackaging = packing.reduce(
   (memo, item) => {
     memo[item.code] = item.name;

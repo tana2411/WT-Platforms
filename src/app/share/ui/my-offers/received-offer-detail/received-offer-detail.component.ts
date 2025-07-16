@@ -169,7 +169,7 @@ export class ReceivedOfferDetailComponent implements OnInit {
       status: offer.status,
       state: offer.state as any,
       bidAmount: `${getCurrencySignal(offer.currency)}${this.decimalPipe.transform(offer.offeredPricePerUnit)}/MT`,
-      totalPrice: `${getCurrencySignal(offer.currency)}${formatDecimalNumber(offer.offeredPricePerUnit * offer.quantity)}`,
+      totalPrice: `${getCurrencySignal(offer.currency)}${this.decimalPipe.transform(offer.offeredPricePerUnit * offer.quantity)}`,
       buyerStatus: buyer.company.status,
     };
   }

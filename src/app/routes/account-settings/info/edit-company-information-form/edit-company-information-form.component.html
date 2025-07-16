@@ -52,11 +52,11 @@
           <mat-label class="fw-bold mb-1 fs-16">{{ 'COMPANY TYPE' | translate }}*</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <mat-select formControlName="companyType" placeholder="{{ 'Please Select' | translate }}">
-              <mat-option value="manufacturer">{{ 'Manufacturer' | translate }}</mat-option>
-              <mat-option value="processor">{{ 'Processor' | translate }}</mat-option>
-              <mat-option value="recycler">{{ 'Recycler' | translate }}</mat-option>
-              <mat-option value="broker">{{ 'Broker' | translate }}</mat-option>
-              <mat-option value="waste_producer">{{ 'Waste Producer' | translate }}</mat-option>
+              <mat-option value="manufacturer">{{ MAP_COMPANY_TYPE_TO_LABEL['manufacturer'] | translate }}</mat-option>
+              <mat-option value="processor">{{ MAP_COMPANY_TYPE_TO_LABEL['processor'] | translate }}</mat-option>
+              <mat-option value="recycler">{{ MAP_COMPANY_TYPE_TO_LABEL['recycler'] | translate }}</mat-option>
+              <mat-option value="broker">{{ MAP_COMPANY_TYPE_TO_LABEL['broker'] | translate }}</mat-option>
+              <mat-option value="waste_producer">{{ MAP_COMPANY_TYPE_TO_LABEL['waste_producer'] | translate }}</mat-option>
             </mat-select>
             @if (formGroup.get('companyType')?.hasError('required')) {
               <mat-error>{{ 'This field is required. Please complete it before saving.' | translate }}</mat-error>

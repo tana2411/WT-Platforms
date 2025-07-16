@@ -74,10 +74,10 @@ export class ListContainerComponent implements OnInit {
 
     if ('country' in cleanedParams) {
       if (!this.isCountryFilter) {
-        cleanedParams['location'] = [this.countryCodeToName(cleanedParams['country'] as string)];
+        cleanedParams['location'] = cleanedParams['country'];
         delete cleanedParams['country'];
       } else {
-        cleanedParams['country'] = [this.countryCodeToName(cleanedParams['country'] as string)];
+        cleanedParams['country'] = cleanedParams['country'];
       }
     }
 
