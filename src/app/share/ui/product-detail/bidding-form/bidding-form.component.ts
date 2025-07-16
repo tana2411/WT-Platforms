@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MAT_DIALOG_DATA, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogClose, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -44,6 +44,7 @@ export type BiddingFormProps = {
     MatDatepickerModule,
     MatSnackBarModule,
     TranslateModule,
+    MatDialogModule,
   ],
   providers: [OfferService, TranslatePipe],
   templateUrl: './bidding-form.component.html',
@@ -109,6 +110,10 @@ export class BiddingFormComponent implements OnInit {
       .subscribe((locations) => {
         this.locations.set(locations);
       });
+  }
+
+  close() {
+    this.dialogRef.close(false);
   }
 
   submit() {
