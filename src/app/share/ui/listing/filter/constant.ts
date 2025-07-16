@@ -67,11 +67,11 @@ export const allFilters: Filter[] = [
     type: 'select',
     options: [
       {
-        name: 'Available Listing',
+        name: 'Available Material',
         code: ListingSortBy.AVAILABLE_LISTINGS_ASC,
       },
       {
-        name: 'Unavailable Listing',
+        name: 'Unavailable Material',
         code: ListingSortBy.AVAILABLE_LISTINGS_DESC,
       },
     ],
