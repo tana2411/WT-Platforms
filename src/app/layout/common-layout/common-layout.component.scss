@@ -88,3 +88,9 @@ app-header,
     display: flex;
   }
 }
+
+.safe-width {
+  @media screen and (min-width: 1200px) {
+    width: calc(100% - 250px) !important;
+  }
+}

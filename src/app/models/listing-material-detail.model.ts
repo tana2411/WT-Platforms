@@ -30,7 +30,7 @@ export interface Listing {
   materialType?: string;
   materialItem?: string;
   materialForm?: string;
-  materialGrading: string | null;
+  materialGrading?: string;
   materialColor: string;
   materialFinishing: string;
   materialPacking: string;
