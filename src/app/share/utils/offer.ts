@@ -1,6 +1,7 @@
 import {
   mapCodeToMaterialFinishing,
   mapCodeToMaterialForm,
+  mapCodeToMaterialGrading,
   mapCodeToMaterialItem,
   mapCountryCodeToName,
   materialTypes,
@@ -142,7 +143,29 @@ export const getListingTitle = (listing: {
   materialForm?: string;
   materialItem?: string;
   materialFinishing?: string;
+  material?: string;
+  materialGrading?: string;
+  materialType?: string;
 }) => {
+  if (listing.materialType === 'metal' || listing.materialType === 'rubber') {
+    return mapCodeToMaterialItem[listing.materialItem ?? ''];
+  }
+
+  if (listing.materialType === 'fibre') {
+    const data = [
+      mapCodeToMaterialGrading[listing.materialGrading ?? ''],
+      mapCodeToMaterialItem[listing.materialItem ?? ''],
+    ]
+      .filter((i) => !!i)
+      .join(' - ');
+
+    return data;
+  }
+
+  if (listing.materialType === 'efw') {
+    return 'EFW';
+  }
+
   const data = [
     mapCodeToMaterialItem[listing.materialItem ?? ''],
     mapCodeToMaterialForm[listing.materialForm ?? ''],

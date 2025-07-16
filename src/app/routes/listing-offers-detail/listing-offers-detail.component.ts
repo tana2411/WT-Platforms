@@ -113,7 +113,7 @@ export class ListingOffersDetailComponent {
       {
         label: this.translate.transform(localized$('Material')),
         icon: 'recycling',
-        value: detail?.listing.materialType,
+        value: getMaterialTypeLabel(detail?.listing?.materialType ?? ''),
       },
       {
         label: this.translate.transform(localized$('Price per Load')),
