@@ -93,6 +93,7 @@ export class AuditTrailComponent implements OnInit {
       delete cleanedParams['dateRequireFrom'];
       delete cleanedParams['dateRequireTo'];
     }
+    this.page.set(1);
 
     this.updateFilter({
       skip: 0,
