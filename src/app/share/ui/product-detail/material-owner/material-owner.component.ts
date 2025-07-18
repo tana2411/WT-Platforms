@@ -25,7 +25,7 @@ export class MaterialOwnerComponent {
       return listingDetail.createdBy?.user?.username;
     }
 
-    return listingDetail?.buyerDetails?.contactPerson?.user?.username;
+    return listingDetail?.buyerDetails?.contactPerson?.username;
   });
   listing = computed(() => this.listingDetail$()?.listing);
   isSeller = computed(() => this.listing()?.listingType === ListingType.SELL);
