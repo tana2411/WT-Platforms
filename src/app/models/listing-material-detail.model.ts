@@ -109,9 +109,7 @@ export interface ListingMaterialDetailResponse {
       user: UserInfo;
     };
     buyerDetails?: {
-      contactPerson: {
-        user: UserInfo;
-      };
+      contactPerson: UserInfo;
     };
     locationDetails: {
       address: {

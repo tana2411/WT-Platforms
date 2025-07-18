@@ -104,7 +104,7 @@ export class ListingOffersDetailComponent {
         {
           label: this.translate.transform(localized$(`Description`)),
           icon: 'article',
-          value: `${detail?.listing?.description ?? '-'}`,
+          value: `${detail?.listing?.additionalNotes ?? '-'}`,
         },
       ];
     }

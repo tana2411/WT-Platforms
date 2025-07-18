@@ -15,7 +15,7 @@ import { DateFormatPipe } from 'app/pipes/date.pipe';
 import { AdminListingService } from 'app/services/admin/admin-listing.service';
 import { ListingDetailActionsComponent } from 'app/share/ui/admin/listing-detail-actions/listing-detail-actions.component';
 import { SpinnerComponent } from 'app/share/ui/spinner/spinner.component';
-import { getListingStateColor, getListingStatusColor } from 'app/share/utils/offer';
+import { getListingStateColor, getListingStatusColor, getMaterialTypeLabel } from 'app/share/utils/offer';
 import { catchError, EMPTY, map, startWith, Subject, switchMap, tap } from 'rxjs';
 
 @Component({
@@ -49,6 +49,7 @@ export class DetailWantedListingComponent {
   mapCountryCodeToName = mapCountryCodeToName;
   getListingStateColor = getListingStateColor;
   getListingStatusColor = getListingStatusColor;
+  getMaterialTypeLabel = getMaterialTypeLabel;
   mapCodeToMaterialItem = mapCodeToMaterialItem;
   mapCodeToPackaging = mapCodeToPackaging;
 

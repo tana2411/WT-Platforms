@@ -35,6 +35,7 @@ interface SellerInformation {
 
 interface MaterialInformation {
   materialName: string;
+  materialType: string;
   country: string;
   currency: string;
   packaging: string;

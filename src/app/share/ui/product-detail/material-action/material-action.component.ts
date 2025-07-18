@@ -46,7 +46,7 @@ export class MaterialActionComponent {
   isOwnListing = computed(() => this.userId() === this.listingDetail()?.listing.createdByUserId);
 
   canSold = computed(() => {
-    return this.listingDetail()?.listing.status !== 'sold';
+    return this.listingDetail()?.listing.status === ListingStatus.AVAILABLE;
   });
 
   canFulfill = computed(() => {
