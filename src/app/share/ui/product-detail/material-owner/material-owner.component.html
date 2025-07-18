@@ -5,7 +5,7 @@
       <p class="mb-0 fs-18 fw-600">{{ isSeller() ? ('Seller' | translate) : ('Buyer' | translate) }}</p>
     </div>
 
-    @if (company.verifiedAt) {
+    @if (!company.verifiedAt) {
       <div class="d-flex align-items-center gap-1">
         <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
           <!-- Scalloped background -->
