@@ -96,6 +96,7 @@ export class AdminMemberComponent {
   }
 
   search() {
+    this.page.set(1);
     this.updator.next();
   }
 

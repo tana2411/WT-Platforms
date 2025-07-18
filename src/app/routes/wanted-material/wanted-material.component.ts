@@ -75,6 +75,7 @@ export class WantedMaterialComponent implements OnInit {
     const cleanedParams = Object.fromEntries(
       Object.entries(filterParams).filter(([_, value]) => value != null && value != '' && value != 'All'),
     );
+    this.page.set(1);
     this.updateFilter({
       skip: 0,
       where: Object.keys(cleanedParams).length > 0 ? { ...cleanedParams } : { listingType: 'wanted' },
