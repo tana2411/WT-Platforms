@@ -37,12 +37,12 @@
           <!-- <div class="row align-items-center row-item"> -->
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'material' | translate }}</p>
-            <p class="mb-0 fw-500">{{ listingDetail.materialInformation.materialName | titlecase }}</p>
+            <p class="mb-0 fw-500">{{ getMaterialTypeLabel(listingDetail.materialInformation.materialType) }}</p>
           </div>
 
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'Packaging' | translate }}</p>
-            <p class="mb-0 fw-500">{{ listingDetail.materialInformation.packaging | titlecase }}</p>
+            <p class="mb-0 fw-500">{{ mapCodeToPackaging[listingDetail.materialInformation.packaging] }}</p>
           </div>
 
           <div class="col-6 col-md-4 material-item mb-4">
