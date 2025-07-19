@@ -30,6 +30,8 @@ export type BiddingFormProps = {
   availableQuantity: number;
 };
 
+const INCOTERM_REQUIRED_SHIPPING = ['FAS', 'FOB', 'CFR', 'CIF'];
+
 @Component({
   selector: 'app-bidding-form',
   imports: [
@@ -73,6 +75,21 @@ export class BiddingFormComponent implements OnInit {
     return null;
   };
 
+  shippingPortRequiredValidator(group: AbstractControl): ValidationErrors | null {
+    const incoterms = group.get('incoterms')?.value ?? '';
+    const shippingPort = group.get('shippingPort')?.value ?? '';
+    if (INCOTERM_REQUIRED_SHIPPING.includes(incoterms) && !shippingPort) {
+      group.get('shippingPort')?.setErrors({ required: true });
+      return { shippingPortRequired: true };
+    } else {
+      // Remove the error if not required
+      if (group.get('shippingPort')?.hasError('required')) {
+        group.get('shippingPort')?.setErrors(null);
+      }
+    }
+    return null;
+  }
+
   formGroup = new FormGroup(
     {
       location: new FormControl<string | null>('', [Validators.required]),
@@ -87,10 +104,10 @@ export class BiddingFormComponent implements OnInit {
       currency: new FormControl<string | null>('gbp', [Validators.required]),
       pricePerMetric: new FormControl<number | null>(null, [Validators.required, Validators.min(1)]),
       incoterms: new FormControl<string | null>(null, [Validators.required]),
-      shippingPort: new FormControl<string>('', [Validators.required, Validators.maxLength(100)]),
+      shippingPort: new FormControl<string>('', [Validators.maxLength(100)]), // Removed Validators.required here
     },
     {
-      validators: this.validateRange,
+      validators: [this.validateRange, this.shippingPortRequiredValidator.bind(this)],
     },
   );
 
@@ -99,7 +116,7 @@ export class BiddingFormComponent implements OnInit {
   locations = signal<CompanyLocation[]>([]);
 
   get isShowShippingPort() {
-    return ['FAS', 'FOB', 'CFR', 'CIF'].includes(this.formGroup.get('incoterms')?.value ?? '');
+    return INCOTERM_REQUIRED_SHIPPING.includes(this.formGroup.get('incoterms')?.value ?? '');
   }
 
   ngOnInit() {
@@ -110,6 +127,11 @@ export class BiddingFormComponent implements OnInit {
       .subscribe((locations) => {
         this.locations.set(locations);
       });
+
+    // Re-validate when incoterms changes
+    this.formGroup.get('incoterms')?.valueChanges.subscribe(() => {
+      this.formGroup.updateValueAndValidity();
+    });
   }
 
   close() {
