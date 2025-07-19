@@ -35,8 +35,8 @@ export class ProductStatusComponent {
       const isSold = product.status === 'sold';
       const isOnGoing = (product.remainingQuantity ?? 0) < (product.quantity ?? 0);
 
-      if (isExpired) {
-        this.status.set(ProductStatus.Expired);
+      if (isSold) {
+        this.status.set(ProductStatus.Sold);
         return;
       }
 
@@ -45,14 +45,14 @@ export class ProductStatusComponent {
         return;
       }
 
-      if (isFutureProduct) {
-        this.fromDate.set(moment(startDate).format('DD/MM/YYYY'));
-        this.status.set(listingType === ListingType.SELL ? ProductStatus.Available : ProductStatus.Required);
+      if (isExpired) {
+        this.status.set(ProductStatus.Expired);
         return;
       }
 
-      if (isSold) {
-        this.status.set(ProductStatus.Sold);
+      if (isFutureProduct) {
+        this.fromDate.set(moment(startDate).format('DD/MM/YYYY'));
+        this.status.set(listingType === ListingType.SELL ? ProductStatus.Available : ProductStatus.Required);
         return;
       }
 
