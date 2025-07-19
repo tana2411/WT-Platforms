@@ -327,7 +327,7 @@ export class FilterComponent implements OnInit {
       result[key] = Array.isArray(value) ? value : [value];
     }
 
-    if (!this.defaultExcludeSold || rawValue['soldListings'] || rawValue['showFullfilledListing']) {
+    if (rawValue['soldListings'] || rawValue['showFullfilledListing']) {
       result['status'] = {
         eq: 'sold',
       };

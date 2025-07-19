@@ -69,6 +69,7 @@ export interface SellListingDetail {
   location_name: string;
   numberOfOffers: number;
   bestOffer: any | null;
+  bestOfferCurrency?: string;
   createdBy: CreatedBy;
 }
 

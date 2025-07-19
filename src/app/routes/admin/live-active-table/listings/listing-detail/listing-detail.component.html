@@ -32,7 +32,7 @@
             </div>
             <div class="col-5 col-md-auto">
               <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'BEST OFFER' | translate }}</div>
-              <p class="mb-1 small">{{ (listing?.bestOffer | number) ?? '-' }}</p>
+              <p class="mb-1 small">{{ getCurrencySignal(listing?.bestOfferCurrency ?? '') }}{{ (listing?.bestOffer | number) ?? '-' }}</p>
             </div>
           </div>
 
