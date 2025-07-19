@@ -1,12 +1,18 @@
 @if (canShow()) {
   @if (isOwnListing()) {
-    @if (expiringDate() <= 7) {
+    @if (isNearingExpiry() && !isExpired()) {
       <div class="warning owner-warning">
         <mat-icon>info_outline</mat-icon>
-        {{ 'Listing expired in {{expiringDate}} day(s)' | translate: { expiringDate: expiringDate() } }}
+        {{ 'Listing expires in {{daysUntilExpiry}} day(s)' | translate: { daysUntilExpiry: daysUntilExpiry() } }}
       </div>
     }
-  } @else if (isNearingExpiry()) {
+    @if (isExpired()) {
+      <div class="warning owner-warning">
+        <mat-icon>error_outline</mat-icon>
+        {{ 'Listing has expired' | translate }}
+      </div>
+    }
+  } @else if (isNearingExpiry() && !isExpired()) {
     <div class="warning guest-warning">{{ 'Listing nearing expiry' | translate }}</div>
   }
 }

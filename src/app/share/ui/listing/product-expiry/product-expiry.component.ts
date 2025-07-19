@@ -4,7 +4,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { ListingMaterialDetail } from 'app/models/listing-material-detail.model';
 import { AuthService } from 'app/services/auth.service';
-import moment from 'moment';
 import { map } from 'rxjs';
 
 @Component({
@@ -22,11 +21,12 @@ export class ProductExpiryComponent {
 
   canShow = computed(() => this.listingDetail()?.listing?.status !== 'sold');
 
-  expiringDate = computed(() => {
-    return Math.abs(moment(this.listingDetail()?.listing.endDate).diff(moment(), 'd'));
-  });
+  // Use backend expiryInfo instead of manual calculation
+  expiryInfo = computed(() => this.listingDetail()?.listing?.expiryInfo);
 
-  isNearingExpiry = computed(() => {
-    return this.expiringDate() <= 7;
-  });
+  daysUntilExpiry = computed(() => this.expiryInfo()?.daysUntilExpiry ?? 0);
+
+  isNearingExpiry = computed(() => this.expiryInfo()?.isNearingExpiry ?? false);
+
+  isExpired = computed(() => this.expiryInfo()?.isExpired ?? false);
 }
