@@ -12,6 +12,7 @@ export interface PurchaseFilterParams {
     location?: string;
     status?: string;
     state?: string;
+    sortBy?: string;
   };
 }
 

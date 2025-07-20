@@ -4,6 +4,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FilterParams, ListingMaterialPayload, ListingResponse, SellListingResponse } from 'app/models';
 import { ListingMaterialDetailResponse, RequestInformationPayload } from 'app/models/listing-material-detail.model';
 import { WantedListingResponse } from 'app/models/wanted.model';
+import { ListingSortBy } from 'app/share/ui/listing/filter/constant';
+import { cloneDeep } from 'lodash';
 import { catchError, Observable, throwError } from 'rxjs';
 
 @Injectable({
@@ -57,8 +59,13 @@ export class ListingService {
   getListingsSell(filter?: any) {
     let params = new HttpParams();
 
-    if (filter) {
-      const encodedFilter = JSON.stringify(filter);
+    const finalFilter = cloneDeep(filter);
+    if (finalFilter) {
+      if (!finalFilter.where.sortBy) {
+        finalFilter.where.sortBy = ListingSortBy.AVAILABLE_LISTINGS_ASC;
+      }
+
+      const encodedFilter = JSON.stringify(finalFilter);
       params = params.set('filter', encodedFilter);
     }
     return this.httpClient.get<SellListingResponse>('/listings/sell', { params }).pipe(
@@ -71,8 +78,13 @@ export class ListingService {
   getListingsWanted(filter?: any) {
     let params = new HttpParams();
 
-    if (filter) {
-      const encodedFilter = JSON.stringify(filter);
+    const finalFilter = cloneDeep(filter);
+    if (finalFilter) {
+      if (!finalFilter.where.sortBy) {
+        finalFilter.where.sortBy = ListingSortBy.AVAILABLE_LISTINGS_ASC;
+      }
+
+      const encodedFilter = JSON.stringify(finalFilter);
       params = params.set('filter', encodedFilter);
     }
     return this.httpClient.get<WantedListingResponse>('/listings/wanted', { params }).pipe(
