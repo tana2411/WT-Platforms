@@ -223,24 +223,17 @@
                       </mat-panel-title>
                     </mat-expansion-panel-header>
                     <div class="col-12 mb-4" style="margin-left: 10px">
-                      <div class="row px-3">
+                      <div class="row align-items-center">
                         @for (item of material.materials; track $index; let i = $index) {
-                          <div
-                            class="col-12 mb-2 pe-4"
-                            [class.col-md-4]="item.name.length <= 15"
-                            [class.col-md-5]="item.name.length >= 15 && item.name.length <= 20"
-                            [class.col-md-8]="item.name.length > 20 && item.name.length <= 30"
-                            [class.col-md-12]="item.name.length > 30"
-                          >
-                            <div class="d-flex">
-                              <mat-checkbox
-                                color="primary"
-                                [checked]="materials.value.includes(item.code)"
-                                (change)="onSelectedMaterial($event, item.code)"
-                              >
-                                <span class="text-wrap fw-bold">{{ item.name }}</span>
-                              </mat-checkbox>
-                            </div>
+                          <div class="col-12 col-md-4 mb-2">
+                            <mat-checkbox
+                              class="bold-label"
+                              color="primary"
+                              [checked]="materials.value.includes(item.code)"
+                              (change)="onSelectedMaterial($event, item.code)"
+                            >
+                              {{ item.name }}
+                            </mat-checkbox>
                           </div>
                         }
                       </div>

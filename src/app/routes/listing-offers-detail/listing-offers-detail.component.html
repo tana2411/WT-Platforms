@@ -1,4 +1,4 @@
-<app-common-layout [title]="listingDetail()?.listing ? getListingTitle(listingDetail()!.listing) : ''">
+<app-common-layout [title]="listingDetail()?.listing ? (getListingTitle(listingDetail()!.listing) | translate) : ''">
   @if (loading()) {
     <app-spinner />
   } @else {
@@ -10,7 +10,7 @@
         <div class="mb-3 d-flex gap-2">
           <a class="primary fw-bold text-decoration-none cursor-pointer" (click)="onBack()">{{ 'Back to the materials' | translate }}</a>
           <mat-icon class="primary">chevron_left</mat-icon>
-          <span class="fw-bold">{{ getListingTitle(listingDetail.listing) }}</span>
+          <span class="fw-bold">{{ getListingTitle(listingDetail.listing) | translate }}</span>
         </div>
       </div>
       <div class="d-flex flex-column-reverse flex-md-row gap-4">

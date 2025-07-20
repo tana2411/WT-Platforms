@@ -21,7 +21,7 @@
         <div class="col-12 col-md-6">
           <div class="d-flex justify-content-between align-items-start mb-3">
             <h5 class="card-title fw-bold text-wrap flex-grow-1 me-2 mb-0 fs-24 line-clamp" title="{{ getListingTitle(product) }}">
-              {{ getListingTitle(product) }}
+              {{ getListingTitle(product) | translate }}
             </h5>
             <mat-icon class="text-muted flex-shrink-0">star_outline</mat-icon>
           </div>
@@ -39,7 +39,7 @@
               </div>
               <div class="flex-grow-1">
                 <div class="d-block fs-16">{{ 'Quantity Available' | translate }}</div>
-                <div class="fw-bold">{{ product.quantity | number }}{{ 'MT' | translate }}</div>
+                <div class="fw-bold">{{ product.quantity ?? product.materialWeightWanted | number }} {{ 'MT' | translate }}</div>
               </div>
             </div>
 
