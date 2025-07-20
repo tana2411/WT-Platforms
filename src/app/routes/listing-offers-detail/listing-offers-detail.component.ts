@@ -76,6 +76,7 @@ export class ListingOffersDetailComponent {
   getListingTitle = getListingTitle;
 
   images: string[] = [];
+  featureImage: string = '';
   descriptionItems = computed(() => {
     const detail = this.listingDetail();
 
@@ -174,6 +175,9 @@ export class ListingOffersDetailComponent {
 
         tap((res) => {
           this.listingDetail.set(res.data);
+          this.featureImage =
+            res.data.listing?.documents.find((i) => i.documentType === ListingImageType.FEATURE_IMAGE)?.documentUrl ??
+            '';
           this.images =
             res.data.listing?.documents
               .filter((i) => i.documentType === ListingImageType.GALLERY_IMAGE)
