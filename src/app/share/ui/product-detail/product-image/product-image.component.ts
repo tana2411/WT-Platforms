@@ -14,6 +14,7 @@ register();
 })
 export class ProductImageComponent {
   @Input() images: string[] = [];
+  @Input() featureImage: string = '';
 
   swiperEl: SwiperContainer | undefined = undefined;
 
