@@ -1,6 +1,14 @@
 import { CompanyDocumentType } from './document.model';
 import { ListingDocument } from './listing-material.model';
 
+// Expiry information interface
+export interface ExpiryInfo {
+  isExpired: boolean;
+  isNearingExpiry: boolean;
+  daysUntilExpiry: number;
+  expiryDate: string;
+}
+
 // Document model
 export interface IDocument {
   createdAt: string;
@@ -58,6 +66,7 @@ export interface Listing {
   listingDuration: string;
   viewCount: number | null;
   documents: ListingDocument[];
+  expiryInfo?: ExpiryInfo;
 }
 
 // Company model

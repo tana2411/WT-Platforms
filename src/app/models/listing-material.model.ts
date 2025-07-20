@@ -1,3 +1,5 @@
+import { ExpiryInfo } from './listing-material-detail.model';
+
 export enum ListingStatus {
   AVAILABLE = 'available',
   PENDING = 'pending',
@@ -80,6 +82,7 @@ export interface ListingMaterial extends ListingMaterialPayload {
   documents: ListingDocument[];
   location_other: string;
   location_id: string;
+  expiryInfo?: ExpiryInfo;
 }
 
 export interface ListingDocument {
