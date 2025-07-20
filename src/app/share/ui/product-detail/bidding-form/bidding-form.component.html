@@ -111,7 +111,7 @@
             <!-- Todo: mapping the list currency according BE -->
             <mat-option value="gbp">{{ '£/GBP' | translate }}</mat-option>
             <mat-option value="usd">{{ '$/USD' | translate }}</mat-option>
-            <mat-option value="euro">{{ '€/EURO' | translate }}</mat-option>
+            <mat-option value="eur">{{ '€/EURO' | translate }}</mat-option>
           </mat-select>
           @if (formGroup.get('currency')?.hasError('required')) {
             <mat-error>{{ 'This is a required field.' | translate }}</mat-error>

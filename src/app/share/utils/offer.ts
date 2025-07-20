@@ -119,7 +119,7 @@ export const getCurrencySignal = (currency: string) => {
       return '£';
     case 'usd':
       return '$';
-    case 'euro':
+    case 'eur':
       return '€';
     default:
       return '';
@@ -132,7 +132,7 @@ export const getCurrencyLabel = (currency: string) => {
       return 'Pound';
     case 'usd':
       return 'Usd';
-    case 'euro':
+    case 'eur':
       return 'Euro';
     default:
       return '';
