@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { mapCountryCodeToName, materialTypes } from '@app/statics';
 import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
+import { ListingStatus } from 'app/models';
 import { WantedListingDetail } from 'app/models/wanted.model';
 import { getListingStateColor, getListingStatusColor } from 'app/share/utils/offer';
 
@@ -47,5 +48,9 @@ export class WantedDetailComponent implements OnInit {
 
   onViewDetail() {
     this.router.navigateByUrl(`${ROUTES_WITH_SLASH.adminWantedListingDetail}/${this.wanted!.id}`);
+  }
+
+  mappingListingStatus(status?: ListingStatus) {
+    return status === ListingStatus.SOLD ? 'Fulfilled' : status;
   }
 }
