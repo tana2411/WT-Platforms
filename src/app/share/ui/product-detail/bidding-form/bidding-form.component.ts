@@ -20,6 +20,7 @@ import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { FULL_PAGINATION_LIMIT } from 'app/constants/common';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { CompanyLocation } from 'app/models';
+import { Currency } from 'app/models/currency';
 import { AuthService } from 'app/services/auth.service';
 import { OfferService } from 'app/services/offer.service';
 import { RequestCreateBidParams } from 'app/types/requests/offer';
@@ -59,6 +60,8 @@ export class BiddingFormComponent implements OnInit {
   readonly props = inject<BiddingFormProps>(MAT_DIALOG_DATA);
   private snackBar = inject(MatSnackBar);
   private translate = inject(TranslatePipe);
+
+  readonly Currency = Currency;
 
   private validateRange = (group: AbstractControl): ValidationErrors | null => {
     const earliestDate = group.get('earliestDeliveryDate')?.value;
