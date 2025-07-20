@@ -158,26 +158,17 @@
                     <div class="fw-bold">{{ material.name | uppercase | translate }}</div>
                   </mat-panel-title>
                 </mat-expansion-panel-header>
-                <div class="row px-3">
+                <div class="row align-items-center">
                   @for (item of material.materials; track $index; let i = $index) {
-                    <div
-                      class="col-12 mb-2 pe-4"
-                      [class.col-md-5]="item.name.length <= 15"
-                      [class.col-md-6]="item.name.length >= 15 && item.name.length <= 20"
-                      [class.col-md-7]="item.name.length > 20 && item.name.length <= 30"
-                      [class.col-md-10]="item.name.length > 30 && item.name.length <= 40"
-                      [class.col-md-12]="item.name.length > 40"
-                    >
-                      <div class="d-flex">
-                        <mat-checkbox
-                          class="bold-label"
-                          color="primary"
-                          (change)="onSelectedMaterial($event, item.code)"
-                          [checked]="materials.value.includes(item.code)"
-                        >
-                          <span class="text-wrap">{{ item.name | translate }}</span>
-                        </mat-checkbox>
-                      </div>
+                    <div class="col-12 col-md-4 mb-2">
+                      <mat-checkbox
+                        class="bold-label"
+                        color="primary"
+                        (change)="onSelectedMaterial($event, item.code)"
+                        [checked]="materials.value.includes(item.code)"
+                      >
+                        {{ item.name | translate }}
+                      </mat-checkbox>
                     </div>
                   }
                 </div>
@@ -185,25 +176,36 @@
             </div>
           }
         }
-        <div class="col-auto mb-2">
-          <mat-checkbox class="bold-label" color="primary" (change)="showOtherMaterial.set(!showOtherMaterial())">
-            {{ 'Other' | translate }}
-          </mat-checkbox>
+        <div class="mb-3">
+          <mat-expansion-panel [expanded]="showOtherMaterial()" (expandedChange)="showOtherMaterial.set($event)">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <div class="fw-bold">
+                  <mat-checkbox
+                    color="primary checkbox-pl0"
+                    (change)="showOtherMaterial.set($event.checked)"
+                    [checked]="showOtherMaterial()"
+                  >
+                    <span class="text-wrap fw-bold fs-16">{{ 'Other' | translate }}</span>
+                  </mat-checkbox>
+                </div>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="col-12">
+              <mat-label class="fw-bold">{{ 'OTHER MATERIAL*' | translate }}</mat-label>
+              <mat-form-field appearance="outline" class="w-100">
+                <input matInput placeholder="{{ 'Type here' | translate }}" type="text" formControlName="otherMaterial" />
+                @if (formGroup.get('otherMaterial')?.hasError('required') && formGroup.get('otherMaterial')?.touched) {
+                  <mat-error>{{ 'This field is required' | translate }}</mat-error>
+                }
+                @if (formGroup.get('otherMaterial')?.hasError('maxlength')) {
+                  <mat-error>{{ 'Other Material cannot exceed 100 characters' | translate }}</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </mat-expansion-panel>
         </div>
-        @if (showOtherMaterial()) {
-          <div class="col-12">
-            <mat-label class="fw-bold">{{ 'OTHER MATERIAL*' | translate }}</mat-label>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="{{ 'Type here' | translate }}" type="text" formControlName="otherMaterial" />
-              @if (formGroup.get('otherMaterial')?.hasError('required') && formGroup.get('otherMaterial')?.touched) {
-                <mat-error>{{ 'This field is required' | translate }} </mat-error>
-              }
-              @if (formGroup.get('otherMaterial')?.hasError('maxlength')) {
-                <mat-error>{{ 'Other Material cannot exceed 100 characters ' | translate }}</mat-error>
-              }
-            </mat-form-field>
-          </div>
-        }
+
         @if (materials.hasError('required') && materials.touched) {
           <mat-error class="mat-error">{{ 'This field is required' | translate }}</mat-error>
         }

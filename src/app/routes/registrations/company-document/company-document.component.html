@@ -49,14 +49,17 @@
           <div class="col-12 mb-4">
             <mat-label class="fw-bold mb-1 d-block">{{ 'WHICH PERMIT/LICENCE DO YOU HAVE?' | translate }}*</mat-label>
             <mat-radio-group class="d-flex justify-content-between flex-wrap" formControlName="documentType">
-              <div class="col-md-10 d-flex justify-content-between align-items-center">
-                <mat-radio-button class="bold-label" value="environmental_permit" (change)="onSelectUploadLater.set(false)"
+              <div class="col-md-10 col-12 flex-column flex-md-row d-flex justify-content-between align-items-center">
+                <mat-radio-button
+                  class="bold-label col-md-auto col-12"
+                  value="environmental_permit"
+                  (change)="onSelectUploadLater.set(false)"
                   >{{ 'Environmental Permit' | translate }}
                 </mat-radio-button>
-                <mat-radio-button class="bold-label" value="waste_exemption" (change)="onSelectUploadLater.set(false)">
+                <mat-radio-button class="bold-label col-md-auto col-12" value="waste_exemption" (change)="onSelectUploadLater.set(false)">
                   {{ 'Waste Exemptions' | translate }}
                 </mat-radio-button>
-                <mat-radio-button class="bold-label" value="other" (change)="onSelectUploadLater.set(false)">
+                <mat-radio-button class="bold-label col-md-auto col-12" value="other" (change)="onSelectUploadLater.set(false)">
                   {{ 'Other' | translate }}
                 </mat-radio-button>
               </div>
