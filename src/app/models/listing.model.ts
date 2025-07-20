@@ -1,3 +1,4 @@
+import { Currency } from './currency';
 import { ListingState, ListingStatus } from './listing-material.model';
 import { Companies } from './purchases.model';
 
@@ -27,7 +28,7 @@ export interface SellListingDetail {
   title: string;
   description: string | null;
   quantity: number;
-  currency: string | null;
+  currency: Currency | null;
   additional_notes: string | null;
   status: ListingStatus;
   is_featured: boolean;

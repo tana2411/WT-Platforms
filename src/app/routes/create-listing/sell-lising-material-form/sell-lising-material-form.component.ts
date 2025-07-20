@@ -18,6 +18,7 @@ import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { AddCompanyLocationResponse, ListingImageType } from 'app/models';
+import { Currency } from 'app/models/currency';
 import { EditSiteComponent } from 'app/routes/my-sites/edit-site/edit-site.component';
 import { AuthService } from 'app/services/auth.service';
 import { ListingService } from 'app/services/listing.service';
@@ -50,6 +51,7 @@ export class SellLisingMaterialFormComponent {
   colourOption = colour;
   finishingOption = finishing;
   packingOption = packing;
+  readonly Currency = Currency;
   today = new Date();
   @ViewChild('locationSelector') locationSelector!: MatSelect;
 

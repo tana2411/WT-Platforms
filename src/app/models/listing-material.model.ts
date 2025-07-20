@@ -1,3 +1,4 @@
+import { Currency } from './currency';
 import { ExpiryInfo } from './listing-material-detail.model';
 
 export enum ListingStatus {
@@ -72,7 +73,7 @@ export interface ListingMaterial extends ListingMaterialPayload {
   remainingQuantity: number | null;
   materialWeightPerUnit: number | null;
   materialRemainInCountry: boolean;
-  currency: string | null;
+  currency: Currency | null;
   endDate: string | null;
   status: ListingStatus;
   state: ListingState;

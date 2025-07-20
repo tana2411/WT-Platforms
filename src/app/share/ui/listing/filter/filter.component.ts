@@ -312,7 +312,7 @@ export class FilterComponent implements OnInit {
       }
 
       if (selectFilters.includes(key)) {
-        result[key] = Array.isArray(value) ? value : [value];
+        result[key] = value;
         continue;
       }
 

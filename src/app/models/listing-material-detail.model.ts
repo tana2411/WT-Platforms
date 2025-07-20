@@ -1,3 +1,4 @@
+import { Currency } from './currency';
 import { CompanyDocumentType } from './document.model';
 import { ListingDocument } from './listing-material.model';
 
@@ -51,7 +52,7 @@ export interface Listing {
   materialFlowIndex: string;
   materialWeightPerUnit: number | null;
   materialRemainInCountry: boolean;
-  currency: string | null;
+  currency: Currency | null;
   additionalNotes: string | null;
   startDate: string;
   endDate: string | null;

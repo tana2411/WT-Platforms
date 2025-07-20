@@ -108,10 +108,9 @@
         <mat-label class="fw-bold mb-2 d-block text-uppercase">{{ 'currency' | translate }} </mat-label>
         <mat-form-field appearance="outline" class="w-100">
           <mat-select formControlName="currency" placeholder="Please Select">
-            <!-- Todo: mapping the list currency according BE -->
-            <mat-option value="gbp">{{ '£/GBP' | translate }}</mat-option>
-            <mat-option value="usd">{{ '$/USD' | translate }}</mat-option>
-            <mat-option value="eur">{{ '€/EURO' | translate }}</mat-option>
+            <mat-option [value]="Currency.gbp">{{ '£/GBP' | translate }}</mat-option>
+            <mat-option [value]="Currency.usd">{{ '$/USD' | translate }}</mat-option>
+            <mat-option [value]="Currency.eur">{{ '€/EURO' | translate }}</mat-option>
           </mat-select>
           @if (formGroup.get('currency')?.hasError('required')) {
             <mat-error>{{ 'This is a required field.' | translate }}</mat-error>
