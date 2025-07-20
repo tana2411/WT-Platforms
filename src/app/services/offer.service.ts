@@ -5,6 +5,7 @@ import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { PurchaseFilterParams, PurchaseResponse } from 'app/models/purchases.model';
 
 import { TranslateService } from '@ngx-translate/core';
+import { ListingSortBy } from 'app/share/ui/listing/filter/constant';
 import {
   RequestCreateBidParams,
   RequestGetBuyingOffersResponse,
@@ -12,6 +13,7 @@ import {
   RequestGetOffersParams,
   RequestGetSellingOffersResponse,
 } from 'app/types/requests/offer';
+import { cloneDeep } from 'lodash';
 import { catchError, throwError } from 'rxjs';
 
 // Since its a stateless service, I make it provided in root
@@ -143,10 +145,16 @@ export class OfferService {
   getPurchases(filter?: PurchaseFilterParams) {
     let params = new HttpParams();
 
-    if (filter) {
-      const encodedFilter = JSON.stringify(filter);
+    const finalFilter = cloneDeep(filter);
+    if (finalFilter) {
+      if (!finalFilter.where.sortBy) {
+        finalFilter.where.sortBy = ListingSortBy.AVAILABLE_LISTINGS_ASC;
+      }
+
+      const encodedFilter = JSON.stringify(finalFilter);
       params = params.set('filter', encodedFilter);
     }
+
     return this.http.get<PurchaseResponse>('/offers/admin', { params }).pipe(
       catchError(() => {
         return throwError(() => new Error('Failed to load purchase data. Please try refreshing the page.'));
