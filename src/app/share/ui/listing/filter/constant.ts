@@ -78,7 +78,12 @@ export const allFilters: Filter[] = [
   },
   {
     name: 'BUYER',
-    value: 'buyerCompanyName',
+    value: 'buyerName',
+    type: 'input',
+  },
+  {
+    name: 'SELLER',
+    value: 'sellerName',
     type: 'input',
   },
   {

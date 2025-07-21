@@ -298,8 +298,8 @@ export class FilterComponent implements OnInit {
   private normalizeFilterParams(rawValue: any) {
     const result: Record<string, any> = {};
 
-    const selectFilters = this.allFilters.filter((f) => f.type === 'select').map((f) => f.value);
-    const inputTextFilters = this.allFilters.filter((f) => f.type === 'input').map((f) => f.value);
+    // const selectFilters = this.allFilters.filter((f) => f.type === 'select').map((f) => f.value);
+    // const inputTextFilters = this.allFilters.filter((f) => f.type === 'input').map((f) => f.value);
 
     for (const key in rawValue) {
       const value = rawValue[key];
@@ -307,24 +307,10 @@ export class FilterComponent implements OnInit {
       if (value === null || value === '' || value === false) continue;
 
       if (key === 'soldListings' || key === 'showFullfilledListing') {
-        // result['status'] = 'sold';
         continue;
       }
 
-      if (selectFilters.includes(key)) {
-        result[key] = value;
-        continue;
-      }
-
-      if (inputTextFilters.includes(key)) {
-        result[key] = value;
-      }
-
-      if (inputTextFilters.includes(key)) {
-        result[key] = value;
-      }
-
-      result[key] = Array.isArray(value) ? value : [value];
+      result[key] = value;
     }
 
     if (rawValue['soldListings'] || rawValue['showFullfilledListing']) {

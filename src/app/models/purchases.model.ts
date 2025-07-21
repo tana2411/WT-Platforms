@@ -4,8 +4,8 @@ export interface PurchaseFilterParams {
   skip: number;
   limit: number;
   where: {
-    buyerCompanyName?: string;
-    sellerCompanyName?: string;
+    buyerName?: string;
+    sellerName?: string;
     searchTerm?: string;
     materialType?: string[];
     materialPacking?: string;
