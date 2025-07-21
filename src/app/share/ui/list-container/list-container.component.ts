@@ -88,9 +88,9 @@ export class ListContainerComponent implements OnInit {
     }
 
     if (this.pageType == 'wanted') {
-      if ('buyerCompanyName' in cleanedParams) {
-        cleanedParams['name'] = cleanedParams['buyerCompanyName'];
-        delete cleanedParams['buyerCompanyName'];
+      if ('buyerName' in cleanedParams) {
+        cleanedParams['name'] = cleanedParams['buyerName'];
+        delete cleanedParams['buyerName'];
       }
       Object.keys(cleanedParams).forEach((key) => {
         const val = cleanedParams[key];
