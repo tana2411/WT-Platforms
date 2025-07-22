@@ -93,7 +93,7 @@ export class MyOffersBuyingComponent {
     return {
       id: offer.id,
       featureImage: getListingFeatureImage(listing.documents ?? []),
-      materialName: getListingTitle(listing, this.translate),
+      materialName: getListingTitle(listing),
       pickupLocation: getLocationAddress(seller.location),
       destination: getLocationAddress(buyer.location),
       packaging: listing.materialPacking ? mapCodeToPackaging[listing.materialPacking] : '',
