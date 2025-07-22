@@ -1,3 +1,5 @@
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+
 export const colour = [
   { name: 'Black', code: 'black' },
   { name: 'Blue', code: 'blue' },
@@ -383,7 +385,7 @@ export const materialTypes = [
 
 export const mapCodeToMaterialForm = plasticForm.reduce(
   (memo, item) => {
-    memo[item.code] = item.name;
+    memo[item.code] = localized$(item.name);
 
     return memo;
   },
@@ -392,7 +394,7 @@ export const mapCodeToMaterialForm = plasticForm.reduce(
 
 export const mapCodeToMaterialFinishing = finishing.reduce(
   (memo, item) => {
-    memo[item.code] = item.name;
+    memo[item.code] = localized$(item.name);
 
     return memo;
   },
@@ -402,7 +404,7 @@ export const mapCodeToMaterialFinishing = finishing.reduce(
 export const mapCodeToMaterialItem = materialTypes.reduce(
   (memo, item) => {
     item.materials.forEach((material) => {
-      memo[material.code] = material.name;
+      memo[material.code] = localized$(material.name);
     });
 
     return memo;
@@ -412,7 +414,7 @@ export const mapCodeToMaterialItem = materialTypes.reduce(
 
 export const mapCodeToMaterialGrading = fibreGrading.reduce(
   (memo, item) => {
-    memo[item.code] = item.name;
+    memo[item.code] = localized$(item.name);
 
     return memo;
   },
@@ -421,7 +423,7 @@ export const mapCodeToMaterialGrading = fibreGrading.reduce(
 
 export const mapCodeToPackaging = packing.reduce(
   (memo, item) => {
-    memo[item.code] = item.name;
+    memo[item.code] = localized$(item.name);
     return memo;
   },
   {} as Record<string, string>,

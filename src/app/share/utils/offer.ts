@@ -1,3 +1,5 @@
+import { TranslateService } from '@ngx-translate/core';
+
 import {
   mapCodeToMaterialFinishing,
   mapCodeToMaterialForm,
@@ -139,22 +141,25 @@ export const getCurrencyLabel = (currency: string) => {
   }
 };
 
-export const getListingTitle = (listing: {
-  materialForm?: string;
-  materialItem?: string;
-  materialFinishing?: string;
-  material?: string;
-  materialGrading?: string;
-  materialType?: string;
-}) => {
+export const getListingTitle = (
+  listing: {
+    materialForm?: string;
+    materialItem?: string;
+    materialFinishing?: string;
+    material?: string;
+    materialGrading?: string;
+    materialType?: string;
+  },
+  translate: TranslateService,
+) => {
   if (listing.materialType === 'metal' || listing.materialType === 'rubber') {
-    return mapCodeToMaterialItem[listing.materialItem ?? ''];
+    return translate.instant(mapCodeToMaterialItem[listing.materialItem ?? '']);
   }
 
   if (listing.materialType === 'fibre') {
     const data = [
-      mapCodeToMaterialGrading[listing.materialGrading ?? ''],
-      mapCodeToMaterialItem[listing.materialItem ?? ''],
+      translate.instant(mapCodeToMaterialGrading[listing.materialGrading ?? '']),
+      translate.instant(mapCodeToMaterialItem[listing.materialItem ?? '']),
     ]
       .filter((i) => !!i)
       .join(' - ');
@@ -167,9 +172,9 @@ export const getListingTitle = (listing: {
   }
 
   const data = [
-    mapCodeToMaterialItem[listing.materialItem ?? ''],
-    mapCodeToMaterialForm[listing.materialForm ?? ''],
-    mapCodeToMaterialFinishing[listing.materialFinishing ?? ''],
+    translate.instant(mapCodeToMaterialItem[listing.materialItem ?? '']),
+    translate.instant(mapCodeToMaterialForm[listing.materialForm ?? '']),
+    translate.instant(mapCodeToMaterialFinishing[listing.materialFinishing ?? '']),
   ]
     .filter((i) => !!i)
     .join(' - ');

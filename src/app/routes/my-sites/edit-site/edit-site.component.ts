@@ -91,7 +91,7 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
     phoneNumber: new FormControl<string | null>(null, [Validators.required]),
 
     street: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(150)]),
-    addressLine: new FormControl<string | null>(null, [Validators.required]),
+    addressLine: new FormControl<string | null>(null, []),
     postcode: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(150)]),
     city: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(150)]),
     country: new FormControl<string | null>(null, [Validators.required]),
@@ -129,9 +129,6 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
 
   constructor() {
     this.user = toSignal(this.authService.user$);
-
-    console.log(this.dialogData, this.isDialog);
-
     effect(() => {
       if (this.selectAllContainerTypes()) {
         this.containerType.clear();
@@ -485,8 +482,9 @@ export class EditSiteComponent implements OnInit, AfterViewInit {
         if (!shouldSaveChange) return;
         this.submitting.set(true);
 
-        const { haveAccessRestrictions, wasteLicence, ...payload } = this.formGroup.value;
-
+        const { haveAccessRestrictions, wasteLicence, ...rest } = this.formGroup.value;
+        const payload: Record<string, any> = { ...rest };
+        payload['companyId'] = this.user()?.companyId;
         if (!haveAccessRestrictions) {
           payload['accessRestrictions'] = 'N/a';
         }

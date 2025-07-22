@@ -120,7 +120,7 @@
             </mat-form-field>
           </div>
           <div class="w-100 mb-4">
-            <mat-label class="fw-bold mb-2">{{ 'ADDRESS LINE 2' | translate }}*</mat-label>
+            <mat-label class="fw-bold mb-2">{{ 'ADDRESS LINE 2' | translate }}</mat-label>
             <mat-form-field appearance="outline" class="w-100">
               <input matInput placeholder="{{ 'Type here' | translate }}" type="text" formControlName="addressLine" />
               @if (formGroup.get('addressLine')?.hasError('required')) {
@@ -203,8 +203,8 @@
       <p class="my-4 fw-bold fs-24">{{ 'ADDITIONAL INFORMATION' | translate }}</p>
       <div class="border-thin py-3 rounded rounded-4 w-100 d-flex flex-column justify-content-center">
         <div class="col-md-9 col-9 mx-auto">
-          <h6 class="mb-4 mt-5 primary">
-            <span class="fw-bold">{{ 'MATERIALS ACCEPTED' | translate }}</span> ({{ 'MULTIPLE SELECTION' | translate }})
+          <h6 class="primary">
+            <span class="fw-bold">{{ 'MATERIALS ACCEPTED' | translate }}</span>
           </h6>
           <div class="col-12 mb-3">
             <mat-checkbox class="tri-state-checkbox bold-label" color="primary" (change)="selectAllMaterial.set(!selectAllMaterial())">{{
@@ -221,24 +221,17 @@
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <div class="col-12 mb-4" style="margin-left: 10px">
-                    <div class="row px-3">
+                    <div class="row align-items-center">
                       @for (item of material.materials; track $index; let i = $index) {
-                        <div
-                          class="col-12 mb-2 pe-4"
-                          [class.col-md-4]="item.name.length <= 15"
-                          [class.col-md-5]="item.name.length >= 15 && item.name.length <= 20"
-                          [class.col-md-8]="item.name.length > 20 && item.name.length <= 30"
-                          [class.col-md-12]="item.name.length > 30"
-                        >
-                          <div class="d-flex">
-                            <mat-checkbox
-                              color="primary"
-                              [checked]="materials.value.includes(item.code)"
-                              (change)="onSelectedMaterial($event, item.code)"
-                            >
-                              <span class="text-wrap fw-bold">{{ item.name | translate }}</span>
-                            </mat-checkbox>
-                          </div>
+                        <div class="col-12 col-md-4 mb-2">
+                          <mat-checkbox
+                            color="primary"
+                            class="bold-label"
+                            [checked]="materials.value.includes(item.code)"
+                            (change)="onSelectedMaterial($event, item.code)"
+                          >
+                            {{ item.name | translate }}
+                          </mat-checkbox>
                         </div>
                       }
                     </div>
@@ -248,33 +241,39 @@
             }
           }
 
-          <div class="col-auto mb-2">
-            <mat-checkbox
-              class="bold-label"
-              color="primary"
-              (change)="showOtherMaterial.set(!showOtherMaterial())"
-              [checked]="showOtherMaterial()"
-            >
-              {{ 'Other' | translate }}
-            </mat-checkbox>
+          <div class="mb-3">
+            <mat-expansion-panel [expanded]="showOtherMaterial()" (expandedChange)="showOtherMaterial.set($event)">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <div class="fw-bold">
+                    <mat-checkbox
+                      color="primary checkbox-pl0"
+                      (change)="showOtherMaterial.set($event.checked)"
+                      [checked]="showOtherMaterial()"
+                    >
+                      <span class="text-wrap fw-bold fs-16">{{ 'Other' | translate }}</span>
+                    </mat-checkbox>
+                  </div>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="col-12">
+                <mat-label class="fw-bold">{{ 'OTHER MATERIAL*' | translate }}</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input matInput placeholder="{{ 'Type here' | translate }}" type="text" formControlName="otherMaterial" />
+                  @if (formGroup.get('otherMaterial')?.hasError('required') && formGroup.get('otherMaterial')?.touched) {
+                    <mat-error>{{ 'This field is required' | translate }}</mat-error>
+                  }
+                  @if (formGroup.get('otherMaterial')?.hasError('maxlength')) {
+                    <mat-error>{{ 'Please shorten your input to 100 characters or under.' | translate }}</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+            </mat-expansion-panel>
           </div>
-          @if (showOtherMaterial()) {
-            <div class="row g-3 mb-4">
-              <mat-label class="fw-bold">{{ 'OTHER MATERIAL*' | translate }}</mat-label>
-              <mat-form-field appearance="outline" class="w-100">
-                <input matInput placeholder="{{ 'Type here' | translate }}" type="text" formControlName="otherMaterial" />
-                @if (formGroup.get('otherMaterial')?.hasError('required') && formGroup.get('otherMaterial')?.touched) {
-                  <mat-error>{{ 'This field is required' | translate }}</mat-error>
-                }
-                @if (formGroup.get('otherMaterial')?.hasError('maxlength')) {
-                  <mat-error>{{ 'Please shorten your input to 100 characters or under.' | translate }}</mat-error>
-                }
-              </mat-form-field>
-            </div>
-          }
           @if (materials.hasError('required') && materials.touched) {
             <mat-error class="mat-error">{{ 'This field is required' | translate }}</mat-error>
           }
+
           <div class="row g-3 mb-4">
             <mat-label class="mb-0 fw-bold">{{ 'IS THERE A LOADING RAMP ON THIS SITE?*' | translate }}</mat-label>
             <mat-radio-group
@@ -379,7 +378,7 @@
             </div>
           }
           <div class="w-100 mb-4">
-            <mat-label class="fw-bold mb-2">{{ 'SITE-SPECIFIC INSTRUCTIONS*' | translate }}</mat-label>
+            <mat-label class="fw-bold mb-2">{{ 'SITE-SPECIFIC INSTRUCTIONS' | translate }}</mat-label>
             <mat-form-field appearance="outline" class="w-100">
               <input matInput placeholder="Type here" type="text" formControlName="siteSpecificInstructions" />
               @if (formGroup.get('siteSpecificInstructions')?.hasError('required')) {

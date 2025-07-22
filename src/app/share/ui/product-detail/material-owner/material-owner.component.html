@@ -1,5 +1,5 @@
 @if (company(); as company) {
-  <div class="d-flex flex-column gap-3 border border-primary rounded rounded-4 wrapper">
+  <div class="d-flex flex-column gap-3 border border-primary rounded rounded-4 wrapper mb-4">
     <div class="d-flex align-items-center gap-2">
       <app-icon iconName="person" backgroundColor="#E5F6F0" className="user-icon" iconClassName="primary"></app-icon>
       <p class="mb-0 fs-18 fw-600">{{ isSeller() ? ('Seller' | translate) : ('Buyer' | translate) }}</p>

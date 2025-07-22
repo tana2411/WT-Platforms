@@ -1,9 +1,9 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, effect, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { mapCodeToPackaging } from '@app/statics';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { TableBuyingOfferItem } from 'app/models/offer';
 import { OfferService } from 'app/services/offer.service';
@@ -47,6 +47,7 @@ export class MyOffersBuyingComponent {
       }
     | undefined
   >(undefined);
+  translate = inject(TranslateService);
 
   constructor(
     private router: Router,
@@ -92,7 +93,7 @@ export class MyOffersBuyingComponent {
     return {
       id: offer.id,
       featureImage: getListingFeatureImage(listing.documents ?? []),
-      materialName: getListingTitle(listing),
+      materialName: getListingTitle(listing, this.translate),
       pickupLocation: getLocationAddress(seller.location),
       destination: getLocationAddress(buyer.location),
       packaging: listing.materialPacking ? mapCodeToPackaging[listing.materialPacking] : '',
