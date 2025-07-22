@@ -1,4 +1,5 @@
 import { countries, materialTypes, packing } from '@app/statics';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { AuditTrailUserRoleEnum } from 'app/models/admin/audit-trail.model';
 
 export interface Filter {
@@ -27,123 +28,123 @@ export enum ListingSortBy {
 }
 
 export const roleOption = [
-  { name: 'Super Admin', code: AuditTrailUserRoleEnum.SUPER_ADMIN },
-  { name: 'Admin', code: AuditTrailUserRoleEnum.ADMIN },
-  // { name: 'Haulier', code: AuditTrailUserRoleEnum.HAULIER },
-  // { name: 'Trader', code: AuditTrailUserRoleEnum.TRADER },
-  { name: 'Seller', code: AuditTrailUserRoleEnum.SELLER },
-  { name: 'Buyer', code: AuditTrailUserRoleEnum.BUYER },
+  { name: localized$('Super Admin'), code: AuditTrailUserRoleEnum.SUPER_ADMIN },
+  { name: localized$('Admin'), code: AuditTrailUserRoleEnum.ADMIN },
+  // { name: localized$('Haulier'), code: AuditTrailUserRoleEnum.HAULIER },
+  // { name: localized$('Trader'), code: AuditTrailUserRoleEnum.TRADER },
+  { name: localized$('Seller'), code: AuditTrailUserRoleEnum.SELLER },
+  { name: localized$('Buyer'), code: AuditTrailUserRoleEnum.BUYER },
 ];
 
 export const allFilters: Filter[] = [
   {
-    name: 'LOCATION',
+    name: localized$('LOCATION'),
     value: 'country',
     type: 'select',
-    placeholder: 'All Countries',
+    placeholder: localized$('All Countries'),
     options: countries,
   },
   {
-    name: 'MATERIAL',
+    name: localized$('MATERIAL'),
     value: 'materialType',
     type: 'select',
     options: materialTypes,
   },
   {
-    name: 'ITEM',
+    name: localized$('ITEM'),
     value: 'materialItem',
     type: 'select',
     options: [],
   },
   {
-    name: 'PACKING',
+    name: localized$('PACKING'),
     value: 'materialPacking',
     type: 'select',
     options: packing,
   },
   {
-    name: 'SORT BY',
+    name: localized$('SORT BY'),
     value: 'sortBy',
     type: 'select',
     options: [
       {
-        name: 'Available Material',
+        name: localized$('Available Material'),
         code: ListingSortBy.AVAILABLE_LISTINGS_ASC,
       },
       {
-        name: 'Unavailable Material',
+        name: localized$('Unavailable Material'),
         code: ListingSortBy.AVAILABLE_LISTINGS_DESC,
       },
     ],
   },
   {
-    name: 'BUYER',
+    name: localized$('BUYER'),
     value: 'buyerName',
     type: 'input',
   },
   {
-    name: 'SELLER',
+    name: localized$('SELLER'),
     value: 'sellerName',
     type: 'input',
   },
   {
-    name: 'SELLER',
+    name: localized$('SELLER'),
     value: 'name',
     type: 'input',
   },
   {
-    name: 'USER',
+    name: localized$('USER'),
     value: 'loggedUserName',
     type: 'input',
   },
   {
-    name: 'ORGANISATION',
+    name: localized$('ORGANISATION'),
     value: 'loggedCompanyName',
     type: 'input',
   },
   {
-    name: 'ROLE',
+    name: localized$('ROLE'),
     value: 'loggedUserRole',
     type: 'select',
     options: roleOption,
   },
   {
-    name: 'COMPANY',
+    name: localized$('COMPANY'),
     value: 'company',
     type: 'select',
     options: [],
   },
   {
-    name: 'STATUS',
+    name: localized$('STATUS'),
     value: 'status',
     type: 'select',
     options: [
-      { code: 'pending', name: 'Pending' },
+      { code: 'pending', name: localized$('Pending') },
       {
-        name: 'Active',
+        name: localized$('Active'),
         code: 'active',
       },
-      { code: 'rejected', name: 'Rejected' },
-      { code: 'accepted', name: 'Accepted' },
-      { code: 'shipped', name: 'Shipped' },
+      { code: 'rejected', name: localized$('Rejected') },
+      { code: 'accepted', name: localized$('Accepted') },
+      { code: 'shipped', name: localized$('Shipped') },
     ],
   },
   {
-    name: 'STATE',
+    name: localized$('STATE'),
     value: 'state',
     type: 'select',
     options: [
       {
-        name: 'Approved',
+        name: localized$('Approved'),
         code: 'approved',
       },
-      { code: 'pending', name: 'Pending' },
-      { code: 'rejected', name: 'Rejected' },
-      { code: 'active', name: 'Active' },
+      { code: 'pending', name: localized$('Pending') },
+      { code: 'rejected', name: localized$('Rejected') },
+      { code: 'active', name: localized$('Active') },
     ],
   },
   {
-    name: 'Show FULFILLED listings',
+    name: localized$('Show FULFILLED listings'),
     value: 'showFullfilledListing',
     type: 'checkbox',
     options: [
@@ -154,7 +155,7 @@ export const allFilters: Filter[] = [
   },
 
   {
-    name: 'Show SOLD listings ',
+    name: localized$('Show SOLD listings'),
     value: 'soldListings',
     type: 'checkbox',
     options: [
@@ -165,23 +166,23 @@ export const allFilters: Filter[] = [
   },
 
   {
-    name: 'STORED',
+    name: localized$('STORED'),
     value: 'wasteStoration',
     type: 'checkbox',
     options: [
       {
         value: 'indoor',
-        name: 'Indoors',
+        name: localized$('Indoors'),
       },
       {
         value: 'outdoor',
-        name: 'Outdoors',
+        name: localized$('Outdoors'),
       },
     ],
   },
 
   {
-    name: 'DATE REQUIRED FROM',
+    name: localized$('DATE REQUIRED FROM'),
     value: 'dateRange',
     type: 'dateRange',
     options: [],
@@ -212,12 +213,12 @@ export enum WantedListingSortBy {
 }
 
 export const wantedSortOption = [
-  { name: 'Company Name Asc', code: WantedListingSortBy.COMPANY_NAME_ASC },
-  { name: 'Company Name Desc', code: WantedListingSortBy.COMPANY_NAME_DESC },
-  { name: 'Material Type Asc', code: WantedListingSortBy.MATERIAL_TYPE_ASC },
-  { name: 'Material Type Desc', code: WantedListingSortBy.MATERIAL_TYPE_DESC },
-  { name: 'Country Asc', code: WantedListingSortBy.COUNTRY_ASC },
-  { name: 'Country Desc', code: WantedListingSortBy.COUNTRY_DESC },
+  { name: localized$('Company Name Asc'), code: WantedListingSortBy.COMPANY_NAME_ASC },
+  { name: localized$('Company Name Desc'), code: WantedListingSortBy.COMPANY_NAME_DESC },
+  { name: localized$('Material Type Asc'), code: WantedListingSortBy.MATERIAL_TYPE_ASC },
+  { name: localized$('Material Type Desc'), code: WantedListingSortBy.MATERIAL_TYPE_DESC },
+  { name: localized$('Country Asc'), code: WantedListingSortBy.COUNTRY_ASC },
+  { name: localized$('Country Desc'), code: WantedListingSortBy.COUNTRY_DESC },
 ];
 
 export enum OfferSortBy {

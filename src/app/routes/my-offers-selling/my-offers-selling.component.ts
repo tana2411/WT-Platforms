@@ -9,7 +9,7 @@ import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { mapCountryCodeToName } from '@app/statics';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.component';
 import { TableSellingOfferItem } from 'app/models/offer';
 import { OfferService } from 'app/services/offer.service';
@@ -50,6 +50,7 @@ export class MyOffersSellingComponent {
   totalItems = signal(0);
   page = signal(1);
   fb = inject(FormBuilder);
+  translate = inject(TranslateService);
   form: FormGroup = this.fb.group({
     searchTerm: [''],
   });
@@ -126,7 +127,7 @@ export class MyOffersSellingComponent {
       id: offer.id,
       featureImage: getListingFeatureImage(listing.documents ?? []),
       date: moment(offer.createdAt).format('YYYY-MM-DD'),
-      materialName: getListingTitle(listing),
+      materialName: getListingTitle(listing, this.translate),
       quantity: offer.quantity,
       currency: offer.currency ? getCurrencySignal(offer.currency) : '',
       country: mapCountryCodeToName[buyer.location.country],

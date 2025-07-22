@@ -4,22 +4,3 @@
   pointer-events: none;
   background-color: $grey;
 }
-
-:host ::ng-deep .checkbox-pl0 {
-  .mdc-checkbox {
-    padding-left: 0px !important;
-  }
-
-  .mdc-checkbox__background {
-    left: 0px;
-  }
-
-  .mat-mdc-checkbox .mat-mdc-checkbox-ripple,
-  .mdc-checkbox__ripple {
-    display: none;
-  }
-
-  .mat-focus-indicator {
-    display: none;
-  }
-}
