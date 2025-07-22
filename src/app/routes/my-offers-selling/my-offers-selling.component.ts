@@ -127,7 +127,7 @@ export class MyOffersSellingComponent {
       id: offer.id,
       featureImage: getListingFeatureImage(listing.documents ?? []),
       date: moment(offer.createdAt).format('YYYY-MM-DD'),
-      materialName: getListingTitle(listing, this.translate),
+      materialName: getListingTitle(listing),
       quantity: offer.quantity,
       currency: offer.currency ? getCurrencySignal(offer.currency) : '',
       country: mapCountryCodeToName[buyer.location.country],
