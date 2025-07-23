@@ -13,7 +13,7 @@ export class ShareListingComponent {
   @Input() title: string = 'Check out this listing';
 
   get url() {
-    return window.location.origin;
+    return window.location.href;
   }
 
   shareToFacebook() {
