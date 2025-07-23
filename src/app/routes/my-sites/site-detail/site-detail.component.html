@@ -50,7 +50,9 @@
             <div class="row mb-md-4 mb-0">
               <div class="col-12 col-md-4 mb-3 mb-md-0">
                 <div class="fw-bold">{{ 'STREET ADDRESS' | translate }}</div>
-                <div>{{ location.addressLine || '-' }}</div>
+                <div>
+                  {{ location.street ? location.street + (location.addressLine ? ' - ' + location.addressLine : '') : '-' }}
+                </div>
               </div>
               <div class="col-12 col-md-4 mb-3 mb-md-0">
                 <div class="fw-bold">{{ 'ZIP / POSTAL CODE' | translate }}</div>
@@ -87,9 +89,7 @@
             <div class="fw-bold w-100 fs-24 mb-4">{{ 'Material Accepted' | translate }}</div>
             <div class="row mb-md-4 mb-0">
               @if (materials.length == 0) {
-                <div class="d-flex justify-content-center align-items-center fs-24 mt-3">
-                  <p class="text-muted">{{ 'No materials found.' | translate }}</p>
-                </div>
+                <p class="">{{ 'No materials found.' | translate }}</p>
               } @else {
                 <div>{{ materials }}</div>
               }
