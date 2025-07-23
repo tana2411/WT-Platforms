@@ -61,7 +61,7 @@ export class SiteLocationSectionComponent implements OnInit {
     lastName: new FormControl<string | null>(null, [Validators.required]),
     positionInCompany: new FormControl<string | null>(null, [Validators.required]),
     phoneNumber: new FormControl<string | null>(null, [Validators.required]),
-    addressLine: new FormControl<string | null>(null, [Validators.required]),
+    street: new FormControl<string | null>(null, [Validators.required]),
     postcode: new FormControl<string | null>(null, [Validators.required]),
     city: new FormControl<string | null>(null, [Validators.required]),
     country: new FormControl<string | null>(null, [Validators.required]),
@@ -124,7 +124,7 @@ export class SiteLocationSectionComponent implements OnInit {
     effect(() => {
       const controls = this.formGroup.controls;
       const addressFields = [
-        controls.addressLine,
+        controls.street,
         controls.postcode,
         controls.city,
         controls.country,
@@ -133,7 +133,7 @@ export class SiteLocationSectionComponent implements OnInit {
       if (this.selectPreviousAddress()) {
         this.formGroup.patchValue(
           {
-            addressLine: this.user()?.company.addressLine1,
+            street: this.user()?.company.addressLine1,
             postcode: this.user()?.company.postalCode,
             city: this.user()?.company.city,
             country: this.user()?.company.country,
@@ -189,11 +189,11 @@ export class SiteLocationSectionComponent implements OnInit {
     });
 
     this.formGroup.valueChanges.pipe(takeUntilDestroyed()).subscribe((value) => {
-      const { addressLine, postcode, city, country, stateProvince } = value;
+      const { street, postcode, city, country, stateProvince } = value;
       const previousAddress = this.user()?.company;
       if (previousAddress) {
         if (
-          previousAddress.addressLine1 !== addressLine ||
+          previousAddress.addressLine1 !== street ||
           previousAddress.postalCode != postcode ||
           previousAddress.city != city ||
           previousAddress.country != country ||
