@@ -61,9 +61,13 @@
               @if (documentTypeUploaded.length > 0) {
                 <div>{{ documentTypeUploaded }}</div>
               } @else {
-                <div class="d-flex justify-content-center align-items-center fs-24 mt-3">
-                  <p class="text-muted">{{ 'No document found.' | translate }}</p>
-                </div>
+                @if (isReusable) {
+                  <p class="">{{ 'No document found' | translate }}</p>
+                } @else {
+                  <div class="d-flex justify-content-center align-items-center fs-24 mt-3">
+                    <p class="text-muted">{{ 'No document found.' | translate }}</p>
+                  </div>
+                }
               }
             </div>
           </div>
