@@ -17,6 +17,13 @@
   display: block;
 }
 
+@media (max-width: 600px) {
+  .feature-image {
+    height: auto;
+    object-fit: contain;
+  }
+}
+
 swiper-container::part(button-next),
 swiper-container::part(button-prev) {
   background-color: #fff;
