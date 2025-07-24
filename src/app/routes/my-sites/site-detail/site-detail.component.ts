@@ -36,7 +36,7 @@ export class SiteDetailComponent implements OnInit {
 
   materialTypes = materialTypes;
   containerList = ContainerTypeList;
-  materials: string = '';
+  newMaterials: any[] = [];
   containerManage: string = '';
   mapCountryCodeToName = mapCountryCodeToName;
   location: CompanyLocationDetail | undefined = undefined;
@@ -111,12 +111,14 @@ export class SiteDetailComponent implements OnInit {
 
     const materialWithoutType = materialTypes.flatMap((t) => t.materials);
 
-    this.materials =
-      loc.acceptedMaterials
-        ?.map((code) => {
-          const found = materialWithoutType.find((m) => m.code === code);
-          return found ? found.name : code;
-        })
-        .join(', ') ?? '';
+    this.newMaterials = materialTypes
+      .filter((type) => type.materials.some((m) => loc.acceptedMaterials?.includes(m.code)))
+      .map((type) => {
+        return {
+          code: type.code,
+          name: type.name,
+          materials: type.materials.filter((m) => loc.acceptedMaterials?.includes(m.code)).map((m) => m.name) || [],
+        };
+      });
   }
 }
