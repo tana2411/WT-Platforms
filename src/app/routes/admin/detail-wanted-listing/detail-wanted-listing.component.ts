@@ -10,7 +10,7 @@ import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { AdminLayoutComponent } from 'app/layout/admin-layout/admin-layout.component';
-import { ListingType } from 'app/models';
+import { ListingStatus, ListingType } from 'app/models';
 import { DateFormatPipe } from 'app/pipes/date.pipe';
 import { AdminListingService } from 'app/services/admin/admin-listing.service';
 import { ListingDetailActionsComponent } from 'app/share/ui/admin/listing-detail-actions/listing-detail-actions.component';
@@ -81,5 +81,9 @@ export class DetailWantedListingComponent {
   onBack() {
     window.history.back();
     // this.router.navigateByUrl(`${ROUTES_WITH_SLASH.commercialManagement}?tab=3`);
+  }
+
+  mappingListingStatus(status?: ListingStatus) {
+    return status === ListingStatus.SOLD ? 'Fulfilled' : status;
   }
 }

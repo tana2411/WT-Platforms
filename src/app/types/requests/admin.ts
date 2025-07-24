@@ -1,6 +1,5 @@
-import { ListingMaterial } from 'app/models';
+import { ListingMaterial, ListingState, ListingStatus } from 'app/models';
 import { ListingMemberItem, MemberDetail } from 'app/models/admin/commercial.model';
-import { OfferState, OfferStatus } from 'app/models/offer';
 
 // interface Listing {
 //   id: number;
@@ -47,8 +46,8 @@ interface MaterialInformation {
 }
 
 interface BidStatus {
-  status: OfferStatus;
-  state: OfferState;
+  status: ListingStatus;
+  state: ListingState;
 }
 
 export interface GetListingDetailResponse {

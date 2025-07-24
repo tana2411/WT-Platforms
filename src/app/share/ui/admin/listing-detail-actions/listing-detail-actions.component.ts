@@ -15,8 +15,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { ListingState } from 'app/models';
 import { AdminListingDetail } from 'app/models/admin/listing.model';
-import { OfferState } from 'app/models/offer';
 import { AdminListingService } from 'app/services/admin/admin-listing.service';
 import { ListingRequestActionEnum } from 'app/types/requests/admin';
 import { catchError, EMPTY, finalize, switchMap, tap } from 'rxjs';
@@ -41,7 +41,7 @@ export class ListingDetailActionsComponent {
   injector = inject(Injector);
   translate = inject(TranslatePipe);
 
-  canAction = computed(() => this.listing()?.bidStatus.state === OfferState.PENDING);
+  canAction = computed(() => this.listing()?.bidStatus.state === ListingState.PENDING);
   submitting = signal<'accept' | 'reject' | 'request' | undefined>(undefined);
 
   onApprove = () => {
