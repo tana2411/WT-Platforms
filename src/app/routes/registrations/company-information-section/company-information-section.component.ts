@@ -50,7 +50,7 @@ export class CompanyInformationSectionComponent implements OnInit {
     country: new FormControl<string | null>(null, [Validators.required]),
     stateProvince: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(50)]),
     phoneNumber: new FormControl<string | null>(null, [Validators.required]),
-    mobileNumber: new FormControl<string | null>(null, [Validators.maxLength(15)]),
+    mobileNumber: new FormControl<string | null>(null, [Validators.required]),
   });
   authService = inject(AuthService);
   submitting = signal(false);
