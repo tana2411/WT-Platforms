@@ -87,11 +87,17 @@
             </div>
 
             <div class="fw-bold w-100 fs-24 mb-4">{{ 'Material Accepted' | translate }}</div>
-            <div class="row mb-md-4 mb-0">
-              @if (materials.length == 0) {
+            <div class="">
+              @if (newMaterials.length == 0) {
                 <p class="">{{ 'No materials found.' | translate }}</p>
               } @else {
-                <div>{{ materials }}</div>
+                <!-- <div>{{ materials }}</div> -->
+                @for (type of newMaterials; track $index) {
+                  <div class="col-12 mb-3">
+                    <div class="fw-bold mb-2">{{ type.name | translate }}</div>
+                    <div>{{ type.materials.join(', ') || '-' }}</div>
+                  </div>
+                }
               }
             </div>
 
