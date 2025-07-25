@@ -90,11 +90,11 @@
                     <mat-form-field appearance="outline" class="w-100 bg-white">
                       <mat-select
                         [formControlName]="item.value"
-                        [placeholder]="item.value === 'sortBy' ? 'Available Listing' : (item.placeholder ?? 'All')"
+                        [placeholder]="item.value === 'sortBy' ? 'Available Material' : (item.placeholder ?? 'All')"
                         class="fw-bold"
                       >
                         @if (item.value !== 'sortBy') {
-                          <mat-option [value]="null" class="option-bold-label">{{
+                          <mat-option [value]="null" class="option-bold-label text-wrap">{{
                             item.value === 'country' ? ('All Countries' | translate) : ('All' | translate)
                           }}</mat-option>
                         }
