@@ -33,7 +33,7 @@ export const packing = [
   { name: 'Boxes', code: 'boxes' },
   { name: 'Bulk Bags', code: 'bulk_bags' },
   { name: 'Loose', code: 'loose' },
-  { name: 'Octabins/Gaylords', code: 'octabins_gaylords' },
+  { name: 'Octabins/\u200BGaylords', code: 'octabins_gaylords' },
   { name: 'Pallets', code: 'pallets' },
 ];
 

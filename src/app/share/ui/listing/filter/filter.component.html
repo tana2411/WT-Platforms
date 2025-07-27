@@ -92,6 +92,8 @@
                         [formControlName]="item.value"
                         [placeholder]="item.value === 'sortBy' ? 'Available Material' : (item.placeholder ?? 'All')"
                         class="fw-bold"
+                        panelWidth="160px"
+                        panelClass="mt-2"
                       >
                         @if (item.value !== 'sortBy') {
                           <mat-option [value]="null" class="option-bold-label text-wrap">{{
