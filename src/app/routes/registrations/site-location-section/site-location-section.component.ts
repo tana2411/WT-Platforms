@@ -235,6 +235,7 @@ export class SiteLocationSectionComponent implements OnInit {
             lastName: user.user.lastName ?? '',
             phoneNumber: user.user.phoneNumber ?? '',
             otherMaterial: user.company.otherMaterial ?? '',
+            positionInCompany: user.user.jobTitle ?? '',
           });
 
           if (user.company.otherMaterial) this.showOtherMaterial.set(true);
