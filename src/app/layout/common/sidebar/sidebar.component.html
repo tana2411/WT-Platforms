@@ -68,16 +68,22 @@
 
         <div class="d-flex flex-column">
           @for (item of adminMenu; track item.title) {
-            <a
-              routerLink="{{ item.link }}"
-              routerLinkActive="active-link"
-              class="menu-item d-flex gap-3 align-items-center admin-menu-item"
-            >
-              @if (item.icon) {
-                <app-icon iconName="{{ item.icon }}" className="{{ item.iconClass }}"></app-icon>
-              }
-              <p class="fw-bold mb-0">{{ item.title | translate }}</p>
-            </a>
+            @if (!item.isTempLink) {
+              <a
+                routerLink="{{ item.link }}"
+                routerLinkActive="active-link"
+                class="menu-item d-flex gap-3 align-items-center admin-menu-item"
+              >
+                @if (item.icon) {
+                  <app-icon iconName="{{ item.icon }}" className="{{ item.iconClass }}"></app-icon>
+                }
+                <p class="fw-bold mb-0">{{ item.title | translate }}</p>
+              </a>
+            } @else {
+              <p (click)="onComingSoon()" class="menu-item d-flex gap-3 align-items-center admin-menu-item fw-bold">
+                {{ item.title | translate }}
+              </p>
+            }
           }
         </div>
       }
