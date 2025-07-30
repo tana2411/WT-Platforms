@@ -16,19 +16,21 @@
 
         <div class="col-12 col-md-6 col-lg-2">
           <div class="fw-bold text-uppercase mb-3">{{ 'OVERALL STATUS' | translate }}</div>
-          <p class="mb-1 fw-500">{{ member.overallStatus | titlecase }}</p>
+          <p class="mb-1 fw-500" [style.color]="MapUserStatusToColor[member.overallStatus]">{{ member.overallStatus | titlecase }}</p>
         </div>
 
         <div class="col-12 col-md-6 col-lg-2">
           <div class="fw-bold text-uppercase mb-3">{{ 'Registration Status' | translate }}</div>
-          <p class="mb-1 fw-500 {{ member.registrationStatus === 'complete' ? 'primary' : '' }}">
+          <p class="mb-1 fw-500" [style.color]="MapUserStatusToColor[member.registrationStatus]">
             {{ member.registrationStatus | titlecase }}
           </p>
         </div>
 
         <div class="col-12 col-md-6 col-lg-2">
           <div class="fw-bold text-uppercase mb-3">{{ 'ONBOARDING STATUS' | translate }}</div>
-          <p class="mb-1 fw-500">{{ MapOnboardingStatusToLabel[member.onboardingStatus] | translate | titlecase }}</p>
+          <p class="mb-1 fw-500" [style.color]="MapOnboardingStatusToColor[member.onboardingStatus]">
+            {{ MapOnboardingStatusToLabel[member.onboardingStatus] | translate | titlecase }}
+          </p>
         </div>
 
         <div class="col-12 col-lg-2 d-flex align-items-center justify-content-center justify-content-lg-end">

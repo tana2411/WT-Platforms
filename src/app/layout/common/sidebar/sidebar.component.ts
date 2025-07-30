@@ -1,6 +1,7 @@
 import { Component, inject, signal, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule } from '@ngx-translate/core';
@@ -24,6 +25,7 @@ export class SidebarComponent {
   Role = Role;
 
   private authService = inject(AuthService);
+  private snackbar = inject(MatSnackBar);
 
   openChildMenuIndex = signal<number | null>(null);
 
@@ -152,6 +154,42 @@ export class SidebarComponent {
       iconClass: 'highlight',
     },
     {
+      title: localized$('User management'),
+      link: undefined,
+      isTempLink: true,
+      icon: undefined,
+      iconClass: 'highlight',
+    },
+    {
+      title: localized$('Document management'),
+      link: undefined,
+      isTempLink: true,
+      icon: undefined,
+      iconClass: 'highlight',
+    },
+    {
+      title: localized$('Content management'),
+      link: undefined,
+      isTempLink: true,
+      icon: undefined,
+      iconClass: 'highlight',
+    },
+    {
+      title: localized$('Analytics'),
+      link: undefined,
+      isTempLink: true,
+      icon: undefined,
+      iconClass: 'highlight',
+    },
+    {
+      title: localized$('Settings'),
+      link: undefined,
+      isTempLink: true,
+      icon: undefined,
+      iconClass: 'highlight',
+    },
+
+    {
       title: localized$('Audit Trail'),
       link: ROUTES_WITH_SLASH.auditTrail,
       icon: undefined,
@@ -178,5 +216,9 @@ export class SidebarComponent {
 
   toLandingPage() {
     this.router.navigate([ROUTES_WITH_SLASH.landingPage]);
+  }
+
+  onComingSoon() {
+    this.snackbar.open('Coming Soon !');
   }
 }
