@@ -50,3 +50,21 @@
     height: 20px;
   }
 }
+
+.footer-link {
+  color: #1d1d1b;
+  text-decoration: none;
+}
+
+.footer-wrapper-login {
+  .side {
+    background-color: #f6f6f6;
+    width: 0;
+  }
+
+  @media screen and (min-width: 1200px) {
+    .side {
+      min-width: 250px;
+    }
+  }
+}

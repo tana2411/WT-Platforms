@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -9,8 +9,4 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./listing-footer.component.scss'],
   imports: [MatButtonModule, RouterModule, TranslateModule],
 })
-export class ListingFooterComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class ListingFooterComponent {}
