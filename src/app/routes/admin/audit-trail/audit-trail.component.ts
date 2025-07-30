@@ -188,6 +188,6 @@ export class AuditTrailComponent implements OnInit {
   }
 
   onBack() {
-    this.router.navigateByUrl(ROUTES_WITH_SLASH.liveActiveTable);
+    this.router.navigateByUrl(ROUTES_WITH_SLASH.commercialManagement);
   }
 }
