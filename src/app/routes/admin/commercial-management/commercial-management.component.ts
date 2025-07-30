@@ -44,7 +44,7 @@ export class CommercialManagementComponent {
   });
 
   listTabs = [
-    { label: localized$('MEMBERS'), path: 'members' },
+    { label: localized$('USERS'), path: 'members' },
     { label: localized$('LISTINGS'), path: 'sellers' },
     { label: localized$('OFFERS'), path: 'buyers' },
     { label: localized$('WANTED LISTINGS'), path: 'wanted' },

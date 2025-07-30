@@ -139,14 +139,14 @@ export class SidebarComponent {
   }
 
   adminMenu = [
+    // {
+    //   title: localized$('Homepage'),
+    //   link: ROUTES_WITH_SLASH.liveActiveTable,
+    //   icon: undefined,
+    //   iconClass: 'highlight',
+    // },
     {
-      title: localized$('Homepage'),
-      link: ROUTES_WITH_SLASH.liveActiveTable,
-      icon: undefined,
-      iconClass: 'highlight',
-    },
-    {
-      title: localized$('Commercial Management'),
+      title: localized$('Dashboard'),
       link: ROUTES_WITH_SLASH.commercialManagement,
       icon: undefined,
       iconClass: 'highlight',
