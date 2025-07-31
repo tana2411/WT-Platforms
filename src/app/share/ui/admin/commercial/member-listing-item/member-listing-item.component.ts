@@ -3,6 +3,7 @@ import { Component, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { mapCountryCodeToName } from '@app/statics';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { ListingMemberItem } from 'app/models/admin/commercial.model';
@@ -32,5 +33,18 @@ export class MemberListingItemComponent {
     }
 
     this.router.navigateByUrl(`${ROUTES_WITH_SLASH.adminMemberDetail}/${userId}`);
+  }
+
+  getCompanyType(type: string) {
+    switch (type) {
+      case 'seller':
+        return localized$('SELLER');
+      case 'buyer':
+        return localized$('BUYER');
+      case 'both':
+        return localized$('DUAL');
+      default:
+        return localized$('SELLER');
+    }
   }
 }
