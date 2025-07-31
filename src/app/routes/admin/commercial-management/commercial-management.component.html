@@ -20,7 +20,9 @@
           <span>
             {{ item.label | translate }}
 
-            <span class="badge">{{ pendingCount()[item.path] || '' }}</span>
+            @if (pendingCount()[item.path] !== undefined) {
+              <span class="badge">{{ pendingCount()[item.path] || '' }}</span>
+            }
           </span>
         </ng-template>
       </mat-tab>
