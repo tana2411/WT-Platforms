@@ -15,7 +15,15 @@
     animationDuration="0ms"
   >
     @for (item of listTabs; track $index) {
-      <mat-tab labelClass="wrapper {{ needCheck()[item.path] ? 'warning' : '' }}" [label]="item.label | translate"></mat-tab>
+      <mat-tab labelClass="wrapper {{ pendingCount()[item.path] ? 'warning' : '' }}">
+        <ng-template mat-tab-label>
+          <span>
+            {{ item.label | translate }}
+
+            <span class="badge">{{ pendingCount()[item.path] || '' }}</span>
+          </span>
+        </ng-template>
+      </mat-tab>
     }
   </mat-tab-group>
 

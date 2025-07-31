@@ -12,8 +12,15 @@ import { OfferState } from 'app/models/offer';
 import { AdminCommercialService } from 'app/services/admin/admin-commercial.service';
 import { ListingService } from 'app/services/listing.service';
 import { OfferService } from 'app/services/offer.service';
-import { filter, forkJoin, tap } from 'rxjs';
+import { combineLatest, filter, forkJoin, startWith, switchMap, tap, timer } from 'rxjs';
 import { AdminLayoutComponent } from '../../../layout/admin-layout/admin-layout.component';
+
+enum TabPath {
+  members = 'members',
+  sellers = 'sellers',
+  buyers = 'buyers',
+  wanted = 'wanted',
+}
 
 @Component({
   selector: 'app-commercial-management',
@@ -37,37 +44,49 @@ export class CommercialManagementComponent {
   injector = inject(Injector);
 
   initTab = Number(this.activeRoute.snapshot.queryParams['tab'] ?? 0);
-  needCheck = signal<any>({
-    sellers: false,
-    buyers: false,
-    wanted: false,
-  });
+  // needCheck = signal<any>({
+  //   sellers: false,
+  //   buyers: false,
+  //   wanted: false,
+  // });
 
   listTabs = [
-    { label: localized$('USERS'), path: 'members' },
-    { label: localized$('LISTINGS'), path: 'sellers' },
-    { label: localized$('OFFERS'), path: 'buyers' },
-    { label: localized$('WANTED LISTINGS'), path: 'wanted' },
+    { label: localized$('USERS'), path: TabPath.members },
+    { label: localized$('LISTINGS'), path: TabPath.sellers },
+    { label: localized$('OFFERS'), path: TabPath.buyers },
+    { label: localized$('WANTED LISTINGS'), path: TabPath.wanted },
   ];
 
+  pendingCount = signal<Record<TabPath, number | undefined>>({
+    [TabPath.members]: undefined,
+    [TabPath.buyers]: undefined,
+    [TabPath.sellers]: undefined,
+    [TabPath.wanted]: undefined,
+  });
+
   ngOnInit() {
-    this.selectedIndex = this.indexOfTab;
-    this.checkPendingState();
-    this.router.events
-      .pipe(
-        filter((e): e is NavigationEnd => e instanceof NavigationEnd),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe(() => {
-        this.selectedIndex = this.indexOfTab;
-      });
+    const navigation$ = this.router.events.pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd));
+
+    runInInjectionContext(this.injector, () => {
+      combineLatest([navigation$.pipe(startWith(null)), timer(0, 10000)])
+        .pipe(
+          tap(() => {
+            this.selectedIndex = this.indexOfTab;
+          }),
+          switchMap(() => {
+            return this.checkPendingState();
+          }),
+          takeUntilDestroyed(this.destroyRef),
+        )
+        .subscribe();
+    });
   }
 
   get indexOfTab(): number {
     const routes = Object.values(this.listTabs).map((tab) => tab.path);
 
     const child = this.activatedRoute.firstChild;
-    const tabName = child?.snapshot.url[0]?.path;
+    const tabName = child?.snapshot.url[0]?.path as TabPath;
 
     if (tabName) {
       return routes.indexOf(tabName);
@@ -100,8 +119,6 @@ export class CommercialManagementComponent {
     // });
 
     const checkOffers = this.offerService.getPurchases({
-      skip: 0,
-      limit: 10,
       where: {
         state: OfferState.PENDING,
       },
@@ -113,24 +130,20 @@ export class CommercialManagementComponent {
       },
     });
 
-    runInInjectionContext(this.injector, () =>
-      forkJoin([
-        // checkMember,
-        checkListing,
-        checkOffers,
-        checkWanted,
-      ])
-        .pipe(
-          takeUntilDestroyed(),
-          tap(([listings, offers, wanted]) => {
-            this.needCheck.set({
-              sellers: !!Number(listings.totalCount),
-              buyers: !!Number(offers.totalCount),
-              wanted: !!Number(wanted.totalCount),
-            });
-          }),
-        )
-        .subscribe(),
+    return forkJoin([
+      // checkMember,
+      checkListing,
+      checkOffers,
+      checkWanted,
+    ]).pipe(
+      tap(([listings, offers, wanted]) => {
+        this.pendingCount.set({
+          [TabPath.members]: undefined,
+          [TabPath.sellers]: Number(listings.totalCount),
+          [TabPath.buyers]: Number(offers.totalCount),
+          [TabPath.wanted]: Number(wanted.totalCount),
+        });
+      }),
     );
   }
 }

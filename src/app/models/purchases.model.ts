@@ -1,8 +1,8 @@
 import { OfferState, OfferStatus } from './offer';
 
 export interface PurchaseFilterParams {
-  skip: number;
-  limit: number;
+  skip?: number;
+  limit?: number;
   where: {
     buyerName?: string;
     sellerName?: string;
