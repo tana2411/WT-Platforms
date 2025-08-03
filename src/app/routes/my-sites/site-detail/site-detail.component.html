@@ -99,6 +99,13 @@
                   </div>
                 }
               }
+
+              @if (location.otherMaterial) {
+                <div class="col-12 mb-3">
+                  <div class="fw-bold mb-2">{{ 'Other Material' | translate }}</div>
+                  <div>{{ location.otherMaterial | titlecase }}</div>
+                </div>
+              }
             </div>
 
             <div class="fw-bold w-100 fs-24 mb-4">{{ 'On-site Facilities' | translate }}</div>

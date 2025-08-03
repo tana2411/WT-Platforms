@@ -24,6 +24,7 @@ export interface CompanyLocationDetail {
   accessRestrictions: string;
   siteSpecificInstructions: string;
   acceptedMaterials: string[] | null;
+  otherMaterial: string;
   createdAt: string;
   updatedAt: string;
   companyId: number;
