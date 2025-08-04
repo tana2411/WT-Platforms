@@ -13,7 +13,7 @@ export const MapOnboardingStatusToLabel = {
 export const MapUserStatusToColor = {
   'in progress': '#F9A52B',
   complete: '#03985C',
-  'waiting for approval': '#D75A66',
+  'awaiting approval': '#D75A66',
 };
 
 export const MapOnboardingStatusToColor = {
