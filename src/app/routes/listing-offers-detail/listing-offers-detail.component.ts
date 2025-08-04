@@ -27,7 +27,7 @@ import { ProductExpiryComponent } from 'app/share/ui/listing/product-expiry/prod
 import { ProductGridComponent } from 'app/share/ui/listing/product-grid/product-grid.component';
 import { ProductStatusComponent } from 'app/share/ui/listing/product-status/product-status.component';
 import { ReviewStatusComponent } from 'app/share/ui/product-detail/review-status/review-status.component';
-import { getListingTitle, getLocationAddress, getMaterialTypeLabel } from 'app/share/utils/offer';
+import { getListingTitle, getMaterialTypeLabel } from 'app/share/utils/offer';
 import { isNil } from 'lodash';
 
 @Component({
@@ -110,6 +110,10 @@ export class ListingOffersDetailComponent {
       ];
     }
 
+    const country = detail?.locationDetails.address.country
+      ? mapCountryCodeToName[detail.locationDetails.address.country]
+      : '';
+
     return [
       {
         label: this.translate.transform(localized$('Material')),
@@ -142,7 +146,7 @@ export class ListingOffersDetailComponent {
       {
         label: this.translate.transform(localized$('Material Location')),
         icon: 'location_on',
-        value: getLocationAddress(detail?.locationDetails.address as any),
+        value: country,
       },
     ];
   });
