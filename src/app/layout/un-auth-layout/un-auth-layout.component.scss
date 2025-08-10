@@ -24,3 +24,16 @@
     right: 8px;
   }
 }
+
+app-language-selector {
+  @media screen and (max-width: 639px) {
+    top: -18px !important;
+    right: 0 !important;
+  }
+
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 50% !important;
+  transform: translateY(-50%);
+}
