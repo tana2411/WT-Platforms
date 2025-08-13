@@ -10,7 +10,7 @@ import { CommonLayoutComponent } from 'app/layout/common-layout/common-layout.co
 import { User } from 'app/models';
 import { AuthService } from 'app/services/auth.service';
 import { ItemOf } from 'app/types/utils';
-import { filter } from 'rxjs';
+import { filter, first } from 'rxjs';
 import { TabContainerComponent } from '../account-settings/tab-container/tab-container.component';
 
 const ListTab = [
@@ -85,6 +85,7 @@ export class AccountSettingComponent implements OnInit {
       .pipe(
         filter((e): e is NavigationEnd => e instanceof NavigationEnd),
         takeUntilDestroyed(this.destroyRef),
+        first(),
       )
       .subscribe(() => {
         this.activeTab.set(this.indexOfTab);
