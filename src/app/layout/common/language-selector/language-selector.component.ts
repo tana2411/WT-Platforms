@@ -17,6 +17,7 @@ export class LanguageSelectorComponent {
   ];
 
   currentLanguageFlag: string;
+  currentLanguage: string;
   platformId = inject(PLATFORM_ID);
 
   constructor(private translate: TranslateService) {
@@ -24,6 +25,7 @@ export class LanguageSelectorComponent {
     if (isPlatformBrowser(this.platformId)) {
       languageCode = localStorage.getItem('language') ?? 'en';
     }
+    this.currentLanguage = languageCode;
     this.currentLanguageFlag =
       this.languages.find((lang) => lang.code === languageCode)?.flag ?? this.languages[0].flag;
     this.translate.use(languageCode);

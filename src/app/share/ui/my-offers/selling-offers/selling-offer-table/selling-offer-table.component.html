@@ -2,7 +2,7 @@
 
 @for (item of items; track item.id) {
   <div class="wrapper w-100 overflow-auto mb-4 mb-md-5" routerLink="/offer-detail/{{ item.id }}">
-    <div class="d-flex p-4 border rounded border-primary justify-content-between gap-4 row-item">
+    <div class="d-flex p-4 rounded-4 border-thin justify-content-between gap-4 row-item">
       <img class="image" [src]="item.featureImage" appFallbackImage loading="lazy" alt="" />
 
       <div class="column-item">

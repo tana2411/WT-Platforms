@@ -1,13 +1,18 @@
-<div mat-button [matMenuTriggerFor]="menu" class="wrapper">
-  <i class="fi {{ currentLanguageFlag }}"></i>
+<div mat-button [matMenuTriggerFor]="menu" class="wrapper flex align-items-center gap-2">
+  <div class="flag-wrapper">
+    <i class="fi {{ currentLanguageFlag }}"></i>
+  </div>
 
-  <mat-icon>arrow_drop_down</mat-icon>
+  <div class="d-flex align-items-center text-nowrap" style="border-bottom: 2px solid #000; padding-bottom: 4px">
+    <p class="text-uppercase fw-bold mb-0" style="margin-right: 4px">{{ currentLanguage }}</p>
+    <mat-icon>keyboard_arrow_down</mat-icon>
+  </div>
 </div>
 
 <mat-menu #menu="matMenu" class="language-menu">
   @for (language of languages; track language) {
     <div class="menu-item" type="button" (click)="setLanguage(language.code)">
-      <p class="menu-title"><i class="fi {{ language.flag }}"></i> {{ language.label }}</p>
+      <p class="menu-title">{{ language.label }}</p>
     </div>
   }
 </mat-menu>
