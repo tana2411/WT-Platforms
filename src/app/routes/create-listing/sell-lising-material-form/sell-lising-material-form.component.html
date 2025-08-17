@@ -261,7 +261,6 @@
                   <mat-select formControlName="wasteStoration" placeholder="Please Select">
                     <mat-option value="indoor">{{ 'Indoor' | translate }}</mat-option>
                     <mat-option value="outdoor">{{ 'Outdoor' | translate }}</mat-option>
-                    <mat-option value="both">{{ 'Both' | translate }}</mat-option>
                     <mat-option value="any">{{ 'Any' | translate }}</mat-option>
                   </mat-select>
                   @if (formGroup.get('wasteStoration')?.hasError('required')) {
