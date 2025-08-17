@@ -18,7 +18,7 @@
 
   @if (!onlySearchBar) {
     <!-- Filter Section -->
-    <div class="mt-lg-3 border background-on-primary border-radius filter-wrapper" [class.open-mobile-filter]="openMobileFilter()">
+    <div class="mt-lg-3 background-on-primary border-radius filter-wrapper" [class.open-mobile-filter]="openMobileFilter()">
       <!-- clean filter button for desktop  -->
       @if (hasFilterParams && !openMobileFilter()) {
         <div class="clear-all-btn d-none d-md-block fw-bold rounded border" (click)="clearFilter(); $event.stopPropagation()">
