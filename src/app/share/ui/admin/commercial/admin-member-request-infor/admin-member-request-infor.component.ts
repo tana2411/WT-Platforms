@@ -7,6 +7,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 import { tap } from 'rxjs';
 
@@ -40,6 +42,7 @@ enum SendMessage {
     MatButtonModule,
     MatSnackBarModule,
     IconComponent,
+    TranslateModule,
   ],
   templateUrl: './admin-member-request-infor.component.html',
   styleUrl: './admin-member-request-infor.component.scss',
@@ -48,18 +51,44 @@ export class AdminMemberRequestInforComponent {
   RequestInfo = RequestInfo;
   SendMessage = SendMessage;
 
+  injector = inject(Injector);
+
   requestInfo: Option[] = [
-    { label: 'Additional company documentation required', value: RequestInfo.Additional },
-    { label: 'Clarification on provided details', value: RequestInfo.Clarification },
-    { label: 'Update on business address', value: RequestInfo.UpdateON },
-    { label: 'Other (Provide a custom request)', value: RequestInfo.Other },
+    {
+      label: localized$('Additional company documentation required'),
+      value: localized$(RequestInfo.Additional),
+    },
+    {
+      label: localized$('Clarification on provided details'),
+      value: localized$(RequestInfo.Clarification),
+    },
+    {
+      label: localized$('Update on business address'),
+      value: localized$(RequestInfo.UpdateON),
+    },
+    {
+      label: localized$('Other (Provide a custom request)'),
+      value: localized$(RequestInfo.Other),
+    },
   ];
 
   sendMessage: Option[] = [
-    { label: 'Additional company documentation required', value: SendMessage.Welcome },
-    { label: 'Clarification on provided details', value: SendMessage.UnderReview },
-    { label: 'Update on business address', value: SendMessage.Additional },
-    { label: 'Other (Provide a custom request)', value: SendMessage.Other },
+    {
+      label: localized$('Additional company documentation required'),
+      value: localized$(SendMessage.Welcome),
+    },
+    {
+      label: localized$('Clarification on provided details'),
+      value: localized$(SendMessage.UnderReview),
+    },
+    {
+      label: localized$('Update on business address'),
+      value: localized$(SendMessage.Additional),
+    },
+    {
+      label: localized$('Other (Provide a custom request)'),
+      value: localized$(SendMessage.Other),
+    },
   ];
 
   requestInfoForm = new FormGroup({
@@ -70,7 +99,6 @@ export class AdminMemberRequestInforComponent {
   });
 
   // adminListingService = inject(AdminListingService);
-  injector = inject(Injector);
 
   constructor(private dialogRef: MatDialogRef<AdminMemberRequestInforComponent>) {
     this.requestInfoForm.valueChanges

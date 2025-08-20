@@ -7,6 +7,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { AdminListingService } from 'app/services/admin/admin-listing.service';
 import { tap } from 'rxjs';
 
@@ -33,6 +35,7 @@ enum RejectionReason {
     ReactiveFormsModule,
     MatButtonModule,
     MatSnackBarModule,
+    TranslateModule,
   ],
   providers: [AdminListingService],
   templateUrl: './reject-modal.component.html',
@@ -41,18 +44,32 @@ enum RejectionReason {
 export class RejectModalComponent {
   RejectionReason = RejectionReason;
   rejectionReasons: RejectionReasonOpt[] = [
-    { label: 'Incomplete documentation', value: RejectionReason.IncompleteDocument },
-    { label: 'Invalid company registration', value: RejectionReason.InvalidCompany },
-    { label: 'Duplicate account', value: RejectionReason.Duplicate },
-    { label: 'Unverified contact information', value: RejectionReason.Unverified },
-    { label: 'Other (admin to provide a custom reason)', value: RejectionReason.Other },
+    {
+      label: localized$('Incomplete documentation'),
+      value: localized$(RejectionReason.IncompleteDocument),
+    },
+    {
+      label: localized$('Invalid company registration'),
+      value: localized$(RejectionReason.InvalidCompany),
+    },
+    {
+      label: localized$('Duplicate account'),
+      value: localized$(RejectionReason.Duplicate),
+    },
+    {
+      label: localized$('Unverified contact information'),
+      value: localized$(RejectionReason.Unverified),
+    },
+    {
+      label: localized$('Other (admin to provide a custom reason)'),
+      value: localized$(RejectionReason.Other),
+    },
   ];
 
   rejectForm = new FormGroup({
     rejectionReason: new FormControl<string | null>(null, [Validators.required]),
     message: new FormControl<string | undefined>(undefined),
   });
-
   adminListingService = inject(AdminListingService);
   injector = inject(Injector);
   snackbar = inject(MatSnackBar);
