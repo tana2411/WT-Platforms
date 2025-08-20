@@ -45,7 +45,7 @@
 
       <p class="mb-0">
         <span>{{ isSeller() ? ('Seller Location' | translate) : ('Buyer Location' | translate) }}: </span>
-        <span>{{ mapCountryCodeToName[company.country!] }}</span>
+        <span>{{ location() ? mapCountryCodeToName[location()!] : '' }}</span>
       </p>
 
       @if (listing(); as listing) {
