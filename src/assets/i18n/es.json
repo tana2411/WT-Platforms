@@ -650,6 +650,8 @@
   "company documents in progress": "documentos de la empresa en progreso",
   "site location added": "ubicación del sitio añadida",
   "site location in progress": "ubicación del sitio en progreso",
+  "in progress": "en progreso",
+  "complete": "completo",
   "Failed to send request. Please try again or contact support.": "Error al enviar la solicitud. Por favor, inténtalo de nuevo o contacta al soporte.",
   "Ok": "Ok",
   "Your request has been successfully sent": "Tu solicitud ha sido enviada exitosamente",
