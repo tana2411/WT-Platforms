@@ -41,7 +41,7 @@
       <h2 class="fw-bold mb-4">{{ 'Send Message' | translate }}</h2>
       <mat-radio-group class="d-flex flex-column gap-2" formControlName="sendMessage" name="sendMessage">
         @for (reason of requestInfo; track reason) {
-          <mat-radio-button class="fw-bold" [value]="reason.value">{{ reason.label }}</mat-radio-button>
+          <mat-radio-button class="fw-bold" [value]="reason.value">{{ reason.label | translate }}</mat-radio-button>
         }
       </mat-radio-group>
 

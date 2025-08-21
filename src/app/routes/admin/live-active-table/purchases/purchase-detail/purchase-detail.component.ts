@@ -4,8 +4,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { mapCountryCodeToName, materialTypes } from '@app/statics';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
+import { OfferState } from 'app/models/offer';
 import { Purchase } from 'app/models/purchases.model';
 import { getOfferStateColor, getOfferStatusColor } from 'app/share/utils/offer';
 
@@ -21,6 +23,7 @@ export class PurchaseDetailComponent implements OnInit {
 
   mapCountryCodeToName = mapCountryCodeToName;
   materialTypes = materialTypes;
+  offerState = OfferState;
 
   getOfferStatusColor = getOfferStatusColor;
   getOfferStateColor = getOfferStateColor;
@@ -48,5 +51,16 @@ export class PurchaseDetailComponent implements OnInit {
 
   onViewDetail() {
     this.router.navigateByUrl(`${ROUTES_WITH_SLASH.adminBuyerActivityDetail}/${this.purchase?.offer.id}`);
+  }
+
+  mapOfferStateToLabel(state: OfferState) {
+    switch (state) {
+      case this.offerState.ACTIVE:
+        return localized$('Active');
+      case this.offerState.CLOSED:
+        return localized$('Closed');
+      case this.offerState.PENDING:
+        return localized$('Pending');
+    }
   }
 }

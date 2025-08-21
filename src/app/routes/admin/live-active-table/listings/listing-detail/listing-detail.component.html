@@ -62,7 +62,7 @@
             <div class="mb-4 col-6 col-md-auto">
               <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'STATUS' | translate }}</div>
               <p class="mb-1 small fw-500" [style.color]="getListingStatusColor(listing!.status)">
-                {{ getListingStatusText(listing?.status) | titlecase | translate }}
+                {{ getListingStatusText(listing?.status) | translate | titlecase }}
               </p>
             </div>
 
@@ -71,7 +71,7 @@
               <div class="d-flex align-items-center gap-1">
                 <mat-icon [style.color]="getListingStateColor(listing!.state)">fiber_manual_record</mat-icon>
                 <span class="small" [style.color]="getListingStateColor(listing!.state)">{{
-                  getListingStateText(listing?.state) | titlecase | translate
+                  getListingStateText(listing?.state) | translate | titlecase
                 }}</span>
               </div>
             </div>

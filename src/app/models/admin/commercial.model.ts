@@ -7,6 +7,16 @@ export enum OnboardingStatus {
   SITE_LOCATION_IN_PROGRESS = 'site_location_in_progress',
 }
 
+export enum RegistrationStatus {
+  IN_PROGRESS = 'in progress',
+  COMPLETE = 'complete',
+}
+
+export enum OverallStatus {
+  IN_PROGRESS = 'in progress',
+  COMPLETE = 'complete',
+}
+
 export type ListingMemberItem = {
   user: {
     userId: number;
@@ -20,8 +30,8 @@ export type ListingMemberItem = {
   documents: CommercialDocument[]; // Updated type
   locations: Location[]; // Updated type
   onboardingStatus: OnboardingStatus;
-  registrationStatus: string;
-  overallStatus: string;
+  registrationStatus: RegistrationStatus;
+  overallStatus: OverallStatus;
 };
 
 export type MemberDetail = {
