@@ -6,6 +6,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule } from '@ngx-translate/core';
 import { CompanyDocumentType } from 'app/models';
 import { CommercialDocument, CompanyDocumentStatus, MemberDetail } from 'app/models/admin/commercial.model';
@@ -80,17 +81,17 @@ export class AdminCompanyDocumentComponent {
   getDocumentStatusText = (status: CompanyDocumentStatus): string => {
     switch (status) {
       case CompanyDocumentStatus.ACTIVE:
-        return 'Active';
+        return localized$('Active');
       case CompanyDocumentStatus.APPROVED:
-        return 'Approved';
+        return localized$('Approved');
       case CompanyDocumentStatus.PENDING:
-        return 'Pending';
+        return localized$('Pending');
       case CompanyDocumentStatus.REQUEST_INFORMATION:
-        return 'Request Information';
+        return localized$('Request Information');
       case CompanyDocumentStatus.REJECTED:
-        return 'Rejected';
+        return localized$('Rejected');
       default:
-        return 'Unknown';
+        return localized$('Unknown');
     }
   };
 

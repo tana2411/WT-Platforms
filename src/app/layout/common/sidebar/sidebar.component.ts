@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { User } from 'app/models/auth.model';
 import { AuthService } from 'app/services/auth.service';
@@ -19,6 +19,7 @@ import { IconComponent } from '../icon/icon.component';
   imports: [IconComponent, MatIconModule, RouterModule, TranslateModule],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
+  providers: [TranslatePipe],
 })
 export class SidebarComponent {
   user: Signal<User | undefined | null>;
@@ -26,6 +27,7 @@ export class SidebarComponent {
 
   private authService = inject(AuthService);
   private snackbar = inject(MatSnackBar);
+  translate = inject(TranslatePipe);
 
   openChildMenuIndex = signal<number | null>(null);
 
@@ -219,6 +221,6 @@ export class SidebarComponent {
   }
 
   onComingSoon() {
-    this.snackbar.open('Coming Soon !');
+    this.snackbar.open(this.translate.transform(localized$('Coming Soon !')));
   }
 }

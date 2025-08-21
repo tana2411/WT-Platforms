@@ -1,5 +1,5 @@
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { OnboardingStatus } from 'app/models/admin/commercial.model';
+import { OnboardingStatus, OverallStatus, RegistrationStatus } from 'app/models/admin/commercial.model';
 
 export const MapOnboardingStatusToLabel = {
   [OnboardingStatus.COMPANY_INFORMATION_COMPLETE]: localized$('company information complete'),
@@ -8,6 +8,16 @@ export const MapOnboardingStatusToLabel = {
   [OnboardingStatus.COMPANY_DOCUMENTS_IN_PROGRESS]: localized$('company documents in progress'),
   [OnboardingStatus.SITE_LOCATION_ADDED]: localized$('site location added'),
   [OnboardingStatus.SITE_LOCATION_IN_PROGRESS]: localized$('site location in progress'),
+};
+
+export const MapOverallStatusToLabel = {
+  [OverallStatus.IN_PROGRESS]: localized$('in progress'),
+  [OverallStatus.COMPLETE]: localized$('complete'),
+};
+
+export const MapRegistrationStatusToLabel = {
+  [RegistrationStatus.IN_PROGRESS]: localized$('in progress'),
+  [RegistrationStatus.COMPLETE]: localized$('complete'),
 };
 
 export const MapUserStatusToColor = {

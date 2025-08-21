@@ -39,7 +39,7 @@
           <div class="col-3">
             <div class="fw-bold mb-3">{{ 'STATUS' | translate }}</div>
             @if (purchase?.offer; as offer) {
-              <p class="mb-1" [style.color]="getOfferStatusColor(offer.status)">{{ offer.status | titlecase }}</p>
+              <p class="mb-1" [style.color]="getOfferStatusColor(offer.status)">{{ offer.status | titlecase | translate }}</p>
             }
           </div>
         </div>
@@ -60,7 +60,9 @@
             @if (purchase?.offer; as offer) {
               <div class="d-flex align-items-center gap-1">
                 <mat-icon [style.color]="getOfferStateColor(offer.state)">fiber_manual_record</mat-icon>
-                <span class="small" [style.color]="getOfferStateColor(offer.state)">{{ offer.state | titlecase }}</span>
+                <span class="small" [style.color]="getOfferStateColor(offer.state)">{{
+                  mapOfferStateToLabel(offer.state) | titlecase | translate
+                }}</span>
               </div>
             }
           </div>

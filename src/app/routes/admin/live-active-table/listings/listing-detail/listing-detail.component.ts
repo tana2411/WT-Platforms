@@ -4,9 +4,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { mapCountryCodeToName, materialTypes } from '@app/statics';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
-import { SellListingDetail } from 'app/models';
+import { ListingState, ListingStatus, SellListingDetail } from 'app/models';
 import {
   getCurrencySignal,
   getListingStateColor,
@@ -14,7 +15,6 @@ import {
   getOfferStateColor,
   getOfferStatusColor,
 } from 'app/share/utils/offer';
-
 @Component({
   selector: 'app-listing-detail',
   templateUrl: './listing-detail.component.html',
@@ -58,5 +58,37 @@ export class ListingDetailComponent implements OnInit {
 
   onViewDetail() {
     this.router.navigateByUrl(`${ROUTES_WITH_SLASH.adminSaleListingDetail}/${this.listing!.id}`);
+  }
+
+  getListingStatusText(status?: ListingStatus | null): string {
+    if (status == null) return '';
+
+    switch (status) {
+      case ListingStatus.AVAILABLE:
+        return localized$('available');
+      case ListingStatus.PENDING:
+        return localized$('pending');
+      case ListingStatus.SOLD:
+        return localized$('sold');
+      case ListingStatus.REJECTED:
+        return localized$('rejected');
+      default:
+        return '';
+    }
+  }
+
+  getListingStateText(status?: ListingState | null): string {
+    if (status == null) return '';
+
+    switch (status) {
+      case ListingState.APPROVED:
+        return localized$('approved');
+      case ListingState.PENDING:
+        return localized$('pending');
+      case ListingState.REJECTED:
+        return localized$('rejected');
+      default:
+        return '';
+    }
   }
 }

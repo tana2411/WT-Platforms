@@ -4,24 +4,29 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { mapCountryCodeToName } from '@app/statics';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { ListingMemberItem } from 'app/models/admin/commercial.model';
 import { MapOnboardingStatusToColor, MapOnboardingStatusToLabel, MapUserStatusToColor } from 'app/share/utils/admin';
 import { isNil } from 'lodash';
+import { MapOverallStatusToLabel, MapRegistrationStatusToLabel } from './../../../../utils/admin';
 
 @Component({
   selector: 'app-member-listing-item',
   imports: [MatButtonModule, TitleCasePipe, DatePipe, TranslateModule],
   templateUrl: './member-listing-item.component.html',
   styleUrl: './member-listing-item.component.scss',
+  providers: [TranslatePipe],
 })
 export class MemberListingItemComponent {
   router = inject(Router);
+  translate = inject(TranslatePipe);
 
   member = input<ListingMemberItem>();
 
   mapCountryCodeToName = mapCountryCodeToName;
+  MapOverallStatusToLabel = MapOverallStatusToLabel;
+  MapRegistrationStatusToLabel = MapRegistrationStatusToLabel;
   MapOnboardingStatusToLabel = MapOnboardingStatusToLabel;
   MapOnboardingStatusToColor = MapOnboardingStatusToColor;
   MapUserStatusToColor = MapUserStatusToColor as any;
