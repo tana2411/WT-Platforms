@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { mapCountryCodeToName, materialTypes } from '@app/statics';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule } from '@ngx-translate/core';
 import { ROUTES_WITH_SLASH } from 'app/constants/route.const';
 import { ListingStatus } from 'app/models';
@@ -51,6 +52,19 @@ export class WantedDetailComponent implements OnInit {
   }
 
   mappingListingStatus(status?: ListingStatus) {
-    return status === ListingStatus.SOLD ? 'Fulfilled' : status;
+    switch (status) {
+      case ListingStatus.SOLD:
+        return localized$('Fulfilled');
+      case ListingStatus.AVAILABLE:
+        return localized$('available');
+      case ListingStatus.PENDING:
+        return localized$('pending');
+      case ListingStatus.REJECTED:
+        return localized$('rejected');
+      case ListingStatus.EXPIRED:
+        return localized$('Expired');
+      default:
+        return status;
+    }
   }
 }

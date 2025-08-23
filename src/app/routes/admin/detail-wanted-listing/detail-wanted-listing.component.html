@@ -64,7 +64,7 @@
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'status' | translate }}</p>
             <p class="mb-0 fw-500" [style.color]="getListingStatusColor(listingDetail.listing.status)">
-              {{ (mappingListingStatus(listingDetail.bidStatus.status) | titlecase) || '-' }}
+              {{ mappingListingStatus(listingDetail.bidStatus.status) || '-' | translate | titlecase }}
             </p>
           </div>
 
@@ -83,7 +83,7 @@
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'State' | translate }}</p>
             <p class="mb-0 fw-500" [style.color]="getListingStateColor(listingDetail.listing.state)">
-              {{ listingDetail.bidStatus.state | titlecase }}
+              {{ listingDetail.bidStatus.state | translate | titlecase }}
             </p>
           </div>
         </div>

@@ -7,7 +7,7 @@
       [disabled]="submitting()"
       [class.overlay-spinner]="submitting() == 'accept'"
     >
-      Approve
+      {{ 'Approve' | translate }}
     </button>
     <button
       mat-flat-button
@@ -16,7 +16,7 @@
       [disabled]="submitting()"
       [class.overlay-spinner]="submitting() == 'reject'"
     >
-      Reject
+      {{ 'Reject' | translate }}
     </button>
     <!-- <button
       matButton="outlined"

@@ -121,7 +121,7 @@
       <div class="col-md-12 mb-4">
         <label class="fw-bold mb-2 text-uppercase">{{ 'Price Per Metric Tonne' | translate }}</label>
         <mat-form-field appearance="outline" class="w-100">
-          <input matInput type="number" placeholder="Type here" formControlName="pricePerMetric" />
+          <input matInput type="number" [placeholder]="'Type here' | translate" formControlName="pricePerMetric" />
           @if (formGroup.get('pricePerMetric')?.hasError('required')) {
             <mat-error>{{ 'This is a required field.' | translate }}</mat-error>
           }
@@ -131,7 +131,7 @@
       <div class="col-12 mb-4">
         <mat-label class="fw-bold mb-2 d-block text-uppercase">{{ 'incoterms' | translate }} </mat-label>
         <mat-form-field appearance="outline" class="w-100">
-          <mat-select placeholder="Please select..." formControlName="incoterms">
+          <mat-select [placeholder]="'Please select...' | translate" formControlName="incoterms">
             <mat-option value="EXW">{{ 'EXW' | translate }}</mat-option>
             <mat-option value="FCA">{{ 'FCA' | translate }}</mat-option>
             <mat-option value="FAS">{{ 'FAS' | translate }}</mat-option>

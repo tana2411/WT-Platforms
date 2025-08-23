@@ -6,13 +6,13 @@
     animationDuration="0ms"
   >
     @for (tab of listTabOffer; track tab.label) {
-      <mat-tab label="{{ tab.label }}"> </mat-tab>
+      <mat-tab label="{{ tab.label | translate }}"> </mat-tab>
     }
   </mat-tab-group>
 
   <div class="d-flex align-items-center gap-2 mb-5">
     <mat-icon class="primary">info_outline</mat-icon>
-    <span class="fw-500">View the status of the offers you put on seller listings.</span>
+    <span class="fw-500">{{ 'View the status of the offers you put on seller listings.' | translate }}</span>
   </div>
 
   <div [formGroup]="form">
@@ -45,7 +45,7 @@
       <app-selling-offer-table [page]="page()" [totalItems]="totalItems()" [items]="items()!" (pageChange)="onPageChange($event)" />
     } @else {
       @if (emptyProps(); as emptyProps) {
-        <app-empty-offer [title]="emptyProps.title" [content]="emptyProps.content" [buttons]="emptyProps.buttons" />
+        <app-empty-offer [title]="emptyProps.title | translate" [content]="emptyProps.content | translate" [buttons]="emptyProps.buttons" />
       }
     }
   }

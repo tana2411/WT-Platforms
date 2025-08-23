@@ -1,3 +1,4 @@
+import { TitleCasePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
@@ -16,7 +17,7 @@ type Item = {
   selector: 'app-product-description',
   templateUrl: './product-description.component.html',
   styleUrl: './product-description.component.scss',
-  imports: [IconComponent, TranslateModule],
+  imports: [IconComponent, TranslateModule, TitleCasePipe],
 })
 export class ProductDescriptionComponent {
   @Input({ required: true }) items: Item[] = [];

@@ -28,13 +28,15 @@
 
       <div class="column-item">
         <p class="label">{{ 'Status' | translate }}</p>
-        <p class="content fw-bold {{ item.status }}" [style.color]="getOfferStatusColor(item.status)">{{ item.status | titlecase }}</p>
+        <p class="content fw-bold {{ item.status }}" [style.color]="getOfferStatusColor(item.status)">
+          {{ item.status | translate | titlecase }}
+        </p>
       </div>
 
       <div class="column-item">
         <p class="label">{{ 'Buyer Status' | translate }}</p>
         <p class="content fw-bold {{ item.buyerStatus }}" [style.color]="getCompanyStatusColor(item.buyerStatus)">
-          {{ item.buyerStatus | titlecase }}
+          {{ item.buyerStatus || '' | translate | titlecase }}
         </p>
       </div>
 

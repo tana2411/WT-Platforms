@@ -13,7 +13,7 @@
           class="fw-bold primary border-primary border rounded big-btn text-uppercase button"
           (click)="button.onClick()"
         >
-          {{ button.label }}
+          {{ button.label | translate }}
         </button>
       } @else {
         <button
@@ -21,7 +21,7 @@
           class="fw-bold background-primary text-white rounded text-uppercase big-btn button"
           (click)="button.onClick()"
         >
-          {{ button.label }}
+          {{ button.label | translate }}
         </button>
       }
     }

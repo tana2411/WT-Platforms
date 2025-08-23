@@ -84,6 +84,19 @@ export class DetailWantedListingComponent {
   }
 
   mappingListingStatus(status?: ListingStatus) {
-    return status === ListingStatus.SOLD ? 'Fulfilled' : status;
+    switch (status) {
+      case ListingStatus.SOLD:
+        return localized$('Fulfilled');
+      case ListingStatus.AVAILABLE:
+        return localized$('available');
+      case ListingStatus.PENDING:
+        return localized$('pending');
+      case ListingStatus.REJECTED:
+        return localized$('rejected');
+      case ListingStatus.EXPIRED:
+        return localized$('Expired');
+      default:
+        return status;
+    }
   }
 }

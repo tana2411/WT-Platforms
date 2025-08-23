@@ -6,6 +6,7 @@ export enum ListingStatus {
   PENDING = 'pending',
   SOLD = 'sold',
   REJECTED = 'rejected',
+  EXPIRED = 'expired',
 }
 
 export enum ListingState {
