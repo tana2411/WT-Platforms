@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
 
 export type EmptyOfferButton = {
@@ -10,7 +11,7 @@ export type EmptyOfferButton = {
 
 @Component({
   selector: 'app-empty-offer',
-  imports: [IconComponent, MatButtonModule],
+  imports: [IconComponent, MatButtonModule, TranslateModule],
   templateUrl: './empty-offer.component.html',
   styleUrl: './empty-offer.component.scss',
 })

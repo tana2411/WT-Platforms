@@ -1,12 +1,13 @@
 import { Component, inject, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-share-listing',
   templateUrl: './share-listing.component.html',
   styleUrl: './share-listing.component.scss',
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, TranslateModule],
 })
 export class ShareListingComponent {
   router = inject(Router);

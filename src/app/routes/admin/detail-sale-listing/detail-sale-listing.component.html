@@ -48,7 +48,7 @@
           <div class="col-6 col-md-4 material-item mb-4">
             <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'Listing status' | translate }}</p>
             <p class="mb-0 fw-bold" [style.color]="getListingStatusColor(listingDetail.listing.status)">
-              {{ listingDetail.bidStatus.status | titlecase }}
+              {{ listingDetail.bidStatus.status | translate | titlecase }}
             </p>
           </div>
           <!-- </div> -->

@@ -3,8 +3,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { FallbackImageDirective } from '@app/directives';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule } from '@ngx-translate/core';
-import { TableSellingOfferItem } from 'app/models/offer';
+import { OfferStatus, TableSellingOfferItem } from 'app/models/offer';
 import { getListingFeatureImage, getOfferStatusColor } from 'app/share/utils/offer';
 import { PaginationComponent } from '../../../listing/pagination/pagination.component';
 
@@ -33,5 +34,22 @@ export class SellingOfferTableComponent {
 
   onPageChange(page: number) {
     this.pageChange.emit(page);
+  }
+
+  mapOfferStatusToLabel(status: OfferStatus) {
+    switch (status) {
+      case OfferStatus.ACCEPTED:
+        return localized$('Accepted');
+      case OfferStatus.REJECTED:
+        return localized$('Rejected');
+      case OfferStatus.PENDING:
+        return localized$('Pending');
+      case OfferStatus.APPROVED:
+        return localized$('Approved');
+      case OfferStatus.SHIPPED:
+        return localized$('Shipped');
+      default:
+        return localized$('Unknown');
+    }
   }
 }

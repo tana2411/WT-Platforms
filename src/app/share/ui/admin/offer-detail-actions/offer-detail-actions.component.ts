@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { OfferRequestActionEnum, OfferState } from 'app/models/offer';
 import { AdminOfferService } from 'app/services/admin/admin-offer.service';
 import { OfferDetail } from 'app/types/requests/offer';
@@ -23,7 +23,7 @@ import { RejectModalComponent } from '../reject-modal/reject-modal.component';
 
 @Component({
   selector: 'app-offer-detail-actions',
-  imports: [MatButtonModule, MatSnackBarModule],
+  imports: [MatButtonModule, MatSnackBarModule, TranslateModule],
   templateUrl: './offer-detail-actions.component.html',
   styleUrl: './offer-detail-actions.component.scss',
   providers: [TranslatePipe],
