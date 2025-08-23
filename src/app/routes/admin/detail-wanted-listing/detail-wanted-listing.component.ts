@@ -94,7 +94,7 @@ export class DetailWantedListingComponent {
       case ListingStatus.REJECTED:
         return localized$('rejected');
       case ListingStatus.EXPIRED:
-        return localized$('expired');
+        return localized$('Expired');
       default:
         return status;
     }

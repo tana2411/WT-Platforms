@@ -3,6 +3,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Data, NavigationEnd, Router, RouterModule } from '@angular/router';
+import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
+import { TranslateModule } from '@ngx-translate/core';
 import { filter, map, switchMap } from 'rxjs';
 import { CommonLayoutComponent } from '../../layout/common-layout/common-layout.component';
 
@@ -10,10 +12,15 @@ import { CommonLayoutComponent } from '../../layout/common-layout/common-layout.
   selector: 'app-my-sites',
   templateUrl: './my-sites.component.html',
   styleUrls: ['./my-sites.component.scss'],
-  imports: [CommonLayoutComponent, MatIconModule, MatButtonModule, RouterModule],
+  imports: [CommonLayoutComponent, MatIconModule, MatButtonModule, RouterModule, TranslateModule],
 })
 export class MySitesComponent implements OnInit {
   title: string = 'My Sites';
+  titleMap = {
+    'Add My Site': localized$('Add My Site'),
+    'Add Location': localized$('Add Location'),
+    'Edit My Site': localized$('Edit My Site'),
+  };
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   destroyRef = inject(DestroyRef);
@@ -33,7 +40,9 @@ export class MySitesComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((data: Data) => {
-        this.title = data['title'] ?? 'My Sites';
+        const rawTitle = data['title'] ?? 'My Sites';
+        this.title =
+          rawTitle in this.titleMap ? this.titleMap[rawTitle as keyof typeof this.titleMap] : localized$('My Sites');
       });
   }
 

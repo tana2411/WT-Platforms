@@ -1,4 +1,4 @@
-import { DecimalPipe, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -6,6 +6,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { marker as localized$ } from '@colsen1991/ngx-translate-extract-marker';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { ListingStatus } from 'app/models';
 import { OfferListingItem, OfferStatus } from 'app/models/offer';
 import { OfferService } from 'app/services/offer.service';
 import {
@@ -28,7 +29,6 @@ import { RejectReasonComponent } from '../reject-reason/reject-reason.component'
     RouterModule,
     TitleCasePipe,
     TranslateModule,
-    DecimalPipe,
   ],
   providers: [TranslatePipe],
   templateUrl: './offer-listing.component.html',
@@ -126,5 +126,22 @@ export class OfferListingComponent {
           },
         });
       });
+  }
+
+  mappingListingStatus(status?: ListingStatus) {
+    switch (status) {
+      case ListingStatus.SOLD:
+        return localized$('Fulfilled');
+      case ListingStatus.AVAILABLE:
+        return localized$('available');
+      case ListingStatus.PENDING:
+        return localized$('pending');
+      case ListingStatus.REJECTED:
+        return localized$('rejected');
+      case ListingStatus.EXPIRED:
+        return localized$('Expired');
+      default:
+        return status;
+    }
   }
 }
