@@ -17,7 +17,7 @@
             <div class="col-lg-9 mx-auto mb-5">
               <h6 class="fw-bold text-uppercase mb-3">{{ 'Warehouse location*' | translate }}</h6>
               <mat-form-field appearance="outline" class="w-100">
-                <mat-select formControlName="locationId" placeholder="Please Select" #locationSelector>
+                <mat-select formControlName="locationId" [placeholder]="'Please Select' | translate" #locationSelector>
                   @for (location of locations(); track location.id) {
                     <mat-option [value]="location.id">{{ location.locationName }}</mat-option>
                   }
@@ -130,7 +130,7 @@
               <div class="col-lg-9 mx-auto mb-5">
                 <div class="mb-2 text-uppercase fw-bold">{{ 'MATERIAL TYPE*' | translate }}</div>
                 <mat-form-field appearance="outline" class="w-100">
-                  <mat-select formControlName="materialType" placeholder="Please Select">
+                  <mat-select formControlName="materialType" [placeholder]="'Please Select' | translate">
                     @for (materialType of materialTypes; track materialType.code) {
                       <mat-option [value]="materialType.code">{{ materialType.name }}</mat-option>
                     }
@@ -143,7 +143,7 @@
               <div class="col-lg-9 mx-auto mb-5">
                 <div class="mb-2 text-uppercase fw-bold">{{ 'ITEM*' | translate }}</div>
                 <mat-form-field appearance="outline" class="w-100">
-                  <mat-select formControlName="materialItem" placeholder="Please Select">
+                  <mat-select formControlName="materialItem" [placeholder]="'Please Select' | translate">
                     @if (itemOption().length == 0 && formGroup.get('materialType')?.touched) {
                       <mat-option value="N/A">{{ 'N/A' | translate }}</mat-option>
                     } @else {
@@ -160,7 +160,7 @@
               <div class="col-lg-9 mx-auto mb-5">
                 <div class="mb-2 text-uppercase fw-bold">{{ 'FORM*' | translate }}</div>
                 <mat-form-field appearance="outline" class="w-100">
-                  <mat-select formControlName="materialForm" placeholder="Please Select">
+                  <mat-select formControlName="materialForm" [placeholder]="'Please Select' | translate">
                     @if (formOption().length == 0 && formGroup.get('materialType')?.touched) {
                       <mat-option value="N/A">{{ 'N/A' | translate }}</mat-option>
                     } @else {
@@ -177,7 +177,7 @@
               <div class="col-lg-9 mx-auto mb-5">
                 <div class="mb-2 text-uppercase fw-bold">{{ 'GRADING*' | translate }}</div>
                 <mat-form-field appearance="outline" class="w-100">
-                  <mat-select formControlName="materialGrading" placeholder="Please Select">
+                  <mat-select formControlName="materialGrading" [placeholder]="'Please Select' | translate">
                     @if (gradingOption().length == 0 && formGroup.get('materialType')?.touched) {
                       <mat-option value="N/A">{{ 'N/A' | translate }}</mat-option>
                     } @else {
@@ -194,7 +194,7 @@
               <div class="col-lg-9 mx-auto mb-5">
                 <div class="mb-2 text-uppercase fw-bold">{{ 'COLOUR*' | translate }}</div>
                 <mat-form-field appearance="outline" class="w-100">
-                  <mat-select formControlName="materialColor" placeholder="Please Select">
+                  <mat-select formControlName="materialColor" [placeholder]="'Please Select' | translate">
                     @for (colour of colourOption; track $index) {
                       <mat-option [value]="colour.code">{{ colour.name }}</mat-option>
                     }
@@ -207,7 +207,7 @@
               <div class="col-lg-9 mx-auto mb-5">
                 <div class="mb-2 text-uppercase fw-bold">{{ 'Finishing*' | translate }}</div>
                 <mat-form-field appearance="outline" class="w-100">
-                  <mat-select formControlName="materialFinishing" placeholder="Please Select">
+                  <mat-select formControlName="materialFinishing" [placeholder]="'Please Select' | translate">
                     @for (finishing of finishingOption; track $index) {
                       <mat-option [value]="finishing.code">{{ finishing.name }}</mat-option>
                     }
@@ -220,7 +220,7 @@
               <div class="col-lg-9 mx-auto mb-5">
                 <div class="mb-2 text-uppercase fw-bold">{{ 'PACKING*' | translate }}</div>
                 <mat-form-field appearance="outline" class="w-100">
-                  <mat-select formControlName="materialPacking" placeholder="Please Select">
+                  <mat-select formControlName="materialPacking" [placeholder]="'Please Select' | translate">
                     @for (packing of packingOption; track $index) {
                       <mat-option [value]="packing.code">{{ packing.name }}</mat-option>
                     }
@@ -258,7 +258,7 @@
               <div class="col-lg-9 mx-auto mb-5">
                 <div class="mb-2 text-uppercase fw-bold">{{ 'HOW SHOULD THE WASTE BE STORED*' | translate }}</div>
                 <mat-form-field appearance="outline" class="w-100">
-                  <mat-select formControlName="wasteStoration" placeholder="Please Select">
+                  <mat-select formControlName="wasteStoration" [placeholder]="'Please Select' | translate">
                     <mat-option value="indoor">{{ 'Indoor' | translate }}</mat-option>
                     <mat-option value="outdoor">{{ 'Outdoor' | translate }}</mat-option>
                     <mat-option value="any">{{ 'Any' | translate }}</mat-option>
@@ -287,7 +287,7 @@
               <div class="col-lg-9 mx-auto mb-5">
                 <div class="mb-2 text-uppercase fw-bold">{{ 'Material Weight*' | translate }}</div>
                 <mat-form-field appearance="outline" class="w-100">
-                  <input type="number" min="1" matInput placeholder="Type here" formControlName="materialWeight" />
+                  <input type="number" min="1" matInput [placeholder]="'Please Select' | translate" formControlName="materialWeight" />
                   @if (formGroup.get('materialWeight')?.hasError('required')) {
                     <mat-error class="mt-0"> {{ 'This field is required.' | translate }} </mat-error>
                   }
@@ -303,7 +303,7 @@
               <div class="col-lg-9 mx-auto mb-5">
                 <div class="mb-2 text-uppercase fw-bold">{{ 'Number of Loads*' | translate }}</div>
                 <mat-form-field appearance="outline" class="w-100">
-                  <input type="number" min="1" matInput placeholder="Type here" formControlName="quantity" />
+                  <input type="number" min="1" matInput [placeholder]="'Please Select' | translate" formControlName="quantity" />
                   @if (formGroup.get('quantity')?.hasError('required')) {
                     <mat-error class="mt-0"> {{ 'This field is required.' | translate }} </mat-error>
                   }
@@ -324,7 +324,7 @@
               <div class="col-lg-9 mx-auto mb-5">
                 <mat-label class="fw-bold mb-2 d-block text-uppercase">{{ 'Select currency*' | translate }} </mat-label>
                 <mat-form-field appearance="outline" class="w-100">
-                  <mat-select formControlName="currency" placeholder="Please Select">
+                  <mat-select formControlName="currency" [placeholder]="'Please Select' | translate">
                     <mat-option [value]="Currency.gbp">{{ '£/GBP' | translate }}</mat-option>
                     <mat-option [value]="Currency.usd">{{ '$/USD' | translate }}</mat-option>
                     <mat-option [value]="Currency.eur">{{ '€/EURO' | translate }}</mat-option>
@@ -338,7 +338,7 @@
               <div class="col-lg-9 mx-auto mb-5">
                 <mat-label class="mb-2 d-block text-uppercase fw-bold">{{ 'Price per Metric Tonne*' | translate }}</mat-label>
                 <mat-form-field appearance="outline" class="w-100">
-                  <input matInput type="number" placeholder="Type here" formControlName="pricePerMetricTonne" />
+                  <input matInput type="number" [placeholder]="'Please Select' | translate" formControlName="pricePerMetricTonne" />
                   @if (formGroup.get('pricePerMetricTonne')?.hasError('required')) {
                     <mat-error>{{ 'This is a required field.' | translate }}</mat-error>
                   }
@@ -383,7 +383,7 @@
                 <div class="col-lg-9 mx-auto mb-4">
                   <div class="mb-2 text-uppercase fw-bold">{{ 'RENEWAL PERIOD*' | translate }}</div>
                   <mat-form-field appearance="outline" class="w-100">
-                    <mat-select formControlName="listingRenewalPeriod" placeholder="Please Select">
+                    <mat-select formControlName="listingRenewalPeriod" [placeholder]="'Please Select' | translate">
                       <mat-option value="weekly">{{ 'Weekly' | translate }}</mat-option>
                       <mat-option value="fortnightly">{{ 'Fortnightly' | translate }}</mat-option>
                       <mat-option value="monthly">{{ 'Monthly' | translate }}</mat-option>
