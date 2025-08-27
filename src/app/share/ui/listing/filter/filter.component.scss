@@ -1,58 +1,100 @@
 @import 'variables.scss';
-.large-checkbox {
-  display: flex;
-  align-items: center;
+// Custom checkbox styling to match design
+:host ::ng-deep .mat-mdc-checkbox {
+  .mdc-checkbox__background {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 8px !important;
+    border: 2px solid #333 !important;
+    background-color: transparent !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
 
-  ::ng-deep .mdc-checkbox {
-    position: relative;
-
+  // Checked state
+  &.mat-mdc-checkbox-checked {
     .mdc-checkbox__background {
-      width: 30px;
-      height: 30px;
-      top: 60%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      position: absolute;
+      background-color: transparent !important;
+      border: 2px solid #1d1d1b !important;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        right: 2px;
+        bottom: 2px;
+        background-color: #03985c !important;
+        border-radius: 4px !important;
+        z-index: 1;
+      }
+    }
+
+    .mdc-checkbox__checkmark {
+      color: white !important;
+      z-index: 2;
+      position: absolute !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 18px !important;
+    }
+
+    .mdc-checkbox__checkmark-path {
+      stroke: white !important;
+      stroke-width: 3px !important;
+    }
+
+    .mdc-checkbox__mixedmark {
+      z-index: 2;
+      position: absolute !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
     }
   }
 
-  ::ng-deep .mat-mdc-checkbox .mat-mdc-checkbox-ripple,
-  ::ng-deep .mdc-checkbox__ripple {
-    width: 40px;
-    height: 40px;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
+  // Unchecked state
+  &:not(.mat-mdc-checkbox-checked) {
+    .mdc-checkbox__background {
+      background-color: transparent !important;
+      border-color: #1d1d1b !important;
+    }
   }
 
-  ::ng-deep .mat-mdc-checkbox-touch-target {
-    width: 30px;
-    height: 30px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    position: absolute;
+  // Remove ripple effects
+  .mdc-checkbox__ripple {
+    display: none !important;
   }
 
-  ::ng-deep .mdc-label {
-    display: flex;
-    align-items: center;
-    margin-top: 5px;
-    font-size: 16px;
-    line-height: 30px;
+  .mat-mdc-checkbox-ripple {
+    display: none !important;
   }
 
-  ::ng-deep .mdc-checkbox__native-control {
-    width: 30px;
-    height: 30px;
+  // Ensure proper alignment for the checkbox container
+  .mdc-checkbox {
+    min-width: 34px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-top: 5px !important;
   }
 
-  ::ng-deep .mdc-form-field {
-    display: flex;
-    align-items: center;
+  .mdc-label {
+    margin-left: 6px;
+  }
+
+  // Fix touch target alignment
+  .mat-mdc-checkbox-touch-target {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 40px !important;
+    height: 40px !important;
   }
 }
 
