@@ -6,6 +6,8 @@ export enum OfferStatus {
   ACCEPTED = 'accepted',
   REJECTED = 'rejected',
   SHIPPED = 'shipped',
+  EXPIRED = 'expired',
+  ACTIVE = 'active',
 }
 
 export enum OfferState {

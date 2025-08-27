@@ -4,10 +4,10 @@
 
     <div class="container">
       <div class="d-flex justify-content-center justify-content-md-between gap-2 flex-wrap footer-wrapper">
-        <div class="text-center">© {{ now.getFullYear() }} WasteTrade, All rights reserved. Disclaimer.</div>
+        <div class="text-center">© {{ now.getFullYear() }} WasteTrade, {{ 'All rights reserved. Disclaimer' | translate }}.</div>
         <div class="d-flex" style="gap: 80px">
-          <a mat-button routerLink="/termsandconditions" target="_blank" class="footer-link"> Terms & Conditions</a>
-          <a mat-button routerLink="/privacy-policy" target="_blank" class="footer-link">Privacy Policy</a>
+          <a mat-button routerLink="/termsandconditions" target="_blank" class="footer-link"> {{ 'Terms & Conditions' | translate }}</a>
+          <a mat-button routerLink="/privacy-policy" target="_blank" class="footer-link">{{ 'Privacy Policy' | translate }}</a>
         </div>
       </div>
     </div>

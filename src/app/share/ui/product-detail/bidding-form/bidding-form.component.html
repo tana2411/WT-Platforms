@@ -14,7 +14,7 @@
           {{ 'Please ensure that you choose the location that the waste material will be delivered to.' | translate }}
         </p>
         <mat-form-field appearance="outline" class="w-100">
-          <mat-select placeholder="Select Warehouse" formControlName="location">
+          <mat-select [placeholder]="'Select Warehouse' | translate" formControlName="location">
             @for (location of locations(); track location.id) {
               <mat-option [value]="location.id">{{ location.locationName }}</mat-option>
             }
@@ -91,7 +91,7 @@
         <label class="fw-bold mb-2 text-uppercase">{{ 'number of loads bid on' | translate }}</label>
         <p class="sub-label mb-2">{{ 'Please enter a number greater than or equal to 1.' | translate }}</p>
         <mat-form-field appearance="outline" class="w-100">
-          <input matInput type="number" placeholder="Type here" formControlName="loadBidOn" />
+          <input matInput type="number" [placeholder]="'Type here' | translate" formControlName="loadBidOn" />
           @if (formGroup.get('loadBidOn')?.hasError('required')) {
             <mat-error>{{ 'This is a required field.' | translate }}</mat-error>
           }
