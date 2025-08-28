@@ -27,4 +27,11 @@ export class ProductDescriptionComponent {
     const safeValue = value ?? '';
     return upperFirst(safeValue);
   }
+
+  mapStatusValueToLabel(value: string) {
+    if (value == 'expired') {
+      return 'Expired';
+    }
+    return value;
+  }
 }

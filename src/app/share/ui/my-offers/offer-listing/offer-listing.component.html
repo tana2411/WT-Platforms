@@ -38,7 +38,7 @@
       <div class="column-item">
         <p class="label">{{ 'Buyer Status' | translate }}</p>
         <p class="content fw-bold {{ item.buyerStatus }}" [style.color]="getCompanyStatusColor(item.buyerStatus)">
-          {{ item.buyerStatus || '' | translate | titlecase }}
+          {{ item.buyerStatus || '' | titlecase | translate }}
         </p>
       </div>
 
