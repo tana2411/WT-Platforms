@@ -39,7 +39,7 @@ import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
   providers: [TranslatePipe],
 })
 export class ListWantedMaterialFormComponent implements OnInit {
-  countryOption = countries.slice().sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+  countryOption = countries;
   materialTypes = materialTypes;
   colourOption = colour;
   finishingOption = finishing;

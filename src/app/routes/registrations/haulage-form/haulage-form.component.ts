@@ -49,7 +49,7 @@ import { catchError, concatMap, debounceTime, finalize, of } from 'rxjs';
   providers: [TranslatePipe],
 })
 export class HaulageFormComponent {
-  countryList = countries.slice().sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+  countryList = countries;
   euCountries = [
     { value: 'austria', name: 'Austria' },
     { value: 'belgium', name: 'Belgium' },
