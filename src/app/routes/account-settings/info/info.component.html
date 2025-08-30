@@ -12,7 +12,12 @@
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1">{{ 'WEBSITE' | translate }}</div>
-            <div class="">{{ company?.website || '-' }}</div>
+            <a
+              class="pe-2 text-break text-decoration-none text-black cursor-pointer"
+              target="_blank"
+              [href]="safeUrl(company?.website ?? '')"
+              >{{ company?.website || '-' }}</a
+            >
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1">{{ 'COMPANY INTEREST' | translate }}</div>
@@ -143,9 +148,12 @@
 
               {{ 'FACEBOOK PROFILE URL' | translate }}
             </div>
-            <a class="pe-2 text-break text-decoration-none text-black cursor-pointer" target="_blank" [href]="company?.facebookUrl">{{
-              company?.facebookUrl || '-'
-            }}</a>
+            <a
+              class="pe-2 text-break text-decoration-none text-black cursor-pointer"
+              target="_blank"
+              [href]="safeUrl(company?.facebookUrl ?? '')"
+              >{{ company?.facebookUrl || '-' }}</a
+            >
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1 d-flex align-items-center gap-2">
@@ -154,9 +162,12 @@
               }
               {{ 'INSTAGRAM PROFILE URL' | translate }}
             </div>
-            <a class="pe-2 text-break text-decoration-none text-black cursor-pointer" target="_blank" [href]="company?.instagramUrl">{{
-              company?.instagramUrl || '-'
-            }}</a>
+            <a
+              class="pe-2 text-break text-decoration-none text-black cursor-pointer"
+              target="_blank"
+              [href]="safeUrl(company?.instagramUrl ?? '')"
+              >{{ company?.instagramUrl || '-' }}</a
+            >
           </div>
           <div class="col-12 col-sm-4 px-2">
             <div class="fw-bold mb-1 d-flex align-items-center gap-2">
@@ -165,9 +176,12 @@
               }
               {{ 'LINKEDIN PROFILE URL' | translate }}
             </div>
-            <a class="pe-2 text-break text-decoration-none text-black cursor-pointer" target="_blank" [href]="company?.linkedinUrl">{{
-              company?.linkedinUrl || '-'
-            }}</a>
+            <a
+              class="pe-2 text-break text-decoration-none text-black cursor-pointer"
+              target="_blank"
+              [href]="safeUrl(company?.linkedinUrl ?? '')"
+              >{{ company?.linkedinUrl || '-' }}</a
+            >
           </div>
           <div class="col-sm-4 px-2">
             <div class="fw-bold mb-1 d-flex align-items-center gap-2">
@@ -176,9 +190,12 @@
               }
               {{ 'X USERNAME (WITHOUT @)' | translate }}
             </div>
-            <a class="pe-2 text-break text-decoration-none text-black cursor-pointer" target="_blank" [href]="company?.xUrl">{{
-              company?.xUrl || '-'
-            }}</a>
+            <a
+              class="pe-2 text-break text-decoration-none text-black cursor-pointer"
+              target="_blank"
+              [href]="safeUrl(company?.xUrl ?? '')"
+              >{{ company?.xUrl || '-' }}</a
+            >
           </div>
           @if ((company?.additionalSocialMediaUrls?.length ?? 0) > 0) {
             @for (social of company?.additionalSocialMediaUrls; track $index) {
@@ -188,9 +205,12 @@
                     {{ `${social.name} PROFILE URL`| translate }}
                   </span>
                 </div>
-                <a class="pe-2 text-break text-decoration-none text-black cursor-pointer" target="_blank" [href]="company?.xUrl">{{
-                  social?.url || '-'
-                }}</a>
+                <a
+                  class="pe-2 text-break text-decoration-none text-black cursor-pointer"
+                  target="_blank"
+                  [href]="safeUrl(social?.url ?? '')"
+                  >{{ social?.url || '-' }}</a
+                >
               </div>
             }
           }
