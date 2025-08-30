@@ -65,7 +65,7 @@ import { TimeInputFormControlComponent } from '../../../share/ui/time-input-form
 export class EditSiteComponent implements OnInit, AfterViewInit {
   mode: 'add' | 'edit' = 'add';
   location: CompanyLocationDetail | undefined = undefined;
-  countryList = countries.slice().sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+  countryList = countries;
   CompanyDocumentType = CompanyDocumentType;
   wasteCarrierLicenseDocuments: IDocument[] = [];
   materialTypes = materialTypes;

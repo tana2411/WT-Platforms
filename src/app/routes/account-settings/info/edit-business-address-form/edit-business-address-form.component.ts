@@ -39,7 +39,7 @@ import { catchError, EMPTY, finalize } from 'rxjs';
   providers: [TranslatePipe],
 })
 export class EditBusinessAddressFormComponent implements OnInit {
-  countryList = countries.slice().sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+  countryList = countries;
   companyInformation: any = {};
   formGroup = new FormGroup({
     email: new FormControl<string | null>(null, [Validators.required, strictEmailValidator()]),

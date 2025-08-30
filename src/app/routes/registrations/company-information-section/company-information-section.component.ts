@@ -38,7 +38,7 @@ import { catchError, concatMap, filter, finalize, of, take } from 'rxjs';
   providers: [TranslatePipe],
 })
 export class CompanyInformationSectionComponent implements OnInit {
-  countryList = countries.slice().sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+  countryList = countries;
   formGroup = new FormGroup({
     companyType: new FormControl<string | null>(null, [Validators.required]),
     registrationNumber: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(20)]),

@@ -1,4 +1,4 @@
-export const countries = [
+const countriesList = [
   {
     isoCode: 'AD',
     name: 'Andorra',
@@ -1896,6 +1896,8 @@ export const countries = [
     normalizedCode: '263',
   },
 ];
+
+export const countries = countriesList.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
 export const mapCountryCodeToName = countries.reduce(
   (memo, item) => {
