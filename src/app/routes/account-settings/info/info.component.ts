@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { mapCountryCodeToName } from '@app/statics';
 import { TranslateModule } from '@ngx-translate/core';
 import { Company, User } from 'app/models';
@@ -28,6 +29,7 @@ export class InfoComponent {
   dialog = inject(MatDialog);
   snackBar = inject(MatSnackBar);
   authService = inject(AuthService);
+  private sanitizer = inject(DomSanitizer);
 
   readonly MAP_COMPANY_TYPE_TO_LABEL = MAP_COMPANY_TYPE_TO_LABEL as any;
 
@@ -96,5 +98,17 @@ export class InfoComponent {
       return '';
     }
     return this.mapCountryCodeToName[code];
+  }
+
+  safeUrl(url: string): SafeUrl {
+    if (!url) return '';
+
+    // Check if URL already has a protocol
+    if (!url.match(/^https?:\/\//)) {
+      url = `https://${url}`;
+    }
+
+    // Sanitize the URL
+    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 }
