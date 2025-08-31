@@ -120,6 +120,14 @@ export interface ListingMaterialDetailResponse {
     };
     buyerDetails?: {
       contactPerson: UserInfo;
+      address: {
+        addressLine: string;
+        street: string;
+        postcode: string;
+        city: string;
+        country: string;
+        stateProvince: string;
+      };
     };
     locationDetails: {
       address: {
