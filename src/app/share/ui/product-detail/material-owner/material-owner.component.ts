@@ -19,7 +19,7 @@ export class MaterialOwnerComponent {
   }
 
   company = computed(() => this.listingDetail$()?.company);
-  location = computed(() => this.listingDetail$()?.buyerDetails?.address.country);
+  location = computed(() => this.listingDetail$()?.locationDetails?.address.country);
   username = computed(() => {
     const listingDetail = this.listingDetail$();
     if (listingDetail?.listing?.listingType === ListingType.SELL) {
