@@ -1,0 +1,93 @@
+<div class="w-100">
+  <div class="border-thin cursor-pointer rounded-4 p-3 p-md-4 mt-4 mb-3" (click)="onViewDetail()">
+    <div class="row gy-3 gy-md-4">
+      <!-- SELLER Section -->
+      <div class="col-12 col-md-2">
+        <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'SELLER' | translate }}</div>
+        <p class="mb-1 small">{{ listing?.createdBy?.user?.username }}</p>
+        <p class="mb-1 small">{{ listing?.createdBy?.user?.firstName }} {{ listing?.createdBy?.user?.lastName }}</p>
+        <p class="mb-1 small">{{ listing?.createdBy?.company?.name }}</p>
+        <p class="mb-1 small">{{ countryCodeToName(listing?.createdBy?.location?.country) || listing?.location_other }}</p>
+      </div>
+
+      <!-- MATERIAL Section -->
+      <div class="col-12 col-md-2">
+        <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'MATERIAL' | translate }}</div>
+        <p class="mb-1 small">{{ getMaterialName(listing?.material_type) }}</p>
+      </div>
+
+      <!-- Mobile separator -->
+      <div class="col-12 d-lg-none">
+        <hr class="my-2" />
+      </div>
+
+      <!-- Middle Information Section -->
+      <div class="col-12 col-md-6">
+        <div class="flex-column flex-md-row d-md-flex justify-content-between gy-2 gy-md-3">
+          <!-- First Row -->
+          <div class="flex-md-column d-flex justify-content-between col-md-3 col-12">
+            <div class="mb-4 col-6 col-md-auto">
+              <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'DATE' | translate }}</div>
+              <p class="mb-1 small">{{ listing?.created_at | date: 'dd/MM/YYYY' }}</p>
+            </div>
+            <div class="col-5 col-md-auto">
+              <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'BEST OFFER' | translate }}</div>
+              <p class="mb-1 small">{{ getCurrencySignal(listing?.bestOfferCurrency ?? '') }}{{ (listing?.bestOffer | number) ?? '-' }}</p>
+            </div>
+          </div>
+
+          <div class="flex-md-column d-flex justify-content-between col-md-4 col-12">
+            <div class="mb-4 col-6 col-md-auto">
+              <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'DATE AVAILABLE FROM' | translate }}</div>
+              <p class="mb-1 small">{{ listing?.start_date | date: 'dd/MM/YYYY' }}</p>
+            </div>
+
+            <div class="col-5 col-md-auto">
+              <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'WEIGHT' | translate }}</div>
+              <p class="mb-1 small">{{ listing?.material_weight_per_unit | number }} {{ 'MT' | translate }}</p>
+            </div>
+          </div>
+          <div class="flex-md-column d-flex justify-content-between col-md-4 col-12">
+            <div class="mb-4 col-6 col-md-auto">
+              <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'NUMBER OF OFFERS' | translate }}</div>
+              <p class="mb-1 small">{{ listing?.numberOfOffers ?? '-' }}</p>
+            </div>
+
+            <div class="col-5 col-md-auto">
+              <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'REMAINING' | translate }}</div>
+              <p class="mb-1 small">{{ listing?.remaining_quantity | number }}</p>
+            </div>
+          </div>
+          <div class="flex-md-column d-flex justify-content-between col-md-3 col-12">
+            <div class="mb-4 col-6 col-md-auto">
+              <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'STATUS' | translate }}</div>
+              <p class="mb-1 small fw-500" [style.color]="getListingStatusColor(listing!.status)">
+                {{ getListingStatusText(listing?.status) | translate | titlecase }}
+              </p>
+            </div>
+
+            <div class="col-5 col-md-auto">
+              <div class="fw-bold mb-2 mb-md-3 text-uppercase">{{ 'STATE' | translate }}</div>
+              <div class="d-flex align-items-center gap-1">
+                <mat-icon [style.color]="getListingStateColor(listing!.state)">fiber_manual_record</mat-icon>
+                <span class="small" [style.color]="getListingStateColor(listing!.state)">{{
+                  getListingStateText(listing?.state) | translate | titlecase
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop separator -->
+      <div class="col-12 d-xl-none d-lg-block">
+        <hr class="my-2" />
+      </div>
+
+      <!-- Button Section -->
+      <div class="col-12 col-md-2 col-md-auto d-flex align-items-center justify-content-center justify-content-lg-end">
+        <button mat-stroked-button class="border-primary primary py-4 fw-bold">{{ 'VIEW DETAILS' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</div>

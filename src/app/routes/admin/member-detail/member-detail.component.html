@@ -1,0 +1,30 @@
+<app-admin-layout [title]="'Members Account' | translate">
+  @if (loadingUser()) {
+    <app-spinner></app-spinner>
+  } @else {
+    @if (user(); as user) {
+      <div class="d-flex flex-wrap gap-3 mb-5 justify-content-between align-items-center">
+        <div
+          mat-button
+          class="d-inline-flex align-items-center py-1 rounded px-2 background-primary text-white text-uppercase cursor-pointer fw-bold button-wrapper"
+          (click)="onBack()"
+        >
+          <mat-icon class="icon">west</mat-icon>
+          <span>{{ 'go back' | translate }}</span>
+        </div>
+
+        <app-member-detail-actions [user]="user" (refresh)="refresh()" />
+      </div>
+
+      <app-admin-personal-information [userDetail]="user" />
+      <div class="mb-5"></div>
+      <app-admin-company-information [company]="user.company" />
+      <div class="mb-5"></div>
+      <app-admin-material-preference [favoriteMaterials]="user.company.favoriteMaterials" />
+      <div class="mb-5"></div>
+      <app-admin-company-document [user]="user" />
+      <div class="mb-5"></div>
+      <app-admin-member-location [locations]="user.company.locations" />
+    }
+  }
+</app-admin-layout>

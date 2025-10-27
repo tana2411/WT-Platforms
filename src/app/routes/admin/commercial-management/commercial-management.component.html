@@ -1,0 +1,33 @@
+<app-admin-layout [title]="'Dashboard' | translate">
+  <div
+    mat-button
+    class="d-inline-flex align-items-center py-1 rounded px-2 background-primary text-white text-uppercase fw-bold cursor-pointer button-wrapper"
+    (click)="onBack()"
+  >
+    <mat-icon class="icon">west</mat-icon>
+    <span>{{ 'go back' | translate }}</span>
+  </div>
+
+  <mat-tab-group
+    class="common-tab admin-tab"
+    [selectedIndex]="selectedIndex"
+    (selectedTabChange)="onTabChange($event)"
+    animationDuration="0ms"
+  >
+    @for (item of listTabs; track $index) {
+      <mat-tab labelClass="wrapper {{ pendingCount()[item.path] ? 'warning' : '' }}">
+        <ng-template mat-tab-label>
+          <span>
+            {{ item.label | translate }}
+
+            @if (pendingCount()[item.path] !== undefined) {
+              <span class="badge">{{ pendingCount()[item.path] || '' }}</span>
+            }
+          </span>
+        </ng-template>
+      </mat-tab>
+    }
+  </mat-tab-group>
+
+  <router-outlet></router-outlet>
+</app-admin-layout>

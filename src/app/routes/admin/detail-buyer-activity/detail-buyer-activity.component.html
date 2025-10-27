@@ -1,0 +1,127 @@
+<app-admin-layout [title]="'Purchases > Details' | translate">
+  @if (loadingOffer()) {
+    <app-spinner></app-spinner>
+  } @else {
+    @if (offerDetail(); as offerDetail) {
+      <div
+        mat-button
+        class="d-inline-flex mb-5 align-items-center py-1 rounded px-2 background-primary text-white text-uppercase cursor-pointer fw-bold button-wrapper"
+        (click)="onBack()"
+      >
+        <mat-icon class="icon">west</mat-icon>
+        <span>{{ 'go back' | translate }}</span>
+      </div>
+
+      <h2 class="fw-bold sub-title">{{ 'Information' | translate }}</h2>
+
+      <div class="rounded-4 border-thin p-3 p-lg-5 mb-4 seller-information">
+        <div class="row align-items-center">
+          <div class="col-4">
+            <h2 class="primary fw-bold mb-0">{{ 'Seller' | translate }}</h2>
+          </div>
+          <div class="col-4">
+            <p class="text-uppercase fw-bold mb-2">{{ 'Full name' | translate }}</p>
+            <p class="mb-0">{{ offerDetail.seller.user.firstName }} {{ offerDetail.seller.user.lastName }}</p>
+          </div>
+          <div class="col-4">
+            <p class="text-uppercase fw-bold mb-2">{{ 'Company' | translate }}</p>
+            <p class="mb-0">{{ offerDetail.seller.company.name }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-4 border-thin p-3 p-lg-5 mb-4 buyer-information">
+        <div class="row align-items-center">
+          <div class="col-4">
+            <h2 class="primary fw-bold mb-0">{{ 'Buyer' | translate }}</h2>
+          </div>
+          <div class="col-4">
+            <p class="text-uppercase fw-bold mb-2">{{ 'Full name' | translate }}</p>
+            <p class="mb-0">{{ offerDetail.buyer.user.firstName }} {{ offerDetail.buyer.user.lastName }}</p>
+          </div>
+          <div class="col-4">
+            <p class="text-uppercase fw-bold mb-2">{{ 'Company' | translate }}</p>
+            <p class="mb-0">{{ offerDetail.buyer.company.name }}</p>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="fw-bold sub-title">{{ 'Bid Details' | translate }}</h2>
+
+      <div class="rounded-4 border-thin p-3 pb-0 p-lg-5 pb-lg-4 mb-4 mb-lg-5">
+        <div class="d-flex flex-wrap">
+          <!-- <div class="row align-items-center row-item"> -->
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'material' | translate }}</p>
+            <p class="mb-0 fw-500">{{ offerDetail.listing.materialType | titlecase }}</p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'number of loads' | translate }}</p>
+            <p class="mb-0 primary fw-bold">
+              {{ offerDetail.offer.quantity | number }}
+            </p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'incoterms' | translate }}</p>
+            <p class="mb-0 fw-500">{{ offerDetail.offer.incoterms }}</p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'pick-up location' | translate }}</p>
+            <p class="mb-0 fw-500">
+              {{ mapCountryCodeToName[offerDetail.listing.location.country] }}
+            </p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'weight per load' | translate }}</p>
+            <p class="mb-0 fw-500">{{ offerDetail.listing.materialWeightPerUnit | number }} {{ 'MT' | translate }}</p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'Bid status' | translate }}</p>
+            <p class="mb-0 fw-bold" [style.color]="getOfferStatusColor(offerDetail.offer.status)">
+              {{ offerDetail.offer.status | translate | titlecase }}
+            </p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'destination' | translate }}</p>
+            <p class="mb-0 fw-500">
+              {{ mapCountryCodeToName[offerDetail.buyer.location.country] }}
+            </p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'Bid currency' | translate }}</p>
+            <p class="mb-0 fw-500">{{ getCurrencyLabel(offerDetail.offer.currency) }}</p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'Total Price Shared' | translate }}</p>
+            <h3 class="mb-0 fw-bold primary">
+              {{ getCurrencySignal(offerDetail.offer.currency) }}{{ offerDetail.offer.totalPrice | number }}
+            </h3>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'Packaging' | translate }}</p>
+            <p class="mb-0 fw-500">{{ offerDetail.listing.materialPacking | titlecase }}</p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'Price per tonne' | translate }}</p>
+            <p class="mb-0 fw-bold primary">
+              {{ getCurrencySignal(offerDetail.offer.currency) }}{{ offerDetail.offer.offeredPricePerUnit | number }} /
+              {{ 'MT' | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <app-offer-detail-actions [offerId]="offerId" [offer]="offerDetail" (refresh)="reloadOfferDetail()" />
+    }
+  }
+</app-admin-layout>

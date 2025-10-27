@@ -1,0 +1,7 @@
+<app-common-layout [title]="'Create Listing' | translate">
+  @if (type == 'sell') {
+    <app-sell-lising-material-form></app-sell-lising-material-form>
+  } @else {
+    <app-list-wanted-material-form></app-list-wanted-material-form>
+  }
+</app-common-layout>

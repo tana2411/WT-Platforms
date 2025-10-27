@@ -1,0 +1,93 @@
+<app-admin-layout [title]="'Sale Listings > Details' | translate">
+  @if (loadingListing()) {
+    <app-spinner></app-spinner>
+  } @else {
+    @if (listingDetail(); as listingDetail) {
+      <div
+        mat-button
+        class="d-inline-flex mb-5 align-items-center justify-content-center py-1 rounded px-2 background-primary text-white text-uppercase fw-bold cursor-pointer button-wrapper"
+        (click)="onBack()"
+      >
+        <mat-icon class="icon">west</mat-icon>
+        <span>{{ 'go back' | translate }}</span>
+      </div>
+
+      <h2 class="fw-bold sub-title">{{ 'Seller information' | translate }}</h2>
+
+      <div class="rounded-4 border-thin p-3 p-lg-5 mb-4 seller-information">
+        <div class="row align-items-center">
+          <div class="col-4">
+            <h2 class="primary fw-bold mb-0">{{ 'Seller' | translate }}</h2>
+          </div>
+          <div class="col-4">
+            <p class="text-uppercase fw-bold mb-2">{{ 'Full name' | translate }}</p>
+            <p class="mb-0">{{ listingDetail.userInformation.fullName }}</p>
+          </div>
+          <div class="col-4">
+            <p class="text-uppercase fw-bold mb-2">{{ 'Company' | translate }}</p>
+            <p class="mb-0">{{ listingDetail.userInformation.company }}</p>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="fw-bold sub-title">{{ 'Material Information' | translate }}</h2>
+
+      <div class="rounded-4 border-thin p-3 pb-0 p-lg-5 pb-lg-4 mb-4 mb-lg-5">
+        <div class="d-flex flex-wrap">
+          <!-- <div class="row align-items-center row-item"> -->
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'material' | translate }}</p>
+            <p class="mb-0 fw-500">{{ getMaterialTypeLabel(listingDetail.materialInformation.materialType) }}</p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'Packaging' | translate }}</p>
+            <p class="mb-0 fw-500">{{ mapCodeToPackaging[listingDetail.materialInformation.packaging] }}</p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'Listing status' | translate }}</p>
+            <p class="mb-0 fw-bold" [style.color]="getListingStatusColor(listingDetail.listing.status)">
+              {{ listingDetail.bidStatus.status | translate | titlecase }}
+            </p>
+          </div>
+          <!-- </div> -->
+
+          <!-- <div class="row align-items-center row-item"> -->
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'Location/warehouse' | translate }}</p>
+            <p class="mb-0 fw-500">{{ mapCountryCodeToName[listingDetail.materialInformation.country] }}</p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'number of loads' | translate }}</p>
+            <p class="mb-0 primary fw-bold">
+              {{ listingDetail.materialInformation.remainingQuantity | number }}/{{ listingDetail.materialInformation.quantity | number }}
+            </p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4"></div>
+          <!-- </div> -->
+
+          <!-- <div class="row align-items-center"> -->
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'currency' | translate }}</p>
+            <p class="mb-0 fw-bold">
+              {{ getCurrencySignal(listingDetail.materialInformation.currency) }} ({{
+                listingDetail.materialInformation.currency | titlecase
+              }})
+            </p>
+          </div>
+
+          <div class="col-6 col-md-4 material-item mb-4">
+            <p class="text-uppercase fw-bold mb-2 mb-xxl-3">{{ 'weight per load' | translate }}</p>
+            <p class="mb-0 fw-500">{{ listingDetail.materialInformation.materialWeightPerUnit }}</p>
+          </div>
+          <!-- </div> -->
+        </div>
+      </div>
+
+      <app-listing-detail-actions [listingId]="listingId" [listing]="listingDetail" (refresh)="reloadListingDetail()" />
+    }
+  }
+</app-admin-layout>

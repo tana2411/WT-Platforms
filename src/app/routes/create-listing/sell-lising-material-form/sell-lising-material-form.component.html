@@ -1,0 +1,459 @@
+<div class="d-flex justify-content-center">
+  <div class="col-lg-9">
+    <div class="border border-primary rounded rounded-4 p-3 p-lg-5 mt-3">
+      <form [formGroup]="formGroup">
+        <!-- Site location section -->
+        <div class="mb-5">
+          <h4 class="fw-bold mb-3">{{ 'Site' | translate }}</h4>
+
+          <div class="px-2 py-3 background-on-primary d-flex mb-4">
+            <div class="col-1 text-center d-flex justify-content-center">
+              <mat-icon class="material-icons-outlined primary">error_outline</mat-icon>
+            </div>
+            <div class="fw-500 fs-16">{{ 'Please select your Warehouse Location before creating a listing.' | translate }}</div>
+          </div>
+
+          <div class="border-thin p-4 rounded-4">
+            <div class="col-lg-9 mx-auto mb-5">
+              <h6 class="fw-bold text-uppercase mb-3">{{ 'Warehouse location*' | translate }}</h6>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-select formControlName="locationId" [placeholder]="'Please Select' | translate" #locationSelector>
+                  @for (location of locations(); track location.id) {
+                    <mat-option [value]="location.id">{{ location.locationName }}</mat-option>
+                  }
+                  <!-- <mat-option [value]="OTHER_LOCATION"> -->
+                  <div class="other-button" (click)="onAddOther()">{{ 'Other' | translate }}</div>
+                  <!-- </mat-option> -->
+                </mat-select>
+                @if (formGroup.get('locationId')?.hasError('required')) {
+                  <mat-error class="mt-0"> {{ 'This is a required field.' | translate }}</mat-error>
+                }
+              </mat-form-field>
+
+              <!-- @if (formGroup.get('locationId')?.value === OTHER_LOCATION) {
+                <div class="mt-3 mb-2 text-uppercase fw-bold">Other Warehouse Location*</div>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input type="text" min="1" matInput placeholder="Type here" formControlName="locationOther" />
+                  @if (formGroup.get('locationOther')?.hasError('required')) {
+                    <mat-error class="mt-0"> This field is required </mat-error>
+                  }
+                </mat-form-field>
+              } -->
+            </div>
+          </div>
+        </div>
+
+        <div [class.blur]="!hasLocation()">
+          <!-- upload media section -->
+          <div class="mb-5">
+            <h4 class="fw-bold mb-3">{{ 'Upload Media' | translate }}</h4>
+            <div class="px-2 py-3 background-on-primary d-flex mb-4">
+              <div class="col-1 text-center d-flex justify-content-center">
+                <mat-icon class="material-icons-outlined primary">error_outline</mat-icon>
+              </div>
+              <div class="fw-500 fs-16">
+                {{ 'Attention! Please ensure to upload high-quality images for optimal results in finding your seller.' | translate }}
+                <strong>{{
+                  'Clear, detailed images of your wanted material form will greatly improve your chances of connecting with the right supplier on our waste commodities platform.'
+                    | translate
+                }}</strong>
+              </div>
+            </div>
+            <div class="border-thin p-4 rounded-4">
+              <div class="col-lg-9 mx-auto">
+                <div class="mb-5">
+                  <h6 class="text-uppercase fw-bold mb-3">{{ 'Featured Image *' | translate }}</h6>
+                  <app-file-upload
+                    [maxFile]="1"
+                    (filesAdded)="handleFileReady($event, 'featureImage')"
+                    [acceptable]="['.jpg', '.jpeg', '.png', '.gif']"
+                    [expiryDateMode]="'hidden'"
+                    [disabled]="!hasLocation()"
+                  ></app-file-upload>
+                  <span class="d-block mt-3">{{
+                    'Accepted file types: jpg, jpeg, png, gif, Max. file size: 25 MB, Max. files: 1.' | translate
+                  }}</span>
+                  <span class="mb-3">{{ 'This is main profile image for the listing' | translate }}</span>
+                </div>
+
+                <hr />
+
+                <div class="mb-5">
+                  <div class="mb-2 fw-bold text-uppercase">{{ 'Do you have material specification data?*' | translate }}</div>
+                  <mat-radio-group class="w-50 d-flex justify-content-between" formControlName="hasSpecialData" name="hasSpecialData">
+                    <mat-radio-button value="true">{{ 'Yes' | translate }}</mat-radio-button>
+                    <mat-radio-button value="false">{{ 'No' | translate }}</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+
+                @if (formGroup.get('hasSpecialData')?.value == 'true') {
+                  <div class="mb-5">
+                    <h6 class="text-uppercase fw-bold mb-3">{{ 'Upload material specification data *' | translate }}</h6>
+                    <app-file-upload
+                      [maxFile]="1"
+                      (filesAdded)="handleFileReady($event, 'specialFile')"
+                      [acceptable]="['.jpeg', '.docx', '.pdf']"
+                      [expiryDateMode]="'hidden'"
+                      [maxFileSize]="maxFileSize"
+                      [disabled]="!hasLocation()"
+                    ></app-file-upload>
+                    <span class="d-block mt-3">{{
+                      'Accepted file types: jpeg, docx, pdf, Max. file size: 25 MB, Max. files: 1.' | translate
+                    }}</span>
+                  </div>
+                }
+
+                <hr />
+
+                <div class="mb-5">
+                  <h6 class="text-uppercase fw-bold mb-3">{{ 'Upload gallery images*' | translate }}</h6>
+                  <app-file-upload
+                    [maxFile]="6"
+                    (filesAdded)="handleFileReady($event, 'galleryImage')"
+                    [acceptable]="['.jpg', '.jpeg', '.png', '.gif']"
+                    [expiryDateMode]="'hidden'"
+                    [disabled]="!hasLocation()"
+                  ></app-file-upload>
+                  <span class="d-block mt-3">{{
+                    'Accepted file types: jpg, jpeg, png, gif, Max. file size: 25 MB, Max. files: 6.' | translate
+                  }}</span>
+                  <span class="mb-3">{{ 'This is main profile image for the listing' | translate }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- material detail -->
+          <div class="mb-5">
+            <h4 class="fw-bold mb-3">{{ 'Material Details' | translate }}</h4>
+            <div class="border-thin p-4 rounded-4">
+              <div class="col-lg-9 mx-auto mb-5">
+                <div class="mb-2 text-uppercase fw-bold">{{ 'MATERIAL TYPE*' | translate }}</div>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select formControlName="materialType" [placeholder]="'Please Select' | translate">
+                    @for (materialType of materialTypes; track materialType.code) {
+                      <mat-option [value]="materialType.code">{{ materialType.name }}</mat-option>
+                    }
+                  </mat-select>
+                  @if (formGroup.get('materialType')?.hasError('required')) {
+                    <mat-error class="mt-0"> {{ 'This field is required.' | translate }} </mat-error>
+                  }
+                </mat-form-field>
+              </div>
+              <div class="col-lg-9 mx-auto mb-5">
+                <div class="mb-2 text-uppercase fw-bold">{{ 'ITEM*' | translate }}</div>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select formControlName="materialItem" [placeholder]="'Please Select' | translate">
+                    @if (itemOption().length == 0 && formGroup.get('materialType')?.touched) {
+                      <mat-option value="N/A">{{ 'N/A' | translate }}</mat-option>
+                    } @else {
+                      @for (item of itemOption(); track $index) {
+                        <mat-option [value]="item.code">{{ item.name }}</mat-option>
+                      }
+                    }
+                  </mat-select>
+                  @if (formGroup.get('materialItem')?.hasError('required')) {
+                    <mat-error class="mt-0"> {{ 'This field is required.' | translate }} </mat-error>
+                  }
+                </mat-form-field>
+              </div>
+              <div class="col-lg-9 mx-auto mb-5">
+                <div class="mb-2 text-uppercase fw-bold">{{ 'FORM*' | translate }}</div>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select formControlName="materialForm" [placeholder]="'Please Select' | translate">
+                    @if (formOption().length == 0 && formGroup.get('materialType')?.touched) {
+                      <mat-option value="N/A">{{ 'N/A' | translate }}</mat-option>
+                    } @else {
+                      @for (form of formOption(); track $index) {
+                        <mat-option [value]="form.code">{{ form.name }}</mat-option>
+                      }
+                    }
+                  </mat-select>
+                  @if (formGroup.get('materialForm')?.hasError('required')) {
+                    <mat-error class="mt-0"> {{ 'This field is required.' | translate }} </mat-error>
+                  }
+                </mat-form-field>
+              </div>
+              <div class="col-lg-9 mx-auto mb-5">
+                <div class="mb-2 text-uppercase fw-bold">{{ 'GRADING*' | translate }}</div>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select formControlName="materialGrading" [placeholder]="'Please Select' | translate">
+                    @if (gradingOption().length == 0 && formGroup.get('materialType')?.touched) {
+                      <mat-option value="N/A">{{ 'N/A' | translate }}</mat-option>
+                    } @else {
+                      @for (grading of gradingOption(); track $index) {
+                        <mat-option [value]="grading.code">{{ grading.name }}</mat-option>
+                      }
+                    }
+                  </mat-select>
+                  @if (formGroup.get('materialGrading')?.hasError('required')) {
+                    <mat-error class="mt-0"> {{ 'This field is required' | translate }} </mat-error>
+                  }
+                </mat-form-field>
+              </div>
+              <div class="col-lg-9 mx-auto mb-5">
+                <div class="mb-2 text-uppercase fw-bold">{{ 'COLOUR*' | translate }}</div>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select formControlName="materialColor" [placeholder]="'Please Select' | translate">
+                    @for (colour of colourOption; track $index) {
+                      <mat-option [value]="colour.code">{{ colour.name }}</mat-option>
+                    }
+                  </mat-select>
+                  @if (formGroup.get('materialColor')?.hasError('required')) {
+                    <mat-error class="mt-0"> {{ 'This field is required' | translate }} </mat-error>
+                  }
+                </mat-form-field>
+              </div>
+              <div class="col-lg-9 mx-auto mb-5">
+                <div class="mb-2 text-uppercase fw-bold">{{ 'Finishing*' | translate }}</div>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select formControlName="materialFinishing" [placeholder]="'Please Select' | translate">
+                    @for (finishing of finishingOption; track $index) {
+                      <mat-option [value]="finishing.code">{{ finishing.name }}</mat-option>
+                    }
+                  </mat-select>
+                  @if (formGroup.get('materialFinishing')?.hasError('required')) {
+                    <mat-error class="mt-0"> {{ 'This field is required.' | translate }} </mat-error>
+                  }
+                </mat-form-field>
+              </div>
+              <div class="col-lg-9 mx-auto mb-5">
+                <div class="mb-2 text-uppercase fw-bold">{{ 'PACKING*' | translate }}</div>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select formControlName="materialPacking" [placeholder]="'Please Select' | translate">
+                    @for (packing of packingOption; track $index) {
+                      <mat-option [value]="packing.code">{{ packing.name }}</mat-option>
+                    }
+                  </mat-select>
+                  @if (formGroup.get('materialPacking')?.hasError('required')) {
+                    <mat-error class="mt-0"> {{ 'This field is required.' | translate }} </mat-error>
+                  }
+                </mat-form-field>
+              </div>
+
+              <div class="col-lg-9 mx-auto mb-5">
+                <hr />
+              </div>
+
+              <div class="col-lg-9 mx-auto mb-5">
+                <div class="mb-2 text-uppercase fw-bold">{{ 'Material must remain in country of Origin*' | translate }}</div>
+                <mat-radio-group
+                  class="w-50 d-flex justify-content-between"
+                  formControlName="materialRemainInCountry"
+                  name="materialRemainInCountry"
+                >
+                  <mat-radio-button value="true">{{ 'Yes' | translate }}</mat-radio-button>
+                  <mat-radio-button value="false">{{ 'No' | translate }}</mat-radio-button>
+                </mat-radio-group>
+
+                <div>
+                  @if (
+                    formGroup.get('materialRemainInCountry')?.hasError('required') && formGroup.get('materialRemainInCountry')?.touched
+                  ) {
+                    <mat-error class="mt-0"> {{ 'This field is required.' | translate }} </mat-error>
+                  }
+                </div>
+              </div>
+
+              <div class="col-lg-9 mx-auto mb-5">
+                <div class="mb-2 text-uppercase fw-bold">{{ 'HOW SHOULD THE WASTE BE STORED*' | translate }}</div>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select formControlName="wasteStoration" [placeholder]="'Please Select' | translate">
+                    <mat-option value="indoor">{{ 'Indoor' | translate }}</mat-option>
+                    <mat-option value="outdoor">{{ 'Outdoor' | translate }}</mat-option>
+                    <mat-option value="any">{{ 'Any' | translate }}</mat-option>
+                  </mat-select>
+                  @if (formGroup.get('wasteStoration')?.hasError('required')) {
+                    <mat-error class="mt-0"> {{ 'This field is required.' | translate }} </mat-error>
+                  }
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <!-- additional information -->
+          <div class="mb-5">
+            <h4 class="fw-bold mb-3">{{ 'Quantity' | translate }}</h4>
+            <div class="border-thin p-4 rounded-4">
+              <div class="col-lg-9 mx-auto mb-5">
+                <div class="mb-2 text-uppercase fw-bold">{{ 'MATERIAL WEIGHT UNIT*' | translate }}</div>
+                <mat-radio-group class="col-7 d-flex justify-content-between" formControlName="weightUnit" name="weightUnit">
+                  <mat-radio-button value="mt">{{ 'Mt' | translate }}</mat-radio-button>
+                  <mat-radio-button value="lbs">{{ 'Lbs' | translate }}</mat-radio-button>
+                  <mat-radio-button value="kg">{{ 'Kg' | translate }}</mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <div class="col-lg-9 mx-auto mb-5">
+                <div class="mb-2 text-uppercase fw-bold">{{ 'Material Weight*' | translate }}</div>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input type="number" min="1" matInput [placeholder]="'Please Select' | translate" formControlName="materialWeight" />
+                  @if (formGroup.get('materialWeight')?.hasError('required')) {
+                    <mat-error class="mt-0"> {{ 'This field is required.' | translate }} </mat-error>
+                  }
+                  @if (formGroup.get('materialWeight')?.hasError('min')) {
+                    <mat-error class="mt-0"> {{ 'Please enter a positive number.' | translate }} </mat-error>
+                  }
+                  @if (formGroup.get('materialWeight')?.hasError('max')) {
+                    <mat-error class="mt-0"> {{ 'Material Weight cannot exceed 1,000,000,000.' | translate }} </mat-error>
+                  }
+                </mat-form-field>
+              </div>
+
+              <div class="col-lg-9 mx-auto mb-5">
+                <div class="mb-2 text-uppercase fw-bold">{{ 'Number of Loads*' | translate }}</div>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input type="number" min="1" matInput [placeholder]="'Please Select' | translate" formControlName="quantity" />
+                  @if (formGroup.get('quantity')?.hasError('required')) {
+                    <mat-error class="mt-0"> {{ 'This field is required.' | translate }} </mat-error>
+                  }
+                  @if (formGroup.get('quantity')?.hasError('min')) {
+                    <mat-error class="mt-0"> {{ 'Please enter a positive number.' | translate }} </mat-error>
+                  }
+                  @if (formGroup.get('quantity')?.hasError('max')) {
+                    <mat-error class="mt-0"> {{ 'Number of Loads cannot exceed 1,000,000,000.' | translate }} </mat-error>
+                  }
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-5">
+            <h4 class="fw-bold mb-3">{{ 'Price' | translate }}</h4>
+            <div class="border-thin p-4 rounded-4">
+              <div class="col-lg-9 mx-auto mb-5">
+                <mat-label class="fw-bold mb-2 d-block text-uppercase">{{ 'Select currency*' | translate }} </mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-select formControlName="currency" [placeholder]="'Please Select' | translate">
+                    <mat-option [value]="Currency.gbp">{{ '£/GBP' | translate }}</mat-option>
+                    <mat-option [value]="Currency.usd">{{ '$/USD' | translate }}</mat-option>
+                    <mat-option [value]="Currency.eur">{{ '€/EURO' | translate }}</mat-option>
+                  </mat-select>
+                  @if (formGroup.get('currency')?.hasError('required')) {
+                    <mat-error>{{ 'This is a required field.' | translate }}</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+
+              <div class="col-lg-9 mx-auto mb-5">
+                <mat-label class="mb-2 d-block text-uppercase fw-bold">{{ 'Price per Metric Tonne*' | translate }}</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input matInput type="number" [placeholder]="'Please Select' | translate" formControlName="pricePerMetricTonne" />
+                  @if (formGroup.get('pricePerMetricTonne')?.hasError('required')) {
+                    <mat-error>{{ 'This is a required field.' | translate }}</mat-error>
+                  }
+                  @if (formGroup.get('pricePerMetricTonne')?.hasError('max')) {
+                    <mat-error class="mt-0"> {{ 'Price per Metric Tonne cannot exceed 1,000,000,000.' | translate }} </mat-error>
+                  }
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-5">
+            <h4 class="mb-3 text-uppercase fw-bold">{{ 'Material availability' | translate }}</h4>
+            <div class="border-thin p-4 rounded-4">
+              <div class="col-lg-9 mx-auto mb-5">
+                <mat-label class="fw-bold mb-2 d-block text-uppercase">{{ 'start date*' | translate }}</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input matInput readonly [matDatepicker]="startDate" formControlName="startDate" (click)="startDate.open()" />
+                  <mat-datepicker-toggle matIconSuffix [for]="startDate"></mat-datepicker-toggle>
+                  <mat-datepicker #startDate></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-5">
+            <h4 class="mb-3 text-uppercase fw-bold">{{ 'Ongoing Listing' | translate }}</h4>
+            <div class="border-thin p-4 rounded-4">
+              <div class="col-lg-9 mx-auto mb-5">
+                <mat-radio-group
+                  class="col-5 d-flex justify-content-between"
+                  formControlName="ongoingListing"
+                  name="ongoingListing"
+                  (change)="ongoingListingChange($event)"
+                >
+                  <mat-radio-button value="true">{{ 'Yes' | translate }}</mat-radio-button>
+                  <mat-radio-button value="false">{{ 'No' | translate }}</mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              @if (formGroup.get('ongoingListing')?.value == 'true') {
+                <div class="col-lg-9 mx-auto mb-4">
+                  <div class="mb-2 text-uppercase fw-bold">{{ 'RENEWAL PERIOD*' | translate }}</div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-select formControlName="listingRenewalPeriod" [placeholder]="'Please Select' | translate">
+                      <mat-option value="weekly">{{ 'Weekly' | translate }}</mat-option>
+                      <mat-option value="fortnightly">{{ 'Fortnightly' | translate }}</mat-option>
+                      <mat-option value="monthly">{{ 'Monthly' | translate }}</mat-option>
+                    </mat-select>
+                    @if (formGroup.get('listingRenewalPeriod')?.hasError('required')) {
+                      <mat-error class="mt-0"> {{ 'This field is required.' | translate }} </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+              }
+              @if (formGroup.get('ongoingListing')?.value == 'false') {
+                <div class="col-lg-9 mx-auto mb-4">
+                  <div class="mb-2 text-uppercase fw-bold">{{ 'SELECT END DATE*' | translate }}</div>
+                  <mat-form-field appearance="outline" class="w-100">
+                    <input matInput [matDatepicker]="endDate" formControlName="endDate" (click)="endDate.open()" />
+                    <mat-datepicker-toggle matIconSuffix [for]="endDate"></mat-datepicker-toggle>
+                    <mat-datepicker #endDate></mat-datepicker>
+                    @if (formGroup.get('endDate')?.hasError('required')) {
+                      <mat-error class="mt-0"> {{ 'This field is required.' | translate }} </mat-error>
+                    }
+                    @if (formGroup.get('endDate')?.hasError('past')) {
+                      <mat-error class="mt-0"> {{ 'Please enter a date in the future.' | translate }} </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="mb-5">
+            <h4 class="fw-bold mb-3">{{ 'Additional Information' | translate }}</h4>
+            <div class="border-thin px-4 py-5 rounded-4">
+              <div class="col-lg-9 mx-auto">
+                <div class="fw-500 mb-3">{{ 'DESCRIPTION' | translate }}</div>
+                <mat-form-field appearance="outline" class="w-100">
+                  <textarea matInput rows="7" style="resize: none" formControlName="description"></textarea>
+                  @if (formGroup.get('description')?.hasError('required')) {
+                    <mat-error class="mt-0"> {{ 'This field is required.' | translate }} </mat-error>
+                  }
+                  @if (formGroup.get('description')?.hasError('maxlength')) {
+                    <mat-error class="mt-0"> {{ 'Your additional information exceeds the character limit.' | translate }} </mat-error>
+                  }
+                  @if (formGroup.get('description')?.hasError('containsEmail')) {
+                    <mat-error class="mt-0"> {{ 'Additional Information should not contain email addresses.' | translate }} </mat-error>
+                  }
+                  @if (formGroup.get('description')?.hasError('containsPhoneNumber')) {
+                    <mat-error class="mt-0"> {{ 'Additional Information should not contain phone number.' | translate }} </mat-error>
+                  }
+                  @if (formGroup.get('description')?.hasError('containsUrl')) {
+                    <mat-error class="mt-0"> {{ 'Additional Information should not contain url.' | translate }} </mat-error>
+                  }
+                </mat-form-field>
+                <span>{{ additionalInformationLength() }} {{ 'of 32000 max characters' | translate }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="d-flex justify-content-center mt-5">
+      <button
+        mat-flat-button
+        type="submit"
+        class="w-100 submit-button"
+        [class.overlay-spinner]="submitting()"
+        [disabled]="formGroup.invalid || !fileValid()"
+        (click)="send()"
+      >
+        {{ 'Submit' | translate }}
+      </button>
+    </div>
+  </div>
+</div>
