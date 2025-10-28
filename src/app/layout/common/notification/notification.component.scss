@@ -37,7 +37,10 @@
   border: 1px solid $primary;
 
   .mat-mdc-menu-content {
-    padding: 19px 21px;
     background-color: #fff;
   }
+}
+
+::ng-deep .mat-mdc-menu-panel {
+  max-width: 500px !important;
 }

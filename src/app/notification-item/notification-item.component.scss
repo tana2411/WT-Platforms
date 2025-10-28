@@ -1,5 +1,6 @@
 .notification-item {
-  background-color: #fff;
+  background-color: #e8fdf4;
+  border-left: 4px solid #00a86b;
 }
 
 .icon i {
@@ -8,4 +9,16 @@
 
 .link {
   color: #03985c;
+}
+
+.item-icon {
+  width: 20px !important;
+  height: 20px !important;
+  border: 1px solid #03985c;
+  border-radius: 50%;
+  box-sizing: content-box;
+  padding: 1px;
+  font-size: 1.2rem;
+  background-color: #03985c;
+  color: #e8fdf4;
 }

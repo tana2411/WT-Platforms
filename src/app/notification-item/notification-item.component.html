@@ -3,10 +3,11 @@
 
   <div class="content flex-grow-1">
     <div class="d-flex justify-content-between">
-      <strong>{{ title }}</strong>
+      <strong> <mat-icon class="me-1 item-icon">notifications</mat-icon> {{ title }}</strong>
       <small class="text-muted">{{ time }}</small>
     </div>
-    <p class="mb-1">{{ message }}</p>
-    <a href="#" class="fw-bold link">{{ linkText }}</a>
+    <p class="mb-1">
+      {{ message }} <a href="" class="fw-bold link">{{ linkText }}</a>
+    </p>
   </div>
 </div>

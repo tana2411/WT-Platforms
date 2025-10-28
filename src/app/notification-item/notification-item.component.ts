@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-
+import { MatIcon } from '@angular/material/icon';
 @Component({
   selector: 'app-notification-item',
-  imports: [],
+  imports: [MatIcon],
   templateUrl: './notification-item.component.html',
   styleUrl: './notification-item.component.scss',
 })

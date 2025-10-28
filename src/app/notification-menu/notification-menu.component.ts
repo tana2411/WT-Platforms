@@ -32,5 +32,12 @@ export class NotificationMenuComponent {
       linkText: 'VIEW PROFILE',
       time: '05/11/2025, 03:44pm',
     },
+
+    {
+      title: 'Account Verification Unsuccessful',
+      message: 'We couldn’t verify your account at this time. Please review your documents.',
+      linkText: 'VIEW PROFILE',
+      time: '05/11/2025, 03:44pm',
+    },
   ];
 }
