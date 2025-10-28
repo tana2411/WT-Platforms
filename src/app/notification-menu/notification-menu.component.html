@@ -1,0 +1,9 @@
+<div class="">
+  <h2 class="fw-bold mb-0">Notifications</h2>
+  <button class="btn read-btn btn-outline-primary btn-sm">MARK ALL AS READ</button>
+
+  <div *ngFor="let noti of notifications">
+    <app-notification-item [title]="noti.title" [message]="noti.message" [time]="noti.time" [linkText]="noti.linkText">
+    </app-notification-item>
+  </div>
+</div>

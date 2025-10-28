@@ -1,4 +1,8 @@
-<div class="wrapper">
+<div class="wrapper" [matMenuTriggerFor]="notificationMenu">
   <mat-icon>notifications</mat-icon>
   <span class="amount">{{ amount() }}</span>
 </div>
+
+<mat-menu class="notification-menu" #notificationMenu="matMenu">
+  <app-notification-menu></app-notification-menu>
+</mat-menu>

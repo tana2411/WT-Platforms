@@ -1,11 +1,12 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { NotificationMenuComponent } from 'app/notification-menu/notification-menu.component';
 import { BehaviorSubject, map } from 'rxjs';
-
 @Component({
   selector: 'app-notification',
-  imports: [MatIconModule],
+  imports: [MatIconModule, MatMenuModule, NotificationMenuComponent],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.scss',
 })
