@@ -1,0 +1,24 @@
+<div class="content">
+  <div class="d-flex justify-content-lg-between">
+    <h2 class="title fw-bold mb-0">Notifications</h2>
+
+    <button mat-icon-button class="close-btn" (click)="handleClose()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="d-flex justify-content-lg-end">
+    <button (click)="handleRead()" class="read-button">MARK ALL AS READ</button>
+  </div>
+</div>
+<div class="noti-list">
+  <div *ngFor="let noti of notifications()">
+    <app-notification-item [noti]="noti"> </app-notification-item>
+  </div>
+</div>
+
+@if (canViewMore()) {
+  <div class="d-flex align-items-center justify-content-center">
+    <button (click)="handleViewmore()" class="view-button">VIEW MORE</button>
+  </div>
+}

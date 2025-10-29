@@ -1,25 +1,14 @@
 import { Component, computed, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
-import { BehaviorSubject, map } from 'rxjs';
-
+import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
+import { NotificationMenuComponent } from 'app/notification-menu/notification-menu.component';
 @Component({
   selector: 'app-notification',
-  imports: [MatIconModule],
+  imports: [MatIconModule, NotificationMenuComponent, MatMenu, MatMenuTrigger],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.scss',
 })
 export class NotificationComponent {
-  private amount$ = new BehaviorSubject(10);
-
-  amount = toSignal(
-    this.amount$.pipe(
-      map((value) => {
-        if (value <= 9) {
-          return `${value}`;
-        }
-        return '9+';
-      }),
-    ),
-  );
+  unReadNoti = signal(10);
+  amount = computed(() => (this.unReadNoti() > 9 ? `9+` : this.unReadNoti()));
 }

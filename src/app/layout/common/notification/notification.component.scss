@@ -1,9 +1,12 @@
+@import 'variables';
+
 .amount {
+  padding: 1px 0 0 1px;
   width: 18px;
   height: 18px;
   background-color: #e84f63;
   color: #fff;
-  font-size: 12px;
+  font-size: 10px;
   line-height: 16px;
   display: flex;
   justify-content: center;
@@ -25,4 +28,10 @@
   height: 38px;
   font-size: 23px;
   cursor: pointer;
+}
+
+::ng-deep .notification-menu {
+  margin-top: 10px;
+  background-color: #fff !important;
+  max-width: 640px !important;
 }
