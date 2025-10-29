@@ -19,18 +19,21 @@ export class NotificationMenuComponent {
       message: 'Your bid on <Material Title> on <Bid Date> has been updated to <Status>.',
       linkText: 'VIEW MATERIAL LISTING',
       time: '05/11/2025, 03:44pm',
+      read: false,
     },
     {
       title: 'Account Verified',
       message: 'Your WasteTrade account is now verified. You can browse and create listings.',
       linkText: 'GO TO PLATFORM',
       time: '05/11/2025, 03:44pm',
+      read: false,
     },
     {
       title: 'Account Verification Unsuccessful',
       message: 'We couldn’t verify your account at this time. Please review your documents.',
       linkText: 'VIEW PROFILE',
       time: '05/11/2025, 03:44pm',
+      read: true,
     },
 
     {
@@ -38,6 +41,35 @@ export class NotificationMenuComponent {
       message: 'We couldn’t verify your account at this time. Please review your documents.',
       linkText: 'VIEW PROFILE',
       time: '05/11/2025, 03:44pm',
+      read: true,
+    },
+    {
+      title: 'Account Verification Unsuccessful',
+      message: 'We couldn’t verify your account at this time. Please review your documents.',
+      linkText: 'VIEW PROFILE',
+      time: '05/11/2025, 03:44pm',
+      read: true,
+    },
+    {
+      title: 'Account Verification Unsuccessful',
+      message: 'We couldn’t verify your account at this time. Please review your documents.',
+      linkText: 'VIEW PROFILE',
+      time: '05/11/2025, 03:44pm',
+      read: true,
+    },
+    {
+      title: 'Account Verification Unsuccessful',
+      message: 'We couldn’t verify your account at this time. Please review your documents.',
+      linkText: 'VIEW PROFILE',
+      time: '05/11/2025, 03:44pm',
+      read: true,
     },
   ];
+
+  handleViewmore() {
+    console.log('check handleViewmore function');
+  }
+  handleRead() {
+    console.log('check handleRead function');
+  }
 }

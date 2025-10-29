@@ -11,4 +11,5 @@ export class NotificationItemComponent {
   @Input() message!: string;
   @Input() time!: string;
   @Input() linkText!: string;
+  @Input() read!: boolean;
 }

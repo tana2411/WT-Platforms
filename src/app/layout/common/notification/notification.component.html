@@ -4,5 +4,7 @@
 </div>
 
 <mat-menu class="notification-menu" #notificationMenu="matMenu">
-  <app-notification-menu></app-notification-menu>
+  <div (click)="$event.stopPropagation()">
+    <app-notification-menu></app-notification-menu>
+  </div>
 </mat-menu>

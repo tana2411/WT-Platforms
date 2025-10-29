@@ -3,6 +3,11 @@
   border-left: 4px solid #00a86b;
 }
 
+.read {
+  background-color: white;
+  border: none;
+  color: #888;
+}
 .icon i {
   font-size: 1.5rem;
 }
@@ -11,6 +16,7 @@
   color: #03985c;
 }
 
+/* Khi chưa đọc (read = false) → icon notification màu xanh, có viền và nền */
 .item-icon {
   width: 20px !important;
   height: 20px !important;
@@ -21,4 +27,12 @@
   font-size: 1.2rem;
   background-color: #03985c;
   color: #e8fdf4;
+  transition: all 0.3s ease;
+}
+
+/* Khi đã đọc (read = true) → icon done màu xám, nền trắng, không border */
+.read .item-icon {
+  border: none;
+  background-color: white;
+  color: #888;
 }

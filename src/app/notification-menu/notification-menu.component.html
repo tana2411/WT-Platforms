@@ -1,13 +1,13 @@
 <div class="content">
   <h2 class="fw-bold mb-0">Notifications</h2>
   <div class="noti-btn d-flex justify-content-lg-end mt-4">
-    <button class="btn read-btn btn-outline-primary btn-sm">MARK ALL AS READ</button>
+    <button (click)="handleRead()" class="btn read-btn btn-outline-primary btn-sm">MARK ALL AS READ</button>
   </div>
 </div>
-
-<div *ngFor="let noti of notifications">
-  <app-notification-item [title]="noti.title" [message]="noti.message" [time]="noti.time" [linkText]="noti.linkText">
-  </app-notification-item>
+<div class="noti-list">
+  <div *ngFor="let noti of notifications">
+    <app-notification-item [title]="noti.title" [message]="noti.message" [time]="noti.time" [linkText]="noti.linkText" [read]="noti.read">
+    </app-notification-item>
+  </div>
 </div>
-
-<button class="view-btn d-flex read-btn btn-outline-primary btn-sm">VIEW MORE</button>
+<button (click)="handleViewmore()" class="view-btn d-flex read-btn btn-outline-primary btn-sm">VIEW MORE</button>
