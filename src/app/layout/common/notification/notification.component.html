@@ -5,6 +5,6 @@
 
 <mat-menu class="notification-menu" #notificationMenu="matMenu">
   <div (click)="$event.stopPropagation()">
-    <app-notification-menu></app-notification-menu>
+    <app-notification-menu (reFetchNoti)="onReFetchNoti()"></app-notification-menu>
   </div>
 </mat-menu>

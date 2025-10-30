@@ -1,15 +1,7 @@
 import { Component, input } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { IconComponent } from 'app/layout/common/icon/icon.component';
-
-type NotiItem = {
-  title: string;
-  message: string;
-  time: string;
-  read: boolean;
-  linkText?: string;
-  clickLink?: () => void;
-};
+import { NotiItem } from 'app/types/notification';
 
 @Component({
   selector: 'app-notification-item',

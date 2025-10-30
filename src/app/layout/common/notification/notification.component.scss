@@ -33,5 +33,6 @@
 ::ng-deep .notification-menu {
   margin-top: 10px;
   background-color: #fff !important;
-  max-width: 640px !important;
+  min-width: 640px !important;
+  max-height: 80vh;
 }

@@ -11,14 +11,23 @@
     <button (click)="handleRead()" class="read-button">MARK ALL AS READ</button>
   </div>
 </div>
-<div class="noti-list">
-  <div *ngFor="let noti of notifications()">
+
+<div class="noti-list" #notiList>
+  @for (noti of notifications(); track noti.id) {
     <app-notification-item [noti]="noti"> </app-notification-item>
-  </div>
+  } @empty {
+    <p class="text-dark text-center fs-18 py-5">You don’t have any notifications yet.</p>
+  }
 </div>
 
 @if (canViewMore()) {
   <div class="d-flex align-items-center justify-content-center">
-    <button (click)="handleViewmore()" class="view-button">VIEW MORE</button>
+    <button (click)="handleViewmore()" class="view-button" [class.overlay-spinner]="viewMoreLoading()">VIEW MORE</button>
+  </div>
+}
+
+@if (!hasMoreNoti()) {
+  <div class="d-flex align-items-center justify-content-center">
+    <p class="text-dark fs-18" style="margin-top: 12px; margin-bottom: 24px">No more notifications.</p>
   </div>
 }
