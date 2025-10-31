@@ -1,0 +1,93 @@
+.offer-card {
+  gap: 59px;
+  display: flex;
+  max-width: 1520px;
+  height: 190px;
+  border: 0.25px solid #d1d1d1;
+  border-radius: 20px;
+  padding: 12px;
+  margin: 10px 0;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  align-items: center;
+  justify-content: center;
+}
+.card-title {
+  width: max-content;
+  font-weight: 700;
+}
+
+.card-material {
+  width: 415px;
+}
+.card-content {
+  margin-top: 16px;
+  font-weight: 500;
+}
+.offer-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 23px;
+  height: 126px;
+  max-width: 1232px;
+}
+
+.offer-cell {
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  line-height: 22px;
+  color: #222;
+}
+
+.status {
+  font-weight: bold;
+}
+.status.accepted {
+  color: #03985c;
+}
+
+.status.rejected {
+  color: #d75a66;
+}
+
+.status.rejected {
+  color: #1d1d1b;
+}
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 140px;
+}
+
+.btn-outline {
+  height: 56px;
+  width: 165px;
+  border: 1px solid #03985c;
+  color: #03985c;
+  background: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-solid {
+  height: 56px;
+  width: 165px;
+  background-color: #03985c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.btn-solid:hover {
+  background-color: #007a3a;
+}

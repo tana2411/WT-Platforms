@@ -10,6 +10,9 @@ export const getDefaultRouteByRole = (user: User) => {
 
     case Role.USER:
       return user.company?.isHaulier ? ROUTES.haulier : ROUTES.buy;
+
+    default:
+      return ROUTES.login;
   }
 };
 

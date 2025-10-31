@@ -13,7 +13,7 @@
       <img src="assets/images/compact-logo.svg" alt="Logo" class="cursor-pointer" (click)="toLandingPage()" />
     </div>
 
-    @if (user()?.user?.globalRole === Role.USER) {
+    @if (user()?.user?.globalRole === Role.HAULIER) {
       <a class="menu-item dashboard d-flex gap-3 align-items-center" routerLink="/dashboard" routerLinkActive="active-link">
         <app-icon iconName="view_quilt"></app-icon>
         <p class="fw-bold mb-0">{{ 'Dashboard' | translate }}</p>
@@ -62,31 +62,41 @@
         <p class="fw-bold mb-0">{{ 'More' | translate }}</p>
         <mat-icon class="more-icon">arrow_drop_down</mat-icon>
       </div>
-    } @else {
-      @if (user()?.user?.globalRole === Role.SUPER_ADMIN || user()?.user?.globalRole === Role.ADMIN) {
-        <p class="mb-0 px-3 px-lg-4 text-uppercase mt-2 mt-lg-3 mb-lg-3">{{ 'ADMIN PLATFORM' | translate }}</p>
+    } @else if (user()?.user?.globalRole === Role.USER) {
+      <a class="menu-item dashboard d-flex gap-3 align-items-center" routerLink="/haulier/availableLoad" routerLinkActive="active-link">
+        <app-icon backgroundColor="#03985c" iconName="recycling"></app-icon>
+        <p class="fw-bold mb-0">Available Load</p>
+      </a>
 
-        <div class="d-flex flex-column">
-          @for (item of adminMenu; track item.title) {
-            @if (!item.isTempLink) {
-              <a
-                routerLink="{{ item.link }}"
-                routerLinkActive="active-link"
-                class="menu-item d-flex gap-3 align-items-center admin-menu-item"
-              >
-                @if (item.icon) {
-                  <app-icon iconName="{{ item.icon }}" className="{{ item.iconClass }}"></app-icon>
-                }
-                <p class="fw-bold mb-0">{{ item.title | translate }}</p>
-              </a>
-            } @else {
-              <p (click)="onComingSoon()" class="menu-item d-flex gap-3 align-items-center admin-menu-item fw-bold">
-                {{ item.title | translate }}
-              </p>
-            }
+      <div class="d-flex flex-column">
+        <a class="menu-item d-flex gap-3 align-items-center" routerLink="/haulier/currentOffer" routerLinkActive="active-link">
+          <app-icon backgroundColor="#03985c" iconName="ballot"></app-icon>
+          <p class="fw-bold mb-0">Current Offer</p>
+        </a>
+      </div>
+    } @else if (user()?.user?.globalRole === Role.SUPER_ADMIN || user()?.user?.globalRole === Role.ADMIN) {
+      <p class="mb-0 px-3 px-lg-4 text-uppercase mt-2 mt-lg-3 mb-lg-3">{{ 'ADMIN PLATFORM' | translate }}</p>
+
+      <div class="d-flex flex-column">
+        @for (item of adminMenu; track item.title) {
+          @if (!item.isTempLink) {
+            <a
+              routerLink="{{ item.link }}"
+              routerLinkActive="active-link"
+              class="menu-item d-flex gap-3 align-items-center admin-menu-item"
+            >
+              @if (item.icon) {
+                <app-icon iconName="{{ item.icon }}" className="{{ item.iconClass }}"></app-icon>
+              }
+              <p class="fw-bold mb-0">{{ item.title | translate }}</p>
+            </a>
+          } @else {
+            <p (click)="onComingSoon()" class="menu-item d-flex gap-3 align-items-center admin-menu-item fw-bold">
+              {{ item.title | translate }}
+            </p>
           }
-        </div>
-      }
+        }
+      </div>
     }
   </div>
 </div>

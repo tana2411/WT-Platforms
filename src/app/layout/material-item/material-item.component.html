@@ -1,0 +1,54 @@
+<div class="offer-card">
+  <div class="offer-row">
+    <div class="offer-cell card-material">
+      <p class="card-title">MATERIAL</p>
+      <p class="card-content">{{ offer.material }}</p>
+    </div>
+    <div class="offer-cell">
+      <p class="card-title">PACKAGING</p>
+      <p class="card-content">{{ offer.packaging }}</p>
+    </div>
+    <div class="offer-cell">
+      <p class="card-title">PICKUP LOCATION</p>
+
+      <p class="card-content">{{ offer.pickupLocation }}</p>
+    </div>
+    <div class="offer-cell">
+      <p class="card-title">DESTINATION</p>
+      <p class="card-content">{{ offer.destination }}</p>
+    </div>
+    <div class="offer-cell">
+      <p class="card-title">NO. LOADS</p>
+      <p class="card-content">{{ offer.noLoad }}</p>
+    </div>
+    <div class="offer-cell">
+      <p class="card-title">QUANTITY PER LOAD</p>
+      <p class="card-content">{{ offer.quantityPerLoad }}</p>
+    </div>
+    <div class="offer-cell">
+      <p class="card-title">HAULAGE TOTAL</p>
+      <p class="card-content">{{ offer.haulageTotal }}</p>
+    </div>
+    <div class="offer-cell">
+      <p class="card-title">DELIVERY WINDOW</p>
+      <p class="card-content">{{ offer.deliveryWindow }}</p>
+    </div>
+    <div class="offer-cell">
+      <p class="card-title">OFFER STATUS</p>
+      <span
+        class="status card-content"
+        [ngClass]="{
+          accepted: offer.offerStatus === 'Accepted',
+          rejected: offer.offerStatus === 'Rejected',
+          pending: offer.offerStatus === 'Pending',
+        }"
+      >
+        {{ offer.offerStatus }}
+      </span>
+    </div>
+  </div>
+  <div class="offer-cell buttons">
+    <button class="btn-outline">VIEW DETAILS</button>
+    <button class="btn-solid">VIEW DOCUMENT</button>
+  </div>
+</div>
