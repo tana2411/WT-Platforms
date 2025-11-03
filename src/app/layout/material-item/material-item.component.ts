@@ -8,4 +8,11 @@ import { Component, Input } from '@angular/core';
 })
 export class MaterialItemComponent {
   @Input() offer: any;
+
+  handleViewDetails() {
+    console.log('check handleViewDetails');
+  }
+  handleViewDocument() {
+    console.log('check handleViewDocument');
+  }
 }

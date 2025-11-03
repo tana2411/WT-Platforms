@@ -1,3 +1,7 @@
+.wrapper {
+  margin-top: 24px;
+}
+
 .offer-card {
   gap: 59px;
   display: flex;
@@ -5,8 +9,8 @@
   height: 190px;
   border: 0.25px solid #d1d1d1;
   border-radius: 20px;
-  padding: 12px;
-  margin: 10px 0;
+  padding: 32px;
+  margin: 0 auto;
   background-color: white;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   align-items: center;
@@ -51,9 +55,10 @@
   color: #d75a66;
 }
 
-.status.rejected {
+.status.pending {
   color: #1d1d1b;
 }
+
 .buttons {
   display: flex;
   flex-direction: column;
@@ -90,4 +95,12 @@
 
 .btn-solid:hover {
   background-color: #007a3a;
+}
+
+.btnAccepted {
+  display: block !important;
+}
+
+.documentBtn {
+  display: none;
 }

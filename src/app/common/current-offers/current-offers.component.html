@@ -1,9 +1,11 @@
 <div class="wrapper">
   <div class="result">84 results 0f 435252</div>
-  @for (offer of offers; track offer.material) {
+
+  @for (offer of paginatedOffers(); track offer.material) {
     <app-material-item [offer]="offer"></app-material-item>
   } @empty {
-    <p>Không có offer nào được tìm thấy.</p>
+    <p>No offer can be found.</p>
   }
 </div>
-<app-pagination></app-pagination>
+
+<app-pagination [pageNumber]="page()" [totalCount]="totalItem()" [size]="pageSize" (pageChange)="onPageChange($event)"> </app-pagination>
