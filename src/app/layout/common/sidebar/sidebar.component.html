@@ -13,7 +13,7 @@
       <img src="assets/images/compact-logo.svg" alt="Logo" class="cursor-pointer" (click)="toLandingPage()" />
     </div>
 
-    @if (user()?.user?.globalRole === Role.HAULIER) {
+    @if (user()?.user?.globalRole === Role.USER) {
       <a class="menu-item dashboard d-flex gap-3 align-items-center" routerLink="/dashboard" routerLinkActive="active-link">
         <app-icon iconName="view_quilt"></app-icon>
         <p class="fw-bold mb-0">{{ 'Dashboard' | translate }}</p>
@@ -62,10 +62,10 @@
         <p class="fw-bold mb-0">{{ 'More' | translate }}</p>
         <mat-icon class="more-icon">arrow_drop_down</mat-icon>
       </div>
-    } @else if (user()?.user?.globalRole === Role.USER) {
+    } @else if (user()?.user?.globalRole === Role.HAULIER) {
       <a class="menu-item dashboard d-flex gap-3 align-items-center" routerLink="/haulier/availableLoad" routerLinkActive="active-link">
         <app-icon backgroundColor="#03985c" iconName="recycling"></app-icon>
-        <p class="fw-bold mb-0">Available Load</p> 
+        <p class="fw-bold mb-0">Available Load</p>
       </a>
 
       <div class="d-flex flex-column">
